@@ -1268,10 +1268,20 @@ DupCorBoxPlot <- function()
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()  
   }
+  
+  Try(if (!("cor.genes" %in% names(dupcor))&&!("all.correlations" %in% names(dupcor)))
+  {
+    Try(tkmessageBox(title="Duplicate Correlation Box Plot",message="Only available if limmaGUI calculates duplicate correlation (rather than the user)",type="ok",icon="error"))
+    return()  
+  })
+  
   plotDupCor <- function()
   {
     Try(opar<-par(bg="white"))
-    Try(boxplot(dupcor$cor.genes,main=plotTitle))
+    Try(if ("cor.genes" %in% names(dupcor))
+      Try(boxplot(dupcor$cor.genes,main=plotTitle))
+    else
+      Try(boxplot(dupcor$all.correlations,main=plotTitle)))
     Try(opar<-par(bg="white")) 
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
@@ -2737,8 +2747,8 @@ GetPlotTitle <- function(plottitle="")
 
 GetPlotSize <- function()
 {
-  Try(Myhscale <- get("Myhscale",envir=.GlobalEnv))
-  Try(Myvscale <- get("Myvscale",envir=.GlobalEnv))
+  Try(Myhscale <- .limmaGUIglobals$Myhscale)
+  Try(Myvscale <- .limmaGUIglobals$Myvscale)
   ttGetPlotSize<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetPlotSize)
   tkgrab.set(ttGetPlotSize)
@@ -2871,8 +2881,8 @@ Resize <- function(img,plotFunction)
 {
   Try(PlotSize <- GetPlotSize())
   Try(if (length(PlotSize)==0)      return())
-  Try(LocalHScale <<- PlotSize$HScale)
-  Try(LocalVScale <<- PlotSize$VScale)
+  Try(LocalHScale <- PlotSize$HScale)
+  Try(LocalVScale <- PlotSize$VScale)
   Try(tkconfigure(img,cursor="watch"))    
   Try(tkfocus(img))  
   Try(tkrreplot(img,fun=plotFunction,hscale=LocalHScale,vscale=LocalVScale))

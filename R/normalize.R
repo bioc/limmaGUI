@@ -1,3 +1,8 @@
+NormalizeHelp <- function()
+{
+  Try(help("normalizeWithinArrays",htmlhelp=TRUE))
+}
+
 GetNormalizationMethod <- function()
 {
   Try(ttGetNormalizationMethod<-tktoplevel(.limmaGUIglobals$ttMain))
@@ -40,11 +45,11 @@ GetNormalizationMethod <- function()
   Try(NewNormalizationMethod <- "")
   onOK <- function()
   {
-    Try(NewNormalizationMethod<-tclvalue(methnorm));
+    Try(NewNormalizationMethod<<-tclvalue(methnorm));
     Try(tkgrab.release(ttGetNormalizationMethod));
     Try(tkdestroy(ttGetNormalizationMethod))
     Try(if (NewNormalizationMethod==WithinArrayNormalizationMethod)
-      return(NewNormalizationMethod))    
+      return())    
     Try(WithinArrayNormalizationMethod <- NewNormalizationMethod)
     Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
     Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
@@ -66,10 +71,12 @@ GetNormalizationMethod <- function()
   }
   Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=function(){Try(tkgrab.release(ttGetNormalizationMethod));Try(tkdestroy(ttGetNormalizationMethod));NewNormalizationMethod<-"";Try(tkfocus(.limmaGUIglobals$ttMain))},font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=NormalizeHelp,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(tkframe4,text="                    ")))
-  Try(tkgrid(OK.but,Cancel.but))
+  Try(tkgrid(OK.but,Cancel.but,Help.but))
   Try(tkgrid.configure(OK.but,sticky="e"))
   Try(tkgrid.configure(Cancel.but,sticky="e"))
+  Try(tkgrid.configure(Help.but,sticky="e"))  
   Try(tkgrid(tklabel(tkframe4,text="       ")))
   Try(tkgrid(tkframe4))
   Try(tkgrid(tkframe1))
@@ -80,6 +87,8 @@ GetNormalizationMethod <- function()
 
   Try(tkdestroy(ttGetNormalizationMethod))  
 
+# This return value below is not used.  The function above is used for its effect
+# on WithinArrayNormalizationMethod in limmaGUIenvironment
   return(NewNormalizationMethod)
 }
 

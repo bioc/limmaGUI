@@ -125,7 +125,9 @@
 \alias{vennDiagramlimmaGUI}
 \alias{WithinBetweenOrBoth}
 \alias{wtflags2}
-
+\alias{GetBackgroundCorrectionMethod}
+\alias{NormalizeHelp}
+\alias{BChelp}
 \description{Graphical User Interface for the limma microarray package by Gordon Smyth}}
 
 \usage{
@@ -238,6 +240,9 @@ GetJpegOrPngParams()
 GetJpegOrPngX11Params()
 VennDiagramPlot()
 UpDownOrBoth()
+GetBackgroundCorrectionMethod()
+NormalizeHelp()
+BChelp()
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 }
 

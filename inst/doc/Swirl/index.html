@@ -96,7 +96,8 @@ The default spot colors are those specified in the Spot Types file.  By default,
 control points on the graph is larger than the size of gene points, because usually there are
 so few controls (e.g. scorecard controls) and they are important to highlight.</p>
 <img src="PlotPointSymbolsAndColors.jpg"><br><br>
-<p>Leave the plot title and axis labels at their default values.</p>
+<p>Leave the plot title and axis labels at their default values.  When asked about normalization,
+choose "No" each time.</p>
 <img src="PlotLabelsDialog.jpg"><br><br>
 <p>The resulting plot is shown below.  There is clearly a need for normalization.  There is an
 obvious intensity effect (i.e. M depends on A) which should be removed by normalization later
@@ -310,7 +311,10 @@ objects which will remain the same after loading a different data set.</p>
 <img src="EvaluateRCodeSelected.jpg"><br><br>
 <p>The user is presented with a text window in which R code can be
 entered.  We will use this interface to check the first 20 rows of the GAL file, which
-is stored in an R object called "gal", currently in the global environment.</p>
+is stored in an R object called "gal", within the environment limmaGUIenvironment.
+FOR ADVANCED USERS: When using the "Evaluate R Code" window, it is not necessary to use
+get("gal",envir=limmaGUIenvironment) because commands in this window are automatically
+evaluated in limmaGUIenvironment.</p>
 <img src="EvalRCodeGALexample.jpg"><br><br>
 <p>After entering the code, choose "Show Text Results only" from the Run menu.</p>
 <img src="ShowTextResults.jpg"><br><br>

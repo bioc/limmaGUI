@@ -16,6 +16,7 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
   Try(TargetsTcl           <- tclVar("1"))  
   Try(SpotTypesTcl         <- tclVar("1"))
   Try(LayoutTcl            <- tclVar("1"))
+  Try(BackgroundCorrectionTcl <- tclVar("1"))
   Try(SpotWeightingTcl     <- tclVar("1"))
   Try(RawMATcl             <- tclVar("1"))
   Try(RawPrintTipGroupTcl  <- tclVar("1"))  
@@ -41,12 +42,16 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
   else
     Try(Top50ToptablesTcl    <- tclVar("0")))
   Try(CompleteToptablesTcl <- tclVar("0"))      
-  Try(AvgMAPlotTcl <- tclVar("1"))
+  Try(if (NumParameterizations>0)  
+    Try(AvgMAPlotTcl <- tclVar("1"))
+  else
+    Try(AvgMAPlotTcl    <- tclVar("0")))
   Try(tStatisticBoxPlotsTcl <- tclVar("0"))  
 
   Try(TargetsCheckbox                     <- tkcheckbutton(ttHTMLreportDialog,variable=TargetsTcl))
   Try(SpotTypesCheckbox                   <- tkcheckbutton(ttHTMLreportDialog,variable=SpotTypesTcl))  
   Try(LayoutCheckbox                      <- tkcheckbutton(ttHTMLreportDialog,variable=LayoutTcl))    
+  Try(BackgroundCorrectionCheckbox        <- tkcheckbutton(ttHTMLreportDialog,variable=BackgroundCorrectionTcl))      
   Try(SpotWeightingCheckbox               <- tkcheckbutton(ttHTMLreportDialog,variable=SpotWeightingTcl))      
   Try(RawMACheckbox                       <- tkcheckbutton(ttHTMLreportDialog,variable=RawMATcl))    
   Try(RawPrintTipGroupCheckbox            <- tkcheckbutton(ttHTMLreportDialog,variable=RawPrintTipGroupTcl))      
@@ -74,6 +79,9 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
   Try(currentLabel <- tklabel(ttHTMLreportDialog,text="Layout",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(ttHTMLreportDialog,text="    "),LayoutCheckbox,currentLabel))
   Try(tkgrid.configure(LayoutCheckbox,sticky="e"));  Try(tkgrid.configure(currentLabel,sticky="w",columnspan=2))
+  Try(currentLabel <- tklabel(ttHTMLreportDialog,text="Background Correction Method",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(tkgrid(tklabel(ttHTMLreportDialog,text="    "),BackgroundCorrectionCheckbox,currentLabel))
+  Try(tkgrid.configure(BackgroundCorrectionCheckbox,sticky="e"));Try(tkgrid.configure(currentLabel,sticky="w",columnspan=2))
   Try(currentLabel <- tklabel(ttHTMLreportDialog,text="Spot Quality Weighting",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(ttHTMLreportDialog,text="    "),SpotWeightingCheckbox,currentLabel))
   Try(tkgrid.configure(SpotWeightingCheckbox,sticky="e"));Try(tkgrid.configure(currentLabel,sticky="w",columnspan=2))
@@ -136,18 +144,19 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
       if (tclvalue(TargetsTcl)=="1") ReturnVal[[1]] <- TRUE else ReturnVal[[1]] <- FALSE; attributes(ReturnVal)$names[1] <- "Targets"
       if (tclvalue(SpotTypesTcl)=="1") ReturnVal[[2]] <- TRUE else ReturnVal[[2]] <- FALSE; attributes(ReturnVal)$names[2] <- "SpotTypes"
       if (tclvalue(LayoutTcl)=="1") ReturnVal[[3]] <- TRUE else ReturnVal[[3]] <- FALSE; attributes(ReturnVal)$names[3] <- "Layout"      
-      if (tclvalue(SpotWeightingTcl)=="1") ReturnVal[[4]] <- TRUE else ReturnVal[[4]] <- FALSE; attributes(ReturnVal)$names[4] <- "SpotWeighting"      
-      if (tclvalue(RawMATcl)=="1") ReturnVal[[5]] <- TRUE else ReturnVal[[5]] <- FALSE; attributes(ReturnVal)$names[5] <- "RawMA"            
-      if (tclvalue(RawPrintTipGroupTcl)=="1") ReturnVal[[6]] <- TRUE else ReturnVal[[6]] <- FALSE; attributes(ReturnVal)$names[6] <- "RawPrintTipGroup"                  
-      if (tclvalue(ScaleBoxPlotTcl)=="1") ReturnVal[[7]] <- TRUE else ReturnVal[[7]] <- FALSE; attributes(ReturnVal)$names[7] <- "ScaleBoxPlot"                        
-      if (tclvalue(SpotTypesInLinearModelTcl)=="1") ReturnVal[[8]] <- TRUE else ReturnVal[[8]] <- FALSE; attributes(ReturnVal)$names[8] <- "SpotTypesInLinearModel"      
-      if (tclvalue(NormalizationInLinearModelTcl)=="1") ReturnVal[[9]] <- TRUE else ReturnVal[[9]] <- FALSE; attributes(ReturnVal)$names[9] <- "NormalizationInLinearModel"            
-      if (tclvalue(DesignMatrixTcl)=="1") ReturnVal[[10]] <- TRUE else ReturnVal[[10]] <- FALSE; attributes(ReturnVal)$names[10] <- "DesignMatrix"                              
-      if (tclvalue(DupCorTcl)=="1") ReturnVal[[11]] <- TRUE else ReturnVal[[11]] <- FALSE; attributes(ReturnVal)$names[11] <- "DupCor"                                    
-      if (tclvalue(Top50ToptablesTcl)=="1") ReturnVal[[12]] <- TRUE else ReturnVal[[12]] <- FALSE; attributes(ReturnVal)$names[12] <- "Top50Toptables"                                          
-      if (tclvalue(CompleteToptablesTcl)=="1") ReturnVal[[13]] <- TRUE else ReturnVal[[13]] <- FALSE; attributes(ReturnVal)$names[13] <- "CompleteToptables"      
-      if (tclvalue(AvgMAPlotTcl)=="1") ReturnVal[[14]] <- TRUE else ReturnVal[[14]] <- FALSE; attributes(ReturnVal)$names[14] <- "AvgMAPlot"            
-      if (tclvalue(tStatisticBoxPlotsTcl)=="1") ReturnVal[[15]] <- TRUE else ReturnVal[[15]] <- FALSE; attributes(ReturnVal)$names[15] <- "tStatisticBoxPlots"            
+      if (tclvalue(BackgroundCorrectionTcl)=="1") ReturnVal[[4]] <- TRUE else ReturnVal[[4]] <- FALSE; attributes(ReturnVal)$names[4] <- "BackgroundCorrection"      
+      if (tclvalue(SpotWeightingTcl)=="1") ReturnVal[[5]] <- TRUE else ReturnVal[[5]] <- FALSE; attributes(ReturnVal)$names[5] <- "SpotWeighting"      
+      if (tclvalue(RawMATcl)=="1") ReturnVal[[6]] <- TRUE else ReturnVal[[6]] <- FALSE; attributes(ReturnVal)$names[6] <- "RawMA"            
+      if (tclvalue(RawPrintTipGroupTcl)=="1") ReturnVal[[7]] <- TRUE else ReturnVal[[7]] <- FALSE; attributes(ReturnVal)$names[7] <- "RawPrintTipGroup"                  
+      if (tclvalue(ScaleBoxPlotTcl)=="1") ReturnVal[[8]] <- TRUE else ReturnVal[[8]] <- FALSE; attributes(ReturnVal)$names[8] <- "ScaleBoxPlot"                        
+      if (tclvalue(SpotTypesInLinearModelTcl)=="1") ReturnVal[[9]] <- TRUE else ReturnVal[[9]] <- FALSE; attributes(ReturnVal)$names[9] <- "SpotTypesInLinearModel"      
+      if (tclvalue(NormalizationInLinearModelTcl)=="1") ReturnVal[[10]] <- TRUE else ReturnVal[[10]] <- FALSE; attributes(ReturnVal)$names[10] <- "NormalizationInLinearModel"            
+      if (tclvalue(DesignMatrixTcl)=="1") ReturnVal[[11]] <- TRUE else ReturnVal[[11]] <- FALSE; attributes(ReturnVal)$names[11] <- "DesignMatrix"                              
+      if (tclvalue(DupCorTcl)=="1") ReturnVal[[12]] <- TRUE else ReturnVal[[12]] <- FALSE; attributes(ReturnVal)$names[12] <- "DupCor"                                    
+      if (tclvalue(Top50ToptablesTcl)=="1") ReturnVal[[13]] <- TRUE else ReturnVal[[13]] <- FALSE; attributes(ReturnVal)$names[13] <- "Top50Toptables"                                          
+      if (tclvalue(CompleteToptablesTcl)=="1") ReturnVal[[14]] <- TRUE else ReturnVal[[14]] <- FALSE; attributes(ReturnVal)$names[14] <- "CompleteToptables"      
+      if (tclvalue(AvgMAPlotTcl)=="1") ReturnVal[[15]] <- TRUE else ReturnVal[[15]] <- FALSE; attributes(ReturnVal)$names[15] <- "AvgMAPlot"            
+      if (tclvalue(tStatisticBoxPlotsTcl)=="1") ReturnVal[[16]] <- TRUE else ReturnVal[[16]] <- FALSE; attributes(ReturnVal)$names[16] <- "tStatisticBoxPlots"            
       
       Try(tkgrab.release(ttHTMLreportDialog));Try(tkdestroy(ttHTMLreportDialog));Try(tkfocus(.limmaGUIglobals$ttMain))
       ReturnVal <<- ReturnVal
@@ -302,6 +311,7 @@ ExportHTMLreport <- function()
   Try(ExportTargets                    <- ComponentsToExport$Targets)  
   Try(ExportSpotTypes                  <- ComponentsToExport$SpotTypes)
   Try(ExportLayout                     <- ComponentsToExport$Layout)
+  Try(ExportBackgroundCorrection       <- ComponentsToExport$BackgroundCorrection)
   Try(ExportSpotWeighting              <- ComponentsToExport$SpotWeighting)
   Try(ExportRawMA                      <- ComponentsToExport$RawMA)
   Try(ExportRawPrintTipGroup           <- ComponentsToExport$RawPrintTipGroup)  
@@ -339,6 +349,7 @@ ExportHTMLreport <- function()
   if (ExportTargets) Try(HTMLli(txt="<a href=\"#Targets\"><b>Targets</b></a>"))
   if (ExportSpotTypes) Try(HTMLli(txt="<a href=\"#SpotTypes\"><b>Spot Types</b></a>"))
   if (ExportLayout) Try(HTMLli(txt="<a href=\"#Layout\"><b>Layout</b></a>"))
+  if (ExportBackgroundCorrection) Try(HTMLli(txt="<a href=\"#BackgroundCorrection\"><b>Background Correction</b></a>"))
   if (ExportSpotWeighting) Try(HTMLli(txt="<a href=\"#SpotWeighting\"><b>Spot Quality Weighting</b></a>"))
   if (ExportRawMA) Try(HTMLli(txt="<a href=\"#RawMA\"><b>Raw M A Plots</b></a>"))  
   if (ExportRawPrintTipGroup) Try(HTMLli(txt="<a href=\"#RawPrintTipGroup\"><b>Raw Print-Tip Group Loess M A Plots</b></a>"))    
@@ -382,6 +393,17 @@ ExportHTMLreport <- function()
     Try(HTML.title("<a name=\"Layout\">Layout</a>",HR=2))
     Try(print(layoutXtable,type="html",file=fileNameWithPath,append=TRUE))    
   }
+  if (ExportBackgroundCorrection)
+  {
+  	Try(if (!exists("BCMethod",envir=limmaGUIenvironment))
+		{
+			Try(BCMethod <- "subtract")
+			Try(assign("BCMethod",BCMethod,limmaGUIenvironment))
+		})
+		Try(BCMethod <- get("BCMethod",envir=limmaGUIenvironment))
+    Try(HTML.title("<a name=\"BackgroundCorrection\">Background Correction Method</a>",HR=2))
+    Try(HTMLli(txt=paste("<b>Background Correction Method : </b> ",BCMethod)))
+  }  
   if (ExportSpotWeighting)
   {
     Try(WeightingType     <- get("WeightingType",envir=limmaGUIenvironment))
@@ -483,6 +505,12 @@ ExportHTMLreport <- function()
       Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
     else          
     {
+      Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+      {
+        Try(WithinArrayNormalizationMethod <- "printtiploess")
+        Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
+      })
+      Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))          
       if (WeightingType == "none")
         Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
       else
@@ -491,11 +519,6 @@ ExportHTMLreport <- function()
       Try(MA.Available$WithinArrays <- TRUE)
       Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
       Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
-      Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-      {
-        Try(WithinArrayNormalizationMethod <- "printtiploess")
-        Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
-      })
       Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
       Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))                
     }
@@ -912,10 +935,8 @@ ExportHTMLreport <- function()
         Try(cex <- 0.1))        
       AvgMAPlotFunction <- function()
       {
-        Try(opar<-par(bg="white"))
         Try(plot(A,M,pch=16,cex=cex,xlab="mean(A)",ylab=paste("M (",ParameterNamesVec[coef],")",sep=""),main=plotTitle))
         Try(text(A[topGenes],M[topGenes],labels=substr(genelist[topGenes,"Name"],1,GeneLabelsMaxLength),cex=0.8,col="blue"))
-        Try(tempGraphPar <- par(opar))
       }
       Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
         GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("AvgMAPlot",coef,sep=""), 
@@ -961,10 +982,8 @@ ExportHTMLreport <- function()
               Try(cex <- 0.1))  
             AvgMAPlotFunction2 <- function()
             {
-              Try(opar<-par(bg="white"))
               Try(plot(A,M,pch=16,cex=cex,xlab="mean(A)",ylab=paste("M (",contrastNames[coef],")",sep=""),main=plotTitle))
               Try(text(A[topGenes],M[topGenes],labels=substr(genelist[topGenes,"Name"],1,GeneLabelsMaxLength),cex=0.8,col="blue"))
-              Try(tempGraphPar <- par(opar))
             }
             Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
               GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("AvgMAPlot_CP_",cp,"_",coef,sep=""), 
