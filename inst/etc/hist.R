@@ -1,5 +1,10 @@
 HistogramPlot <- function()
 {
+  # Example function to demonstrate adding menu items in limmaGUI.
+  # To activate this menu-item, uncomment the "Histogram" line in 
+  # limmaGUI/etc/limmaGUI-menus.txt, where the limmaGUI directory
+  # can be found with system.file(package="limmaGUI")
+  
   SlideNamesVec <- get("SlideNamesVec",limmaGUIenvironment)
   RG            <- get("RG",limmaGUIenvironment)
   MA.Available  <- get("MA.Available",limmaGUIenvironment)

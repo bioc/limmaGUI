@@ -73,11 +73,14 @@
 \alias{GetGeneLabelsOptions}
 \alias{MAPlotAvg}
 \alias{MMPlot}
+\alias{GetNumParametersNoTargets}
 \alias{GetParametersAndOrContrasts}
 \alias{HeatDiagramDialog}
 \alias{HeatDiagramPlot}
 \alias{ImageArrayPlotDialog}
 \alias{ImageArrayPlot}
+\alias{ImportMA}
+\alias{ImportMADialog}
 \alias{LogOddsPlot}
 \alias{DupCorBoxPlot}
 \alias{QQTplot}
@@ -115,7 +118,9 @@
 \alias{limmaGUIhelp}
 \alias{limmaHelp}
 \alias{plotMAlimmaGUI}
+\alias{read.marrayTools}
 \alias{readGALlimmaGUI}
+\alias{showGAL}
 \alias{Try}
 \alias{vennDiagramlimmaGUI}
 \alias{WithinBetweenOrBoth}
@@ -176,6 +181,8 @@ OpenGALandTargetsandSpotTypesfiles()
 GetlimmaDataSetName()
 GetParameterizationName()
 GetContrastsParameterizationName()
+ImportMA()
+ImportMADialog()
 NewLimmaFile()
 SetWD()
 onExit()
@@ -188,6 +195,7 @@ SaveAsLimmaFile()
 AboutLimmaGUI()
 addMenuItem()
 GetMenuName()
+GetNumParametersNoTargets()
 AboutCustomMenu()
 DeleteCustomMenuItem()
 GetCustomMenuItemNum()
@@ -216,11 +224,13 @@ ebayesBoxPlots()
 GetPlotLabels()
 GetPlotTitle()
 GetPlotSize()
+read.marrayTools(MFile,AFile, path, verbose, sep, quote, header, ...)
+Resize()
 SaveGraphAsJpeg()
 SaveGraphAsPNG()
 SaveGraphAsPostscript()
 SaveGraphAsPDF()
-Resize()
+showGAL()
 CopyGraph()
 SetupPlotKeyBindings()
 SetupPlotMenus()
@@ -228,7 +238,6 @@ GetJpegOrPngParams()
 GetJpegOrPngX11Params()
 VennDiagramPlot()
 UpDownOrBoth()
-
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 }
 
@@ -236,6 +245,14 @@ limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 	\item{BigfontsForlimmaGUIpresentation}{If set to TRUE, larger fonts are used.  However, some font 
 	sizes are not controlled by limmaGUI and so must be adjusted in the operating system, e.g.
 	in the Control Panel in Windows under Display, Appearance.}
+	\item{MFile}{Flat-file of log-ratios output by marrayTools}
+	\item{AFile}{Flat-file of log-intensities output by marrayTools}
+	\item{path}{Path to the directory containing the MFile and AFile}	
+	\item{verbose}{Optional diagnostic messages}
+	\item{sep}{Column separator. ("\t" for tab-delimited text)}
+	\item{quote}{See help for read.table}
+	\item{header}{See help for read.table}
+	\item{\dots}{Any other arguments to read.marrayTools are passed to \code{read.table}}
 }
 
 \details{

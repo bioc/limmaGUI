@@ -12,6 +12,8 @@
     item    fileMenu        command         "Save    Ctrl+S"                                SaveLimmaFile
     item    fileMenu        command         "Save As"                                    		SaveAsLimmaFile
     item    fileMenu        separator       ""                                              ""
+    item    fileMenu        command         "Import marrayTools Data"                       ImportMA
+    item    fileMenu        separator       ""                                              ""    
     item    fileMenu        command         "Export HTML Report"                            ExportHTMLreport
     item    fileMenu        separator       ""                                              ""
     item    fileMenu        command         "Working Directory"                             SetWD
@@ -26,6 +28,7 @@
     item    topMenu         cascade         "RNA Targets"                                   RNATargetsMenu
     menu    layoutMenu      topMenu         ""                                              ""
     item    layoutMenu      command         "Layout Parameters"                             SetLayoutParameters
+    item    layoutMenu      command         "View Gene List"                                showGAL
     item    topMenu         cascade         "Layout"                                        layoutMenu
     menu    normalizeMenu   topMenu         ""                                              ""
     item    normalizeMenu   command         "Select Within-Array Normalization Method"      GetNormalizationMethod
@@ -68,10 +71,6 @@
     item    plotMenu        command         "Venn Diagram"                                  VennDiagramPlot
 #    item    plotMenu        command         "Histogram"                                     HistogramPlot
     item    topMenu         cascade         "Plot"                                          plotMenu
-#    menu    customMenu      topMenu         ""                                              ""
-#    item    customMenu      command         "Delete Custom Menu Item"                       DeleteCustomMenuItem
-#    item    customMenu      command         "About Custom Menu"                             AboutCustomMenu
-#    item    topMenu         cascade         "Custom"                                        customMenu    
     menu    helpMenu        topMenu         ""                                              ""
     item    helpMenu        command         "LimmaGUI Help"                                 limmaGUIhelp
     item    helpMenu        command         "Limma Help"                                    limmaHelp
