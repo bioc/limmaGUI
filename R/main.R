@@ -290,10 +290,6 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
 
   Try(limmaGUIglobals$oldOptions <- options(warn=-1)) # Otherwise R complains that I'm trying to set main in plots, i.e. set a plot title)
 
-  # It's nice to make sure plot.new() has been called at least once (not just tkrplot), so
-  # that functions like title(...) won't fail.
-  try(plot.new(),silent=TRUE)        
-
 # Maybe it would be nice to eventually use the MainFrame widget from BWidget so we can have a nice toolbar etc.
   Try(limmaGUIglobals$ttMain <- tktoplevel())
   Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
@@ -3373,7 +3369,7 @@ ComputeLinearModelFit <- function()
 				return()
 		Try(if (WhetherToNormalizeWithinArrays=="yes")
 		{
-			Try(GetNormMethodVal<- RadioBoxDialog())
+			Try(GetNormMethodVal<- GetNormalizationMethod())
 			Try(if (GetNormMethodVal=="") return())
 	  })
 		Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
@@ -5957,4 +5953,3 @@ AboutLimmaGUI <- function()
     Try(tkmessageBox(title="About limmaGUI",message=paste("This is limmaGUI Version ",getPackageVersion("limmaGUI"),
                               ", using limma Version ",getPackageVersion("limma"),".  The limma package was developed by Gordon Smyth and the Graphical User Interface (GUI) was developed by James Wettenhall.",sep=""),type="ok",icon="info"))
 }
-

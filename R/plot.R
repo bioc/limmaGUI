@@ -3118,18 +3118,8 @@ VennDiagramPlot <- function()
     })
     Try(colnames(tstats)[ncol(tstats)] <- ParameterOrContrastName)
   }
-
-  Try(p.value <- 0.01)
-  Try(pvalueText <- GetPValueCutoff(p.value))
-  Try(if (pvalueText=="ID_CancelFromGetPValueCutoff") return())
-  Try(while (pvalueText=="" || inherits(try(p.value <- eval(parse(text=pvalueText)),TRUE),"try-error"))
-  {
-    Try(tkmessageBox(title="Invalid P-Value",message="Please enter a valid decimal number for the p-value cutoff.",icon="error",type="ok",default="ok"))
-    Try(pvalueText <- GetPValueCutoff())
-    Try(if (pvalueText=="ID_CancelFromGetPValueCutoff") return())
-  })  
-
-  Try(clas <- classifyTestsF(tstats,design=design,contrasts=contrastsMatrix,p.value=p.value))
+    
+  Try(clas <- classifyTestsF(tstats,design=design,contrasts=contrastsMatrix))
   Try(vc   <- vennCounts(clas,include=include))
   
   plotVennDiagram <- function()
@@ -3303,43 +3293,4 @@ plotMAlimmaGUI <- function(MA,array=1,pch=16,status=NULL,
          invisible()
 }
 
-
-GetPValueCutoff <- function(p.value=0.01)
-{
-  Try(ttGetPValueCutoff<-tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkwm.deiconify(ttGetPValueCutoff))
-  Try(tkgrab.set(ttGetPValueCutoff))
-  Try(tkfocus(ttGetPValueCutoff))
-  Try(tkwm.title(ttGetPValueCutoff,"P-Value Cutoff"))
-  Try(tkgrid(tklabel(ttGetPValueCutoff,text="    ")))
-  Try(PValueCutoffTcl <- tclVar(paste(p.value)))
-  Try(entry.PValueCutoff <-tkentry(ttGetPValueCutoff,width="20",font=.limmaGUIglobals$limmaGUIfont2,textvariable=PValueCutoffTcl,bg="white"))
-  Try(tkgrid(tklabel(ttGetPValueCutoff,text="Enter a p-value cutoff",font=.limmaGUIglobals$limmaGUIfont2),columnspan=2))
-  Try(tkgrid(entry.PValueCutoff,columnspan=2))
-  Try(ReturnVal <- "ID_CancelFromGetPValueCutoff")
-  onOK <- function()
-  {    
-    Try(PValueCutoffTxt <- tclvalue(PValueCutoffTcl))
-    Try(ReturnVal <<- PValueCutoffTxt)
-    Try(tkgrab.release(ttGetPValueCutoff));Try(tkdestroy(ttGetPValueCutoff));Try(tkfocus(.limmaGUIglobals$ttMain))
-  }
-  onCancel <- function()
-  {    
-    Try(ReturnVal <<- "ID_CancelFromGetPValueCutoff")
-    Try(tkgrab.release(ttGetPValueCutoff));Try(tkdestroy(ttGetPValueCutoff));Try(tkfocus(.limmaGUIglobals$ttMain))
-  }     
-  Try(OK.but <-tkbutton(ttGetPValueCutoff,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
-  Try(Cancel.but <-tkbutton(ttGetPValueCutoff,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
-  Try(tkgrid(tklabel(ttGetPValueCutoff,text="    ")))
-  Try(tkgrid(OK.but,Cancel.but))
-  Try(tkgrid.configure(OK.but,sticky="e"))
-  Try(tkgrid.configure(Cancel.but,sticky="w"))
-  Try(tkgrid(tklabel(ttGetPValueCutoff,text="       ")))
-  Try(tkfocus(entry.PValueCutoff))
-  Try(tkbind(entry.PValueCutoff, "<Return>",onOK))
-  Try(tkbind(ttGetPValueCutoff, "<Destroy>", function(){Try(tkgrab.release(ttGetPValueCutoff));Try(tkfocus(.limmaGUIglobals$ttMain));return("ID_CancelFromGetPValueCutoff")}))
-  Try(tkwait.window(ttGetPValueCutoff))
-  Try(tkfocus(.limmaGUIglobals$ttMain))
-  return (ReturnVal)          
-}
 
