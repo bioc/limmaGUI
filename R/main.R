@@ -904,6 +904,11 @@ ReadImageProcessingFiles <- function()
   {
     Try(GetBCReturnVal <- GetBackgroundCorrectionMethod())
     Try(if (GetBCReturnVal=="") return(0))
+  }
+  else
+  {
+    Try(BCMethod <- "none")
+    Try(assign("BCMethod",BCMethod,limmaGUIenvironment))
   })
 
   Try(WhetherToUseSpotQualityWeighting <- tkmessageBox(title="Spot Quality Weighting",message="Use Spot Quality Weighting?",type="yesnocancel",icon="question",default="no"))
