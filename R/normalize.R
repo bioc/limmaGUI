@@ -1,15 +1,10 @@
-NormalizeHelp <- function()
+GetWithinArrayNormalizationMethod <- function()
 {
-  Try(help("normalizeWithinArrays",htmlhelp=TRUE))
-}
-
-GetNormalizationMethod <- function()
-{
-  Try(ttGetNormalizationMethod<-tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkwm.title(ttGetNormalizationMethod,"Normalization Method"))
-  Try(tkwm.deiconify(ttGetNormalizationMethod))
-  Try(tkgrab.set(ttGetNormalizationMethod))
-  Try(tkframe1 <- tkframe(ttGetNormalizationMethod,borderwidth=2))
+  Try(ttGetWithinArrayNormalizationMethod<-tktoplevel(.limmaGUIglobals$ttMain))
+  Try(tkwm.title(ttGetWithinArrayNormalizationMethod,"Within-Array Normalization Method"))
+  Try(tkwm.deiconify(ttGetWithinArrayNormalizationMethod))
+  Try(tkgrab.set(ttGetWithinArrayNormalizationMethod))
+  Try(tkframe1 <- tkframe(ttGetWithinArrayNormalizationMethod,borderwidth=2))
   Try(tkframe2 <- tkframe(tkframe1,relief="groove",borderwidth=2))
   Try(tkframe4<-tkframe(tkframe1,borderwidth=2))
 
@@ -46,8 +41,8 @@ GetNormalizationMethod <- function()
   onOK <- function()
   {
     Try(NewNormalizationMethod<<-tclvalue(methnorm));
-    Try(tkgrab.release(ttGetNormalizationMethod));
-    Try(tkdestroy(ttGetNormalizationMethod))
+    Try(tkgrab.release(ttGetWithinArrayNormalizationMethod));
+    Try(tkdestroy(ttGetWithinArrayNormalizationMethod))
     Try(if (NewNormalizationMethod==WithinArrayNormalizationMethod)
       return())    
     Try(WithinArrayNormalizationMethod <- NewNormalizationMethod)
@@ -58,8 +53,6 @@ GetNormalizationMethod <- function()
     Try(MA.Available$BetweenArrays <- FALSE)
     Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
     
-    Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-    Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))
     Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))
     Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
@@ -70,8 +63,8 @@ GetNormalizationMethod <- function()
     Try(tkfocus(.limmaGUIglobals$ttMain))  
   }
   Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
-  Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=function(){Try(tkgrab.release(ttGetNormalizationMethod));Try(tkdestroy(ttGetNormalizationMethod));NewNormalizationMethod<-"";Try(tkfocus(.limmaGUIglobals$ttMain))},font=.limmaGUIglobals$limmaGUIfont2))
-  Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=NormalizeHelp,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=function(){Try(tkgrab.release(ttGetWithinArrayNormalizationMethod));Try(tkdestroy(ttGetWithinArrayNormalizationMethod));NewNormalizationMethod<-"";Try(tkfocus(.limmaGUIglobals$ttMain))},font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=function()Try(help("normalizeWithinArrays",htmlhelp=TRUE)),font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(tkframe4,text="                    ")))
   Try(tkgrid(OK.but,Cancel.but,Help.but))
   Try(tkgrid.configure(OK.but,sticky="e"))
@@ -81,11 +74,11 @@ GetNormalizationMethod <- function()
   Try(tkgrid(tkframe4))
   Try(tkgrid(tkframe1))
   Try(tkfocus(OK.but))
-  Try(tkbind(ttGetNormalizationMethod, "<Return>",onOK))
-  Try(tkbind(ttGetNormalizationMethod, "<Destroy>", function() {Try(tkgrab.release(ttGetNormalizationMethod));Try(tkfocus(.limmaGUIglobals$ttMain))}))
-  Try(tkwait.window(ttGetNormalizationMethod))
+  Try(tkbind(ttGetWithinArrayNormalizationMethod, "<Return>",onOK))
+  Try(tkbind(ttGetWithinArrayNormalizationMethod, "<Destroy>", function() {Try(tkgrab.release(ttGetWithinArrayNormalizationMethod));Try(tkfocus(.limmaGUIglobals$ttMain))}))
+  Try(tkwait.window(ttGetWithinArrayNormalizationMethod))
 
-  Try(tkdestroy(ttGetNormalizationMethod))  
+  Try(tkdestroy(ttGetWithinArrayNormalizationMethod))  
 
 # This return value below is not used.  The function above is used for its effect
 # on WithinArrayNormalizationMethod in limmaGUIenvironment
@@ -128,14 +121,26 @@ NormalizeNow <- function()
   Try(if (SetLayoutParamReturnVal==0) return())
   Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
 
+
   Try(NormalizeWithinArraysMB <-tkmessageBox(title="Normalization Within Arrays",message="Normalize Within Arrays?",type="yesnocancel",icon="question",default="yes"))
   Try(WhetherToNormalizeWithinArrays <- tclvalue(NormalizeWithinArraysMB))
   if (WhetherToNormalizeWithinArrays=="cancel")
       return()
+  Try(if (WhetherToNormalizeWithinArrays=="yes")
+  {
+    Try(GetWithinArrayNormMethodVal<- GetWithinArrayNormalizationMethod())
+    Try(if (GetWithinArrayNormMethodVal=="") return())
+  })
   Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
   Try(WhetherToNormalizeBetweenArrays <- tclvalue(NormalizeBetweenArraysMB))
   if (WhetherToNormalizeBetweenArrays=="cancel")
-    return()
+      return()
+  Try(if (WhetherToNormalizeBetweenArrays=="yes")
+  {
+    Try(GetBetweenArrayNormMethodVal<- GetBetweenArrayNormalizationMethod())
+    Try(if (GetBetweenArrayNormMethodVal=="") return())
+  })
+
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
@@ -143,6 +148,21 @@ NormalizeNow <- function()
   Try(WeightingType <- get("WeightingType",envir=limmaGUIenvironment))
 
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
+
+  Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+  {
+    Try(WithinArrayNormalizationMethod <- "printtiploess")
+    Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
+  })
+  Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+
+  Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+  {
+    Try(BetweenArrayNormalizationMethod <- "scale")
+    Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
+  })
+  Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+
 
 	if (WhetherToNormalizeWithinArrays=="yes")
 	{
@@ -196,7 +216,7 @@ NormalizeNow <- function()
 			}
 			else
 			{
-				Try (MA <- normalizeBetweenArrays(MA))
+				Try (MA <- normalizeBetweenArrays(MA,method=BetweenArrayNormalizationMethod))
 				Try(assign("MA",MA,limmaGUIenvironment))        
 				Try(assign("MAboth",MA,limmaGUIenvironment))
 				Try(MA.Available$Both <- TRUE)
@@ -215,7 +235,7 @@ NormalizeNow <- function()
 			}
 			else
 			{
-				Try (MA <- normalizeBetweenArrays(MA))
+        Try (MA <- normalizeBetweenArrays(MA,method=BetweenArrayNormalizationMethod))
 				Try(assign("MA",MA,limmaGUIenvironment))        
 				Try(assign("MAbetweenArrays",MA,limmaGUIenvironment))
 				Try(MA.Available$BetweenArrays <- TRUE)
@@ -385,3 +405,91 @@ WithinBetweenOrBoth <- function(MorA="M")
   return (ReturnVal)
 }
 
+GetBetweenArrayNormalizationMethod <- function()
+{
+  Try(ttGetBetweenArrayNormalizationMethod<-tktoplevel(.limmaGUIglobals$ttMain))
+  Try(tkwm.title(ttGetBetweenArrayNormalizationMethod,"Between-Array Normalization Method"))
+  Try(tkwm.deiconify(ttGetBetweenArrayNormalizationMethod))
+  Try(tkgrab.set(ttGetBetweenArrayNormalizationMethod))
+  Try(tkframe1 <- tkframe(ttGetBetweenArrayNormalizationMethod,borderwidth=2))
+  Try(tkframe2 <- tkframe(tkframe1,relief="groove",borderwidth=2))
+  Try(tkframe4<-tkframe(tkframe1,borderwidth=2))
+
+  Try(tkgrid(tklabel(tkframe1,text="    ")))
+
+  Try(tkgrid(tklabel(tkframe2,text="Choose a method for between-array normalization.",font=.limmaGUIglobals$limmaGUIfont2),column=2,rowspan=1,columnspan=2,sticky="w"))
+
+  Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+  {
+    Try(BetweenArrayNormalizationMethod <- "scale")
+    Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
+  })
+  Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+
+  Try(methnorm <- tclVar(BetweenArrayNormalizationMethod))
+
+#  Try(none.but <- tkradiobutton(tkframe2,text="None",variable=methnorm,value="none",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(scale.but <- tkradiobutton(tkframe2,text="Scale",variable=methnorm,value="scale",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(quantile.but <- tkradiobutton(tkframe2,text="Quantile",variable=methnorm,value="quantile",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(Aquantile.but <- tkradiobutton(tkframe2,text="Aquantile",variable=methnorm,value="Aquantile",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(Gquantile.but <- tkradiobutton(tkframe2,text="Gquantile",variable=methnorm,value="Gquantile",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(Rquantile.but <- tkradiobutton(tkframe2,text="Rquantile",variable=methnorm,value="Rquantile",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(Tquantile.but <- tkradiobutton(tkframe2,text="Tquantile",variable=methnorm,value="Tquantile",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(vsn.but       <- tkradiobutton(tkframe2,text="VSN",variable=methnorm,value="vsn",font=.limmaGUIglobals$limmaGUIfont2))  
+    
+#  Try(tkgrid(none.but,column=2))
+  Try(tkgrid(scale.but,column=2))
+  Try(tkgrid(quantile.but,column=2))
+  Try(tkgrid(Aquantile.but,column=2))
+  Try(tkgrid(Gquantile.but,column=2))
+  Try(tkgrid(Rquantile.but,column=2))
+  Try(tkgrid(Tquantile.but,column=2))  
+  Try(tkgrid(vsn.but,column=2))  
+
+#  Try(tkgrid.configure(none.but,scale.but,quantile.but,Aquantile.but,Gquantile.but,Rquantile.but,Tquantile.but,vsn.but,sticky="w"))
+  Try(tkgrid.configure(scale.but,quantile.but,Aquantile.but,Gquantile.but,Rquantile.but,Tquantile.but,vsn.but,sticky="w"))
+  Try(tkgrid(tkframe2))
+  Try(NewBetweenArrayNormalizationMethod <- "")
+  onOK <- function()
+  {
+    Try(NewBetweenArrayNormalizationMethod<<-tclvalue(methnorm));
+    Try(tkgrab.release(ttGetBetweenArrayNormalizationMethod));
+    Try(tkdestroy(ttGetBetweenArrayNormalizationMethod))
+    Try(if (NewBetweenArrayNormalizationMethod==BetweenArrayNormalizationMethod)
+      return())    
+    Try(BetweenArrayNormalizationMethod <- NewBetweenArrayNormalizationMethod)
+    Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
+    Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
+    Try(MA.Available$Both <- FALSE)
+    Try(MA.Available$BetweenArrayNormalizationMethods <- FALSE)
+    Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+    
+    Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
+    Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))                   
+    Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
+    Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))        
+
+    Try(tkfocus(.limmaGUIglobals$ttMain))  
+  }
+  Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=function(){Try(tkgrab.release(ttGetBetweenArrayNormalizationMethod));Try(tkdestroy(ttGetBetweenArrayNormalizationMethod));NewBetweenArrayNormalizationMethod<-"";Try(tkfocus(.limmaGUIglobals$ttMain))},font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=function()Try(help("normalizeBetweenArrays",htmlhelp=TRUE)),font=.limmaGUIglobals$limmaGUIfont2))
+  Try(tkgrid(tklabel(tkframe4,text="                    ")))
+  Try(tkgrid(OK.but,Cancel.but,Help.but))
+  Try(tkgrid.configure(OK.but,sticky="e"))
+  Try(tkgrid.configure(Cancel.but,sticky="e"))
+  Try(tkgrid.configure(Help.but,sticky="e"))  
+  Try(tkgrid(tklabel(tkframe4,text="       ")))
+  Try(tkgrid(tkframe4))
+  Try(tkgrid(tkframe1))
+  Try(tkfocus(OK.but))
+  Try(tkbind(ttGetBetweenArrayNormalizationMethod, "<Return>",onOK))
+  Try(tkbind(ttGetBetweenArrayNormalizationMethod, "<Destroy>", function() {Try(tkgrab.release(ttGetBetweenArrayNormalizationMethod));Try(tkfocus(.limmaGUIglobals$ttMain))}))
+  Try(tkwait.window(ttGetBetweenArrayNormalizationMethod))
+
+  Try(tkdestroy(ttGetBetweenArrayNormalizationMethod))  
+
+# This return value below is not used.  The function above is used for its effect
+# on BetweenArrayNormalizationMethod in limmaGUIenvironment
+  return(NewBetweenArrayNormalizationMethod)
+}

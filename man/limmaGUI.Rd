@@ -69,7 +69,8 @@
 \alias{AboutCustomMenu}
 \alias{DeleteCustomMenuItem}
 \alias{GetCustomMenuItemNum}
-\alias{GetNormalizationMethod}
+\alias{GetWithinArrayNormalizationMethod}
+\alias{GetBetweenArrayNormalizationMethod}
 \alias{NormalizeNow}
 \alias{AboutNormalization}
 \alias{GetGeneLabelsOptions}
@@ -129,7 +130,6 @@
 \alias{GetBackgroundCorrectionMethod}
 \alias{GetlmFitMethod}
 \alias{lmFitMethodHelp}
-\alias{NormalizeHelp}
 \alias{BChelp}
 \alias{onDestroy}
 \alias{GetPValueCutoff}
@@ -211,7 +211,8 @@ GetNumParametersNoTargets()
 AboutCustomMenu()
 DeleteCustomMenuItem()
 GetCustomMenuItemNum()
-GetNormalizationMethod()
+GetWithinArrayNormalizationMethod()
+GetBetweenArrayNormalizationMethod()
 NormalizeNow()
 AboutNormalization()
 GetGeneLabelsOptions()
@@ -253,7 +254,6 @@ UpDownOrBoth()
 GetBackgroundCorrectionMethod()
 GetlmFitMethod()
 lmFitMethodHelp()
-NormalizeHelp()
 BChelp()
 fixSeps(string)
 onDestroy()

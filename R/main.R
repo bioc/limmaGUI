@@ -568,6 +568,7 @@ initGlobals <- function()
   assign("connectedSubGraphs",list(),limmaGUIenvironment)  
   assign("NumRNATypes",2,limmaGUIenvironment)
   assign("WithinArrayNormalizationMethod","printtiploess",limmaGUIenvironment)
+  assign("BetweenArrayNormalizationMethod","scale",limmaGUIenvironment)  
   assign(".JustAskedWhetherToSave",FALSE,.GlobalEnv)
   assign("MAimported",new("MAList"),limmaGUIenvironment)
   assign("RawMADataWasImported",FALSE,limmaGUIenvironment)  
@@ -3457,13 +3458,18 @@ ComputeLinearModelFit <- function()
 				return()
 		Try(if (WhetherToNormalizeWithinArrays=="yes")
 		{
-      Try(GetNormMethodVal<- GetNormalizationMethod())
-			Try(if (GetNormMethodVal=="") return())
+      Try(GetWithinArrayNormMethodVal<- GetWithinArrayNormalizationMethod())
+			Try(if (GetWithinArrayNormMethodVal=="") return())
 	  })
 		Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
 		Try(WhetherToNormalizeBetweenArrays <- tclvalue(NormalizeBetweenArraysMB))
 		if (WhetherToNormalizeBetweenArrays=="cancel")
 				return()
+    Try(if (WhetherToNormalizeBetweenArrays=="yes")
+    {
+      Try(GetBetweenArrayNormMethodVal<- GetBetweenArrayNormalizationMethod())
+      Try(if (GetBetweenArrayNormMethodVal=="") return())
+    })
   })
   Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
   {
@@ -3471,7 +3477,17 @@ ComputeLinearModelFit <- function()
     Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
   })
   Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+
+  Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+  {
+    Try(BetweenArrayNormalizationMethod <- "scale")
+    Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
+  })
+  Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+
+
   Try(ParameterizationList[[ParameterizationNameNode]][["WithinArrayNormalizationMethod"]] <- WithinArrayNormalizationMethod)
+  Try(ParameterizationList[[ParameterizationNameNode]][["BetweenArrayNormalizationMethod"]] <- BetweenArrayNormalizationMethod)
 
   Try(if (!NormalizedMADataWasImported)
   {
@@ -3487,11 +3503,12 @@ ComputeLinearModelFit <- function()
   Try(if (!NormalizedMADataWasImported)
   {
     Try(if (WhetherToNormalizeWithinArrays=="yes" && WhetherToNormalizeBetweenArrays=="yes")
-        MAnormalizationMethod <- paste("Within arrays (",WithinArrayNormalizationMethod,") and between arrays",sep=""))
+        MAnormalizationMethod <- paste("Within arrays (",WithinArrayNormalizationMethod,") and between arrays (",
+          BetweenArrayNormalizationMethod,")",sep=""))
     Try(if (WhetherToNormalizeWithinArrays=="yes" && WhetherToNormalizeBetweenArrays!="yes")
         MAnormalizationMethod <- paste("Within arrays (",WithinArrayNormalizationMethod,") only",sep=""))
     Try(if (WhetherToNormalizeWithinArrays!="yes" && WhetherToNormalizeBetweenArrays=="yes")
-        MAnormalizationMethod <- "Between arrays only")
+        MAnormalizationMethod <- paste("Between arrays only (",BetweenArrayNormalizationMethod,")",sep=""))
     Try(if (WhetherToNormalizeWithinArrays!="yes" && WhetherToNormalizeBetweenArrays!="yes")
         MAnormalizationMethod <- "No normalization")
   }
@@ -3581,6 +3598,7 @@ ComputeLinearModelFit <- function()
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
+
   Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
   {
     Try(WithinArrayNormalizationMethod <- "printtiploess")
@@ -3588,6 +3606,12 @@ ComputeLinearModelFit <- function()
   })
   Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
 
+  Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+  {
+    Try(BetweenArrayNormalizationMethod <- "scale")
+    Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
+  })
+  Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
 
   Try(if (!NormalizedMADataWasImported)
   {
@@ -3643,7 +3667,7 @@ ComputeLinearModelFit <- function()
 				}
 				else
 				{
-					Try (MA <- normalizeBetweenArrays(MA))
+          Try (MA <- normalizeBetweenArrays(MA,method=BetweenArrayNormalizationMethod))
 					Try(assign("MA",MA,limmaGUIenvironment))        
 					Try(assign("MAboth",MA,limmaGUIenvironment))
 					Try(MA.Available$Both <- TRUE)
@@ -3662,7 +3686,7 @@ ComputeLinearModelFit <- function()
 				}
 				else
 				{
-					Try (MA <- normalizeBetweenArrays(MA))
+          Try (MA <- normalizeBetweenArrays(MA,method=BetweenArrayNormalizationMethod))
 					Try(assign("MA",MA,limmaGUIenvironment))        
 					Try(assign("MAbetweenArrays",MA,limmaGUIenvironment))
 					Try(MA.Available$BetweenArrays <- TRUE)
@@ -6034,6 +6058,12 @@ OpenALimmaFile <- function(FileName)
         Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
       })
       Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))      
+      Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+      {
+        Try(BetweenArrayNormalizationMethod <- "scale")
+        Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
+      })
+      Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))      
       Try(if ("WithinArrayNormalizationMethod" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
         Try(WithinArrayNormalizationMethod <- (ParameterizationList[[ParameterizationNameNode]])$WithinArrayNormalizationMethod)
       else
@@ -6041,6 +6071,14 @@ OpenALimmaFile <- function(FileName)
         Try(ParameterizationList[[ParameterizationNameNode]][["WithinArrayNormalizationMethod"]] <- WithinArrayNormalizationMethod)
         Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
       })      
+      Try(if ("BetweenArrayNormalizationMethod" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
+        Try(BetweenArrayNormalizationMethod <- (ParameterizationList[[ParameterizationNameNode]])$BetweenArrayNormalizationMethod)
+      else
+      {
+        Try(ParameterizationList[[ParameterizationNameNode]][["BetweenArrayNormalizationMethod"]] <- BetweenArrayNormalizationMethod)
+        Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
+      })      
+
       Try(MANormMethodValueNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,".",1,sep=""))
 
       Try(if (!(MANormMethodValueNode %in% names(ParameterizationList[[ParameterizationNameNode]])))
@@ -6048,11 +6086,16 @@ OpenALimmaFile <- function(FileName)
       Try(if (ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]]=="Within arrays only")
         ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]] <- paste("Within arrays (",WithinArrayNormalizationMethod,") only",sep=""))
       Try(if (ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]]=="Within and between arrays")
-        ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]] <- paste("Within arrays (",WithinArrayNormalizationMethod,") and between arrays",sep=""))
+        ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]] <- paste("Within arrays (",WithinArrayNormalizationMethod,") and between arrays (",
+          BetweenArrayNormalizationMethod,")",sep=""))
+      Try(if (ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]]=="Between arrays only")
+        ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]] <- paste("Between arrays (",BetweenArrayNormalizationMethod,") only",sep=""))
+
       Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",PMFMANormMethodNode, MANormMethodValueNode,
         text=(ParameterizationList[[ParameterizationNameNode]])[[MANormMethodValueNode]],
       font=.limmaGUIglobals$limmaGUIfontTree))        
+
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFParamsNode,text="Parameters",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFLinModNode,text="Linear Model Fit",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFLinModNode,PMFLinModStatusNode,text=
@@ -6117,7 +6160,16 @@ OpenALimmaFile <- function(FileName)
   else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))  )
   Try(if (MA.Available$BetweenArrays)  
-    Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+  {
+    Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+    {
+      Try(BetweenArrayNormalizationMethod <- "scale")
+      Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
+    })
+    Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
+
+    Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text=paste("Available (using ",BetweenArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
+  }
   else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))  )
   Try(if (MA.Available$Both)  

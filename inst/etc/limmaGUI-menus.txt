@@ -34,7 +34,8 @@
     item    layoutMenu      command         "View Gene List"                                    showGAL
     item    topMenu         cascade         "Layout"                                            layoutMenu
     menu    normalizeMenu   topMenu         ""                                                  ""
-    item    normalizeMenu   command         "Select Within-Array Normalization Method"          GetNormalizationMethod
+    item    normalizeMenu   command         "Select Within-Array Normalization Method"          GetWithinArrayNormalizationMethod
+    item    normalizeMenu   command         "Select Between-Array Normalization Method"         GetBetweenArrayNormalizationMethod    
     item    normalizeMenu   command         "Normalize / Update M and A"                        NormalizeNow
     item    normalizeMenu   command         "Export M values (log ratios)"                      ExportMvalues
     item    normalizeMenu   command         "Export A values (log intensities)"                 ExportAvalues
