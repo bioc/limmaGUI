@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
 {
 
@@ -326,22 +333,25 @@ ExportHTMLreport <- function()
 
   if (ExportRawMA || ExportRawPrintTipGroup || ExportScaleBoxPlot || ExportAvgMAPlot || ExporttStatisticBoxPlots)
   {
-    Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")  
-    {
-      Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))  
-      Try(if (length(pngParams)==0) return())
-      Try(plotBG        <- pngParams$bg)
-      Try(plotRes       <- pngParams$res)    
-    }
+    Try(if (capabilities("png")==FALSE)
+        Try(tkmessageBox(title="PNG unavailable",message="Your R installation is unable to save PNG images of plots.",icon="warning"))
     else
-    {
-      Try(pngParams <- GetJpegOrPngParams(graphFileType="PNG"))
-      Try(if (length(pngParams)==0) return())    
-      Try(plotWidth     <- pngParams$width)
-      Try(plotHeight    <- pngParams$height)
-      Try(plotPointSize <- pngParams$pointsize)
-      Try(plotBG        <- pngParams$bg)
-    })    
+      Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")  
+      {
+        Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))  
+        Try(if (length(pngParams)==0) return())
+        Try(plotBG        <- pngParams$bg)
+        Try(plotRes       <- pngParams$res)    
+      }
+      else
+      {
+        Try(pngParams <- GetJpegOrPngParams(graphFileType="PNG"))
+        Try(if (length(pngParams)==0) return())    
+        Try(plotWidth     <- pngParams$width)
+        Try(plotHeight    <- pngParams$height)
+        Try(plotPointSize <- pngParams$pointsize)
+        Try(plotBG        <- pngParams$bg)
+      }))
   }
 
   Try(HTML.title("Contents",HR=2))
@@ -368,10 +378,12 @@ ExportHTMLreport <- function()
   if (ExportTargets)
   {
     Try(Targets <- get("Targets",envir=limmaGUIenvironment))
-    Try(displayVector <- rep("s",ncol(Targets)+1))
-    Try(for (i in (0:ncol(Targets)))
-      if (i==0 || colnames(Targets)[i]=="SlideNumber")
-        displayVector[i] <- "d")
+    Try(ncolTargets <- ncol(Targets))
+    Try(colnamesTargets <- colnames(Targets))
+    Try(displayVector <- rep("s",ncolTargets+1))
+    Try(for (i in (0:ncolTargets))
+      Try(if (i==0 || colnamesTargets[i]=="SlideNumber")
+        Try(displayVector[i] <- "d")))
     Try(TargetsXtable <- xtable(Targets,display=displayVector))
     Try(HTML.title("<a name=\"Targets\">RNA Targets</a>",HR=2))
     Try(print(TargetsXtable,type="html",file=fileNameWithPath,append=TRUE))    
@@ -409,7 +421,7 @@ ExportHTMLreport <- function()
     Try(HTML.title("<a name=\"SpotWeighting\">Spot Quality Weighting</a>",HR=2))
     Try(HTMLli(txt=paste("<b>Weighting Type : </b> ",WeightingType)))
   }  
-  if (ExportRawMA)
+  if (ExportRawMA && capabilities("png"))
   {
     Try(HTML.title("<a name=\"RawMA\">M A Plots Using Raw (Unnormalized) Data</a>",HR=2))
     Try(NumSlides      <- get("NumSlides",envir=limmaGUIenvironment))
@@ -460,7 +472,7 @@ ExportHTMLreport <- function()
     })
   }
   
-  if (ExportRawPrintTipGroup)
+  if (ExportRawPrintTipGroup && capabilities("png"))
   {
     Try(HTML.title("<a name=\"RawPrintTipGroup\">Print-Tip Group M A Plots (With Loess Curves) Using Raw (Unnormalized Data)</a>",HR=2))
     Try(maLayout       <- get("maLayout",     envir=limmaGUIenvironment))
@@ -492,7 +504,7 @@ ExportHTMLreport <- function()
     })      
   }
   
-  if (ExportScaleBoxPlot)
+  if (ExportScaleBoxPlot && capabilities("png"))
   {
     Try(HTML.title("<a name=\"ScaleBoxPlot\">M Box Plot Showing the Range of M Values for Each Slide</a>",HR=2))  
     Try(Require("sma"))
@@ -837,7 +849,7 @@ ExportHTMLreport <- function()
     
   }
   
-  if (ExportAvgMAPlot)
+  if (ExportAvgMAPlot && capabilities("png"))
   {
     Try(HTML.title(paste("<a name=\"AvgMAPlot\">M A Plots (with fitted M values) in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))     
     if (NumParameterizations==0) break()    
@@ -994,7 +1006,7 @@ ExportHTMLreport <- function()
   
   }
   
-  if (ExporttStatisticBoxPlots) 
+  if (ExporttStatisticBoxPlots && capabilities("png")) 
   {
     if (NumParameterizations==0) break()    
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))

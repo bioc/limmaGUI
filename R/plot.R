@@ -331,20 +331,27 @@ MAPlotAvg <- function()
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")    
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))  
-  Try(ttAvgMAPlot <- tktoplevel(.limmaGUIglobals$ttMain))    
-  Try(tkwm.title(ttAvgMAPlot,plotTitle))
-  Try(Require("tkrplot"))
 
-  Try(img <-tkrplot(ttAvgMAPlot,plotAvgMA,hscale=LocalHScale,vscale=LocalVScale) )
-  Try(SetupPlotKeyBindings(tt=ttAvgMAPlot,img=img))
-  Try(SetupPlotMenus(tt=ttAvgMAPlot,initialfile=paste(limmaDataSetNameText,"MAPlotAvg",ParameterNamesVec[coef],sep=""),
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttAvgMAPlot <- tktoplevel(.limmaGUIglobals$ttMain))    
+    Try(tkwm.title(ttAvgMAPlot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttAvgMAPlot,plotAvgMA,hscale=LocalHScale,vscale=LocalVScale) )
+    Try(SetupPlotKeyBindings(tt=ttAvgMAPlot,img=img))
+    Try(SetupPlotMenus(tt=ttAvgMAPlot,initialfile=paste(limmaDataSetNameText,"MAPlotAvg",ParameterNamesVec[coef],sep=""),
                  plotFunction=plotAvgMA,img=img))
-  
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")  
-  Try(tkgrid(img))
-  Try(tkfocus(ttAvgMAPlot))
+    Try(tkgrid(img))
+    Try(tkfocus(ttAvgMAPlot))
+  }
+  else
+  {
+    Try(plot.new())
+    Try(plotAvgMA())
+  })
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 }
 
 MMPlot <- function()
@@ -465,19 +472,26 @@ MMPlot <- function()
   Try(if (length(plotTitleList)==0) return())
   Try(plotTitle <- plotTitleList$plotTitle)  
 
-  Try(ttMMPlot <- tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkwm.title(ttMMPlot,plotTitle))
-  Try(Require("tkrplot"))
 
-  Try(img <-tkrplot(ttMMPlot,plotMM,hscale=LocalHScale,vscale=LocalVScale) )
-  Try(SetupPlotKeyBindings(tt=ttMMPlot,img=img))
-  Try(SetupPlotMenus(tt=ttMMPlot,initialfile=paste(limmaDataSetNameText,"MMPlot",ParameterNamesVec1[coef1],"vs",ParameterNamesVec2[coef2],sep=""),
-                 plotFunction=plotMM,img=img))
-  
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")  
-  tkgrid(img)
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-  tkfocus(ttMMPlot)
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttMMPlot <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(tkwm.title(ttMMPlot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttMMPlot,plotMM,hscale=LocalHScale,vscale=LocalVScale) )
+    Try(SetupPlotKeyBindings(tt=ttMMPlot,img=img))
+    Try(SetupPlotMenus(tt=ttMMPlot,initialfile=paste(limmaDataSetNameText,"MMPlot",ParameterNamesVec1[coef1],"vs",ParameterNamesVec2[coef2],sep=""),
+                 plotFunction=plotMM,img=img)) 
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+    Try(tkgrid(img))
+    Try(tkfocus(ttMMPlot))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotMM())
+  })
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 }
 
 
@@ -775,18 +789,25 @@ HeatDiagramPlot <- function()
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(ttHeatDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
-  tkwm.title(ttHeatDiagramPlot,plotTitle)
-  Try(Require("tkrplot"))
 
-  img <-tkrplot(ttHeatDiagramPlot,plotHD,hscale=LocalHScale,vscale=LocalVScale) 
-  Try(SetupPlotKeyBindings(tt=ttHeatDiagramPlot,img=img))
-  Try(SetupPlotMenus(tt=ttHeatDiagramPlot,initialfile=paste(limmaDataSetNameText,"HeatDiagram",sep=""),
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttHeatDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
+    Try(tkwm.title(ttHeatDiagramPlot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttHeatDiagramPlot,plotHD,hscale=LocalHScale,vscale=LocalVScale))
+    Try(SetupPlotKeyBindings(tt=ttHeatDiagramPlot,img=img))
+    Try(SetupPlotMenus(tt=ttHeatDiagramPlot,initialfile=paste(limmaDataSetNameText,"HeatDiagram",sep=""),
                  plotFunction=plotHD,img=img))
-  
-  tkgrid(img)
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-  tkfocus(ttHeatDiagramPlot)
+    Try(tkgrid(img))
+    Try(tkfocus(ttHeatDiagramPlot))
+  }
+  else
+  {
+    Try(plot.new())
+    Try(plotHD())
+  })
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
 }
 
 ImageArrayPlotDialog <- function(slidenum)
@@ -1006,27 +1027,33 @@ ImageArrayPlot <- function()
   Try(tkfocus(.limmaGUIglobals$ttMain))
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
   
-  Try(ttImageArrayPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-
   Try(plotTitle <- plotTitleList$plotTitle)
-  Try(tkwm.title(ttImageArrayPlotGraph,plotTitle))
-  Try(Require("tkrplot"))
 
-  Try(img <-tkrplot(ttImageArrayPlotGraph,plotImageArray,hscale=LocalHScale,vscale=LocalVScale))
-#  Try(parPlotSize <- par("plt"))
-#  Try(usrCoords   <- par("usr"))
-  Try(SetupPlotKeyBindings(tt=ttImageArrayPlotGraph,img=img))
-  Try(plotMenus<-SetupPlotMenus(tt=ttImageArrayPlotGraph,initialfile=paste(limmaDataSetNameText,"ImagePlotSlide",SlideNamesVec[slidenum],sep=""),
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttImageArrayPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(tkwm.title(ttImageArrayPlotGraph,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttImageArrayPlotGraph,plotImageArray,hscale=LocalHScale,vscale=LocalVScale))
+    Try(SetupPlotKeyBindings(tt=ttImageArrayPlotGraph,img=img))
+    Try(plotMenus<-SetupPlotMenus(tt=ttImageArrayPlotGraph,initialfile=paste(limmaDataSetNameText,"ImagePlotSlide",SlideNamesVec[slidenum],sep=""),
                plotFunction=plotImageArray,img=img))
-  Try(resizeMenu<-plotMenus$resizeMenu)
-  Try(tkdelete(resizeMenu,"0"))
-  Try(tkadd(resizeMenu, "command", label="Resize Window",command=function() {Resize(img=img,plotFunction=plotImageArray);Try(parPlotSize <<- par("plt"));Try(usrCoords   <<- par("usr"));  Try(tkconfigure(img,cursor="hand2"))}))
-
-  tkgrid(img)
-  Try(tkfocus(.limmaGUIglobals$ttMain))
+    Try(resizeMenu<-plotMenus$resizeMenu)
+    Try(tkdelete(resizeMenu,"0"))
+    Try(tkadd(resizeMenu, "command", label="Resize Window",command=function() {Resize(img=img,plotFunction=plotImageArray);Try(parPlotSize <<- par("plt"));Try(usrCoords   <<- par("usr"));  Try(tkconfigure(img,cursor="hand2"))}))
+    Try(tkgrid(img))
+    Try(tkfocus(.limmaGUIglobals$ttMain))
+    Try(tkfocus(ttImageArrayPlotGraph))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotImageArray())
+  })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-  tkfocus(ttImageArrayPlotGraph)
-  
+    
+  Try(if (.limmaGUIglobals$graphicsDevice!="tkrplot")
+    return())
   
   Try(tkconfigure(img,cursor="hand2"))
   Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
@@ -1223,19 +1250,26 @@ LogOddsPlot <- function()
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
   Try(tkfocus(.limmaGUIglobals$ttMain))  
-  Try(ttLogOddsPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
-  Try(tkwm.title(ttLogOddsPlot,plotTitle))
-  Try(Require("tkrplot"))
 
-  Try(img <-tkrplot(ttLogOddsPlot,plotLogOdds,hscale=LocalHScale,vscale=LocalVScale))
-  Try(SetupPlotKeyBindings(tt=ttLogOddsPlot,img=img))
-  Try(SetupPlotMenus(tt=ttLogOddsPlot,initialfile=paste(limmaDataSetNameText,"LogOddsPlot",ParameterNamesVec[coef],sep=""),
-                 plotFunction=plotLogOdds,img=img))
-  
-  Try(tkgrid(img))
+
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttLogOddsPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
+    Try(tkwm.title(ttLogOddsPlot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttLogOddsPlot,plotLogOdds,hscale=LocalHScale,vscale=LocalVScale))
+    Try(SetupPlotKeyBindings(tt=ttLogOddsPlot,img=img))
+    Try(SetupPlotMenus(tt=ttLogOddsPlot,initialfile=paste(limmaDataSetNameText,"LogOddsPlot",ParameterNamesVec[coef],sep=""),
+                 plotFunction=plotLogOdds,img=img)) 
+    Try(tkgrid(img))
+    Try(tkfocus(ttLogOddsPlot))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotLogOdds())
+  })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-  Try(tkfocus(ttLogOddsPlot))
-
 }
 
 
@@ -1320,18 +1354,27 @@ DupCorBoxPlot <- function()
   Try(plotTitle <- plotTitleList$plotTitle)    
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
   Try(tkfocus(.limmaGUIglobals$ttMain))  
-  Try(ttDupCorBoxplot <- tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkwm.title(ttDupCorBoxplot,plotTitle))
-  Try(Require("tkrplot"))
 
-  Try(img <-tkrplot(ttDupCorBoxplot,plotDupCor,hscale=LocalHScale,vscale=LocalVScale) )
-  Try(SetupPlotKeyBindings(tt=ttDupCorBoxplot,img=img))
-  Try(SetupPlotMenus(tt=ttDupCorBoxplot,initialfile=paste(limmaDataSetNameText,"DupCorBoxPlot",sep=""),
-                 plotFunction=plotDupCor,img=img))
-  
-  Try(tkgrid(img))
+
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttDupCorBoxplot <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(tkwm.title(ttDupCorBoxplot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttDupCorBoxplot,plotDupCor,hscale=LocalHScale,vscale=LocalVScale) )
+    Try(SetupPlotKeyBindings(tt=ttDupCorBoxplot,img=img))
+    Try(SetupPlotMenus(tt=ttDupCorBoxplot,initialfile=paste(limmaDataSetNameText,"DupCorBoxPlot",sep=""),
+                 plotFunction=plotDupCor,img=img)) 
+    Try(tkgrid(img))
+    Try(tkfocus(ttDupCorBoxplot))  
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotDupCor())
+  })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-  Try(tkfocus(ttDupCorBoxplot))  
+    
 }
 
 
@@ -1416,17 +1459,26 @@ QQTplot <- function()
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(ttQQTplot <- tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkwm.title(ttQQTplot,plotTitle))
-  Try(Require("tkrplot"))
 
-  Try(img <-tkrplot(ttQQTplot,plotQQT,hscale=LocalHScale,vscale=LocalVScale))
-  Try(SetupPlotKeyBindings(tt=ttQQTplot,img=img))
-  Try(SetupPlotMenus(tt=ttQQTplot,initialfile=paste(limmaDataSetNameText,"QQTPlot",ParameterNamesVec[coef],sep=""),
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttQQTplot <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(tkwm.title(ttQQTplot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttQQTplot,plotQQT,hscale=LocalHScale,vscale=LocalVScale))
+    Try(SetupPlotKeyBindings(tt=ttQQTplot,img=img))
+    Try(SetupPlotMenus(tt=ttQQTplot,initialfile=paste(limmaDataSetNameText,"QQTPlot",ParameterNamesVec[coef],sep=""),
                  plotFunction=plotQQT,img=img))
+    Try(tkgrid(img))
+    Try(tkfocus(ttQQTplot))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotQQT())
+  })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-  Try(tkgrid(img))
-  Try(tkfocus(ttQQTplot))
+
 }
 
 
@@ -1675,20 +1727,26 @@ MBoxPlot <- function()
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
-  Try(ttMBoxPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkconfigure(ttMBoxPlotGraph,cursor="watch"))
-  Try(tkwm.title(ttMBoxPlotGraph,plotTitle))
-  Try(Require("tkrplot"))
-
-  Try(img <-tkrplot(ttMBoxPlotGraph,plot.scale.box0,hscale=LocalHScale,vscale=LocalVScale))
-  Try(SetupPlotKeyBindings(tt=ttMBoxPlotGraph,img=img))
-  Try(SetupPlotMenus(tt=ttMBoxPlotGraph,initialfile=paste(limmaDataSetNameText,"MBoxPlotSlide",SlideNamesVec[slidenum],sep=""),
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttMBoxPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(tkconfigure(ttMBoxPlotGraph,cursor="watch"))
+    Try(tkwm.title(ttMBoxPlotGraph,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttMBoxPlotGraph,plot.scale.box0,hscale=LocalHScale,vscale=LocalVScale))
+    Try(SetupPlotKeyBindings(tt=ttMBoxPlotGraph,img=img))
+    Try(SetupPlotMenus(tt=ttMBoxPlotGraph,initialfile=paste(limmaDataSetNameText,"MBoxPlotSlide",SlideNamesVec[slidenum],sep=""),
                  plotFunction=plot.scale.box0,img=img))
-
-  Try(tkgrid(img))
-  Try(tkconfigure(ttMBoxPlotGraph,cursor="arrow"))  
+    Try(tkgrid(img))
+    Try(tkconfigure(ttMBoxPlotGraph,cursor="arrow"))  
+    Try(tkfocus(ttMBoxPlotGraph))
+  }
+  else
+  {
+    Try(plot.new())
+    Try(plot.scale.box0())
+  })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-  Try(tkfocus(ttMBoxPlotGraph))
 }
 
 
@@ -1746,19 +1804,26 @@ PrintTipGroupMAPlot <- function()
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
    Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
    
-  ttPrintTipGroupMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain)
-
-  Try(Require("tkrplot"))
-
-  Try(plotTitle <- paste("Print-Tip Group M A Plots for slide ",SlideNamesVec[slidenum],sep=""))
-  Try(tkwm.title(ttPrintTipGroupMAPlotGraph,plotTitle))
-  Try(img <- tkrplot(ttPrintTipGroupMAPlotGraph,PrintTipGroupPlot,hscale=LocalHScale,vscale=LocalVScale) )
-  Try(SetupPlotKeyBindings(tt=ttPrintTipGroupMAPlotGraph,img=img))
-  Try(SetupPlotMenus(tt=ttPrintTipGroupMAPlotGraph,initialfile=paste(limmaDataSetNameText,"PrintTipGroupMAPlotSlide",SlideNamesVec[slidenum],sep=""),
+   Try(plotTitle <- paste("Print-Tip Group M A Plots for slide ",SlideNamesVec[slidenum],sep=""))
+    
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttPrintTipGroupMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(Require("tkrplot"))
+    Try(tkwm.title(ttPrintTipGroupMAPlotGraph,plotTitle))
+    Try(img <- tkrplot(ttPrintTipGroupMAPlotGraph,PrintTipGroupPlot,hscale=LocalHScale,vscale=LocalVScale) )
+    Try(SetupPlotKeyBindings(tt=ttPrintTipGroupMAPlotGraph,img=img))
+    Try(SetupPlotMenus(tt=ttPrintTipGroupMAPlotGraph,initialfile=paste(limmaDataSetNameText,"PrintTipGroupMAPlotSlide",SlideNamesVec[slidenum],sep=""),
                  plotFunction=PrintTipGroupPlot,img=img))
     
-  tkgrid(img)
-  tkfocus(ttPrintTipGroupMAPlotGraph)
+    Try(tkgrid(img))
+    Try(tkfocus(ttPrintTipGroupMAPlotGraph))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(PrintTipGroupPlot())
+  })
 }
 
 MAPlot <- function()
@@ -1893,27 +1958,39 @@ MAPlot <- function()
   Try(if (length(plotTitleList)==0) return())
   Try(plotTitle <- plotTitleList$plotTitle)      
 
-  Try(ttMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))          
-  Try(tkconfigure(ttMAPlotGraph,cursor="watch"))        
-  Try(tkfocus(.limmaGUIglobals$ttMain))  
-  Try(Require("tkrplot"))
-    
-      
-  Try(tkwm.title(ttMAPlotGraph,plotTitle))
-  Try(img <-tkrplot(ttMAPlotGraph,plotFun,hscale=LocalHScale,vscale=LocalVScale) )
-  Try(SetupPlotKeyBindings(tt=ttMAPlotGraph,img=img))
-  Try(SetupPlotMenus(tt=ttMAPlotGraph,initialfile=paste(limmaDataSetNameText,"MAPlotSlide",SlideNamesVec[slidenum],sep=""),
+
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  {
+    Try(ttMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))          
+    Try(tkconfigure(ttMAPlotGraph,cursor="watch"))        
+    Try(tkfocus(.limmaGUIglobals$ttMain))  
+    Try(Require("tkrplot"))       
+    Try(tkwm.title(ttMAPlotGraph,plotTitle))
+    Try(img <-tkrplot(ttMAPlotGraph,plotFun,hscale=LocalHScale,vscale=LocalVScale) )
+    Try(SetupPlotKeyBindings(tt=ttMAPlotGraph,img=img))
+    Try(SetupPlotMenus(tt=ttMAPlotGraph,initialfile=paste(limmaDataSetNameText,"MAPlotSlide",SlideNamesVec[slidenum],sep=""),
                  plotFunction=plotFun,img=img))
-  Try(tkgrid(img))
-  Try(tkconfigure(ttMAPlotGraph,cursor="arrow"))        
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))          
-  tkfocus(ttMAPlotGraph)
+    Try(tkgrid(img))
+    Try(tkconfigure(ttMAPlotGraph,cursor="arrow"))        
+    Try(tkfocus(ttMAPlotGraph))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotFun())
+  })
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 }
 
 
 ChoosePlotSymbolByClicking <- function(spotType,cex)
 {
+  # This function should only be called if the tkrplot graphics device is being used.
+  # limmaGUI has only recently offered the choice of the standard R graphics device as 
+  # an alternative to tkrplot, and the interactive plots haven't yet been modified to 
+  # work with R's locator() function.
+  
   Try(ttChoosePlotSymbolByClicking<-tktoplevel(.limmaGUIglobals$ttMain))
   Try(tkwm.deiconify(ttChoosePlotSymbolByClicking))
   Try(tkgrab.set(ttChoosePlotSymbolByClicking))
@@ -2128,7 +2205,13 @@ SelectPlotSymbols <- function(SpotTypes)
   }
 
   onBrowse <- function(indexPointType)
-  {      
+  {   
+      Try(if (.limmaGUIglobals$graphicsDevice!="tkrplot")
+      {
+        Try(tkmessageBox(title="Browse unavailable",message="This feature is only available when using the Tk R Plot graphics device.",
+          icon="error"))
+        return()
+      })
       Try(plotSymbolAndSize <- ChoosePlotSymbolByClicking(PointTypes[indexPointType],
                                as.numeric(tclvalue(textVariable.cex[[indexPointType]]))))
       if (length(plotSymbolAndSize)==0)
@@ -2456,20 +2539,27 @@ plotMAColorCoded <- function()
    
 #  Try(LocalHScale <- LocalHScale * 1.25)
    
-  Try(ttplotMAColorCodedGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-
-  Try(Require("tkrplot"))
-  
-  Try(tkwm.title(ttplotMAColorCodedGraph,plotTitle))
-  Try(img <-tkrplot(ttplotMAColorCodedGraph,plotMA0,hscale=LocalHScale,vscale=LocalVScale) )
-  Try(SetupPlotKeyBindings(tt=ttplotMAColorCodedGraph,img=img))
-  Try(plotMenus<-SetupPlotMenus(tt=ttplotMAColorCodedGraph,initialfile=paste(limmaDataSetNameText,"plotMAColorCodedSlide",SlideNamesVec[slidenum],sep=""),
+   
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  { 
+    Try(ttplotMAColorCodedGraph <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(Require("tkrplot"))  
+    Try(tkwm.title(ttplotMAColorCodedGraph,plotTitle))
+    Try(img <-tkrplot(ttplotMAColorCodedGraph,plotMA0,hscale=LocalHScale,vscale=LocalVScale) )
+    Try(SetupPlotKeyBindings(tt=ttplotMAColorCodedGraph,img=img))
+    Try(plotMenus<-SetupPlotMenus(tt=ttplotMAColorCodedGraph,initialfile=paste(limmaDataSetNameText,"plotMAColorCodedSlide",SlideNamesVec[slidenum],sep=""),
                  plotFunction=plotMA0,img=img))                 
-  Try(resizeMenu<-plotMenus$resizeMenu)
-  Try(tkadd(resizeMenu, "command", label="Resize Horizontal (A) Axis",command=function() {Try(GetNEWxlimReturnVal<-GetNEWxlim(xlim));if (length(GetNEWxlimReturnVal)==0) return() else xlim <<- GetNEWxlimReturnVal;Try(tkconfigure(img,cursor="watch"));Try(tkrreplot(img,fun=plotMA0,hscale=LocalHScale,vscale=LocalVScale));Try(tkconfigure(img,cursor="arrow"))}))
-  Try(tkgrid(img))
-  Try(tkfocus(ttplotMAColorCodedGraph))
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))  
+    Try(resizeMenu<-plotMenus$resizeMenu)
+    Try(tkadd(resizeMenu, "command", label="Resize Horizontal (A) Axis",command=function() {Try(GetNEWxlimReturnVal<-GetNEWxlim(xlim));if (length(GetNEWxlimReturnVal)==0) return() else xlim <<- GetNEWxlimReturnVal;Try(tkconfigure(img,cursor="watch"));Try(tkrreplot(img,fun=plotMA0,hscale=LocalHScale,vscale=LocalVScale));Try(tkconfigure(img,cursor="arrow"))}))
+    Try(tkgrid(img))
+    Try(tkfocus(ttplotMAColorCodedGraph))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotMA0())
+  })
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 }
 
 GetNEWxlim <- function(xlim)
@@ -2700,19 +2790,26 @@ ebayesBoxPlots <- function()
 
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-  
-  Try(ttEbayesBoxPlot <- tktoplevel(.limmaGUIglobals$ttMain))
-  Try(tkwm.title(ttEbayesBoxPlot,plotTitle))
-  Try(Require("tkrplot"))
 
-  Try(img <-tkrplot(ttEbayesBoxPlot,plotEbayesBoxPlot,hscale=LocalHScale,vscale=LocalVScale) )
-  Try(SetupPlotKeyBindings(tt=ttEbayesBoxPlot,img=img))
-  Try(SetupPlotMenus(tt=ttEbayesBoxPlot,initialfile=paste(limmaDataSetNameText,"EBayesBoxPlot",ParameterNamesVec[coef],sep=""),
-                 plotFunction=plotEbayesBoxPlot,img=img))
-  
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")  
-  Try(tkgrid(img))
-  Try(tkfocus(ttEbayesBoxPlot))      
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  { 
+    Try(ttEbayesBoxPlot <- tktoplevel(.limmaGUIglobals$ttMain))
+    Try(tkwm.title(ttEbayesBoxPlot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <-tkrplot(ttEbayesBoxPlot,plotEbayesBoxPlot,hscale=LocalHScale,vscale=LocalVScale) )
+    Try(SetupPlotKeyBindings(tt=ttEbayesBoxPlot,img=img))
+    Try(SetupPlotMenus(tt=ttEbayesBoxPlot,initialfile=paste(limmaDataSetNameText,"EBayesBoxPlot",ParameterNamesVec[coef],sep=""),
+                 plotFunction=plotEbayesBoxPlot,img=img))  
+    Try(tkgrid(img))
+    Try(tkfocus(ttEbayesBoxPlot))      
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotEbayesBoxPlot())
+  })
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+
 }
 
 GetPlotLabels <- function(plottitle="",xlabel="",ylabel="")
@@ -3201,17 +3298,25 @@ VennDiagramPlot <- function()
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(ttVennDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
-  Try(tkwm.title(ttVennDiagramPlot,plotTitle))
-  Try(Require("tkrplot"))
-  img <- tkrplot(ttVennDiagramPlot,plotVennDiagram,hscale=LocalHScale,vscale=LocalVScale) 
-  Try(SetupPlotKeyBindings(tt=ttVennDiagramPlot,img=img))
-  Try(SetupPlotMenus(tt=ttVennDiagramPlot,initialfile=paste(limmaDataSetNameText,"VennDiagram",sep=""),
-                 plotFunction=plotVennDiagram,img=img))
-  
-  tkgrid(img)
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-  tkfocus(ttVennDiagramPlot)  
+
+  Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  { 
+    Try(ttVennDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
+    Try(tkwm.title(ttVennDiagramPlot,plotTitle))
+    Try(Require("tkrplot"))
+    Try(img <- tkrplot(ttVennDiagramPlot,plotVennDiagram,hscale=LocalHScale,vscale=LocalVScale))
+    Try(SetupPlotKeyBindings(tt=ttVennDiagramPlot,img=img))
+    Try(SetupPlotMenus(tt=ttVennDiagramPlot,initialfile=paste(limmaDataSetNameText,"VennDiagram",sep=""),
+                 plotFunction=plotVennDiagram,img=img))  
+    Try(tkgrid(img))
+    Try(tkfocus(ttVennDiagramPlot))
+  }
+  else
+  {
+    Try(plot.new())  
+    Try(plotVennDiagram())
+  })
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   
 }
 

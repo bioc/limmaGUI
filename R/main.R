@@ -182,8 +182,12 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(initGlobals())
 
   Try(limmaGUIglobals <- get(".limmaGUIglobals",envir=.GlobalEnv))
-  limmaGUIglobals$Myhscale <- 1
-  limmaGUIglobals$Myvscale <- 1
+  
+  Try(limmaGUIglobals$graphicsDevice <- "tkrplot")
+  Try(if (Sys.info()["sysname"]=="Darwin")  
+    Try(limmaGUIglobals$graphicsDevice <- "R"))
+  Try(limmaGUIglobals$Myhscale <- 1)
+  Try(limmaGUIglobals$Myvscale <- 1)
   assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
 
   Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
@@ -507,14 +511,14 @@ limmaGUIhelp <- function()
 {
     Try(limmaGUIhelpIndex <- file.path(system.file("doc",package="limmaGUI"),"index.html"))
     Try(browseURL(limmaGUIhelpIndex))
-    Try(tkmessageBox(title="limmaGUI Help",message=paste("Opening limmaGUI help...\nIf nothing happens, please open :\n",limmaGUIhelpIndex,"\nyourself.",sep="")))
+    Try(cat(paste("Opening limmaGUI help...\nIf nothing happens, please open :\n",limmaGUIhelpIndex,"\nyourself.",sep="")))
 }
 
 limmaHelp <- function() 
 {
     Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"usersguide.html"))
     Try(browseURL(limmaHelpIndex))
-    Try(tkmessageBox(title="limma Help",message=paste("Opening limma help...\nIf nothing happens, please open :\n",limmaHelpIndex,"\nyourself.",sep="")))
+    Try(cat(paste("Opening limma help...\nIf nothing happens, please open :\n",limmaHelpIndex,"\nyourself.",sep="")))
 }
 
 
@@ -4186,12 +4190,15 @@ showTopTable <- function(...,export=FALSE)
       Try(Abort <<- 0)
   })
 
+  Try(onHelp <- function() Try(help("topTable",htmlhelp=TRUE)))
+
   Try(frame4 <- tkframe(ttToptableDialog,borderwidth=2))
   Try(onCancel <- function() {Try(tkgrab.release(ttToptableDialog));Try(tkdestroy(ttToptableDialog));Try(tkfocus(.limmaGUIglobals$ttMain));Abort <<- 1})
   Try(OK.but <-tkbutton(frame4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(frame4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Help.but <-tkbutton(frame4,text=" Help ",command=onHelp,font=.limmaGUIglobals$limmaGUIfont2))
   
-  Try(tkgrid(tklabel(frame4,text="    "),OK.but,Cancel.but,tklabel(frame4,text="    ")))
+  Try(tkgrid(tklabel(frame4,text="    "),OK.but,Cancel.but,Help.but,tklabel(frame4,text="    ")))
 
   Try(tkgrid(tklabel(ttToptableDialog,text="    "),frame1,frame2,tklabel(ttToptableDialog,text="  ")))
   Try(tkgrid(tklabel(ttToptableDialog,text="    ")))
@@ -4348,6 +4355,10 @@ showTopTable <- function(...,export=FALSE)
       if(tolower(colnames(table1)[i]) == "name")
       {
         Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(min(30,max(6,max(nchar(table1[,i]))+2)))))
+        Try(tkcmd(toptableTable,"tag","col","namecol",paste(i-1)))
+        Try(tkcmd(toptableTable,"tag","cell","namecolheading",paste("0",i-1,sep=",")))
+        Try(tkcmd(toptableTable,"tag","configure","namecol",anchor="w"))
+        Try(tkcmd(toptableTable,"tag","configure","namecolheading",anchor="center"))
         next()
       }
 
@@ -4940,12 +4951,15 @@ evalRcode <- function()
   Try(code <- tclvalue(tkget(txt,"0.0","end")))
   if (runType!="runTextOnly")
   {
-     Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-     Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-
-    Try(ttGraph<-tktoplevel(.limmaGUIglobals$ttMain))
-    Try(tkwm.withdraw(ttGraph))
-    Try(tkwm.title(ttGraph,"Graphical Results from R Code Evaluation"))
+  
+    Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+    {
+      Try(LocalHScale <- .limmaGUIglobals$Myhscale)
+      Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+      Try(ttGraph<-tktoplevel(.limmaGUIglobals$ttMain))
+      Try(tkwm.withdraw(ttGraph))
+      Try(tkwm.title(ttGraph,"Graphical Results from R Code Evaluation"))
+    })
     Try(codeGraph <- paste("assign(\"plotFunction\",function () {\nopar<-par(bg=\"white\")\nTry({\n",code,"\n})\n\ntempGraphPar <- par(opar)\n},limmaGUIenvironment)\n",sep=""))
   }
 
@@ -5010,26 +5024,34 @@ evalRcode <- function()
     Try(sink(type="message"))
     Try(sink())
     Try(try(close(RoutFileObjectGraph),TRUE))
-    Require("tkrplot")
 
-    Try(plotFunction <- get("plotFunction",envir=limmaGUIenvironment))
-    Try(imgLimmaGUI<-tkrplot(ttGraph,plotFunction,hscale=LocalHScale,vscale=LocalVScale))
-    SetupPlotKeyBindings(tt=ttGraph,img=imgLimmaGUI)
-    SetupPlotMenus(tt=ttGraph,initialfile="",plotFunction,img=imgLimmaGUI)  
-
-    Try(tkgrid(imgLimmaGUI))
-    Try(if (as.numeric(tclvalue(tkwinfo("reqheight",imgLimmaGUI)))<10)  # Nothing plotted.
-      Try(tkdestroy(ttGraph))
-    else
+    Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
     {
-      Try(tkwm.deiconify(ttGraph))
-      Try(tkfocus(imgLimmaGUI))   
-    })
+      Require("tkrplot")
+      Try(plotFunction <- get("plotFunction",envir=limmaGUIenvironment))
+      Try(imgLimmaGUI<-tkrplot(ttGraph,plotFunction,hscale=LocalHScale,vscale=LocalVScale))
+      SetupPlotKeyBindings(tt=ttGraph,img=imgLimmaGUI)
+      SetupPlotMenus(tt=ttGraph,initialfile="",plotFunction,img=imgLimmaGUI)      
+      Try(tkgrid(imgLimmaGUI))
+      Try(if (as.numeric(tclvalue(tkwinfo("reqheight",imgLimmaGUI)))<10)  # Nothing plotted.
+        Try(tkdestroy(ttGraph))
+      else
+      {
+        Try(tkwm.deiconify(ttGraph))
+        Try(tkfocus(imgLimmaGUI))   
+      })
+      CopyToClip <- function()
+      {
+        Try(tkrreplot(imgLimmaGUI))
+      }
+
+   }
+   else
+   {
+     Try(plot.new())
+     Try(plotFunction())
+   })
     
-    CopyToClip <- function()
-    {
-      Try(tkrreplot(imgLimmaGUI))
-    }
   }
 
   if (runType!="runGraphicsOnly") 

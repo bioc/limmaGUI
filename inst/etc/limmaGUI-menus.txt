@@ -73,7 +73,9 @@
     item    plotMenu        command         "Duplicate Correlation Box Plot"                    DupCorBoxPlot
     item    plotMenu        command         "Empirical Bayes Statistics Box Plots"              ebayesBoxPlots
     item    plotMenu        command         "Venn Diagram"                                      VennDiagramPlot
-#    item    plotMenu        command         "Histogram"                                         HistogramPlot
+#    item    plotMenu        command         "Histogram"                                        HistogramPlot
+    item    plotMenu        separator       ""                                                  ""
+    item    plotMenu        command         "Options"                                           PlotOptions    
     item    topMenu         cascade         "Plot"                                              plotMenu
     menu    helpMenu        topMenu         ""                                                  ""
     item    helpMenu        command         "LimmaGUI Help"                                     limmaGUIhelp

@@ -136,6 +136,7 @@
 \alias{fixSeps}
 \alias{GetImageAnalysisColumnHeadings}
 \alias{GetLowessType}
+\alias{PlotOptions}
 \description{Graphical User Interface for the limma microarray package}}
 
 \usage{
@@ -261,6 +262,7 @@ limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 GetPValueCutoff(p.value=0.01)
 GetImageAnalysisColumnHeadings()
 GetLowessType()
+PlotOptions()
 }
 
 \arguments{
