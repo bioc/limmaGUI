@@ -1013,8 +1013,8 @@ ImageArrayPlot <- function()
   Try(Require("tkrplot"))
 
   Try(img <-tkrplot(ttImageArrayPlotGraph,plotImageArray,hscale=LocalHScale,vscale=LocalVScale))
-  Try(parPlotSize <- par("plt"))
-  Try(usrCoords   <- par("usr"))
+#  Try(parPlotSize <- par("plt"))
+#  Try(usrCoords   <- par("usr"))
   Try(SetupPlotKeyBindings(tt=ttImageArrayPlotGraph,img=img))
   Try(plotMenus<-SetupPlotMenus(tt=ttImageArrayPlotGraph,initialfile=paste(limmaDataSetNameText,"ImagePlotSlide",SlideNamesVec[slidenum],sep=""),
                plotFunction=plotImageArray,img=img))
@@ -1076,9 +1076,28 @@ ImageArrayPlot <- function()
         
     Try(Column <- mod(yCoordPixels,nspot.c)+1)
     Try(Row    <- mod(xCoordPixels,nspot.r)+1)
-    Try(gene <- gal[gal[,"Block"]==Block&gal[,"Row"]==Row&gal[,"Column"]==Column,])
-    Try(tkmessageBox(title="Spot Information",message=paste("Block: ",Block,"; Row: ",Row,
-                                              "; Column: ",Column,"; ID: ",gene$ID,"; Name: ",gene$Name,".",sep=""),icon="info"))
+    
+    Try(if ("Block" %in% colnames(gal))
+      Try(gene <- gal[gal[,"Block"]==Block&gal[,"Row"]==Row&gal[,"Column"]==Column,])
+    else if (("Meta Row" %in% colnames(gal)) && ("Meta Column" %in% colnames(gal)))
+      Try(gene <- gal[gal[,"Meta Row"]==blockRow&gal[,"Meta Column"]==blockColumn&
+          gal[,"Row"]==Row&gal[,"Column"]==Column,])
+    else
+    {
+       Try(tkmessageBox(title="Interactive Image Plot Error",
+         message=paste("To use the interactive image plot feature, the gene list",
+           "column headings must be (Block,Row,Column) or (Meta Row,Meta Column,Row,Column)"),icon="error"))
+       return()
+    })
+    
+    Try(msg <- "")
+    Try(ncolGAL <- ncol(gal))
+    Try(for (i in (1:ncolGAL))
+    {
+      Try(colName <- colnames(gal)[i])
+      Try(msg <- paste(msg,colName,": ",gene[,colName],"; ",sep=""))
+    })
+    Try(tkmessageBox(title="Spot Information",message=msg,icon="info"))
   }
   Try(tkbind(img, "<Button-1>",OnLeftClick))    
   
@@ -1379,10 +1398,9 @@ QQTplot <- function()
   {
     Try(opar<-par(bg="white"))
     if (NumParameters>1) 
-      qqt(eb$t[,coef],df=fit$df+eb$df,pch=16,cex=cex)
+      qqt(eb$t[,coef],df=fit$df+eb$df,pch=16,cex=cex,main=plotTitle)
     else 
-      qqt(eb$t,df=fit$df+eb$df,pch=16,cex=cex)
-    Try(title(plotTitle))
+      qqt(eb$t,df=fit$df+eb$df,pch=16,cex=cex,main=plotTitle)
     abline(0,1) 
     Try(tempGraphPar <- par(opar))
   }
