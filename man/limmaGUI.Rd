@@ -1,4 +1,4 @@
-\title{Graphical User Interface for the limma microarray package by Gordon Smyth}
+\title{Graphical User Interface for the limma microarray package}
 \name{limmaGUI}
 \alias{limmaGUI}
 \alias{GetComponentsToExportInHTMLreport}
@@ -128,7 +128,8 @@
 \alias{GetBackgroundCorrectionMethod}
 \alias{NormalizeHelp}
 \alias{BChelp}
-\description{Graphical User Interface for the limma microarray package by Gordon Smyth}}
+\alias{onDestroy}
+\description{Graphical User Interface for the limma microarray package}}
 
 \usage{
 limmaGUI()
@@ -243,6 +244,7 @@ UpDownOrBoth()
 GetBackgroundCorrectionMethod()
 NormalizeHelp()
 BChelp()
+onDestroy()
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 }
 

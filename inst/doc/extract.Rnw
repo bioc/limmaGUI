@@ -1,0 +1,196 @@
+%\VignetteIndexEntry{Extracting limma objects from limmaGUI files}
+%\VignetteDepends{}
+%\VignetteKeywords{microarray linear model GUI}
+%\VignettePackage{limmaGUI}
+\documentclass[12pt]{article}
+\usepackage{Sweave}
+\usepackage{hyperref}
+
+\textwidth=6.2in
+\textheight=8.5in
+\oddsidemargin=0.2in
+\evensidemargin=0.2in
+\headheight=0in
+\headsep=0in
+
+\begin{document}
+\title{Extracting limma objects from limmaGUI files}
+\author{James Wettenhall}
+\date{April 22, 2004}
+\maketitle
+
+\noindent This vignette gives a short example showing how to extract limma data objects
+from files saved by limmaGUI.  This could be used for advanced limma analysis
+by an expert user after some preliminary analysis with limmaGUI by someone 
+unfamiliar with the command-line interface.
+
+\noindent We will use a file \texttt{SwirlLinearModelComputed.lma} which has been saved from limmaGUI.
+It is available from:
+
+\noindent\url{http://bioinf.wehi.edu.au/limmaGUI/Swirl/SwirlLinearModelComputed.lma}.
+
+\noindent The \texttt{.lma} extension used by limmaGUI is simply a three-letter abbreviation of limma (Linear
+Models for Microarrays).  This file is in fact a standard \texttt{.RData} file and can be loaded into 
+any R session as described below.
+
+\begin{Schunk}
+\begin{Sinput}
+> load("SwirlLinearModelComputed.lma")
+\end{Sinput}
+\end{Schunk}
+
+\noindent Firstly, let's load the limma package, so that R knows how to display objects
+defined by limma classes (e.g. \texttt{RGList}).
+
+\begin{Schunk}
+\begin{Sinput}
+> library(limma)
+\end{Sinput}
+\end{Schunk}
+
+\noindent Now let's have a look at the R objects available to us:
+\begin{Schunk}
+\begin{Sinput}
+> ls()
+\end{Sinput}
+\end{Schunk}
+
+
+\noindent Now let's look at the RNA targets for this dataset:
+
+\begin{Schunk}
+\begin{Sinput}
+> Targets
+\end{Sinput}
+\end{Schunk}
+
+\noindent Now let's look at the first 30 lines of the genelist (Genepix Array List) 
+for this dataset:
+
+\begin{Schunk}
+\begin{Sinput}
+> gal[1:30,]
+\end{Sinput}
+\end{Schunk}
+
+\noindent The raw red and green foreground and background intensities are stored the
+object \texttt{RG}.  They can be viewed as follows:
+
+\begin{Schunk}
+\begin{Sinput}
+> RG
+\end{Sinput}
+\end{Schunk}
+
+\noindent Now if this \texttt{.lma} was saved by a recent version of limmaGUI (>=0.7.6), there
+should be an object available called \texttt{BCMethod} which contains the current
+background correction method.  In old versions of limmaGUI, the only background
+correction method available was \texttt{"subtract"}, i.e. simply subtracting the background
+intensities from the foreground.
+
+\begin{Schunk}
+\begin{Sinput}
+> BCMethod
+\end{Sinput}
+\end{Schunk}
+
+\noindent Now let's see what MA objects are currently available to us.  \texttt{MA.Available} is a list
+object with components \texttt{"Raw"} \texttt{"WithinArrays"}, \texttt{"BetweenArrays"} and 
+\texttt{"Both"}, so for
+example \texttt{MA\$Both} would be TRUE if there is an MA object which has been normalized
+both within arrays and between arrays.  The four corresponding MA objects are 
+called \texttt{MAraw}, \texttt{MAwithinArrays}, \texttt{MAbetweenArrays} and \texttt{MAboth}.  
+Each one is initialised to an empty list, and if needed, it it overwritten with an 
+appropriate MAList object.
+
+\begin{Schunk}
+\begin{Sinput}
+> MA.Available
+\end{Sinput}
+\end{Schunk}
+
+
+\begin{Schunk}
+\begin{Sinput}
+> MAraw
+\end{Sinput}
+\end{Schunk}
+
+
+\noindent Now let's see how many parameterizations have been defined (i.e. how many design matrices).
+
+\begin{Schunk}
+\begin{Sinput}
+> NumParameterizations
+\end{Sinput}
+\end{Schunk}
+
+\noindent In this case, there is only one parameterization.  Now let's have a look at the objects 
+stored within this parameterization.  The '1' in double square-brackets represents the
+first parameterization.
+
+\begin{Schunk}
+\begin{Sinput}
+> names(ParameterizationList[[1]])
+\end{Sinput}
+\end{Schunk}
+
+\noindent There is an object called designList, which is a list object containing the design matrix,
+and some information about how the user created that design matrix, in this case by requesting 
+a comparison between \texttt{"Swirl"} and \texttt{"Wild Type"} using drop-down comboboxes, rather than manually
+entering the matrix numerically.
+
+\begin{Schunk}
+\begin{Sinput}
+> ParameterizationList[[1]]$designList
+\end{Sinput}
+\end{Schunk}
+
+\noindent Now let's look at the linear model fit object.  Until version 0.7.7, limmaGUI used the old
+lm.series from limma rather than lmFit, so the fit object was a standard R list object, but 
+from 0.7.7, lmFit is used so that the fit object is an object of class MArrayLM.  This means 
+that with a fit object obtained from a new limmaGUI analysis, typing 
+\texttt{ParameterizationList[[1]]\$fit} and pressing enter should display a summary of the data 
+in the fit object, rather than all the data.
+
+\begin{Schunk}
+\begin{Sinput}
+> ParameterizationList[[1]]$fit
+\end{Sinput}
+\end{Schunk}
+
+\noindent Empirical bayes statistics can be obtained from the \texttt{"eb"} component of 
+\texttt{ParameterizationList[[1]]}.  Note that recent versions of limma encourage users to
+calculate empirical bayes statistics using \texttt{eBayes}, rather than \texttt{ebayes}, 
+whereas at the time of writing limmaGUI still uses the old \texttt{ebayes} method, which
+produces a standard list object, meaning that typing \texttt{ParameterizationList[[1]]\$eb}
+and pressing enter will display all the data in the list, rather than a summary.  The 
+components of the empirical bayes list object can be viewed as follows:
+
+\begin{Schunk}
+\begin{Sinput}
+> names(ParameterizationList[[1]]$eb)
+\end{Sinput}
+\end{Schunk}
+
+\noindent For example, the moderated t statistics can be obtained as follows:
+
+\begin{Schunk}
+\begin{Sinput}
+> ParameterizationList[[1]]$eb$t
+\end{Sinput}
+\end{Schunk}
+
+\noindent Other objects of interest include:
+\begin{itemize}
+\item \texttt{ParameterizationList[[1]]\$WhetherToNormalizeWithinArrays},
+\item \texttt{ParameterizationList[[1]]\$WhetherToNormalizeBetweenArrays},
+\item \texttt{ParameterizationList[[1]]\$WithinArrayNormalizationMethod},
+\item \texttt{ParameterizationList[[1]]\$SpotTypesForLinearModel}, and
+\item \texttt{SpotTypes}.
+\end{itemize}
+
+\end{document}
+
+
+

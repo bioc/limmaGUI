@@ -54,32 +54,52 @@ TclRequire <- function(tclPkg)
 {
     if ((data.class(result<-try(tclRequire(tclPkg),TRUE))=="try-error") || (is.logical(result) && result==FALSE))
     {
+      limmaGUIglobals <- .limmaGUIglobals
+      limmaGUIglobals$TclRequireFailed <- TRUE
+      assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
       Try(winTitle<-"Tcl/Tk Extension(s) Not Found")
       Try(message<-paste("Cannot find Tcl/Tk package \"", tclPkg,
-      "\".  Exit limmaGUI (recommended)?\n\n",
-      "limmaGUI requires the Tcl/Tk extensions, BWidget and Tktable.  You must have Tcl/Tk installed\n",
-      "on your computer, not just the minimal Tcl/Tk installation which comes with R.  If you do have\n",
-      "Tcl/Tk installed, including the extensions (e.g. using the ActiveTcl distribution in Windows),\n",
-      "make sure that R can find the path to the Tcl library, e.g. C:\\Tcl\\lib (on Windows) or\n",
-      "/usr/lib (on Linux/Unix) or /sw/lib on Mac OSX.\n\n",
-      "If you don't know how to set environment variables in Windows, one way to make sure the R can\n",
-      "find the Tcl/Tk extensions Tktable2.8 and bwidget1.6 is to copy them from your ActiveTcl installation\n",
-      "e.g. in C:\\Tcl\\lib into the Tcl subdirectory of your R installation\n\n",
+      "\".  limmaGUI cannot continue.\n\n",
+      "limmaGUI requires the Tcl/Tk extensions, BWidget and Tktable.\n",
+      "You must have Tcl/Tk installed on your computer, not just the minimal\n",
+      "Tcl/Tk installation which comes with R (for Windows).  If you do have\n",
+      "Tcl/Tk installed, including the extensions (e.g. using the ActiveTcl\n",
+      "distribution in Windows), make sure that R can find the path to the\n",
+      "Tcl library, e.g. C:\\Tcl\\lib (on Windows) or /usr/lib (on Linux/Unix)\n",
+      "or /sw/lib on Mac OSX.\n\n",
+      "If you don't know how to set environment variables in Windows, one way\n",
+      "to make sure that R can find the Tcl/Tk extensions Tktable2.8 and bwidget1.6\n",
+      "is to copy them from your ActiveTcl installation e.g. in C:\\Tcl\\lib into\n",
+      "the Tcl subdirectory of your R installation.\n",
       "If you do understand how to set environment variables...\n",
-      "make sure that you have the TCL_LIBRARY environment variable set to the appropriate path, e.g.\n",
-      "C:\\Tcl\\lib\\tcl8.4 and the MY_TCLTK environment variable set to a non-empty string, e.g. \"Yes\".\n\n",
+      "make sure that you have the TCL_LIBRARY environment variable set to the\n",
+      "appropriate path, e.g.C:\\Tcl\\lib\\tcl8.4 and the MY_TCLTK environment\n",
+      "variable set to a non-empty string, e.g. \"Yes\".\n\n",
       "If using Windows, be sure to read the R for windows FAQ at\nhttp://www.stats.ox.ac.uk/pub/R/rw-FAQ.html\n\n",
-      "If your Tcl/Tk extensions still can't be found, try ",
+      "If your Tcl/Tk extensions still can't be found, try\n",
       "addTclPath(\"<path to Tcl library>\").\nThis could be put in $HOME/.Rprofile\n\n",
-      "If you need further ",
-      "instructions, please contact your system administrator and consider emailing\n ",
-      "r-help@stat.math.ethz.ch, or browse through the R-help archives for a similar question.",
+      "If you need further instructions, please contact your system administrator\n",
+      "and consider emailing r-help@stat.math.ethz.ch, or browse through the R-help\n",
+      "archives for a similar question.\n\n",
+      "The URLs for Tktable and BWidget are:\n",
+      "http://tktable.sourceforge.net\n",
+      "http://tcllib.sourceforge.net",      
       sep=""))
       
-      Try(ttTclTkExtension <- tktoplevel(.limmaGUIglobals$ttMain))
+      # Don't make ttMain a parent of this, because we might want to use TclRequire before
+      # defining ttMain.
+      Try(ttTclTkExtension <- tktoplevel())
+      onDestroy <- function()
+      {
+        if (exists(".limmaGUIglobals",envir=.GlobalEnv)&&"ttMain" %in% names(.limmaGUIglobals))
+          try(tkdestroy(.limmaGUIglobals$ttMain),silent=TRUE)        
+        else
+          stop("Tcl/Tk extensions (Tktable and BWidget) not found!")
+        stop("Aborted from limmaGUI.")
+      }
+	    Try(tkbind(ttTclTkExtension, "<Destroy>", onDestroy))
       Try(tkwm.title(ttTclTkExtension,winTitle))
       Try(tkwm.deiconify(ttTclTkExtension))
-      Try(tkgrab.set(ttTclTkExtension))
       Try(scr <- tkscrollbar(ttTclTkExtension, repeatinterval=5,
                              command=function(...)tkyview(txt,...)))
       Try(txt <- tktext(ttTclTkExtension,bg="white",yscrollcommand=function(...)tkset(scr,...)))
@@ -89,11 +109,13 @@ TclRequire <- function(tclPkg)
       Try(tkinsert(txt,"end",message))
       Try(tkconfigure(txt, state="disabled"))
       Try(tkfocus(txt))
-      Try(onYes <- function() 
+      Try(onOK <- function() 
       {
-        Try(tkgrab.release(ttTclTkExtension))
-        Try(tkdestroy(ttTclTkExtension))
-        try(tkdestroy(.limmaGUIglobals$ttMain))
+        try(tkdestroy(ttTclTkExtension),silent=TRUE)
+        if (exists(".limmaGUIglobals",envir=.GlobalEnv)&&"ttMain" %in% names(.limmaGUIglobals))
+          try(tkdestroy(.limmaGUIglobals$ttMain),silent=TRUE)        
+        else
+          stop("Tcl/Tk extensions (Tktable and BWidget) not found!")
         Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))    
         Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
         if (limmaDataSetNameText!="Untitled")
@@ -105,28 +127,41 @@ TclRequire <- function(tclPkg)
           try(if (tclvalue(mbVal)=="yes")
               try(SaveLimmaFile(),silent=TRUE),silent=TRUE)
          }
-
-        quit()                
+         stop("Tcl/Tk extensions (Tktable and BWidget) not found!")
       })
-      Try(onNo <- function()
-      {
-        Try(tkgrab.release(ttTclTkExtension))
-        Try(tkdestroy(ttTclTkExtension))      
-      })
-      Try(Yes.but <- tkbutton(ttTclTkExtension,text="  Yes  ",command=onYes,font=.limmaGUIglobals$limmaGUIfont2))  
-      Try(No.but <- tkbutton(ttTclTkExtension,text="  No  ",command=onNo,font=.limmaGUIglobals$limmaGUIfont2)) 
+      Try(OK.but <- tkbutton(ttTclTkExtension,text="  OK  ",command=onOK))  
       Try(tkgrid.configure(txt,columnspan=2))
       Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))
-      Try(tkgrid(tklabel(ttTclTkExtension,text="Exit limmaGUI (recommended)?",font=.limmaGUIglobals$limmaGUIfont2),columnspan=2))
+      Try(tkgrid(tklabel(ttTclTkExtension,text="limmaGUI will now exit."),columnspan=2))
       Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))      
-      Try(tkgrid(Yes.but,No.but))
-      Try(tkgrid.configure(Yes.but,sticky="e"))
-      Try(tkgrid.configure(No.but,sticky="w"))      
+      Try(tkgrid(OK.but))
+      Try(tkgrid.configure(OK.but,sticky="e"))
       Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))    
-      Try(tkfocus(Yes.but))
+      Try(tkfocus(OK.but))
       Try(tkwait.window(ttTclTkExtension))            
     }
 }
+
+onDestroy <- function()
+{
+ Try(.JustAskedWhetherToSave <- get(".JustAskedWhetherToSave",envir=.GlobalEnv))    
+ Try(if (.JustAskedWhetherToSave==FALSE)
+ {
+	 Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))    
+	 Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
+	 if (limmaDataSetNameText!="Untitled")
+	 {
+		 Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
+		 Try(mbVal <- tkmessageBox(title="Aborting from limmaGUI",
+					 message=paste("Save changes to ",LimmaFileName,"?",sep=""),
+					 icon="question",type="yesno",default="yes"))
+		 try(if (tclvalue(mbVal)=="yes")
+				 try(SaveLimmaFile(),silent=TRUE),silent=TRUE)              
+	 }
+	 Try(assign(".JustAskedWhetherToSave",TRUE,.GlobalEnv))
+ })
+}
+
 
 limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
 {
@@ -256,10 +291,17 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(limmaGUIglobals$oldOptions <- options(warn=-1)) # Otherwise R complains that I'm trying to set main in plots, i.e. set a plot title)
 
 # Maybe it would be nice to eventually use the MainFrame widget from BWidget so we can have a nice toolbar etc.
-  TclRequire("BWidget")
   Try(limmaGUIglobals$ttMain <- tktoplevel())
-  
   Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
+
+	Try(tkbind(.limmaGUIglobals$ttMain, "<Destroy>", onDestroy))
+
+  TclRequire("BWidget")
+  if ("TclRequireFailed" %in% names(.limmaGUIglobals))
+    stop("Error occurred in TclRequire(\"BWidget\")")
+  TclRequire("Tktable")
+  if ("TclRequireFailed" %in% names(.limmaGUIglobals))  
+    stop("Error occurred in TclRequire(\"Tktable\")")
   
   Try(if (.limmaGUIglobals$limmaGUIpresentation==FALSE)
     Try(mainFrame <- tkframe(.limmaGUIglobals$ttMain,relief="groove",borderwidth="2"))
@@ -306,7 +348,6 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(limmaDataSetName.but <- tkbutton(mainFrame,text="Data Set Name",command=GetlimmaDataSetName,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(limmaDataSetName.but,column=2,columnspan=1))
   Try(tkgrid(tklabel(mainFrame,text="         "),columnspan=5))
-  Try(TclRequire("BWidget"))
   Try(mainTreeXScr <- tkscrollbar(mainFrame, repeatinterval=5,command=function(...)tkxview(.limmaGUIglobals$mainTree,...),orient="horizontal"))
   Try(mainTreeYScr <- tkscrollbar(mainFrame, repeatinterval=5,command=function(...)tkyview(.limmaGUIglobals$mainTree,...)))
   Try(limmaGUIglobals <- get(".limmaGUIglobals",envir=.GlobalEnv))
@@ -398,27 +439,6 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   
   #Try(tkwm.resizable(.limmaGUIglobals$ttMain,"true","false"))
 
-  Try(onDestroy <- function()
-  {
-    Try(.JustAskedWhetherToSave <- get(".JustAskedWhetherToSave",envir=.GlobalEnv))    
-    Try(if (.JustAskedWhetherToSave==FALSE)
-    {
-      Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))    
-      Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-      if (limmaDataSetNameText!="Untitled")
-      {
-        Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
-        Try(mbVal <- tkmessageBox(title="Aborting from limmaGUI",
-              message=paste("Save changes to ",LimmaFileName,"?",sep=""),
-              icon="question",type="yesno",default="yes"))
-        try(if (tclvalue(mbVal)=="yes")
-            try(SaveLimmaFile(),silent=TRUE),silent=TRUE)              
-      }
-      Try(assign(".JustAskedWhetherToSave",TRUE,.GlobalEnv))
-    })
-  })    
-
-  Try(tkbind(.limmaGUIglobals$ttMain, "<Destroy>", onDestroy))
   Try(tkbind(.limmaGUIglobals$ttMain, "<Control-N>", NewLimmaFile))
   Try(tkbind(.limmaGUIglobals$ttMain, "<Control-S>", SaveLimmaFile))
   Try(tkbind(.limmaGUIglobals$ttMain, "<Control-O>", OpenLimmaFile))
@@ -1082,8 +1102,6 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
 
   GetDesignOrContrastsTable <- function(designOrContrastsFromDropDowns)
   {
-
-    Try(TclRequire("Tktable"))
     Try(ttDesignOrContrastsTable <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.deiconify(ttDesignOrContrastsTable))
     Try(tkgrab.set(ttDesignOrContrastsTable))
@@ -1551,9 +1569,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     plusOrMinusTclListAsString <- "{{minus}}"
   else
     plusOrMinusTclListAsString <- "{{minus} {plus}}")
-
-  Try(TclRequire("BWidget"))      
-
+    
   combo1 <- c()
   combo2 <- c()
   combo3 <- c()    
@@ -2030,7 +2046,6 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
   Try(ContrastsParameterizationNamesVec <- GetContrastsParameterizationNames(parameterizationTreeIndex))  
-  Try(TclRequire("Tktable"))
   Try(ttViewDesignOrContrastsTable <- tktoplevel(.limmaGUIglobals$ttMain))
   Try(tkwm.deiconify(ttViewDesignOrContrastsTable))
   Try(tkgrab.set(ttViewDesignOrContrastsTable))
@@ -2684,7 +2699,6 @@ ViewRNATargets <- function()
           return()
       }
 
-      Try(TclRequire("Tktable"))
       Try(ttViewRNATargets <- tktoplevel(.limmaGUIglobals$ttMain))
       Try(tkwm.deiconify(ttViewRNATargets))
       Try(tkgrab.set(ttViewRNATargets))
@@ -2833,7 +2847,6 @@ ViewSpotTypes <- function()
           return()
       }
 
-      Try(TclRequire("Tktable"))
       Try(ttViewSpotTypes <- tktoplevel(.limmaGUIglobals$ttMain))
       Try(tkwm.deiconify(ttViewSpotTypes))
       Try(tkgrab.set(ttViewSpotTypes))
@@ -3627,7 +3640,7 @@ ComputeLinearModelFit <- function()
   
   if (ndups==1)
   {
-    Try(fit <- lm.series(MA$M,as.matrix(design)))
+    Try(fit <- lmFit(MA,as.matrix(design)))
 
     Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFDupCorStatusNode))  
     Try(ParameterizationList[[ParameterizationNameNode]] <- 
@@ -4143,7 +4156,6 @@ showTopTable <- function()
       Try(tkwm.title(ttToptableTable,paste("Top",numberOfGenes,"Candidate Genes for Differential Expression for",ParameterNamesVec[coef],".",sep=" ")))
     else
       Try(tkwm.title(ttToptableTable,paste("Top",numberOfGenes,"Candidate Genes for Differential Expression for Slide",SlideNamesVec[1],".",sep=" "))))
-    TclRequire("Tktable") 
     Try(toptableTable <- tkwidget(ttToptableTable,"table",
            xscrollcommand=function(...) tkset(xscr,...),yscrollcommand=function(...) tkset(yscr,...),
            rows=nrows+1,cols=ncols,titlerows=1,
@@ -4300,7 +4312,6 @@ GetSpotTypesForLinearModel <- function()
   
   Try(if (numSpotTypes>10)
   {
-    TclRequire("BWidget")
     Try(sw <- tkwidget(ttGetSpotTypesForLinearModel,"ScrolledWindow",relief="sunken",borderwidth=2))
     Try(sf <- tkwidget(sw,"ScrollableFrame"))
     Try(tkcmd(sw,"setwidget",sf))
@@ -4567,7 +4578,6 @@ ChooseSpotType <- function(parameterizationTreeIndex)
 
   Try(if (numSpotTypes>10)
   {
-    TclRequire("BWidget")
     Try(sw <- tkwidget(ttChooseSpotType,"ScrolledWindow",relief="sunken",borderwidth=2))
     Try(sf <- tkwidget(sw,"ScrollableFrame"))
     Try(tkcmd(sw,"setwidget",sf))

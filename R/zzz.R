@@ -81,12 +81,16 @@
 		else
 			cat(paste("\nlimmaGUI can be launched by typing limmaGUI()\n"))
 
-		BeginLimmaGUI <- tclvalue(tkmessageBox(title="limmaGUI",message="Begin limmaGUI?",type="yesno",icon="question"))
-		if (BeginLimmaGUI=="yes") 
-			limmaGUI()
-		else
-			if (.Platform$OS.type=="windows")
+# Note that running the whole limmaGUI() program while still within .First.lib seems to work in Windows,
+# but I had problems in Linux, hence the .Platform$OS.type below...
+    if (.Platform$OS.type=="windows")
+    {
+		  BeginLimmaGUI <- tclvalue(tkmessageBox(title="limmaGUI",message="Begin limmaGUI?",type="yesno",icon="question"))
+		  if (BeginLimmaGUI=="yes") 
+		  	limmaGUI()
+		  else
 				bringToTop(-1)
+		}
 
 	}
 }
