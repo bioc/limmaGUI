@@ -1,0 +1,181 @@
+<html>
+<head><title>limmaGUI Worked Example : ApoAI Data Set</title></head>
+<body>
+<h1>limmaGUI Worked Example : ApoAI Data Set</h1>
+
+<p><b>Background</b>. The data is from a study of lipid metabolism by Callow et al (2000). The
+apolipoprotein AI (ApoAI) gene is known to play a pivotal role in high density
+lipoprotein (HDL) metabolism. Mouse which have the ApoAI gene knocked out have
+very low HDL cholesterol levels. The purpose of this experiment is to determine
+how ApoAI deficiency affects the action of other genes in the liver, with the
+idea that this will help determine the molecular pathways through which ApoAI
+operates. </p>
+<p><b>Hybridizations</b>. The experiment compared 8 ApoAI knockout mice with 8 normal C57BL/6 (&quot;black
+six&quot;) mice, the control mice. For each of these 16 mice, target mRNA was obtained from liver
+tissue and labelled using a Cy5 dye. The RNA from each mouse was hybridized to a
+separate microarray. Common reference RNA was labelled with Cy3 dye and used for
+all the arrays. The reference RNA was obtained by pooling RNA extracted from the
+8 control mice.</p>
+<div align="center">
+  <center>
+  <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-left-width: 0; border-right-width: 0" bordercolor="#111111" id="AutoNumber1">
+    <tr>
+      <td width="180" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-top-style: solid; border-top-width: 1; border-bottom-style: solid; border-bottom-width: 1">
+      Number of arrays</td>
+      <td width="240" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-top-style: solid; border-top-width: 1; border-bottom-style: solid; border-bottom-width: 1">
+      Red</td>
+      <td width="200" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-top-style: solid; border-top-width: 1; border-bottom-style: solid; border-bottom-width: 1">
+      Green</td>
+    </tr>
+    <tr>
+      <td width="180" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-bottom-style: none; border-bottom-width: medium">
+      8</td>
+      <td width="240" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-bottom-style: none; border-bottom-width: medium">
+      Normal &quot;black six&quot; mice</td>
+      <td width="200" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-bottom-style: none; border-bottom-width: medium">
+      Pooled reference</td>
+    </tr>
+    <tr>
+      <td width="180" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-top-style: none; border-top-width: medium; border-bottom-style: solid; border-bottom-width: 1">
+      8</td>
+      <td width="240" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-top-style: none; border-top-width: medium; border-bottom-style: solid; border-bottom-width: 1">
+      ApoAI knockout</td>
+      <td width="200" style="border-left-style: none; border-left-width: medium; border-right-style: none; border-right-width: medium; border-top-style: none; border-top-width: medium; border-bottom-style: solid; border-bottom-width: 1">
+      Pooled reference</td>
+    </tr>
+  </table>
+  </center>
+</div>
+<p>This is an example of a single comparison experiment using a common
+reference. The fact that the comparison is made by way of a common reference
+rather than directly as for the swirl experiment makes this, for each gene, a
+two-sample rather than a single-sample setup.</p>
+
+
+<p>For this example, you will need the file ApoAIArraysLoaded.lma, which can be downloaded from
+<a href="http://bioinf.wehi.edu.au/limmaGUI/DataSets.html">http://bioinf.wehi.edu.au/limmaGUI/DataSets.html</a>.<br>
+The targets for this data set are shown below.
+</p>
+<img src="ApoAITargets.jpg"><br><br>
+
+<h2>Opening the Data Set</h2>
+<p>From the file menu, select Open.</p>
+<img src="OpenSelected.jpg"><br><br>
+<p>Open the file, ApoAIArraysLoaded.lma.  This file can be downloaded from the URL given above.
+Advanced users may be interested to know that a Limma (.lma) file is really just an RData file,
+so it can easily be loaded into an R session.  However, it may appear more complicated than
+standard RData files associated with the limma package because it allows for multiple
+parameterizations and stores them in a list data structure called <code>ParameterizationList</code>.</p>
+<img src="OpeningLimmaFile.jpg"><br><br>
+<p>After loading ApoAIArraysLoaded.lma, it is evident that no parameterizations have been created
+yet.</p>
+<img src="MainWindowApoAILimmaFileLoaded.jpg"><br><br>
+
+<p>From the Plot menu, click on "M Box Plot".</p>
+<img src="MBoxPlotSelected.jpg"><br><br>
+<p>Select plot by slide.</p>
+<img src="PlotBoxPlotBySlide.jpg"><br><br>
+<p>Choose to normalize within arrays.</p>
+<img src="NormalizeWithinArrays.jpg"><br><br>
+<p>Choose not to normalize between arrays (i.e. click "no", which is the default value).</p>
+<img src="NormalizeBetweenArraysNo.jpg"><br><br>
+<p>The M box plot is shown below.  As there is not much difference in scale between the different
+arrays, we won't normalize between arrays for this data set.</p>
+<img src="ApoAIScaleBoxPlot.jpg"><br><br>
+
+<h2>Computing A Linear Model Fit</h2>
+<p>We will now compute a linear model for this set of arrays.  As we have three types of
+RNA (Reference, Wild Type and ApoAI Knockout), we can estimate two parameters from the
+linear model (i.e. one less than the number of RNA types).  The parameterization has already
+been created and loaded in ApoAI.lma.  Click on "Compute Linear Model Fit" from the Linear
+Model menu.</p>
+<p>From the Linear Model menu, click "Compute Linear Model Fit".</p>
+<img src="ComputeLinearModelFitSelected.jpg"><br><br>
+<p>Selected "Yes" to create a new parameterization</p>
+<img src="CreateNewParameterization.jpg"><br><br>
+<p>Include all of the spots in the linear model.  (Sometimes we would omit the controls and blanks.)</p>
+<img src="SpotsIncludedInLinearModel.jpg"><br><br>
+<p>Use the drop-down combo boxes to select two parameters, one comparing Wild Type with Reference and
+one comparing Knockout with Wild Type.</p>
+<img src="ParametersDropDowns.jpg"><br><br>
+<p>Give a name for the parameterization (i.e. the choice of parameters).</p>
+<img src="ParameterizationName.jpg"><br><br>
+<p>Choose to normalize within arrays.</p>
+<img src="NormalizeWithinArrays.jpg"><br><br>
+<p>Use the default within-array normalization method (print-tip group loess).</p>
+<img src="ChooseNormalizationMethod.jpg"><br><br>
+<p>Choose not to normalize between arrays.</p>
+<img src="NormalizeBetweenArraysNo.jpg"><br><br>
+<p>There are no duplicates in this data set, i.e. there is one print of each gene,
+so leave the duplicate options at their default values.</p>
+<img src="NumberDuplicates.jpg"><br><br>
+
+<h2>Analyzing The Results Of A Linear ModelFit</h2>
+<p>We will now request at a table of genes ranked in order of evidence for differential expression
+(more precisely, ranked by the B statistic, which estimates the log odds of differential expression
+for each gene).  From the TopTable menu, select "Table of Genes Ranked in order of Differential Expression".</p>
+<img src="ToptableSelected.jpg"><br><br>
+<p>Again, parameterization "WTvsRef and KOvsWT" is the only choice, so click OK.</p>
+<img src="ChooseParameterization.jpg"><br><br>
+<p>Choose the "(ApoAI KO)-(wild type)" parameter.</p>
+<img src="ChooseParameter.jpg"><br><br>
+<p>Choose to view the top 50 genes with most evidence of differential expression (according to the B statistic).
+Leave the other options at their default values.</p>
+<img src="ToptableOptions.jpg"><br><br>
+<p>The toptable is shown below.  The knockout gene is correctly displayed at the top of the table with an M value
+of -3.184.  Theoretically, its M value should be minus infinity because it is the knockout gene.  You can (from
+the File menu) save the toptable as tab-delimited text and then open it in a spreadsheet program such as Excel.</p>
+<img src="Toptable.jpg"><br><br>
+<p>Now select "Log Odds Plot" from the Plot menu.  (The B statistic displayed in the TopTable is an estimate of the
+log odds.)</p>
+<img src="LogOddsPlotSelected.jpg"><br><br>
+<p>Parameterization "WTvsRef and KOvsWT" is the only choice, so click OK.</p>
+<img src="ChooseParameterization.jpg"><br><br>
+<p>Choose the "(ApoAI KO)-(wild type)" parameter.</p>
+<img src="ChooseParameter.jpg"><br><br>
+<p>Now you can select a number of differentially expressed genes to be labeled on the plot and the maximum label
+size in characters.</p>
+<img src="DEGeneLabelsOptions.jpg"><br><br>
+<p>The log odds plot is shown below.</p>
+<img src="LogOddsPlot.jpg"><br><br>
+<p>An M A plot with fitted M values can plotted obtained in the same way as the log odds plot, but by choosing
+"M A Plot(using fitted M values)" from the plot menu, instead of "Log Odds Plot".</p>
+<img src="AvgMAPlotFittedMValues.jpg"><br><br>
+
+<h2>Saving Your Results</h2>
+<p>You can save the updated Limma file (with a linear model fit now computed).</p>
+<img src="SaveAsSelected.jpg"><br><br>
+<p>It is possible to save multiple Limma files with the same data set name (displayed
+above the left status window) but with different file names (displayed in the title
+bar).</p>
+<img src="SavingApoAILimmaFile.jpg"><br><br>
+
+<h2>Contrasts</h2>
+<p>Suppose that we are also interested in estimating log fold changes and confidence statistics for knockout (KO) versus
+reference (Ref).  There is no need to compute a new linear model from scratch, we can express this <b>contrast</b> as a
+linear combination of the two parameters we estimated previously (KOvsWT and WTvsRef).  In fact the log-ratio for KOvsRef
+is conceptually just the sum of the the log ratios for KOvsWT and WTvsRef, so it could be estimated quite well just using
+a standard spreadsheet program.  However, computing confidence statistics for this <b>contrast</b> is never as
+straightforward as a simple addition, so this is best left to limma and limmaGUI.</p>
+<p>From the "Linear Model" menu, click on "Compute Contrasts".</p>
+<img src="ComputeContrastsSelected.jpg"><br><br>
+<p>Parameterization "WTvsRef and KOvsWT" is the only choice, so click OK.</p>
+<img src="ChooseParameterization.jpg"><br><br>
+<p>The interface for choosing contrast(s) is similar to the interface for choosing parameters for the linear model.  You
+can click on the "Advanced" button if you want to enter a contrasts matrix directly.  One difference is that in the
+simpler (non-matrix) interface, the user is allowed to use "plus" or "minus" to form a linear combination of two
+parameters, whereas the interface for choosing parameters only allowed a "minus" between the two RNA types.  In this
+case we will add our two parameters to form the contrast KOvsRef.</p>
+<img src="ContrastsDropDowns.jpg"><br><br>
+<p>Now we can give this contrasts parameterization a name.</p>
+<img src="ContrastsParameterizationName.jpg"><br><br>
+<p>Once the contrasts have been computed, they are displayed in the Parameterizations window.</p>
+<img src="ContrastsComputed.jpg"><br><br>
+<p>Now whenever the user has a choice of which parameter to use, e.g. for a toptable, the contrasts will
+be available as well.</p>
+<img src="ChooseParameterOrContrast.jpg"><br><br>
+<p>Below is a toptable, using the KOvsRef contrast.</p>
+<img src="ToptableContrast.jpg"><br><br>
+
+</body>
+</html>

@@ -129,6 +129,7 @@
 \alias{NormalizeHelp}
 \alias{BChelp}
 \alias{onDestroy}
+\alias{GetPValueCutoff}
 \description{Graphical User Interface for the limma microarray package}}
 
 \usage{
@@ -246,6 +247,7 @@ NormalizeHelp()
 BChelp()
 onDestroy()
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
+GetPValueCutoff(p.value=0.01)
 }
 
 \arguments{
@@ -259,6 +261,7 @@ limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 	\item{sep}{Column separator. ("\t" for tab-delimited text)}
 	\item{quote}{See help for read.table}
 	\item{header}{See help for read.table}
+	\item{p.value}{A p-value cutoff.}
 	\item{\dots}{Any other arguments to read.marrayTools are passed to \code{read.table}}
 }
 
