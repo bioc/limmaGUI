@@ -281,9 +281,10 @@ MAPlotAvg <- function()
     Try(opar<-par(bg="white"))
 
     Try(if (ShowColorCodedSpotTypes=="yes")
-      Try(plot(A,M,pch=16,cex=0.3,xlab=xLabel,col="white",ylab=yLabel,main=plotTitle))
+      Try(plot(A,M,pch=16,cex=0.3,xlab=xLabel,col="white",ylab=yLabel))
     else
-      Try(plot(A,M,pch=16,cex=cexScalar,xlab=xLabel,ylab=yLabel,main=plotTitle)))
+      Try(plot(A,M,pch=16,cex=cexScalar,xlab=xLabel,ylab=yLabel)))
+    Try(title(plotTitle))
     Try(if (numDEgenesLabeled>0)      
       Try(text(A[topGenes],M[topGenes],labels=substr(as.character(genelist[topGenes,IDorName]),1,GeneLabelsMaxLength),cex=0.8,col="blue")))
     Try(if (ShowColorCodedSpotTypes=="yes") 
@@ -449,7 +450,8 @@ MMPlot <- function()
   plotMM <- function()
   {
     Try(opar<-par(bg="white"))
-    Try(plot(M1,M2,pch=16,cex=cex,,xlab=ParameterNamesVec1[coef1],ylab=ParameterNamesVec2[coef2],main=plotTitle))
+    Try(plot(M1,M2,pch=16,cex=cex,,xlab=ParameterNamesVec1[coef1],ylab=ParameterNamesVec2[coef2]))
+    Try(title(plotTitle))
     Try(points(M1[sel],M2[sel],col="blue"))
 #    Try(text(M1[topGenes],M2[topGenes],labels=gal[topGenes,IDorName],cex=0.8,col="blue"))
     Try(tempGraphPar <- par(opar))
@@ -756,7 +758,8 @@ HeatDiagramPlot <- function()
     Try(opar<-par(bg="white"))
     Try(heatdiagram(abs(ebHD$t),fitHD$coefficients,primary=1,
       critical.primary=primaryCutoff,critical.other=otherCutoff,
-      names=genelist[,"Name"],main=plotTitle))
+      names=genelist[,"Name"]))
+    Try(title(plotTitle))
     Try(TempGraphPar<-par(opar))    
   }
    Try(LocalHScale <- get("Myhscale",envir=.GlobalEnv)*1.5)
@@ -1169,13 +1172,15 @@ LogOddsPlot <- function()
     Try(opar<-par(bg="white"))
     if (NumParameters>1)
     {
-      plot(fit$coef[,coef],eb$lods[,coef],pch=16,cex=cex,xlab=xLabel,ylab=yLabel,main=plotTitle)
+      plot(fit$coef[,coef],eb$lods[,coef],pch=16,cex=cex,xlab=xLabel,ylab=yLabel)
+      Try(title(plotTitle))
       if (numDEgenesLabeled>0)
         text(fit$coef[topGenes,coef],eb$lods[topGenes,coef],labels=substr(as.character(genelist[topGenes,IDorName]),1,GeneLabelsMaxLength),cex=0.8,col="blue")
     }
     else
     {
-      plot(fit$coef,eb$lods,pch=16,cex=cex,xlab=xLabel,ylab=yLabel,main=plotTitle)
+      plot(fit$coef,eb$lods,pch=16,cex=cex,xlab=xLabel,ylab=yLabel)
+      Try(title(plotTitle))
       if (numDEgenesLabeled>0)
         text(fit$coef[topGenes],eb$lods[topGenes],labels=substring(as.character(genelist[topGenes,IDorName]),1,10),cex=0.8,col="blue")
     }
@@ -1279,9 +1284,10 @@ DupCorBoxPlot <- function()
   {
     Try(opar<-par(bg="white"))
     Try(if ("cor.genes" %in% names(dupcor))
-      Try(boxplot(dupcor$cor.genes,main=plotTitle))
+      Try(boxplot(dupcor$cor.genes))
     else
-      Try(boxplot(dupcor$all.correlations,main=plotTitle)))
+      Try(boxplot(dupcor$all.correlations)))
+    Try(title(plotTitle))
     Try(opar<-par(bg="white")) 
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
@@ -1373,13 +1379,10 @@ QQTplot <- function()
   {
     Try(opar<-par(bg="white"))
     if (NumParameters>1) 
-    {
-      qqt(eb$t[,coef],df=fit$df+eb$df,pch=16,cex=cex,main=plotTitle)
-    }
+      qqt(eb$t[,coef],df=fit$df+eb$df,pch=16,cex=cex)
     else 
-    {
-      qqt(eb$t,df=fit$df+eb$df,pch=16,cex=cex,main=plotTitle)
-    }
+      qqt(eb$t,df=fit$df+eb$df,pch=16,cex=cex)
+    Try(title(plotTitle))
     abline(0,1) 
     Try(tempGraphPar <- par(opar))
   }
@@ -1579,7 +1582,8 @@ MBoxPlot <- function()
       Try(if (plotbyval=="PrintTip")
       {
            Try(opar<-par(bg="white"))
-           Try(plot.scale.box(MA$M[,slidenum],maLayout,col=rainbow(maLayout$ngrid.r*maLayout$ngrid.c),xlab="Print Tip Group",ylab="M",main=plotTitle))
+           Try(plot.scale.box(MA$M[,slidenum],maLayout,col=rainbow(maLayout$ngrid.r*maLayout$ngrid.c),xlab="Print Tip Group",ylab="M"))
+           Try(title(plotTitle))
            Try(tempGraphPar <- par(opar))
       }   
       else 
@@ -1589,7 +1593,8 @@ MBoxPlot <- function()
            
            Try(if (min(nchar(gsub("[^0-9]","",SlideNamesVec))==nchar(SlideNamesVec))==TRUE)
              SlideNamesVec <- paste("Slide",SlideNamesVec))
-           Try(plot.scale.box(MA$M,x.names=SlideNamesVec,xlab="Slide",ylab="M",main=plotTitle))
+           Try(plot.scale.box(MA$M,x.names=SlideNamesVec,xlab="Slide",ylab="M"))
+           Try(title(plotTitle))
            Try(tempGraphPar <- par(opar))
       })
       Try(abline(0,0))
@@ -1817,7 +1822,8 @@ MAPlot <- function()
      }
       else
         normval <- "n")
-      Try(plot.print.tip.lowess(RG,maLayout,pch=16,cex=cex,image=slidenum,norm=normval,main=plotTitle))
+     Try(plot.print.tip.lowess(RG,maLayout,pch=16,cex=cex,image=slidenum,norm=normval))
+     Try(title(plotTitle))
      Try(tempGraphPar <- par(opar))
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
@@ -2395,8 +2401,8 @@ plotMAColorCoded <- function()
   {
      Try(opar<-par(bg="white"))
      Try(plotMA(MA,pch=pch,cex=cex,array=slidenum,status=SpotTypeStatus,values=values,
-         col=col,main=plotTitle,xlab=xLabel,ylab=yLabel,legend=showLegend,xlim=xlim))
-#     Try(title(main=plotTitle))
+         col=col,xlab=xLabel,ylab=yLabel,legend=showLegend,xlim=xlim))
+     Try(title(plotTitle))
      Try(tempGraphPar <- par(opar))
   }
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
@@ -2617,16 +2623,16 @@ ebayesBoxPlots <- function()
         plotCommand <- paste(plotCommand,"\"",SpotSubTypes[i],"\"",",",sep=""))
     Try(plotCommand <- paste(plotCommand,"\"",SpotSubTypes[numMatches],"\"),",sep=""))
     Try(if (numMatches>1)
-      Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\",main=plotTitle)",sep=""))
+      Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\");title(plotTitle)",sep=""))
     else
-      Try(plotCommand <- paste(plotCommand,"xlab=\"",SpotType,"\",","ylab=\"",ylabel,"\",main=plotTitle)",sep="")))
+      Try(plotCommand <- paste(plotCommand,"xlab=\"",SpotType,"\",","ylab=\"",ylabel,"\");title(plotTitle)",sep="")))
   }
   else
   {
     Try(plotCommand <- "boxplot(")
     Try(plotCommand <- paste(plotCommand,"ebayesStatisticsVector[genelist2[,\"SpotTypeStatus\"]==\"",SpotType,"\"],",sep=""))
     Try(plotCommand <- paste(plotCommand,"xlab=\"",SpotType,"\",","names=\"",SpotType,"\",",sep=""))
-    Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\",main=plotTitle)",sep=""))    
+    Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\");title(plotTitle)",sep=""))    
   })
   
 #  tkmessageBox(message=plotCommand)
@@ -3279,7 +3285,8 @@ plotMAlimmaGUI <- function(MA,array=1,pch=16,status=NULL,
              xmax <- xlim[2]
          }
                   
-         plot(x,y,xlab=xlab,ylab=ylab,main=main,type="n",xlim=c(xmin,xmax))
+         plot(x,y,xlab=xlab,ylab=ylab,type="n",xlim=c(xmin,xmax))
+         title(main)
          if(is.null(status))
                  points(x,y,pch=pch[[1]],cex=cex[1])
          else {

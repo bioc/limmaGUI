@@ -59,6 +59,7 @@
 \alias{ChooseContrastsParameterization}
 \alias{DeleteContrastsParameterization}
 \alias{OpenLimmaFile}
+\alias{OpenALimmaFile}
 \alias{SaveLimmaFile}
 \alias{SaveAsLimmaFile}
 \alias{AboutLimmaGUI}
@@ -126,10 +127,14 @@
 \alias{WithinBetweenOrBoth}
 \alias{wtflags2}
 \alias{GetBackgroundCorrectionMethod}
+\alias{GetlmFitMethod}
+\alias{lmFitMethodHelp}
 \alias{NormalizeHelp}
 \alias{BChelp}
 \alias{onDestroy}
 \alias{GetPValueCutoff}
+\alias{fixSeps}
+\alias{GetImageAnalysisColumnHeadings}
 \description{Graphical User Interface for the limma microarray package}}
 
 \usage{
@@ -194,6 +199,7 @@ DeleteParameterization()
 ChooseContrastsParameterization()
 DeleteContrastsParameterization()
 OpenLimmaFile()
+OpenALimmaFile(FileName)
 SaveLimmaFile()
 SaveAsLimmaFile()
 AboutLimmaGUI()
@@ -243,11 +249,15 @@ GetJpegOrPngX11Params()
 VennDiagramPlot()
 UpDownOrBoth()
 GetBackgroundCorrectionMethod()
+GetlmFitMethod()
+lmFitMethodHelp()
 NormalizeHelp()
 BChelp()
+fixSeps(string)
 onDestroy()
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 GetPValueCutoff(p.value=0.01)
+GetImageAnalysisColumnHeadings()
 }
 
 \arguments{
@@ -262,6 +272,8 @@ GetPValueCutoff(p.value=0.01)
 	\item{quote}{See help for read.table}
 	\item{header}{See help for read.table}
 	\item{p.value}{A p-value cutoff.}
+	\item{FileName}{A file name.}
+	\item{string}{A character string.}
 	\item{\dots}{Any other arguments to read.marrayTools are passed to \code{read.table}}
 }
 

@@ -122,7 +122,7 @@ TclRequire <- function(tclPkg)
         {
           Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
           Try(mbVal <- tkmessageBox(title="Aborting from limmaGUI",
-                message=paste("Save changes to ",LimmaFileName,"?",sep=""),
+                message=paste("Save changes to ",fixSeps(LimmaFileName),"?",sep=""),
                 icon="question",type="yesno",default="yes"))
           try(if (tclvalue(mbVal)=="yes")
               try(SaveLimmaFile(),silent=TRUE),silent=TRUE)
@@ -153,7 +153,7 @@ onDestroy <- function()
 	 {
 		 Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
 		 Try(mbVal <- tkmessageBox(title="Aborting from limmaGUI",
-					 message=paste("Save changes to ",LimmaFileName,"?",sep=""),
+					 message=paste("Save changes to ",fixSeps(LimmaFileName),"?",sep=""),
 					 icon="question",type="yesno",default="yes"))
 		 try(if (tclvalue(mbVal)=="yes")
 				 try(SaveLimmaFile(),silent=TRUE),silent=TRUE)              
@@ -331,7 +331,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(LimmaFileName <- get("LimmaFileName",limmaGUIenvironment))
   Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only 
-  Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",LimmaFileName)))
+  Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
   Try(limmaGUIglobals <- .limmaGUIglobals)  
   Try(limmaGUIglobals$GALfileBoxTitle <- tclVar("Please select a GenePix Array List (GAL) file."))
   Try(limmaGUIglobals$GALfileNameTcl <- tclVar("No filename is selected at the moment.  Press the Select GAL File Button."))
@@ -410,16 +410,67 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(tkconfigure(.limmaGUIglobals$ttMain,menu=topMenu))
   Try(Menus <- read.table(file.path(system.file("etc",package="limmaGUI"),"limmaGUI-menus.txt"), as.is=TRUE))
   Try(for (m in 1:nrow(Menus)){
-		Try(if (Menus[m, 1] == "menu") assign(Menus[m, 2], tkmenu(eval(parse(text=Menus[m, 3])), tearoff=FALSE)) 
-		else if (Menus[m, 1] == "item") {
-				if (Menus[m, 3] == "command")
-						tkadd(eval(parse(text=Menus[m, 2])),"command", label=Menus[m, 4], command=eval(parse(text=Menus[m, 5])))
-				else if (Menus[m, 3] == "cascade")
-						tkadd(eval(parse(text=Menus[m, 2])),"cascade", label=Menus[m, 4], menu=eval(parse(text=Menus[m, 5])))
-			  else if (Menus[m, 3] == "separator")
-			      tkadd(eval(parse(text=Menus[m, 2])),"separator")
-				else stop(paste("menu defintion error:", Menus[m, ], collapse=" "))
-				}
+    Try(if (Menus[m, 1] == "menu") assign(Menus[m, 2], tkmenu(eval(parse(text=Menus[m, 3])), tearoff=FALSE)) 
+    else if (Menus[m, 1] == "item") {
+      if (Menus[m, 3] == "command")
+        tkadd(eval(parse(text=Menus[m, 2])),"command", label=Menus[m, 4], command=eval(parse(text=Menus[m, 5])))
+      else if (Menus[m, 3] == "cascade")
+      {
+        cascadeMenu <- eval(parse(text=Menus[m, 5]))
+        tkadd(eval(parse(text=Menus[m, 2])),"cascade", label=Menus[m, 4], menu=cascadeMenu)
+        if (Menus[m, 4]=="File")
+        {
+          Try(limmaGUIglobals <- get(".limmaGUIglobals",envir=limmaGUIenvironment))
+          Try(menuNames <- unique(Menus[,2,drop=TRUE]))
+          Try(numMenus <- length(menuNames))
+          Try(menus <- list())
+          Try(for (j in (1:numMenus))
+            menus[[j]] <- eval(parse(text=Menus[j,2])))
+          Try(names(menus) <- menuNames)
+          Try(limmaGUIglobals$menus <- menus)
+          Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
+        }
+      }
+      else if (Menus[m, 3] == "separator")
+      {
+        if (nrow(Menus)>m && Menus[m+1, 4]=="Exit")
+        {
+            recentFilesFileName <- system.file("etc/recent-files.txt",package="limmaGUI")
+            recentFiles <- readLines(recentFilesFileName)
+           
+            recentFiles <- gsub("\\\\","/",recentFiles)
+
+            # Remove any blank lines:
+            blanks <- grep("^[ \t\n]*$",recentFiles)
+            if (length(blanks)>0)
+              recentFiles <- recentFiles[-blanks]
+            numRecentFiles <- length(recentFiles)
+            
+            if (numRecentFiles>0)
+            {
+              tkadd(eval(parse(text=Menus[m, 2])),"separator")
+              for (i in (1:numRecentFiles))
+              {
+                label <- recentFiles[i]
+                fileNameOnly <- strsplit(label,"/")[[1]]
+                fileNameOnly <- fileNameOnly[length(fileNameOnly)]
+                if (nchar(recentFiles[i])>60)                  
+                    label <- paste(".../",fileNameOnly)
+                eval(parse(text=paste("assign(\".OpenALimmaFile_",fileNameOnly,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep="")))
+                Try(if (.Platform$OS.type=="windows")
+                  tkadd(eval(parse(text=Menus[m,2])),"command",label=paste(i,". ",fixSeps(label),sep=""),
+                    command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep=""))))
+                else
+                  tkadd(eval(parse(text=Menus[m,2])),"command",label=paste(i,". ",label,sep=""),
+                    command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep="")))))
+                  
+              }
+            }
+        }
+        tkadd(eval(parse(text=Menus[m, 2])),"separator")
+      }
+      else stop(paste("menu defintion error:", Menus[m, ], collapse=" "))
+    }
 		else stop(paste("menu defintion error:", Menus[m, ], collapse=" ")))
 		})
 
@@ -528,6 +579,19 @@ initGlobals <- function()
   assign("BCMethod","subtract",limmaGUIenvironment)  
 }
 
+fixSeps <- function(string)
+{
+  Try(if (.Platform$OS.type=="windows")
+    string <- gsub("/","\\\\",string))
+  return (string)
+}
+
+# I wrote the function deleteItemFromList before I discovered
+# that you could simply assign an item to NULL in a list to
+# delete it (or use negative-indexing).  Because I am only 
+# dealing with very small lists, it does not matter that 
+# I am using an inefficient method, and it may actually make 
+# the code more readable that assigning an element to NULL.
 deleteItemFromList <- function(list1,itemName=NULL,index=NULL)
 {
     if (is.null(index))
@@ -669,7 +733,7 @@ OpenGALFile <- function()
   Try(assign("GALFile",tmpGALFile,limmaGUIenvironment))
   Try(GALFile <- get("GALFile",envir=limmaGUIenvironment))
   Try(tclvalue(.limmaGUIglobals$GALfileBoxTitle) <- "GenePix Array List (GAL) File")
-  Try(tclvalue(.limmaGUIglobals$GALfileNameTcl) <-paste(GALFile))
+  Try(tclvalue(.limmaGUIglobals$GALfileNameTcl) <-fixSeps(paste(GALFile)))
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(gal <- readGALlimmaGUI(galfile=GALFile,fill=TRUE))
   Try(gal$ID <- as.character(gal$ID))
@@ -689,7 +753,7 @@ OpenTargetsFile <- function()
   Try(TargetsFile <- tmpTargetsFile)
   Try(assign("TargetsFile",TargetsFile,limmaGUIenvironment))
   Try(tclvalue(.limmaGUIglobals$TargetsfileBoxTitleTcl) <- paste("Targets File"))
-  Try(tclvalue(.limmaGUIglobals$TargetsfileNameTcl) <- paste(TargetsFile))
+  Try(tclvalue(.limmaGUIglobals$TargetsfileNameTcl) <- fixSeps(paste(TargetsFile)))
   Try(Targets <- read.table(TargetsFile,header=TRUE,sep="\t",quote="\"",as.is=TRUE))
   Try(if (!("FileName" %in% colnames(Targets)) && !("FileNameCy3" %in% colnames(Targets) && "FileNameCy5" %in% colnames(Targets)))
   {
@@ -721,7 +785,7 @@ OpenSpotTypesFile <- function()
   Try(SpotTypesFile <- tmpSpotTypesFile)
   Try(assign("SpotTypesFile",SpotTypesFile,limmaGUIenvironment))
   Try(tclvalue(.limmaGUIglobals$SpotTypesfileBoxTitleTcl) <- paste("Spot-Types File"))
-  Try(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl) <- paste(SpotTypesFile))
+  Try(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl) <- fixSeps(paste(SpotTypesFile)))
   Try(SpotTypes <- read.table(SpotTypesFile,header=TRUE,sep="\t",quote="\"",as.is=TRUE,comment.char=""))
   Try(if (!("SpotType" %in% colnames(SpotTypes))||
       !("ID" %in% colnames(SpotTypes)) ||
@@ -755,8 +819,6 @@ OpenSpotTypesFile <- function()
   Try(tkfocus(.limmaGUIglobals$ttMain))
 }
 
-
-
 GetImageProcessingFileType <- function()
 {
   ttGetImageProcessingFileType<-tktoplevel(.limmaGUIglobals$ttMain)
@@ -778,21 +840,40 @@ GetImageProcessingFileType <- function()
   Try(ImaGene.but <- tkradiobutton(tkframe2,text="ImaGene",variable=fileTypeTcl,value="imagene",font=.limmaGUIglobals$limmaGUIfont2))
   Try(ArrayVision.but <- tkradiobutton(tkframe2,text="ArrayVision",variable=fileTypeTcl,value="arrayvision",font=.limmaGUIglobals$limmaGUIfont2))  
   Try(Agilent.but <- tkradiobutton(tkframe2,text="Agilent",variable=fileTypeTcl,value="agilent",font=.limmaGUIglobals$limmaGUIfont2))
-#  Try(SMD.but <- tkradiobutton(tkframe2,text="SMD (Stanford Microarray Database)",variable=fileTypeTcl,value="smd",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(SMD.but <- tkradiobutton(tkframe2,text="SMD (Stanford Microarray Database)",variable=fileTypeTcl,value="smd",font=.limmaGUIglobals$limmaGUIfont2))  
+
+  Try(ReturnVal <- "")  
+  Try(columnHeadings <- list())
+  Try(onOther <- function() 
+  {
+    Try(columnHeadings <- GetImageAnalysisColumnHeadings())
+    Try(if (length(columnHeadings)>0)
+    {
+      limmaGUIglobals <- .limmaGUIglobals
+      limmaGUIglobals$columnHeadings <- columnHeadings
+      assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
+    })
+    Try(tkgrab.release(ttGetImageProcessingFileType));Try(tkdestroy(ttGetImageProcessingFileType));Try(tkfocus(.limmaGUIglobals$ttMain))
+    Try(ReturnVal <<- "other")
+  })
   
-  Try(tkgrid(Spot.but))
-  Try(tkgrid(Spot.close.open.but))
-  Try(tkgrid(GenePix.but))  
-  Try(tkgrid(QuantArray.but))    
-  Try(tkgrid(ImaGene.but))
-  Try(tkgrid(ArrayVision.but))  
-  Try(tkgrid(Agilent.but))    
-#  Try(tkgrid(SMD.but))  
+  Try(other.but <- tkbutton(tkframe2,text="Other...",command=onOther,font=.limmaGUIglobals$limmaGUIfont2))
   
-  Try(tkgrid.configure(Spot.but,Spot.close.open.but,GenePix.but,QuantArray.but,ImaGene.but,ArrayVision.but,Agilent.but,sticky="w"))
-#  Try(tkgrid.configure(Spot.but,Spot.close.open.but,GenePix.but,QuantArray.but,ImaGene.but,ArrayVision.but,Agilent.but,SMD.but,sticky="w"))
+  Try(tkgrid(Spot.but,columnspan=2))
+  Try(tkgrid(Spot.close.open.but,columnspan=2))
+  Try(tkgrid(GenePix.but,columnspan=2))  
+  Try(tkgrid(QuantArray.but,columnspan=2))    
+  Try(tkgrid(ImaGene.but,columnspan=2))
+  Try(tkgrid(ArrayVision.but,columnspan=2))  
+  Try(tkgrid(Agilent.but,columnspan=2))      
+  Try(tkgrid(SMD.but,columnspan=2))  
+  Try(tkgrid(tklabel(tkframe2,text="    ")))
+  Try(tkgrid(tklabel(tkframe2,text="    "),other.but))
+  Try(tkgrid.configure(other.but,sticky="w"))
+  Try(tkgrid(tklabel(tkframe2,text="    ")))
+
+  Try(tkgrid.configure(Spot.but,Spot.close.open.but,GenePix.but,QuantArray.but,ImaGene.but,ArrayVision.but,Agilent.but,SMD.but,sticky="w"))
   Try(tkgrid(tkframe2))
-  Try(ReturnVal <- "")
   onOK <- function()
   {
       Try(fileTypeVal <- as.character(tclvalue(fileTypeTcl)))
@@ -821,7 +902,6 @@ ReadImageProcessingFiles <- function()
   Try(if (nchar(imageFileType)==0) return(0))
 
   Try(WeightingType     <- get("WeightingType",envir=limmaGUIenvironment))
-#  Try(FlagSpotWeighting <- get("FlagSpotWeighting",envir=limmaGUIenvironment))  
   Try(AreaLowerLimit    <- get("AreaLowerLimit",envir=limmaGUIenvironment))
   Try(AreaUpperLimit    <- get("AreaUpperLimit",envir=limmaGUIenvironment))
 
@@ -949,7 +1029,12 @@ ReadImageProcessingFiles <- function()
         TryReadImgProcFile(RG<-read.maimages(slides,wt.fun=wtIgnore.Filter,source="quantarray"))
   }
   else
-      TryReadImgProcFile(RG<-read.maimages(slides,source=imageFileType)))
+  {
+    if (imageFileType!="other")
+      TryReadImgProcFile(RG<-read.maimages(slides,source=imageFileType))
+    else
+      TryReadImgProcFile(RG<-read.maimages(slides,columns=.limmaGUIglobals$columnHeadings))
+  })
   Try(if (WhetherToUseBackgroundCorrection=="no")
     Try(RG <- backgroundCorrect(RG,method="none"))
   else
@@ -3373,7 +3458,7 @@ ComputeLinearModelFit <- function()
 				return()
 		Try(if (WhetherToNormalizeWithinArrays=="yes")
 		{
-			Try(GetNormMethodVal<- RadioBoxDialog())
+      Try(GetNormMethodVal<- GetNormalizationMethod())
 			Try(if (GetNormMethodVal=="") return())
 	  })
 		Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
@@ -3416,6 +3501,11 @@ ComputeLinearModelFit <- function()
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",PMFMANormMethodNode, MANormMethodValueNode,text=MAnormalizationMethod,font=.limmaGUIglobals$limmaGUIfontTree))
   Try(ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]] <- MAnormalizationMethod)
 
+  ####################################################################################################################
+  lmFitMethod <- "ls"
+  Try(lmFitMethod <- GetlmFitMethod())
+  Try(if (lmFitMethod == "") return(0))
+  
   ####################################################################################################################
   
   HowManyDupsReturnVal<-1
@@ -3644,7 +3734,7 @@ ComputeLinearModelFit <- function()
   
   if (ndups==1)
   {
-    Try(fit <- lmFit(MA,as.matrix(design)))
+    Try(fit <- lmFit(MA,as.matrix(design),method=lmFitMethod))
 
     Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFDupCorStatusNode))  
     Try(ParameterizationList[[ParameterizationNameNode]] <- 
@@ -5054,6 +5144,7 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(OpenTargetsFile())
       Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))  
       Try(tkfocus(ttGALandTargetsandSpotTypes))
+      Try(tclvalue(.limmaGUIglobals$TargetsfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$TargetsfileNameTcl)))
   }
 
   OpenGALFileAndSetCursor <- function()
@@ -5063,6 +5154,7 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(OpenGALFile())
       Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))  
       Try(tkfocus(ttGALandTargetsandSpotTypes))
+      Try(tclvalue(.limmaGUIglobals$GALfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$GALfileNameTcl)))
   }
 
   OpenSpotTypesFileAndSetCursor <- function()
@@ -5072,11 +5164,16 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(OpenSpotTypesFile())
       Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))  
       Try(tkfocus(ttGALandTargetsandSpotTypes))
+      Try(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl)))
   }
 
   Try(OpenGALFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select GAL File",command=OpenGALFile,font=.limmaGUIglobals$limmaGUIfont2))
   Try(OpenTargetsFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select Targets File",command=OpenTargetsFile,font=.limmaGUIglobals$limmaGUIfont2))
   Try(OpenSpotTypesFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select Spot-Types File",command=OpenSpotTypesFileAndSetCursor,font=.limmaGUIglobals$limmaGUIfont2))
+
+  Try(tclvalue(.limmaGUIglobals$GALfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$GALfileNameTcl)))
+  Try(tclvalue(.limmaGUIglobals$TargetsfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$TargetsfileNameTcl)))
+  Try(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl)))
 
   Try(GALfileBoxTitleLabel<-tklabel(ttGALandTargetsandSpotTypes,text=as.character(tclvalue(.limmaGUIglobals$GALfileBoxTitle)),font=.limmaGUIglobals$limmaGUIfont2))
   Try(GALfileNameLabel<-tklabel(ttGALandTargetsandSpotTypes,text=as.character(tclvalue(.limmaGUIglobals$GALfileNameTcl)),background="white",font=.limmaGUIglobals$limmaGUIfont2))
@@ -5181,7 +5278,6 @@ GetlimmaDataSetName <- function()
       Try(limmaDataSetNameText <- tclvalue(Local.limmaDataSetName))
       if (nchar(limmaDataSetNameText)==0)
         limmaDataSetNameText <- "Untitled"
-#      Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",limmaDataSetNameText)))
       Try(assign("limmaDataSetNameText",limmaDataSetNameText,limmaGUIenvironment))
       Try(tclvalue(.limmaGUIglobals$limmaDataSetNameTcl) <- limmaDataSetNameText)
       Try(tkgrab.release(ttGetlimmaDataSetName));Try(tkdestroy(ttGetlimmaDataSetName));Try(tkfocus(.limmaGUIglobals$ttMain))
@@ -5342,7 +5438,7 @@ NewLimmaFile <- function()
   {
       Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled")  LimmaFileName <- limmaDataSetNameText)  # Local assignment only
       Try(mbVal <- tkmessageBox(title="Start New Analysis",
-            message=paste("Save changes to ",LimmaFileName,"?",sep=""),
+            message=paste("Save changes to ",fixSeps(LimmaFileName),"?",sep=""),
             icon="question",type="yesnocancel",default="yes"))
       if (tclvalue(mbVal)=="yes")
           Try(SaveLimmaFile())
@@ -5395,7 +5491,7 @@ NewLimmaFile <- function()
   Try(initGlobals())
   Try(LimmaFileName <- get("LimmaFileName",limmaGUIenvironment))
   Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only  
-  Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",LimmaFileName)))
+  Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
   Try(tclvalue(.limmaGUIglobals$GALfileBoxTitle)     <- "Please select a GenePix Array List (GAL) file.")
   Try(tclvalue(.limmaGUIglobals$GALfileNameTcl)         <- "No filename is selected at the moment.  Press the Select GAL File Button.")
   Try(tclvalue(.limmaGUIglobals$TargetsfileBoxTitleTcl) <- "Please select a tab-delimited file listing the microarray hybridizations.")
@@ -5408,7 +5504,7 @@ NewLimmaFile <- function()
 
 chooseDir <- function()
 {
-	Try(wd <- tclVar(getwd()))
+	Try(wd <- tclVar(fixSeps(getwd())))
 	Try(ttChooseDir <- tktoplevel(.limmaGUIglobals$ttMain))
 	Try(tkwm.title(ttChooseDir,"Choose working directory"))
 	Try(tkwm.deiconify(ttChooseDir))
@@ -5420,17 +5516,24 @@ chooseDir <- function()
 	Try(tkgrid(tklabel(ttChooseDir,text="    ")))
 	Try(onBrowse <- function() 
 	{
-	  Try(if (file.exists(tclvalue(wd))) initialdir<-gsub("/","\\\\",tclvalue(wd)) else initialdir<-gsub("/","\\\\",getwd()))
+    Try(if (file.exists(gsub("\\\\","/",tclvalue(wd)))) initialdir<-gsub("\\\\","/",tclvalue(wd)) else initialdir<-getwd())
 	  Try(dir1 <- tclvalue(tkchooseDirectory(title="Please choose a working directory for the Limma Analysis",initialdir=initialdir)))
-		Try(if (nchar(dir1)>0) tclvalue(wd) <- dir1)
+		Try(if (nchar(dir1)>0) tclvalue(wd) <- fixSeps(dir1))
 	})
 	Try(ReturnVal <- "")
-	Try(onOK <- function() {Try(DirChosen <- tclvalue(wd));Try(tkgrab.release(ttChooseDir));Try(tkdestroy(ttChooseDir)); Try(ReturnVal <<- DirChosen)})
+	Try(onOK <- function() 
+  {
+    Try(DirChosen <- tclvalue(wd))
+    Try(tkgrab.release(ttChooseDir))
+    Try(tkdestroy(ttChooseDir))
+    Try(DirChosen <- gsub("\\\\","/",DirChosen))
+    Try(ReturnVal <<- DirChosen)
+  })
 	Try(onCancel <- function() {Try(tkgrab.release(ttChooseDir));Try(tkdestroy(ttChooseDir))})
 	Try(Browse.but <- tkbutton(ttChooseDir,text="Browse",command=onBrowse,font=.limmaGUIglobals$limmaGUIfont2))
 	Try(OK.but <- tkbutton(ttChooseDir,text="    OK    ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
 	Try(Cancel.but <- tkbutton(ttChooseDir,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
-	Try(entry1 <- tkentry(ttChooseDir,textvariable=wd,width=60))
+  Try(entry1 <- tkentry(ttChooseDir,textvariable=wd,width=60,font=.limmaGUIglobals$limmaGUIfont2))
 	Try(tkgrid(tklabel(ttChooseDir,text="    "),entry1))
 	Try(tkgrid.configure(entry1,columnspan=3))
   Try(tkgrid(tklabel(ttChooseDir,text="    "),row=3,column=4))
@@ -5469,7 +5572,7 @@ onExit <- function()
   {
       Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled")  LimmaFileName <- limmaDataSetNameText)  # Local assignment only
       Try(mbVal <- tkmessageBox(title="Exit limmaGUI",
-            message=paste("Save changes to ",LimmaFileName,"?",sep=""),
+            message=paste("Save changes to ",fixSeps(LimmaFileName),"?",sep=""),
             icon="question",type="yesnocancel",default="yes"))
       if (tclvalue(mbVal)=="yes")
           Try(SaveLimmaFile())
@@ -5658,22 +5761,30 @@ DeleteContrastsParameterization <- function()
 }
 
 
-OpenLimmaFile <- function()
+OpenLimmaFile <- function() OpenALimmaFile()
+
+OpenALimmaFile <- function(FileName)
 {
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))
-  Try(tempLimmaFileName <- tclvalue(tkgetOpenFile(filetypes="{{Limma Files} {.lma}} {{All files} *}")))
-  if (!nchar(tempLimmaFileName)) 
+  Try(if (missing(FileName))
   {
-    tkfocus(.limmaGUIglobals$ttMain)
-    return()
+    Try(tempLimmaFileName <- tclvalue(tkgetOpenFile(filetypes="{{Limma Files} {.lma}} {{All files} *}")))
+    if (!nchar(tempLimmaFileName)) 
+    {
+      tkfocus(.limmaGUIglobals$ttMain)
+      return()
+    }
   }
+  else
+    tempLimmaFileName <- FileName)
+    
   limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment)
   if (limmaDataSetNameText!="Untitled")
   {
       Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled")  LimmaFileName <- limmaDataSetNameText)  # Local assignment only
       mbVal <- tkmessageBox(title="Open File",
-            message=paste("Save changes to ",LimmaFileName,"?",sep=""),
+            message=paste("Save changes to ",fixSeps(LimmaFileName),"?",sep=""),
             icon="question",type="yesnocancel",default="yes")
       if (tclvalue(mbVal)=="yes")
           SaveLimmaFile()
@@ -5685,7 +5796,57 @@ OpenLimmaFile <- function()
   
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
+  
+  Try(recentFilesFileName <- system.file("etc/recent-files.txt",package="limmaGUI"))
+  Try(recentFiles <- readLines(recentFilesFileName))
+    
+  Try(recentFiles <- gsub("\\\\","/",recentFiles))
+    
+  # Remove any blank lines:
+  Try(blanks <- grep("^[ \t\n]*$",recentFiles))
+  Try(if (length(blanks)>0)
+    recentFiles <- recentFiles[-blanks])
+  Try(numRecentFiles <- length(recentFiles))
+  
+  Try(if (length(grep(LimmaFileName,recentFiles))==0)
+    recentFiles <- c(LimmaFileName,recentFiles))
+  Try(if (length(recentFiles)>4)
+    recentFiles <- recentFiles[1:4])
+  try(writeLines(con=recentFilesFileName,recentFiles),TRUE)
+  Try(numRecentFiles <- length(recentFiles))
 
+  Try(if (numRecentFiles>0)
+  {
+    Try(fileMenu <- .limmaGUIglobals$menus$fileMenu)
+    Try(workingDirIndex <- as.numeric(tclvalue(tkindex(.limmaGUIglobals$menus$fileMenu,"Working Directory"))))
+    Try(exitIndex <- as.numeric(tclvalue(tkindex(.limmaGUIglobals$menus$fileMenu,"Exit"))))
+    Try(if (exitIndex==workingDirIndex+2)
+      Try(numRecentFilesInMenu <- 0)
+    else
+    {
+      Try(numRecentFilesInMenu <- exitIndex - workingDirIndex - 3)
+      Try(for (i in (1:(numRecentFilesInMenu+1)))
+        Try(tkdelete(fileMenu,workingDirIndex+2)))
+    })
+    Try(tkinsert(fileMenu,workingDirIndex+1,"separator"))
+
+    Try(for (i in (numRecentFiles:1))
+    {
+      Try(label <- recentFiles[i])
+      Try(fileNameOnly <- strsplit(label,"/")[[1]])
+      Try(fileNameOnly <- fileNameOnly[length(fileNameOnly)])
+      Try(if (nchar(recentFiles[i])>60)
+          label <- paste(".../",fileNameOnly))
+      Try(eval(parse(text=paste("assign(\".OpenALimmaFile_",fileNameOnly,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep=""))))
+      Try(if (.Platform$OS.type=="windows")
+        Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",fixSeps(label),sep=""),
+          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep="")))))
+      else
+        Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",label,sep=""),
+          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep=""))))))
+    })
+  })
+    
   Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))        
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
@@ -5736,7 +5897,7 @@ OpenLimmaFile <- function()
 
   Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))
   Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only 
-  Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",LimmaFileName)))
+  Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
   Try(assign("limmaDataSetNameText",limmaDataSetNameText,limmaGUIenvironment))
   Try(tclvalue(.limmaGUIglobals$limmaDataSetNameTcl) <- limmaDataSetNameText)  
 
@@ -5942,10 +6103,62 @@ SaveAsLimmaFile <- function()
         tempLimmaFileName <- paste(tempLimmaFileName,".lma",sep="")
   Try(LimmaFileName <- tempLimmaFileName)
   Try(assign("LimmaFileName",LimmaFileName,limmaGUIenvironment))
+  
+  Try(recentFilesFileName <- system.file("etc/recent-files.txt",package="limmaGUI"))
+  recentFiles <- readLines(recentFilesFileName)
+    
+  Try(recentFiles <- gsub("\\\\","/",recentFiles))
+    
+  # Remove any blank lines:
+  Try(blanks <- grep("^[ \t\n]*$",recentFiles))
+  Try(if (length(blanks)>0)
+    recentFiles <- recentFiles[-blanks])
+  Try(numRecentFiles <- length(recentFiles))
+
+  Try(if (length(grep(LimmaFileName,recentFiles))==0)
+    recentFiles <- c(LimmaFileName,recentFiles))
+  Try(if (length(recentFiles)>4)
+    recentFiles <- recentFiles[1:4])
+  try(writeLines(con=recentFilesFileName,recentFiles),TRUE)  
+  Try(numRecentFiles <- length(recentFiles))
+
+  Try(if (numRecentFiles>0)
+  {
+    Try(fileMenu <- .limmaGUIglobals$menus$fileMenu)
+    Try(workingDirIndex <- as.numeric(tclvalue(tkindex(.limmaGUIglobals$menus$fileMenu,"Working Directory"))))
+    Try(exitIndex <- as.numeric(tclvalue(tkindex(.limmaGUIglobals$menus$fileMenu,"Exit"))))
+    Try(if (exitIndex==workingDirIndex+2)
+      Try(numRecentFilesInMenu <- 0)
+    else
+    {
+      Try(numRecentFilesInMenu <- exitIndex - workingDirIndex - 3)
+      Try(for (i in (1:(numRecentFilesInMenu+1)))
+        Try(tkdelete(fileMenu,workingDirIndex+2)))
+    })
+    Try(tkinsert(fileMenu,workingDirIndex+1,"separator"))
+
+    Try(for (i in (numRecentFiles:1))
+    {
+      Try(label <- recentFiles[i])
+      Try(fileNameOnly <- strsplit(label,"/")[[1]])
+      Try(fileNameOnly <- fileNameOnly[length(fileNameOnly)])
+      Try(if (nchar(recentFiles[i])>60)
+          label <- paste(".../",fileNameOnly))
+      Try(eval(parse(text=paste("assign(\".OpenALimmaFile_",fileNameOnly,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep=""))))
+      Try(if (.Platform$OS.type=="windows")
+        Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",fixSeps(label),sep=""),
+          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep="")))))
+      else
+        Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",label,sep=""),
+          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep=""))))))
+    })
+  })
+  
+  
   # .limmaGUIglobals$ttMain may have been destroyed
   e <- try(tkfocus(.limmaGUIglobals$ttMain),silent=TRUE)
   if (!inherits(e, "try-error"))
-    Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",LimmaFileName)))
+    Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
   try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"),silent=TRUE)    
   Try(save(list = ls(envir=limmaGUIenvironment), file=LimmaFileName, envir=limmaGUIenvironment))    
   try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"),silent=TRUE)
