@@ -1804,25 +1804,53 @@ MAPlot <- function()
       Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))            
     })
 
+
+  Try(lowessChoice <- GetLowessType())
+  Try(if (lowessChoice=="") # User pressed Cancel
+  {
+      Try(tkfocus(.limmaGUIglobals$ttMain))
+      return()
+  })
+
+  MAraw <- MA.RG(RG)
+
   Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
     Try(cex <- 0.3)
   else
     Try(cex <- 0.1))  
-  plot.print.tip.lowess0 <- function()
+  plotFun <- function()
   {
      Try(Require("sma"))
      Try(opar<-par(bg="white"))
      
      Try(if (NormalizedMADataWasImported==FALSE)     
      {
-       if (WhetherToNormalizeWithinArray=="yes")
+       Try(if (WhetherToNormalizeWithinArray=="yes")
           normval <- "p"
        else
-         normval <- "n"
+         normval <- "n")
      }
       else
         normval <- "n")
-     Try(plot.print.tip.lowess(RG,maLayout,pch=16,cex=cex,image=slidenum,norm=normval))
+     Try(if (WhetherToNormalizeWithinArray=="yes")
+        plot.type <- "n"
+     else
+       plot.type <- "r")
+     Try(if (lowessChoice=="printtip")
+       Try(plot.print.tip.lowess(RG,maLayout,pch=16,cex=cex,image=slidenum,norm=normval)))
+     Try(if ((lowessChoice!="printtip")  && normval=="p")
+       normval <- "l")
+     Try(if (lowessChoice=="none")  
+     {
+       Try(if (length(SlideNamesVec)>1)
+         Try(plot(MAraw$A[,slidenum],MAraw$M[,slidenum],pch=16,cex=0.3,xlab="A",ylab="M"))
+       else
+         Try(plot(MAraw$A,MAraw$M,pch=16,cex=0.3,xlab="A",ylab="M")))
+     })
+     Try(if (lowessChoice=="global")
+     {
+       Try(plot.mva(RG,pch=16,cex=cex,image=slidenum,norm=normval,plot.type=plot.type))
+     })       
      Try(title(plotTitle))
      Try(tempGraphPar <- par(opar))
   }
@@ -1855,10 +1883,10 @@ MAPlot <- function()
     
       
   Try(tkwm.title(ttMAPlotGraph,plotTitle))
-  Try(img <-tkrplot(ttMAPlotGraph,plot.print.tip.lowess0,hscale=LocalHScale,vscale=LocalVScale) )
+  Try(img <-tkrplot(ttMAPlotGraph,plotFun,hscale=LocalHScale,vscale=LocalVScale) )
   Try(SetupPlotKeyBindings(tt=ttMAPlotGraph,img=img))
   Try(SetupPlotMenus(tt=ttMAPlotGraph,initialfile=paste(limmaDataSetNameText,"MAPlotSlide",SlideNamesVec[slidenum],sep=""),
-                 plotFunction=plot.print.tip.lowess0,img=img))
+                 plotFunction=plotFun,img=img))
   Try(tkgrid(img))
   Try(tkconfigure(ttMAPlotGraph,cursor="arrow"))        
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))          
@@ -2401,7 +2429,7 @@ plotMAColorCoded <- function()
   {
      Try(opar<-par(bg="white"))
      Try(plotMA(MA,pch=pch,cex=cex,array=slidenum,status=SpotTypeStatus,values=values,
-         col=col,xlab=xLabel,ylab=yLabel,legend=showLegend,xlim=xlim))
+         col=col,xlab=xLabel,ylab=yLabel,legend=showLegend,xlim=xlim,main=""))
      Try(title(plotTitle))
      Try(tempGraphPar <- par(opar))
   }
@@ -3257,60 +3285,6 @@ vennDiagramlimmaGUI <- function(object,include="both",names,cex=1.5,mar=rep(1,4)
   invisible()
 }
 
-
-plotMAlimmaGUI <- function(MA,array=1,pch=16,status=NULL,
-              values=c("gene","blank","buffer","utility","negative","calibration","ratio"),
-              col=c("black","yellow","orange","pink","brown","blue","red"),
-              cex=c(0.1,0.6,0.6,0.6,0.6,0.6,0.6),main=colnames(MA$M)[array],xlab="A",ylab="M",showLegend=TRUE,xlim=NULL) 
-{
-#  MA-plot
-#  Gordon Smyth.  Modified by James Wettenhall to accept lists for pch.
-#  7 April 2003.  Last modified 27 June 2003.
-
-         x <- MA$A[,array]
-         y <- MA$M[,array]
-         if (is.list(pch)) 
-             isListPCH <- TRUE 
-         else 
-             isListPCH <- FALSE
-         pch <- as.list(pch)
-         if (is.null(xlim))
-         {
-             xmin <- min(x,na.rm=TRUE)
-             xmax <- max(x,na.rm=TRUE)
-         }
-         else
-         {
-             xmin <- xlim[1]
-             xmax <- xlim[2]
-         }
-                  
-         plot(x,y,xlab=xlab,ylab=ylab,type="n",xlim=c(xmin,xmax))
-         title(main)
-         if(is.null(status))
-                 points(x,y,pch=pch[[1]],cex=cex[1])
-         else {
-                 nvalues <- length(values)
-                 if (length(pch) < nvalues)
-                     pch <- rep(pch,length=nvalues)
-                 col <- rep(col,nvalues)
-                 cex <- rep(cex,nvalues)
-                 for (i in 1:nvalues) {
-                         sel <- status==values[i]
-                         points(x[sel],y[sel],pch=pch[[i]],cex=cex[i],col=col[i])
-                 }
-                 if (showLegend)
-                 {
-                   if (isListPCH)
-                     legend(min(xmin,min(x,na.rm=TRUE)),max(y,na.rm=TRUE),pch=unlist(pch),legend=values,col=col,cex=0.9)
-                   else
-                     legend(min(xmin,min(x,na.rm=TRUE)),max(y,na.rm=TRUE),pch=unlist(pch),legend=values,col=col,cex=0.9)
-                 }
-         }
-         invisible()
-}
-
-
 GetPValueCutoff <- function(p.value=0.01)
 {
   Try(ttGetPValueCutoff<-tktoplevel(.limmaGUIglobals$ttMain))
@@ -3350,3 +3324,74 @@ GetPValueCutoff <- function(p.value=0.01)
   return (ReturnVal)          
 }
 
+GetLowessType <- function()
+{
+  Try(ttGetLowessType<-tktoplevel(.limmaGUIglobals$ttMain))
+  Try(tkwm.title(ttGetLowessType,"Lowess Curve(s) Options"))
+  Try(tkwm.deiconify(ttGetLowessType))
+  Try(tkgrab.set(ttGetLowessType))
+  Try(tkframe1 <- tkframe(ttGetLowessType,borderwidth=2))
+  Try(tkframe2 <- tkframe(tkframe1,relief="groove",borderwidth=2))
+  Try(tkframe4<-tkframe(tkframe1,borderwidth=2))
+
+  Try(tkgrid(tklabel(tkframe1,text="    ")))
+
+  Try(tkgrid(tklabel(tkframe2,text="Lowess Curve(s) Options",font=.limmaGUIglobals$limmaGUIfont2),column=2,rowspan=1,columnspan=2,sticky="w"))
+
+  Try(LowessType <- "printtip")
+  Try(LowessTypeTcl <- tclVar(LowessType))
+
+  Try(none.but <- tkradiobutton(tkframe2,text="No Lowess Curve",variable=LowessTypeTcl,value="none",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(global.but <- tkradiobutton(tkframe2,text="Global Lowess Curve",variable=LowessTypeTcl,value="global",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(printtip.but <- tkradiobutton(tkframe2,text="Print-Tip Group Lowess Curves",variable=LowessTypeTcl,value="printtip",font=.limmaGUIglobals$limmaGUIfont2))
+
+    
+  Try(tkgrid(none.but,column=2))
+  Try(tkgrid(global.but,column=2))
+  Try(tkgrid(printtip.but,column=2))
+  Try(tkgrid.configure(none.but,global.but,printtip.but,sticky="w"))
+  Try(tkgrid(tkframe2))
+  Try(NewLowessType <- "")
+  onOK <- function()
+  {
+    Try(NewLowessType<<-tclvalue(LowessTypeTcl))
+    Try(tkgrab.release(ttGetLowessType))
+    Try(tkdestroy(ttGetLowessType))
+    Try(LowessType <- NewLowessType)
+    Try(tkfocus(.limmaGUIglobals$ttMain))  
+  }
+  onHelp <- function()
+  {
+      Require("sma")
+      Try(LowessType<-tclvalue(LowessTypeTcl))
+      Try(if (LowessType=="printtip")
+        Try(help("plot.print.tip.lowess",htmlhelp=TRUE)))
+      Try(if (LowessType=="none")
+        Try(help("plot.default",htmlhelp=TRUE)))
+      Try(if (LowessType=="global")
+      {
+        Try(help("plot.mva",htmlhelp=TRUE))
+      })
+  }
+  Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=function(){Try(tkgrab.release(ttGetLowessType));Try(tkdestroy(ttGetLowessType));NewLowessType<-"";Try(tkfocus(.limmaGUIglobals$ttMain))},font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=onHelp,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(tkgrid(tklabel(tkframe4,text="                    ")))
+  Try(tkgrid(OK.but,Cancel.but,Help.but))
+  Try(tkgrid.configure(OK.but,sticky="e"))
+  Try(tkgrid.configure(Cancel.but,sticky="e"))
+  Try(tkgrid.configure(Help.but,sticky="e"))  
+  Try(tkgrid(tklabel(tkframe4,text="       ")))
+  Try(tkgrid(tkframe4))
+  Try(tkgrid(tkframe1))
+  Try(tkfocus(OK.but))
+  Try(tkbind(ttGetLowessType, "<Return>",onOK))
+  Try(tkbind(ttGetLowessType, "<Destroy>", function() {Try(tkgrab.release(ttGetLowessType));Try(tkfocus(.limmaGUIglobals$ttMain))}))
+  Try(tkwait.window(ttGetLowessType))
+
+  Try(tkdestroy(ttGetLowessType))  
+
+# This return value below is not used.  The function above is used for its effect
+# on LowessType in limmaGUIenvironment
+  return(NewLowessType)
+}

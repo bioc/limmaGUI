@@ -290,10 +290,6 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
 
   Try(limmaGUIglobals$oldOptions <- options(warn=-1)) # Otherwise R complains that I'm trying to set main in plots, i.e. set a plot title)
 
-  # It's nice to make sure plot.new() has been called at least once (not just tkrplot), so
-  # that functions like title(...) won't fail.
-  try(plot.new(),silent=TRUE)        
-
 # Maybe it would be nice to eventually use the MainFrame widget from BWidget so we can have a nice toolbar etc.
   Try(limmaGUIglobals$ttMain <- tktoplevel())
   Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
@@ -333,11 +329,11 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only 
   Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
   Try(limmaGUIglobals <- .limmaGUIglobals)  
-  Try(limmaGUIglobals$GALfileBoxTitle <- tclVar("Please select a GenePix Array List (GAL) file."))
+  Try(limmaGUIglobals$GALfileBoxTitle <- tclVar("Please select a GenePix Array List (GAL) file. (OPTIONAL)"))
   Try(limmaGUIglobals$GALfileNameTcl <- tclVar("No filename is selected at the moment.  Press the Select GAL File Button."))
-  Try(limmaGUIglobals$TargetsfileBoxTitleTcl <- tclVar("Please select a tab-delimited file listing the microarray hybridizations."))
+  Try(limmaGUIglobals$TargetsfileBoxTitleTcl <- tclVar("Please select a tab-delimited RNA Targets file. (REQUIRED)"))
   Try(limmaGUIglobals$TargetsfileNameTcl <- tclVar("No filename is selected at the moment.  Press the Select Targets File Button."))
-  Try(limmaGUIglobals$SpotTypesfileBoxTitleTcl <- tclVar("Please select a tab-delimited file listing the spot types."))
+  Try(limmaGUIglobals$SpotTypesfileBoxTitleTcl <- tclVar("Please select a tab-delimited Spot Types file. (OPTIONAL)"))
   Try(limmaGUIglobals$SpotTypesfileNameTcl <- tclVar("No filename is selected at the moment.  Press the Select Spot-Types File Button."))
   Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
    
@@ -456,13 +452,13 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
                 fileNameOnly <- fileNameOnly[length(fileNameOnly)]
                 if (nchar(recentFiles[i])>60)                  
                     label <- paste(".../",fileNameOnly)
-                eval(parse(text=paste("assign(\".OpenALimmaFile_",fileNameOnly,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep="")))
+                eval(parse(text=paste("assign(\".OpenALimmaFile_",i,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep="")))
                 Try(if (.Platform$OS.type=="windows")
                   tkadd(eval(parse(text=Menus[m,2])),"command",label=paste(i,". ",fixSeps(label),sep=""),
-                    command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep=""))))
+                    command=eval(parse(text=paste(".OpenALimmaFile_",i,sep=""))))
                 else
                   tkadd(eval(parse(text=Menus[m,2])),"command",label=paste(i,". ",label,sep=""),
-                    command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep="")))))
+                    command=eval(parse(text=paste(".OpenALimmaFile_",i,sep="")))))
                   
               }
             }
@@ -577,6 +573,7 @@ initGlobals <- function()
   assign("RawMADataWasImported",FALSE,limmaGUIenvironment)  
   assign("NormalizedMADataWasImported",FALSE,limmaGUIenvironment)
   assign("BCMethod","subtract",limmaGUIenvironment)  
+  assign("ImageAnalysisExtension","spot",limmaGUIenvironment)
 }
 
 fixSeps <- function(string)
@@ -696,36 +693,6 @@ SetLayoutParameters <- function()
   return(ReturnVal)
 }
 
-
-# This will be deleted soon, but it will remain a bit longer, just to make sure limmaGUI
-# users are using limma 1.2.1 or later.
-readGALlimmaGUI <- function(galfile=NULL,path=NULL,header=TRUE,sep="\t",quote="\"",skip=NULL,as.is=TRUE,fill=TRUE,...) {
-# Read GenePix Allocation List (GAL) file
-# Gordon Smyth
-# 1 Mar 2003.  Last revised 16 Sept 2003.
-
-  if(is.null(galfile)) {
-    if(is.null(path)) path <- "."
-    galfile <- dir(path=path,pattern="*\\.gal$")
-    nfiles <- length(galfile)
-    if(nfiles == 0) stop("Cannot find GAL file")
-    if(nfiles > 1) {
-      galfile <- galfile[1]
-      warning(paste("More than one GAL file found. Reading",galfile))
-    }
-  }
-  if(!is.null(path)) galfile <- file.path(path,galfile)
-  if(is.null(skip)) {
-    chunk <- readLines(galfile,n=100)
-    skip <- intersect(grep("Name",chunk), grep("ID",chunk)) - 1
-    n <- length(skip)
-    if(n == 0) stop("Cannot find ID and Name columns in GAL file")
-    if(n > 1) stop("Multiple lines with ID and Name labels")
-  }
-  read.table(galfile,header=header,sep=sep,quote=quote,skip=skip,as.is=as.is,comment.char="",fill=fill,...)
-}
-
-
 OpenGALFile <- function()
 {
   Try(tmpGALFile <- tclvalue(tkgetOpenFile(filetypes="{{GAL Files} {.gal}} {{All files} *}")))
@@ -735,10 +702,11 @@ OpenGALFile <- function()
   Try(tclvalue(.limmaGUIglobals$GALfileBoxTitle) <- "GenePix Array List (GAL) File")
   Try(tclvalue(.limmaGUIglobals$GALfileNameTcl) <-fixSeps(paste(GALFile)))
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-  Try(gal <- readGALlimmaGUI(galfile=GALFile,fill=TRUE))
+  Try(gal <- readGAL(galfile=GALFile,fill=TRUE))
   Try(gal$ID <- as.character(gal$ID))
   Try(gal$Name <- as.character(gal$Name))  
   Try(assign("gal",gal,limmaGUIenvironment))
+  Try(assign("maLayout",getLayout(gal),limmaGUIenvironment))
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))  
   Try(ArraysLoaded <- FALSE)
   Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
@@ -813,7 +781,6 @@ OpenSpotTypesFile <- function()
     return()
   })
   Try(assign("SpotTypes",SpotTypes,limmaGUIenvironment))  
-  Try(UpdateSpotTypesStatus())
   Try(ArraysLoaded <- FALSE)
   Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
   Try(tkfocus(.limmaGUIglobals$ttMain))
@@ -825,7 +792,25 @@ GetImageProcessingFileType <- function()
   tkwm.deiconify(ttGetImageProcessingFileType)
   tkgrab.set(ttGetImageProcessingFileType)  
   Try(tkwm.title(ttGetImageProcessingFileType,"Type of Image Processing Files"))
+
+  # Don't remove this! We need at least one tclVar initialization, not just tclvalue()'s.
   Try(fileTypeTcl <- tclVar("spot"))
+  
+  Try(ImageAnalysisExtension <- get("ImageAnalysisExtension",envir=limmaGUIenvironment))
+  Try(Targets <- get("Targets",envir=limmaGUIenvironment))
+  Try(if ("FileNameCy3" %in% colnames(Targets))
+    Try(tclvalue(fileTypeTcl) <- "imagene")
+  else if (length(grep("\\.spot$",tolower(Targets$FileName))) > 0)
+    Try(tclvalue(fileTypeTcl) <- "spot")
+  else if (length(grep("\\.gpr$",tolower(Targets$FileName))) > 0)
+    Try(tclvalue(fileTypeTcl) <- "genepix")
+  else if (length(grep("\\.",Targets$FileName))==0 || length(grep("\\.csv$",tolower(Targets$FileName))) > 0)
+    Try(tclvalue(fileTypeTcl) <- "arrayvision")
+  else if (length(grep("\\.xls$",tolower(Targets$FileName))) > 0)
+    Try(tclvalue(fileTypeTcl) <- "smd")
+  else 
+    Try(tclvalue(fileTypeTcl) <- "quantarray"))
+
   Try(tkframe1 <- tkframe(ttGetImageProcessingFileType,borderwidth=2))
   Try(tkframe2 <- tkframe(tkframe1,relief="groove",borderwidth=2))
   Try(tkframe4<-tkframe(tkframe1,borderwidth=2))
@@ -1035,17 +1020,19 @@ ReadImageProcessingFiles <- function()
     else
       TryReadImgProcFile(RG<-read.maimages(slides,columns=.limmaGUIglobals$columnHeadings))
   })
+  Try(if (!exists("BCMethod",envir=limmaGUIenvironment))
+  {
+    Try(BCMethod <- "subtract")
+    Try(assign("BCMethod",BCMethod,limmaGUIenvironment))
+  })
+  Try(BCMethod <- get("BCMethod",envir=limmaGUIenvironment))
+
   Try(if (WhetherToUseBackgroundCorrection=="no")
     Try(RG <- backgroundCorrect(RG,method="none"))
   else
   {
-    Try(if (!exists("BCMethod",envir=limmaGUIenvironment))
-		{
-		  Try(BCMethod <- "subtract")
-		  Try(assign("BCMethod",BCMethod,limmaGUIenvironment))
-		})
-		Try(BCMethod <- get("BCMethod",envir=limmaGUIenvironment))
-    Try(RG <- backgroundCorrect(RG,method=BCMethod))      
+    Try(if (BCMethod!="subtract")
+      Try(RG <- backgroundCorrect(RG,method=BCMethod)))
   })
   Try(assign("RG",RG,limmaGUIenvironment))
   Try(assign("RG.Available",TRUE,limmaGUIenvironment)  )
@@ -3146,7 +3133,7 @@ ComputeContrasts <- function()
   # not covered in the Main Linear Model Fit is NumRNATypesChoose2 - (NumRNATypes-1).  This will be the default
   # number of columns of the contrasts matrix (for a connected design), unless this number is greater than 6.
   # In that case, it will be limited to 6 columns, and the user will have to add extra columns themselves.
-  # (6 columns is  [ 5 Choose 2 - (5-1)  = 6 ] i.e. it is sufficient for 5 RNA types in a connected design.
+  # (6 columns is  [ 5 Choose 2 - (5-1)  = 6 ] i.e. it is sufficient for 5 RNA types in a connected design).
 
   # For an unconnected design, the number of parameters estimated in the main linear model fit is 
   # NumRNATypes - NumSubGraphs (where the empty graph is not counted as a subgraph, and if there is 
@@ -3337,6 +3324,10 @@ ComputeContrasts <- function()
 
   Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
   tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")       
+
+  Try(tkmessageBox(title="Contrasts Fit Complete",
+      message=paste("Calculation of the contrasts fit is complete. ",
+      "You can now view list(s) of differentially expressed genes, using the TopTable menu.")))
 }
 
 ComputeLinearModelFit <- function()
@@ -3748,7 +3739,7 @@ ComputeLinearModelFit <- function()
   {
     Try(if (WhetherToCalculateDuplicateCorrelation=="yes")    # Otherwise user entered it (hopefully).
     {
-      Try(dupcor <- dupcor.series(MA$M,as.matrix(design),ndups=ndups,spacing=spacing))
+      Try(dupcor <- duplicateCorrelation(MA,design=as.matrix(design),ndups=ndups,spacing=spacing))
       Try(if (!("cor" %in% names(dupcor))) dupcor$cor <- dupcor$consensus)
     })
     Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFDupCorStatusNode))  
@@ -3808,11 +3799,10 @@ ComputeLinearModelFit <- function()
   Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
   Try(assign("NumParameterizations",NumParameterizations,limmaGUIenvironment))
 
-  Try(if (ndups>1)
-  {
-    Try(msg <- paste("Duplicate Correlation : ",dupcor$cor,sep=""))
-    Try(tkmessageBox(title="Duplicate Correlation",message=msg,icon="info",type="ok",default="ok"))
-  })  
+  Try(tkmessageBox(title="Linear Model Fit Complete",
+      message=paste("Calculation of the linear model fit is complete. ",
+      "You can now view list(s) of differentially expressed genes, using the TopTable menu",
+      "or compute contrasts from the Linear Model menu.")))
 }
 
 ChooseParameterization <- function()
@@ -3973,7 +3963,12 @@ GetCoef <- function(parameterizationTreeIndex,whichCoef="onlyOne")
   return (ReturnVal)
 }
 
-showTopTable <- function()
+ExportTopTable <- function() showTopTable(export=TRUE)
+
+
+# The reason for the ... is that Tcl/Tk may pass arguments to showTopTable when the menu item
+# is clicked so we don't want showTopTable to interpret the first one of these as "export".
+showTopTable <- function(...,export=FALSE)
 {
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
@@ -4060,7 +4055,10 @@ showTopTable <- function()
   Try(tkgrid(HowManyQuestion1))
   Try(tkgrid.configure(HowManyQuestion1,columnspan=2,sticky="w"))
   
-  Try(numberOfGenesTcl <- tclVar("3"))
+  Try(if (export)
+    Try(numberOfGenesTcl <- tclVar("5"))
+  else
+    Try(numberOfGenesTcl <- tclVar("3")))
   Try(Ten.but      <- tkradiobutton(frame1,text="10",variable=numberOfGenesTcl,value="1",font=.limmaGUIglobals$limmaGUIfont2))
   Try(Thirty.but   <- tkradiobutton(frame1,text="30",variable=numberOfGenesTcl,value="2",font=.limmaGUIglobals$limmaGUIfont2))
   Try(Fifty.but    <- tkradiobutton(frame1,text="50",variable=numberOfGenesTcl,value="3",font=.limmaGUIglobals$limmaGUIfont2))  
@@ -4243,6 +4241,24 @@ showTopTable <- function()
   Try(nrows <- nrow(table1))
   Try(ncols <- ncol(table1))  
   
+  SaveTopTable <- function()
+  {
+    Try(if (NumSlides>1)
+      Try(TopTableFile <- tclvalue(tkgetSaveFile(initialfile=paste("toptable",coef,".xls",sep=""),filetypes="{{Tab-Delimited Text Files} {.txt .xls}} {{All files} *}")))
+    else
+      Try(TopTableFile <- tclvalue(tkgetSaveFile(initialfile=paste("toptable1.xls",sep=""),filetypes="{{Tab-Delimited Text Files} {.txt .xls}} {{All files} *}"))))
+    Try(if (!nchar(TopTableFile))
+      return())
+    Try(write.table(table1,file=TopTableFile,quote=FALSE,col.names=NA,sep="\t"))
+  } 
+    
+  Try(if (export)
+  {
+    Try(SaveTopTable())
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+    return()
+  })
+  
   if (nrows <=100)
   {
     Try(ttToptableTable <- tktoplevel(.limmaGUIglobals$ttMain))
@@ -4318,7 +4334,7 @@ showTopTable <- function()
   }
   else
   {
-    Try(tkmessageBox(title="Large Toptable",message="Toptable is too big to display in a table widget, so it will be displayed in a text window instead.  You can save it as a tab-delimited text file and then import it into a spreadsheet program.",icon="info",type="ok"))
+    Try(tkmessageBox(title="Large Toptable",message="Toptable is too large to display in a table widget, so it will be displayed in a text window instead.  You can save it as a tab-delimited text file and then import it into a spreadsheet program.",icon="info",type="ok"))
     Try(tempfile1 <- tempfile())
     Try(write.table(table1,file=tempfile1,quote=FALSE,col.names=NA,sep="\t"))
     Try(ttToptableTable <- tktoplevel(.limmaGUIglobals$ttMain))
@@ -4361,19 +4377,7 @@ showTopTable <- function()
 	  Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(txt),"<<Copy>>"))))        
   }
   
-  
-  SaveTopTable <- function()
-  {
-    Try(if (NumSlides>1)
-      Try(TopTableFile <- tclvalue(tkgetSaveFile(initialfile=paste("toptable", coef,".txt",sep=""))))
-    else
-      Try(TopTableFile <- tclvalue(tkgetSaveFile(initialfile=paste("toptable1.txt",sep="")))))
-    Try(if (!nchar(TopTableFile))
-      return())
-    Try(write.table(table1,file=TopTableFile,quote=FALSE,col.names=NA,sep="\t"))
-  } 
-
-	topMenu2 <- tkmenu(ttToptableTable)
+  topMenu2 <- tkmenu(ttToptableTable)
 	tkconfigure(ttToptableTable, menu=topMenu2)
 	fileMenu2 <- tkmenu(topMenu2, tearoff=FALSE)
 	tkadd(fileMenu2, "command", label="Save As",command=SaveTopTable) 
@@ -5167,8 +5171,8 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl)))
   }
 
-  Try(OpenGALFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select GAL File",command=OpenGALFile,font=.limmaGUIglobals$limmaGUIfont2))
-  Try(OpenTargetsFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select Targets File",command=OpenTargetsFile,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(OpenGALFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select GAL File",command=OpenGALFileAndSetCursor,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(OpenTargetsFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select Targets File",command=OpenTargetsFileAndSetCursor,font=.limmaGUIglobals$limmaGUIfont2))
   Try(OpenSpotTypesFile.but <- tkbutton(ttGALandTargetsandSpotTypes, text="Select Spot-Types File",command=OpenSpotTypesFileAndSetCursor,font=.limmaGUIglobals$limmaGUIfont2))
 
   Try(tclvalue(.limmaGUIglobals$GALfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$GALfileNameTcl)))
@@ -5212,10 +5216,11 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))    
       Try(if (length(gal)==0)
       {
-        Try(tkmessageBox(title="GAL (GenePix Array List) File",message=paste("Either you did not specify a valid GAL (GenePix Array List) File",
-          "or an error occurred while reading in the GAL file.  It should be in tab-delimited text format and it should include the column headings \"Block\", \"Column\", \"Row\", \"Name\" and \"ID\"."),icon="error"))        
-        onCancel()
-        return()
+        Try(tkmessageBox(title="GAL File",message=paste("Warning: You did not specify a valid GenePix Array List file, so limmaGUI will attempt to read gene information from the raw (image analysis) files."),icon="warning"))
+#        Try(tkmessageBox(title="GAL (GenePix Array List) File",message=paste("Either you did not specify a valid GAL (GenePix Array List) File",
+#          "or an error occurred while reading in the GAL file.  It should be in tab-delimited text format and it should include the column headings \"Block\", \"Column\", \"Row\", \"Name\" and \"ID\"."),icon="error"))        
+#        onCancel()
+#        return()
       })
       Try(if (length(Targets)==0)
       {
@@ -5229,18 +5234,21 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       {
         Try(tkmessageBox(title="Spot Types",message=paste("Warning: You did not specify a valid spot types file, so limmaGUI will assume that all spots are genes."),icon="warning"))
         Try(assign("SpotTypes" , data.frame(SpotType=I("gene"),ID=I("*"),Name=I("*"),Color=I("black")),limmaGUIenvironment))
-        Try(UpdateSpotTypesStatus())        
       })
       Try(tkgrab.release(ttGALandTargetsandSpotTypes));
       Try(tkdestroy(ttGALandTargetsandSpotTypes));
       Try(tkfocus(.limmaGUIglobals$ttMain))
       Try(Abort <<- 0)
   }
+  
+  onHelp <- function() browseURL(system.file("doc/InputFiles.html",package="limmaGUI"))
+  
   onCancel <- function() {Try(tkgrab.release(ttGALandTargetsandSpotTypes));Try(tkdestroy(ttGALandTargetsandSpotTypes));Try(tkfocus(.limmaGUIglobals$ttMain));Try(Abort<<-1)}
   Try(OK.but <-tkbutton(ttGALandTargetsandSpotTypes,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(ttGALandTargetsandSpotTypes,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Help.but <-tkbutton(ttGALandTargetsandSpotTypes,text=" Help ",command=onHelp,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(ttGALandTargetsandSpotTypes,text="    ")))
-  Try(tkgrid(tklabel(ttGALandTargetsandSpotTypes,text="    "),OK.but,Cancel.but))
+  Try(tkgrid(OK.but,Cancel.but,Help.but))
   Try(tkgrid(tklabel(ttGALandTargetsandSpotTypes,text="       ")))
   Try(tkfocus(ttGALandTargetsandSpotTypes))
   Try(tkbind(ttGALandTargetsandSpotTypes, "<Destroy>", function() {Try(tkgrab.release(ttGALandTargetsandSpotTypes));Try(tkfocus(.limmaGUIglobals$ttMain));}))
@@ -5252,10 +5260,7 @@ OpenGALandTargetsandSpotTypesfiles <- function()
   #OK
   Try(ReturnVal<- ReadImageProcessingFiles())
   if (ReturnVal==0) return(0)
-  Try(ReturnVal <- GetlimmaDataSetName())
-  if (ReturnVal==0) return(0)        
   return(1)
- 
 }
 
 GetlimmaDataSetName <- function()
@@ -5492,13 +5497,38 @@ NewLimmaFile <- function()
   Try(LimmaFileName <- get("LimmaFileName",limmaGUIenvironment))
   Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only  
   Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
-  Try(tclvalue(.limmaGUIglobals$GALfileBoxTitle)     <- "Please select a GenePix Array List (GAL) file.")
+
+  Try(tclvalue(.limmaGUIglobals$GALfileBoxTitle)     <- "Please select a GenePix Array List (GAL) file. (OPTIONAL)")
   Try(tclvalue(.limmaGUIglobals$GALfileNameTcl)         <- "No filename is selected at the moment.  Press the Select GAL File Button.")
-  Try(tclvalue(.limmaGUIglobals$TargetsfileBoxTitleTcl) <- "Please select a tab-delimited file listing the microarray hybridizations.")
+  Try(tclvalue(.limmaGUIglobals$TargetsfileBoxTitleTcl) <- "Please select a tab-delimited RNA Targets file. (REQUIRED)")
   Try(tclvalue(.limmaGUIglobals$TargetsfileNameTcl)     <- "No filename is selected at the moment.  Press the Select Targets File Button.")
-  Try(tclvalue(.limmaGUIglobals$SpotTypesfileBoxTitleTcl) <- "Please select a tab-delimited file listing the spot types.")
+  Try(tclvalue(.limmaGUIglobals$SpotTypesfileBoxTitleTcl) <- "Please select a tab-delimited Spot Types file. (OPTIONAL)")
   Try(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl) <- "No filename is selected at the moment.  Press the Select Spot-Types File Button.")
-  Try(OpenGALandTargetsandSpotTypesfiles())
+  Try(ReturnVal <- OpenGALandTargetsandSpotTypesfiles())
+  Try(if (ReturnVal==0)  # The user pressed "Cancel"
+  {
+    Try(tkfocus(.limmaGUIglobals$ttMain))  
+    return()
+  })
+  Try(gal <- get("gal",envir=limmaGUIenvironment))
+  Try(if (length(gal)==0)
+  {
+    Try(RG <- get("RG",envir=limmaGUIenvironment))
+    Try(gal <- RG$genes)
+    Try(assign("gal",gal,limmaGUIenvironment))
+  })
+  Try(if (is.null(gal) || length(gal)==0)
+  {
+    Try(GALFile <- get("GALFile",envir=limmaGUIenvironment))
+    Try(if (nchar(GALFile)>0)
+      Try(tkmessageBox(title="Gene List",message="limmaGUI was unable to read in the GAL file.",icon="error"))
+    else
+      Try(tkmessageBox(title="Gene List",message="limmaGUI was unable to read in the gene list from the raw (image analysis) files.",icon="error")))
+    Try(tkfocus(.limmaGUIglobals$ttMain))
+    return()
+  })
+  Try(UpdateSpotTypesStatus())
+  Try(GetlimmaDataSetName())
   Try(tkfocus(.limmaGUIglobals$ttMain))
 }
 
@@ -5837,13 +5867,13 @@ OpenALimmaFile <- function(FileName)
       Try(fileNameOnly <- fileNameOnly[length(fileNameOnly)])
       Try(if (nchar(recentFiles[i])>60)
           label <- paste(".../",fileNameOnly))
-      Try(eval(parse(text=paste("assign(\".OpenALimmaFile_",fileNameOnly,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep=""))))
+      Try(eval(parse(text=paste("assign(\".OpenALimmaFile_",i,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep=""))))
       Try(if (.Platform$OS.type=="windows")
         Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",fixSeps(label),sep=""),
-          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep="")))))
+          command=eval(parse(text=paste(".OpenALimmaFile_",i,sep="")))))
       else
         Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",label,sep=""),
-          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep=""))))))
+          command=eval(parse(text=paste(".OpenALimmaFile_",i,sep=""))))))
     })
   })
     
@@ -5921,6 +5951,9 @@ OpenALimmaFile <- function(FileName)
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end","root",ParameterizationNameNode ,text=ParameterizationNamesVec[parameterizationIndex],font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParameterizationNameNode,ParamMainFitNode,text="Main fit",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"1",ParameterizationNameNode,ParamContrastsNode,text="Contrasts",font=.limmaGUIglobals$limmaGUIfontTree))      
+      Try(if (!("NumContrastParameterizations" %in% names(ParameterizationList[[ParameterizationNameNode]])))
+        ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations <- 0)
+      
       Try(if (ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations==0)
         Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParamContrastsNode,paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".1",sep=""),text="none",font=.limmaGUIglobals$limmaGUIfontTree)))
           Try(ContrastsParameterizationTreeIndexVec <- ParameterizationList[[ParameterizationNameNode]]$ContrastsParameterizationTreeIndexVec)
@@ -5967,6 +6000,9 @@ OpenALimmaFile <- function(FileName)
         Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
       })      
       Try(MANormMethodValueNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,".",1,sep=""))
+
+      Try(if (!(MANormMethodValueNode %in% names(ParameterizationList[[ParameterizationNameNode]])))
+        ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]] <- "Within arrays only (printtiploess)")
       Try(if (ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]]=="Within arrays only")
         ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]] <- paste("Within arrays (",WithinArrayNormalizationMethod,") only",sep=""))
       Try(if (ParameterizationList[[ParameterizationNameNode]][[MANormMethodValueNode]]=="Within and between arrays")
@@ -6144,13 +6180,13 @@ SaveAsLimmaFile <- function()
       Try(fileNameOnly <- fileNameOnly[length(fileNameOnly)])
       Try(if (nchar(recentFiles[i])>60)
           label <- paste(".../",fileNameOnly))
-      Try(eval(parse(text=paste("assign(\".OpenALimmaFile_",fileNameOnly,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep=""))))
+      Try(eval(parse(text=paste("assign(\".OpenALimmaFile_",i,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep=""))))
       Try(if (.Platform$OS.type=="windows")
         Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",fixSeps(label),sep=""),
-          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep="")))))
+          command=eval(parse(text=paste(".OpenALimmaFile_",i,sep="")))))
       else
         Try(tkinsert(fileMenu,workingDirIndex+2,"command",label=paste(i,". ",label,sep=""),
-          command=eval(parse(text=paste(".OpenALimmaFile_",fileNameOnly,sep=""))))))
+          command=eval(parse(text=paste(".OpenALimmaFile_",i,sep=""))))))
     })
   })
   

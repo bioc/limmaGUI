@@ -280,6 +280,7 @@ ExportMvalues <- function()
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
+  Try(gal <- get("gal",envir=limmaGUIenvironment))
   
   Try(if (NormalizedMADataWasImported==FALSE)
   {
@@ -298,15 +299,15 @@ ExportMvalues <- function()
   else
     Try(MA <- get("MAimported",envir=limmaGUIenvironment)))
 
-	Try(FileName <- tclvalue(tkgetSaveFile(initialfile=paste(limmaDataSetNameText,"_M.txt",sep=""),filetypes="{{Tab-Delimited Text Files} {.txt}} {{All files} *}")))
+	Try(FileName <- tclvalue(tkgetSaveFile(initialfile=paste(limmaDataSetNameText,"_M.xls",sep=""),filetypes="{{Tab-Delimited Text Files} {.txt .xls}} {{All files} *}")))
 	Try(if (!nchar(FileName)) return())
 	Try(len <- nchar(FileName))
 	if (len<=4)
-		Try(FileName <- paste(FileName,".txt",sep=""))
-	else if (substring(FileName,len-3,len)!=".txt")
-				Try(FileName <- paste(FileName,".txt",sep=""))
+		Try(FileName <- paste(FileName,".xls",sep=""))
+  else if ((substring(FileName,len-3,len)!=".xls") && (substring(FileName,len-3,len)!=".txt"))
+				Try(FileName <- paste(FileName,".xls",sep=""))
 
-	Try(write.table(MA$M,file=FileName,sep="\t",quote=FALSE,col.names=TRUE,row.names=FALSE))
+	Try(write.table(data.frame(gal,MA$M),file=FileName,sep="\t",quote=FALSE,col.names=TRUE,row.names=FALSE))
 }
 
 
@@ -315,6 +316,7 @@ ExportAvalues <- function()
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))     
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))  
+  Try(gal <- get("gal",envir=limmaGUIenvironment))
 
   Try(if (NormalizedMADataWasImported==FALSE)
   {
@@ -333,15 +335,15 @@ ExportAvalues <- function()
   else
     Try(MA <- get("MAimported",envir=limmaGUIenvironment)))
 
-  	Try(FileName <- tclvalue(tkgetSaveFile(initialfile=paste(limmaDataSetNameText,"_A.txt"),filetypes="{{Tab-Delimited Text Files} {.txt}} {{All files} *}")))
+  	Try(FileName <- tclvalue(tkgetSaveFile(initialfile=paste(limmaDataSetNameText,"_A.xls"),filetypes="{{Tab-Delimited Text Files} {.txt .xls}} {{All files} *}")))
 	Try(if (!nchar(FileName)) return())
 	Try(len <- nchar(FileName))
 	if (len<=4)
-		Try(FileName <- paste(FileName,".txt",sep=""))
-	else if (substring(FileName,len-3,len)!=".txt")
-				Try(FileName <- paste(FileName,".txt",sep=""))
+		Try(FileName <- paste(FileName,".xls",sep=""))
+  else if ((substring(FileName,len-3,len)!=".xls") && (substring(FileName,len-3,len)!=".txt"))
+				Try(FileName <- paste(FileName,".xls",sep=""))
 
-	Try(write.table(MA$A,file=FileName,sep="\t",quote=FALSE,col.names=TRUE,row.names=FALSE))
+	Try(write.table(data.frame(gal,MA$A),file=FileName,sep="\t",quote=FALSE,col.names=TRUE,row.names=FALSE))
 }
 
 

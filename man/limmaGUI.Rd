@@ -3,6 +3,7 @@
 \alias{limmaGUI}
 \alias{GetComponentsToExportInHTMLreport}
 \alias{HTMLplotUsingFunction}
+\alias{ExportTopTable}
 \alias{ExportHTMLreport}
 \alias{TryReadImgProcFile}
 \alias{Require}
@@ -118,7 +119,6 @@
 \alias{InitNewParameterization}
 \alias{limmaGUIhelp}
 \alias{limmaHelp}
-\alias{plotMAlimmaGUI}
 \alias{read.marrayTools}
 \alias{readGALlimmaGUI}
 \alias{showGAL}
@@ -135,12 +135,14 @@
 \alias{GetPValueCutoff}
 \alias{fixSeps}
 \alias{GetImageAnalysisColumnHeadings}
+\alias{GetLowessType}
 \description{Graphical User Interface for the limma microarray package}}
 
 \usage{
 limmaGUI()
 GetComponentsToExportInHTMLreport()
 HTMLplotUsingFunction()
+ExportTopTable()
 ExportHTMLreport()
 TryReadImgProcFile()
 Require()
@@ -258,6 +260,7 @@ onDestroy()
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 GetPValueCutoff(p.value=0.01)
 GetImageAnalysisColumnHeadings()
+GetLowessType()
 }
 
 \arguments{
