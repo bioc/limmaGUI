@@ -1,85 +1,79 @@
 # limmaGUI Menu Definitions
 
-# last modified 10 Jun 04 by J. Wettenhall
+# last modified 18 Dec 03 by J. Wettenhall
 
 # Based on Rcmdr-menus.txt from the Rcmdr package by John Fox, 
 
-#   type    menu/item      operation/parent  label                                              command/menu
+#   type    menu/item      operation/parent  label                                          command/menu
     
-    menu    fileMenu        topMenu         ""                                                  ""
-    item    fileMenu        command         "New     Ctrl+N"                                    NewLimmaFile
-    item    fileMenu        command         "Open    Ctrl+O"                                    OpenLimmaFile
-    item    fileMenu        command         "Save    Ctrl+S"                                    SaveLimmaFile
-    item    fileMenu        command         "Save As"                                           SaveAsLimmaFile
-    item    fileMenu        separator       ""                                                  ""
-    item    fileMenu        command         "Import marrayTools Data"                           ImportMA
-    item    fileMenu        separator       ""                                                  ""    
-    item    fileMenu        command         "Export M values (log ratios)"                      ExportMvalues
-    item    fileMenu        command         "Export A values (log intensities)"                 ExportAvalues
-    item    fileMenu        command         "Export TopTable (differentially expressed genes)"  ExportTopTable
-    item    fileMenu        command         "Export HTML Report"                                ExportHTMLreport
-    item    fileMenu        separator       ""                                                  ""
-    item    fileMenu        command         "Working Directory"                                 SetWD
-    item    fileMenu        separator       ""                                                  ""
-    item    fileMenu        command         "Exit"                                              onExit
-    item    topMenu         cascade         "File"                                              fileMenu   
-    menu    SpotTypesMenu   topMenu         ""                                                  ""
-    item    SpotTypesMenu   command         "Spot Types"                                        ViewSpotTypes
-    item    topMenu         cascade         "Spot Types"                                        SpotTypesMenu
-    menu    RNATargetsMenu  topMenu         ""                                                  ""
-    item    RNATargetsMenu  command         "RNA Targets"                                       ViewRNATargets
-    item    topMenu         cascade         "RNA Targets"                                       RNATargetsMenu
-    menu    layoutMenu      topMenu         ""                                                  ""
-    item    layoutMenu      command         "Layout Parameters"                                 SetLayoutParameters
-    item    layoutMenu      command         "View Gene List"                                    showGAL
-    item    topMenu         cascade         "Layout"                                            layoutMenu
-    menu    normalizeMenu   topMenu         ""                                                  ""
-    item    normalizeMenu   command         "Select Within-Array Normalization Method"          GetWithinArrayNormalizationMethod
-    item    normalizeMenu   command         "Select Between-Array Normalization Method"         GetBetweenArrayNormalizationMethod    
-    item    normalizeMenu   command         "Normalize / Update M and A"                        NormalizeNow
-    item    normalizeMenu   command         "Export M values (log ratios)"                      ExportMvalues
-    item    normalizeMenu   command         "Export A values (log intensities)"                 ExportAvalues
-    item    normalizeMenu   command         "About Normalization"                               AboutNormalization
-    item    topMenu         cascade         "Normalization"                                     normalizeMenu
-    menu    linearModelMenu topMenu         ""                                                  ""
-    item    linearModelMenu command         "Compute Linear Model Fit"                          ComputeLinearModelFit
-    item    linearModelMenu separator       ""                                                  ""
-    item    linearModelMenu command         "Create New Parameterization"                       CreateNewParameterization
-    item    linearModelMenu command         "View Existing Parameterization"                    ViewExistingParameterization
-    item    linearModelMenu command         "Delete Parameterization"                           DeleteParameterization    
-    item    linearModelMenu separator       ""                                                  ""
-    item    linearModelMenu command         "Compute Contrasts"                                 ComputeContrasts
-    item    linearModelMenu command         "View Existing Contrasts Parameterization"          ViewExistingContrastsParameterization
-    item    linearModelMenu command         "Delete Contrasts Parameterization"                 DeleteContrastsParameterization        
-    item    topMenu         cascade         "Linear Model"                                      linearModelMenu    
-    menu    evaluateMenu    topMenu         ""                                                  ""
-    item    evaluateMenu    command         "Evaluate R Code"                                   evalRcode
-    item    topMenu         cascade         "Evaluate"                                          evaluateMenu
-    menu    toptableMenu    topMenu         ""                                                  ""
+    menu    fileMenu        topMenu         ""                                              ""
+    item    fileMenu        command         "New     Ctrl+N"                                NewLimmaFile
+    item    fileMenu        command         "Open    Ctrl+O"                                OpenLimmaFile
+    item    fileMenu        command         "Save    Ctrl+S"                                SaveLimmaFile
+    item    fileMenu        command         "Save As"                                    		SaveAsLimmaFile
+    item    fileMenu        separator       ""                                              ""
+    item    fileMenu        command         "Import marrayTools Data"                       ImportMA
+    item    fileMenu        separator       ""                                              ""    
+    item    fileMenu        command         "Export HTML Report"                            ExportHTMLreport
+    item    fileMenu        separator       ""                                              ""
+    item    fileMenu        command         "Working Directory"                             SetWD
+    item    fileMenu        separator       ""                                              ""
+    item    fileMenu        command         "Exit"                                          onExit
+    item    topMenu         cascade         "File"                                          fileMenu   
+    menu    SpotTypesMenu   topMenu         ""                                              ""
+    item    SpotTypesMenu   command         "Spot Types"                                    ViewSpotTypes
+    item    topMenu         cascade         "Spot Types"                                    SpotTypesMenu
+    menu    RNATargetsMenu  topMenu         ""                                              ""
+    item    RNATargetsMenu  command         "RNA Targets"                                   ViewRNATargets
+    item    topMenu         cascade         "RNA Targets"                                   RNATargetsMenu
+    menu    layoutMenu      topMenu         ""                                              ""
+    item    layoutMenu      command         "Layout Parameters"                             SetLayoutParameters
+    item    layoutMenu      command         "View Gene List"                                showGAL
+    item    topMenu         cascade         "Layout"                                        layoutMenu
+    menu    normalizeMenu   topMenu         ""                                              ""
+    item    normalizeMenu   command         "Select Within-Array Normalization Method"      GetNormalizationMethod
+    item    normalizeMenu   command         "Normalize / Update M and A"                    NormalizeNow
+    item    normalizeMenu   command         "Export M values (log ratios)"                  ExportMvalues
+    item    normalizeMenu   command         "Export A values (log intensities)"             ExportAvalues
+    item    normalizeMenu   command         "About Normalization"                           AboutNormalization
+    item    topMenu         cascade         "Normalization"                                 normalizeMenu
+    menu    linearModelMenu topMenu         ""                                              ""
+    item    linearModelMenu command         "Compute Linear Model Fit"                      ComputeLinearModelFit
+    item    linearModelMenu separator       ""                                              ""
+    item    linearModelMenu command         "Create New Parameterization"                   CreateNewParameterization
+    item    linearModelMenu command         "View Existing Parameterization"                  ViewExistingParameterization
+    item    linearModelMenu command         "Delete Parameterization"                        DeleteParameterization    
+    item    linearModelMenu separator       ""                                              ""
+    item    linearModelMenu command         "Compute Contrasts"                             ComputeContrasts
+    item    linearModelMenu command         "View Existing Contrasts Parameterization"      ViewExistingContrastsParameterization
+    item    linearModelMenu command         "Delete Contrasts Parameterization"             DeleteContrastsParameterization        
+    item    topMenu         cascade         "Linear Model"                                  linearModelMenu    
+    menu    evaluateMenu    topMenu         ""                                              ""
+    item    evaluateMenu    command         "Evaluate R Code"                               evalRcode
+    item    topMenu         cascade         "Evaluate"                                      evaluateMenu
+    menu    toptableMenu    topMenu         ""                                              ""
     item    toptableMenu    command         "Table of Genes Ranked in order of Differential Expression"   showTopTable
-    item    topMenu         cascade         "TopTable"                                          toptableMenu
-    menu    plotMenu        topMenu         ""                                                  ""
-    item    plotMenu        command         "M A Plot with lowess curves (for one slide)"       MAPlot
-    item    plotMenu        command         "Color-Coded M A Plot (for one slide)"              plotMAColorCoded
-    item    plotMenu        command         "Print-Tip Group M A Plot (for one slide)"          PrintTipGroupMAPlot
-    item    plotMenu        command         "M Box Plot"                                        MBoxPlot
-    item    plotMenu        command         "Image Array Plot"                                  ImageArrayPlot
-    item    plotMenu        separator       ""                                                  ""
-    item    plotMenu        command         "Quantile-Quantile t Statistic Plot"                QQTplot
-    item    plotMenu        command         "M A Plot (using fitted M values)"                  MAPlotAvg
-    item    plotMenu        command         "M M Plot (using fitted M values)"                  MMPlot
-    item    plotMenu        command         "Log Odds Plot"                                     LogOddsPlot
-    item    plotMenu        command         "Heat Diagram"                                      HeatDiagramPlot
-    item    plotMenu        command         "Duplicate Correlation Box Plot"                    DupCorBoxPlot
-    item    plotMenu        command         "Empirical Bayes Statistics Box Plots"              ebayesBoxPlots
-    item    plotMenu        command         "Venn Diagram"                                      VennDiagramPlot
-#    item    plotMenu        command         "Histogram"                                         HistogramPlot
-    item    topMenu         cascade         "Plot"                                              plotMenu
-    menu    helpMenu        topMenu         ""                                                  ""
-    item    helpMenu        command         "LimmaGUI Help"                                     limmaGUIhelp
-    item    helpMenu        command         "Limma Help"                                        limmaHelp
-    item    helpMenu        separator       ""                                                  ""
-    item    helpMenu        command         "Normalization"                                     AboutNormalization
-    item    helpMenu        separator       ""                                                  ""    
-    item    helpMenu        command         "About LimmaGUI"                                    AboutLimmaGUI
-    item    topMenu         cascade         "Help"                                              helpMenu
+    item    topMenu         cascade         "TopTable"                                      toptableMenu
+    menu    plotMenu        topMenu         ""                                              ""
+    item    plotMenu        command         "M A Plot with lowess curves (for one slide)"   MAPlot
+    item    plotMenu        command         "Color-Coded M A Plot (for one slide)"          plotMAColorCoded
+    item    plotMenu        command         "Print-Tip Group M A Plot (for one slide)"      PrintTipGroupMAPlot
+    item    plotMenu        command         "M Box Plot"                                    MBoxPlot
+    item    plotMenu        command         "Image Array Plot"                              ImageArrayPlot
+    item    plotMenu        separator       ""                                              ""
+    item    plotMenu        command         "Quantile-Quantile t Statistic Plot"            QQTplot
+    item    plotMenu        command         "M A Plot (using fitted M values)"              MAPlotAvg
+    item    plotMenu        command         "M M Plot (using fitted M values)"              MMPlot
+    item    plotMenu        command         "Log Odds Plot"                                 LogOddsPlot
+    item    plotMenu        command         "Heat Diagram"                                  HeatDiagramPlot
+    item    plotMenu        command         "Duplicate Correlation Box Plot"                DupCorBoxPlot
+    item    plotMenu        command         "Empirical Bayes Statistics Box Plots"          ebayesBoxPlots
+    item    plotMenu        command         "Venn Diagram"                                  VennDiagramPlot
+#    item    plotMenu        command         "Histogram"                                     HistogramPlot
+    item    topMenu         cascade         "Plot"                                          plotMenu
+    menu    helpMenu        topMenu         ""                                              ""
+    item    helpMenu        command         "LimmaGUI Help"                                 limmaGUIhelp
+    item    helpMenu        command         "Limma Help"                                    limmaHelp
+    item    helpMenu        separator       ""                                              ""
+    item    helpMenu        command         "About LimmaGUI"                                AboutLimmaGUI
+    item    topMenu         cascade         "Help"                                          helpMenu

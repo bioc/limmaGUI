@@ -270,7 +270,8 @@ ExportHTMLreport <- function()
     Try(ComponentsToExport <- GetComponentsToExportInHTMLreport(parameterizationIndex))
  }
  else
-     Try(ComponentsToExport <- GetComponentsToExportInHTMLreport()) 
+     Try(ComponentsToExport <- GetComponentsToExportInHTMLreport())
+ 
  
   if (length(ComponentsToExport)==0) return()
 
@@ -451,7 +452,7 @@ ExportHTMLreport <- function()
     Try(for (slidenum in (1:NumSlides))
     {
       Try(plotTitle <- paste("M A Scatter Plot for ",SlideNamesVec[slidenum],sep=""))      
-      Try(plotFunction <- function() plotMA(MAraw,pch=16,cex=cex,array=slidenum,
+      Try(plotFunction <- function() plotMAlimmaGUI(MAraw,pch=16,cex=cex,array=slidenum,
           status=SpotTypeStatus,values=values,col=colVec,main=plotTitle,xlab="A",ylab="M"))    
       Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
         GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("plotMArawSlide",slidenum,sep=""), 
@@ -800,11 +801,11 @@ ExportHTMLreport <- function()
       Try(options(digits=3))
       Try(table1 <- toptable(coef=coef,number=nrow(genelist),genelist=genelist,A=A,fit=fit,eb=eb))
 #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
-      Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
-      Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
+      Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".txt",sep=""))
+      Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".txt",sep=""))
       Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))      
       Try(HTML.title(paste("Complete Table of Genes Ranked in order of Evidence for Differential Expression for ",ParameterNamesVec[coef]),HR=3))
-      Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_Param",coef,".xls",sep=""),"</b></a>",sep=""))) 
+      Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_Param",coef,".txt",sep=""),"</b></a>",sep=""))) 
     }
     # Now the Contrasts
     Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
@@ -824,11 +825,11 @@ ExportHTMLreport <- function()
             Try(options(digits=3))
             Try(table1 <- toptable(coef=coef,number=nrow(genelist),genelist=genelist,A=A,fit=fit,eb=eb))
       #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
-            Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""))
-            Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""))
+            Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".txt",sep=""))
+            Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".txt",sep=""))
             Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))      
             Try(HTML.title(paste("Complete Table of Genes Ranked in order of Evidence for Differential Expression for ",colnames(contrastsMatrix)[coef]," [",ContrastsParameterizationNamesVec[cp],"]",sep=""),HR=3))
-            Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""),"</b></a>",sep=""))) 
+            Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_CP_",cp,"Param",coef,".txt",sep=""),"</b></a>",sep=""))) 
 
         }
       }))    

@@ -3,7 +3,6 @@
 \alias{limmaGUI}
 \alias{GetComponentsToExportInHTMLreport}
 \alias{HTMLplotUsingFunction}
-\alias{ExportTopTable}
 \alias{ExportHTMLreport}
 \alias{TryReadImgProcFile}
 \alias{Require}
@@ -60,7 +59,6 @@
 \alias{ChooseContrastsParameterization}
 \alias{DeleteContrastsParameterization}
 \alias{OpenLimmaFile}
-\alias{OpenALimmaFile}
 \alias{SaveLimmaFile}
 \alias{SaveAsLimmaFile}
 \alias{AboutLimmaGUI}
@@ -69,8 +67,7 @@
 \alias{AboutCustomMenu}
 \alias{DeleteCustomMenuItem}
 \alias{GetCustomMenuItemNum}
-\alias{GetWithinArrayNormalizationMethod}
-\alias{GetBetweenArrayNormalizationMethod}
+\alias{GetNormalizationMethod}
 \alias{NormalizeNow}
 \alias{AboutNormalization}
 \alias{GetGeneLabelsOptions}
@@ -120,6 +117,7 @@
 \alias{InitNewParameterization}
 \alias{limmaGUIhelp}
 \alias{limmaHelp}
+\alias{plotMAlimmaGUI}
 \alias{read.marrayTools}
 \alias{readGALlimmaGUI}
 \alias{showGAL}
@@ -128,21 +126,15 @@
 \alias{WithinBetweenOrBoth}
 \alias{wtflags2}
 \alias{GetBackgroundCorrectionMethod}
-\alias{GetlmFitMethod}
-\alias{lmFitMethodHelp}
+\alias{NormalizeHelp}
 \alias{BChelp}
 \alias{onDestroy}
-\alias{GetPValueCutoff}
-\alias{fixSeps}
-\alias{GetImageAnalysisColumnHeadings}
-\alias{GetLowessType}
 \description{Graphical User Interface for the limma microarray package}}
 
 \usage{
 limmaGUI()
 GetComponentsToExportInHTMLreport()
 HTMLplotUsingFunction()
-ExportTopTable()
 ExportHTMLreport()
 TryReadImgProcFile()
 Require()
@@ -201,7 +193,6 @@ DeleteParameterization()
 ChooseContrastsParameterization()
 DeleteContrastsParameterization()
 OpenLimmaFile()
-OpenALimmaFile(FileName)
 SaveLimmaFile()
 SaveAsLimmaFile()
 AboutLimmaGUI()
@@ -211,8 +202,7 @@ GetNumParametersNoTargets()
 AboutCustomMenu()
 DeleteCustomMenuItem()
 GetCustomMenuItemNum()
-GetWithinArrayNormalizationMethod()
-GetBetweenArrayNormalizationMethod()
+GetNormalizationMethod()
 NormalizeNow()
 AboutNormalization()
 GetGeneLabelsOptions()
@@ -252,15 +242,10 @@ GetJpegOrPngX11Params()
 VennDiagramPlot()
 UpDownOrBoth()
 GetBackgroundCorrectionMethod()
-GetlmFitMethod()
-lmFitMethodHelp()
+NormalizeHelp()
 BChelp()
-fixSeps(string)
 onDestroy()
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
-GetPValueCutoff(p.value=0.01)
-GetImageAnalysisColumnHeadings()
-GetLowessType()
 }
 
 \arguments{
@@ -274,9 +259,6 @@ GetLowessType()
 	\item{sep}{Column separator. ("\t" for tab-delimited text)}
 	\item{quote}{See help for read.table}
 	\item{header}{See help for read.table}
-	\item{p.value}{A p-value cutoff.}
-	\item{FileName}{A file name.}
-	\item{string}{A character string.}
 	\item{\dots}{Any other arguments to read.marrayTools are passed to \code{read.table}}
 }
 

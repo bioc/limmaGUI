@@ -1,8 +1,6 @@
 
 .First.lib <- function(libname, pkgname, where) 
 {
-     if (length(grep("^affylmGUI$", .packages()))>0)
-       stop("Please run limmaGUI and affylmGUI in separate R sessions.")
      ## Make sure the system can use tcltk
      capable <- capabilities()
      if(!capable["tcltk"]){

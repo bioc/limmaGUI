@@ -1,150 +1,91 @@
 <html>
 <head>
-<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
-<link rel=Stylesheet type="text/css" media=all href=style.css>
+<title>LimmaGUI Input Files</title>
 </head>
-
 <body>
-
 <h1>LimmaGUI Input Files</h1>
 
-<ul type=disc>
- <li><a href="#Targets">Targets File</a> </li>
- <li><a href="#SpotTypes">Spot Types File</a></li>
- <li><a href="#GAL">GAL (GenePix Array List) File</a></li>
- <li><a href="#ImageProcessing">Image-Processing Files</a></li>
+<ul>
+<li><a href="#Targets">RNA Targets (Hybridizations) File</a>
+<li><a href="#SpotTypes">Spot Types File</a>
+<li><a href="#GAL">GAL (GenePix Array List) File</a>
+<li><a href="#ImageProcessing">Image-Processing Files</a>
 </ul>
 
-<h2><a name=Targets>Targets File</a></h2>
-
-<p>The Targets file lists the microarray hybridizations and includes for each
-slide, the output file from an image-analysis program such as Spot, GenePix,
-QuantArray, ImaGene or ArrayVision. Most testing to date has been with Spot,
-although both GenePix and ImaGene array data have been loaded successfully into
-recent version of limmaGUI also. The Targets file should be in tab-delimited
-text format, as should be the output files from the image-analysis program. A
-Targets file has four essential columns (or five for ImaGene). The essential
-columns are a SlideNumber column, a FileName column, giving the file from
-image-analysis containing raw foreground and background intensities for each
-slide, a Cy3 column giving the RNA type reverse transcribed and labeled with Cy3
-dye for that slide (e.g. Wild Type) and a Cy5 column giving the RNA type
-reverse transcribed and labeled with Cy5 dye for that slide. For ImaGene files,
-the FileName column is split into a FileNameCy3 column and a FileNameCy5. As
-well as the essential columns, you can have a Name column giving an alternative
-slide name to the default name, &quot;Slide n&quot;, where n is the SlideNumber
-and you can have a Date column, listing the date of the hybridization, and as
-many extra columns as you like, as long as the column names are unique.</p>
+<h2><a name="Targets">RNA Targets (Hybridizations) File</a></h2>
+<p>The RNA Targets file, also know as the Hybridizations file, lists the microarray hybridizations and includes
+for each slide, the output file from an image-analysis program such as Spot, GenePix, QuantArray, ImaGene or
+ArrayVision.  Most testing to date has been with Spot, although both GenePix and ImaGene array data have been
+loaded succesfully into recent version of limmaGUI also.  The Targets file should be in tab-delimited text format,
+as should be the output files from the image-analysis program.  A Targets file has four essential columns (or
+five for ImaGene).  The essential columns are a SlideNumber column, a FileName column, giving the file from
+image-analysis containing raw foreground and background intensities for each slide, a Cy3 column giving the RNA
+type reverse transcribed and labeled with Cy3 dye for that slide (e.g. Wild Type) and a Cy5 column giving the
+RNA type reverse transcribed and labeled with Cy5 dye for that slide.  For ImaGene files, the FileName column
+is split into a FileNameCy3 column and a FileNameCy5.  As well as the essential columns, you can have a Name
+column giving an alternative slide name to the default name, "Slide n", where n is the SlideNumber and you can
+have a Date column, listing the date of the hybridization, and as many extra columns as you like, as long as
+the column names are unique.</p>
 
 <p>Some examples are shown below.</p>
 
-<p>The ImaGene Targets file below shows the special case of the ImaGene
-image-processing software which gives two (tab-delimited text) output files for
-each slide, one for the Cy3 (Green) channel and one for the Cy5 (Red) channel.
-So instead of having a single FileName column, there are two file name columns:
-a FileNameCy3 column and a FileNameCy5 column.</p>
-
-<img border=0 width=499
-height=233 src="input/ImaGeneTargetsFile.png"><br><br>
+<p>The ImaGene Targets file below shows the special case of the ImaGene image-processing software which gives two
+(tab-delimited text) output files for each slide, one for the Cy3 (Green) channel and one for the Cy5 (Red) channel.
+So instead of having a single FileName column, there are two file name columns: a FileNameCy3 column and a FileNameCy5
+column.</p>
+<img src="ImaGeneTargetsFile.png"><br><br>
 
 <p>The Date column is optional and is not currently used in limmaGUI.</p>
+<img src="SwirlSampleInExcel.png"><br><br>
 
-<img border=0 width=475
-height=253 src="input/SwirlSampleInExcel.png"><br><br>
+<p>A Name column can be included, giving each array a name which can be used for plotting.  In this case, a short name
+is used so that a boxplot of all sixteen arrays can be plotted with labels for all arrays along the horizontal axis.  If
+no Name column is given, then a default name will be given to each slide, e.g. "Slide 1".</p>
+<img src="ApoAITargetsInExcel.png"><br><br>
 
-<p>A Name column can be included, giving each array a name which can be used
-for plotting. In this case, a short name is used so that a box-plot of all
-sixteen arrays can be plotted with labels for all arrays along the horizontal
-axis. If no Name column is given, then a default name will be given to each
-slide, e.g. &quot;Slide 1&quot;.</p>
+<p>The Targets file below is from an experiment with four different RNA sources.  The main Targets file is not shown.  The
+one below is used to analyze the spiked-in scorecard controls.  Spike-in controls will generally be analyzed separately
+from genes because the follow different rules, e.g. for genes, the log-ratio between A and B plus the log-ratio between B
+and C should equal the log-ratio between A and C, but for scorecard controls, all three log (red/green) ratios may be the
+same.</p>
+<img src="ScorecardsTargetsInExcel.png"><br><br>
 
-<img border=0 width=466
-height=445  src="input/ApoAITargetsInExcel.png"><br><br>
+<h2><a name="SpotTypes">Spot Types File</a></h2>
+<p>The Spot Types file (another tab-delimited text file) is optional but it is very useful in distinguishing between
+genes, controls and blanks when using the Color-Coded M A Plot (with legend) feature.  Certain spot types
+(e.g. scorecard controls) can be excluded
+from a linear model fit if desired.  For a given spot type, e.g. "Ratio_control_*", spot sub-types "Ratio_control_1",
+"Ratio_control_2" can be determined automatically to give a series of box-plots comparing the moderated t-statistics
+or B statistics (log odds of differential expression) between the controls, which may help in deciding which genes
+are truly differentially expressed, i.e. what moderated t statistic is significant.</p>
 
-<p>The Targets file below is from an experiment with four different RNA
-sources. The main Targets file is not shown. The one below is used to analyze
-the spiked-in scorecard controls. Spike-in controls will generally be analyzed
-separately from genes because the follow different rules, e.g. for genes, the
-log-ratio between A and B plus the log-ratio between B and C should equal the
-log-ratio between A and C, but for scorecard controls, all three log
-(red/green) ratios may be the same.</p>
+<p>Every SpotType must have a SpotType column, for which each entry should be unique.  It must also have an ID column,
+a Name column and a default Color column.  The rows of the SpotTypes file should be read as a list of rules (in order)
+for defining spot types.  First, we say everything is a gene, then we rename certain spots according to what is find
+in the ID or Name colunmn of the GAL file.  The color given here is just a default color to associate with the spot
+type and it can modified from within limmaGUI.  If you do not have a GAL file, you must construct one, i.e. a
+tab-delimited text file, in the format described at <a href="http://www.axon.com/gn_GAL_Examples.html">http://www.axon.com/gn_GAL_Examples.html</a>.
+(The header is not necessary.)  Future versions of limmaGUI may not require a GAL file for all image-analysis software
+files, but currently having a GAL file is essential.</p>
 
-<img border=0 width=420
-height=352 src="input/ScorecardsTargetsInExcel.png"><br><br>
-
-<h2><a name=SpotTypes>Spot Types File</a></h2>
-
-<p>The Spot Types file (another tab-delimited text file) is optional but it is
-very useful in distinguishing between genes, controls and blanks when using the
-Color-Coded M A Plot (with legend) feature. Also, certain spot types (e.g. scorecard controls)
-can be excluded from a linear model fit if desired. For a given spot type, e.g.
-&quot;Ratio_control_*&quot;, spot sub-types &quot;Ratio_control_1&quot;,
-&quot;Ratio_control_2&quot; can be determined automatically to give a series of box-plots
-comparing the moderated t-statistics or B statistics (log odds of differential expression)
-between the controls, which may help in deciding which genes are truly differentially
-expressed, i.e. what moderated t statistic is significant.</p>
-
-<p>Every Spot Types file must have a SpotType column, for which each entry should be
-unique. It must also have an ID column, a Name column and a default Color
-column. The rows of the SpotTypes file should be read as a list of rules (in
-order) for defining spot types. The first rule usually specifies that every spot is a gene (or cDNA),
-then subsequent rules reclassify certain spots (controls, blanks etc.) according to what is found in
-the ID or Name column of the GAL file. Because these rules are applied in
-order, it is best to begin with spot type rules which describe large numbers of
-spots, followed by rules describing more and more specific spot types.
-For example, consider the effect of swapping the order of the two rules
-<b>&#8220;1. Everything is a gene&#8221;</b> and <b>&#8220;2. Everything with &#8216;scorecard&#8217; in the ID column is a scorecard spike-in control.&#8221;</b>.
-If the more general rule (the first one) was applied after the more specific rule (the second one), it would
-overwrite the results of the more specific rule, so for this reason, more
-general rules should be in the top rows of the SpotTypes table.</p>
-
-
-<p>The color given here is just a default color to associate with the spot type (for the Color-Coded M A Plot),
-and it can be modified from within limmaGUI.  It is possible to give an additional column with heading 'PointSize' or 'cex' .
-This column gives the default size of points plotted on the Color-Coded M A Plot, according to their
-classified spot-type.</p>
-
-<p>If you do not have a GAL file, you can either construct one,
-i.e. a tab-delimited text file, in the format described at
-<a href="http://www.axon.com/gn_GAL_Examples.html">http://www.axon.com/gn_GAL_Examples.html</a>,
-or you can choose not to specify a GAL file, if your gene list and layout information is recording in the raw results
-(image-analysis) files.
-</p>
-
-<p>Again, do not change the capitalization or spelling of the column names and
-do not insert extra spaces.</p>
+<p>Again, do not change the capitalization or spelling of the column names and do not insert extra spaces.</p>
 
 <p>Here is a short spot types file.</p>
+<img src="ApoAISpotTypesInExcel.png"><br><br>
 
-<img border=0 width=418
-height=324 src="input/ApoAISpotTypesInExcel.png"><br><br>
-
-<p>The spot types file below defines the scorecard control spots. The asterisks
-are wildcards which can represent anything.</p>
-
-<img border=0 width=418
-height=324 src="input/ScorecardSpotTypesInExcel.png"><br><br>
+<p>Ths spot types file below defines the scorecard control spots.  The asterisks are wildcards which can represent anything.</p>
+<img src="ScorecardSpotTypesInExcel.png"><br><br>
 
 <h2><a name="GAL">GAL (GenePix Array List) File</a></h2>
+<p>The GAL file should be in tab-delimited text format.  The exact format is described at
+<a href="http://www.axon.com/gn_GAL_Examples.html">http://www.axon.com/gn_GAL_Examples.html</a>.  The
+column names (Block, Column, Row, ID and Name) are important.  Do not change their capitalization.</p>
 
-<p><b><i>The GAL file is now optional for image-analysis file-formats which
-store the gene list and layout information in the raw (image-processing)
-results files.</i></b> However, a GAL file is essential when using the (CSIRO)
-Spot Image Analysis format, which doesn't store any gene names or locations.
-The GAL file should be in tab-delimited text format. The exact format is
-described at <a href="http://www.axon.com/gn_GAL_Examples.html">http://www.axon.com/gn_GAL_Examples.html</a>.
-The column names (Block, Column, Row, ID and Name) are important. Do not change
-their capitalization.</p>
 
-<h2><a name=ImageProcessing>Image-Processing Files</a></h2>
+<h2><a name="ImageProcessing">Image-Processing Files</a></h2>
+<p>Make sure the image processing files are in tab-delimited text format.  Do not change the capitalization of the
+column headings.  Consult your image-analysis program manual for a description of the output files (which are input
+files for limmaGUI).  Here's the output format for Spot: <a href="http://spot.cmis.csiro.au/spot/spotoutput.php">http://spot.cmis.csiro.au/spot/spotoutput.php</a>.</p>
 
-<p>Make sure the image processing files are in tab-delimited text format. Do
-not change the capitalization of the column headings. Consult your
-image-analysis program manual for a description of the output files (which are
-input files for limmaGUI). Here's the output format for Spot: <a
-href="http://spot.cmis.csiro.au/spot/spotoutput.php">http://spot.cmis.csiro.au/spot/spotoutput.php</a>.</p>
-
-<br><br><br><br><br>
-<br><br><br><br><br>
-<br><br><br><br><br>
 </body>
 </html>
