@@ -1,0 +1,175 @@
+<html>
+<head>
+<title>LimmaGUI Developers' Guide</title>
+</head>
+<body>
+<h1>LimmaGUI Developers' Guide</h1>
+
+<h2>The limmaGUI environment</h2>
+<p><code>limmaGUI</code> creates an R environment called <code>limmaGUIenvironment</code> within the
+global environment <code>.GlobalEnv</code> and stores information about a particular data set in this
+environment.  When the user saves or loads a "Limma File" (.lma) i.e. an RData file, it would be a
+mistake to include objects related to the basic windows and menus included in limmaGUI.  For example,
+if limmaGUI's main TK Toplevel window <code>ttMain</code> had a window ID of 5 and another version
+of the <code>ttMain</code> object was loaded from disk with an ID of 6, then trying to activate (focus)
+this window may give an error because there may be no valid widget with an ID of 6.</p>
+
+<p>All of the objects described below can be found within the environment, <code>limmaGUIenvironment</code>.</p>
+
+<h2>Global Objects</h2>
+
+<table border=2>
+<tr><td><b>LimmaFileName</b></td>
+<td>Initialized to "Untitled", LimmaFileName is displayed in the title bar and will store the full filename (with path) of any file saved or opened.</td></tr>
+<tr><td><b>limmaDataSetNameText</b></td>
+<td>Initialized to "Untitled", limmaDataSetNameText is displayed above the left status window.  The filename may differ from the data set name, e.g. the
+data set "Swirl" could be saved as "SwirlArraysLoaded.lma" or "SwirlLinearModelComputed.lma".  (The "Text" at the end of the variable name was meant
+to distinguish it from the Tk label widget containing this text.)</td></tr>
+</table>
+
+<h2>Status Objects</h2>
+<table border=2>
+<tr><td><b>ArraysLoaded</b></td>
+<td>Initialized to FALSE, then set to TRUE after a set of arrays has been succesfully loaded.  This flag variable is often checked before attempting
+to plot a graph which requires that some data be loaded.</td></tr>
+<tr><td><b>RG.Available</b></td>
+<td>Initialized to FALSE, then set to TRUE after a set of arrays has been succesfully loaded.  This is really the same thing as ArraysLoaded.  It
+is used after an RData file is loaded, to set the tree widget in the left status window to show whether an RG object is available.</td></tr>
+<tr><td><b>Layout.Available</b></td>
+<td>Initialized to FALSE, then set to TRUE after a layout has been specified, usually after the user has clicked "OK" from the layout entry
+dialog.  It is used after an RData file is loaded, to set the tree widget in the left status window to show whether a layout object (maLayout) is available.</td></tr>
+<tr><td><b>MA.Available</b></td>
+<td>Initialized to a list of FALSE's, MA.Available contains attributes Raw, WithinArrays, BetweenArrays and Both, specifying which MA objects are
+available.  The user may want to experiment with different normalization options.  The current interface encourages them to at least stick with one
+within-array method for a while (e.g. the M Box plots simply ask whether to normalize within arrays and whether to normalize between - the user must
+explicitly say whether to change the within-array normalization method in the Normalization menu.)  The intention of this was to make the main decisions
+seem simple to the user (within arrays? and between arrays?) and to store up to four MA objects, so that when the same MA object is requested again for
+a particular plot (e.g. within-yes, between-no) , it does not need to be recomputed unless the within-array normalization method has been changed.</td></tr>
+<tr><td><b>LinearModelComputed[NumParameterizations]</b></td>
+<td>Initialized to a vector of FALSE's, each component contains a TRUE or FALSE revealing whether a linear model fit is available for the parameterization
+indexed by this component of the vector.</td></tr>
+</table>
+
+
+<h2>Raw Objects</h2>
+<p>These objects have meaning before M and A are computed, i.e. before normalization and before linear modelling.</p>
+
+<table border=2>
+<tr><td><b>maLayout</b></td>
+<td>A list with components ngrid.r, ngrid.c, nspot.r and nspot.c giving the layout of spots on the arrays.</td></tr>
+<tr><td><b>RG</b></td>
+<td>An object of class RGList (which can be treated as a standard R list) with attributes R (red foreground intensity), G (green foreground intensity),
+Rb (red background intensity) and Gb (green background intensity).  If the user chooses to avoid background correction when loading the arrays, the Rb
+and Gb attributes will be removed from the RG object.</td></tr>
+<tr><td><b>GALFile</b></td>
+<td>The full filename (with path) for the GAL file (currently required, even for input files which would not normally need a GAL file).</td></tr>
+<tr><td><b>gal</b></td>
+<td>The GAL file stored as a data frame.</td></tr>
+<tr><td><b>NumSlides</b></td>
+<td>The number of slides (determined from the number of rows in the Targets file).</td></tr>
+<tr><td><b>NumRNATypes</b></td>
+<td>The number of RNA types, determined from the number of unique entries in the Cy3 and Cy5 columns of the Targets file.</td></tr>
+<tr><td><b>SlideNamesVec</b></td>
+<td>A vector of slide names, determined from the Name column of the Targets file if it exists, otherwise "Slide 1", "Slide 2" etc. based on
+the SlideNumber column of the Targets file.  The SlideNumber column is currently compulsory.  It should be made optional eventually.</td></tr>
+<tr><td><b>Targets</b></td>
+<td>A dataframe containing the RNA Targets (from the Targets file).  See the documentation on input files for a description of the Targets file.</td></tr>
+<tr><td><b>SpotTypes</b></td>
+<td>A dataframe containing the spot types (from the Spot Types file).  See the documentation on input files for a description of the Spot Types file.
+Note that column headings of "Color" and "PointSize"(optional) can be used, or "col and "cex"(optional).</td></tr></td></tr>
+<tr><td><b>SpotTypeStatus</b></td>
+<td>A vector giveing the status of each spot e.g. "gene", "control" or "blank".</td></tr>
+<tr><td><b>ndups</b></td>
+<td>The number of times each spot is replicated on each array (e.g. 1 for no duplicates, or 2 for pairs of duplicates.)</td></tr>
+<tr><td><b>spacing</b></td>
+<td>The spacing between duplicate spots, (1 for consecutive duplicates and n/2 for duplicates halfway down an array with n spots).</td></tr>
+<tr><td><b>WeightingType</b></td>
+<td>A string describing the spot quality weighting type (to be displayed in the left status window), e.g. "None", or "wtarea (160,170)", meaning
+that the limma function wtarea was used to specify that spots with areas between 160 and 170 pixels were of good quality and spots outside this
+range should be weighted down.</td></tr>
+<tr><td><b>AreaLowerLimit</b></td>
+<td>Only relevant for image-processing files of type "Spot".  The lower limit (in pixels) for good quality spots, e.g. 160.</td></tr>
+<tr><td><b>AreaUpperLimit</b></td>
+<td>Only relevant for image-processing files of type "Spot".  The upper limit (in pixels) for good quality spots, e.g. 170.</td></tr>
+<tr><td><b>numConnectedSubGraphs</b></td>
+<td>For a connected design, the number of parameters estimated in the linear model by limmaGUI is one less than the number of RNA types,
+but for an unconnected design things are a little more complicated.  The number of parameters to be estimated is the number of RNA types
+minus the number of connected subgraphs (which would be 1 for a connected design).</td></tr>
+<tr><td><b>connectedSubGraphs</b></td>
+<td>A list containing the connected sub graphs in the experimental design.</td></tr>
+</table>
+
+<h2>Objects Relating to M, i.e. log2(R/G) and A, i.e. 0.5log2(RG)</h2>
+<table border=2>
+<tr><td><b>MA</b></td>
+<td>Originally this was the working MA object but this is being phased out and replaced with MAraw, MAwithinArrays, MAbetweenArrays and MAboth, so
+that the user can request plots using different versions of M and A (e.g. normalized within arrays only or normalized within arrays and between
+arrays) without having to recompute them.</td></tr>
+<tr><td><b>MAraw</b></td>
+<td>An MAList object (can be treated as a standard list), with attributes M and A, containing raw (unnormalized) M and A values, calculated from
+MA.RG(RG).  In recent versions of limmaGUI, MAraw is always created after the arrays are loaded, whereas the other MA objects, are only created
+when required for a plot or a linear model.  When limmaGUI is first launched, each MA objects is initialized to an empty list in the function
+initGlobals.</td></tr>
+<tr><td><b>MAwithinArrays</b></td>
+<td>An MAList object with attributes M and A, containing M and A values which have been normalized wihtin arrays (using WithinArryNormalizationMethod).
+If the user changes the within-array normalization method, then all MA objects which depend on this method will be reset to an empty list, and be
+displayed as "Not available" in the left status window.</td></tr>
+<tr><td><b>MAbetweenArrays</b></td>
+<td>An MA object containing M and A value which have been normalized between arrays only (rare) or an empty list if unavailable.</td></tr>
+<tr><td><b>MAboth</b></td>
+<td>An MA object containing M and A value which have been normalized within arrays and then between arrays, or an empty list if unavailable.</td></tr>
+<tr><td><b>WithinArrayNormalizationMethod</b></td>
+<td>A string describing the current WithinArrayNormalizationMethod, one of "printtiploess","loess","median","composite" or "robustspline".
+See the function GetNormalizationMethod in normalize.R.</td></tr>
+<tr><td><b>MA.Available</b></td>
+<td>A list, initialized to list(FALSE,FALSE,FALSE,FALSE), with attributes Raw, WithinArrays, BetweenArrays and Both.  This list keeps track of
+which MA objects are available.  The function OpenLimmaFile checks this list and then modifies the left status window's tree widget to show
+the user which MA objects are available.  One reason why the user might want to know which MA objects are available is that they may want to
+know why a plot is taking a long time - whether it is because M and A need to be normalized for that plot or whether normalized versions are
+already available.</td></tr>
+</table>
+
+<h2>Objects Relating to the Linear Model</h2>
+<table border=2>
+<tr><td><b>ParameterizationList</b></td>
+<td>A list, which will be empty when no linear models have been created, and will contain one element (a list) after one linear model had been
+created.  ParameterizationList[[1]] will contain a number of objects related to the (first) linear model and some related to the tree widget
+displayed for that linear model.  Some of the attributes should be familiar to limma users: genelist, fit, eb, dupcor.  The attributes
+WhetherToNormalizeWithinArrays and WhetherToNormalizeBetweenArrays contain "yes" or "no" depending on the user's normalization decisions for
+this linear model fit.  There should be an attribute called WithinArrayNormalizationMethod, e.g. containing "printtiploess", but at the time of
+writing a bug was found: an occurence of [[WithinArrayNormalizationMethod]] instead of [["WithinArrayNormalizationMethod"]], so there may be an
+attribute called "printtiploess" or similar in some ParameterizationLists.  The attribute designList is a list containing the design matrix
+(called "design") and a Boolean variable designCreatedFromDropDowns which is TRUE if the design was specified as pairs of RNA types e.g. Knockout
+vs Wild Type.  If so, the design will be displayed in this way when the user requests "view parameterization".  If not, it can only be displayed as
+a matrix.  The attribute SpotTypesForLinearModel is a vector of Boolean values specifying which spot types were included in the linear model,
+e.g. c(TRUE,FALSE) if genes were included but not controls.  The attribute NumContrastParameterizations contains the number of contrast
+parameterizations, i.e. the number of contrast matrices corresponding to the current design matrix.  The attribute ContrastsParameterizationTreeIndexVec
+is the contrasts version of ParameterizationTreeIndexVec.  The attribute "Contrasts" is a list containing objects related to the contrasts
+parameterization.  Other attributes correspond to nodes in the Tcl/Tk tree widget and contain the text displayed at these nodes.</td></tr>
+<tr><td><b>NumParameterizations</b></td>
+<td>The number of parameterizations/linear models store for the current data set.  This is initialized to 0.  Most analyses would require only
+one parameterization, but the Weaver example in the limma userguide demonstrates why it might be of interest to try two different design
+matrices for the same set of arrays.  For another application, two different parameterizations may have the same design matrix but a different
+subset of spots (e.g. gene only vs gene and control).</td></tr>
+<tr><td><b>ParameterizationNamesVec</b></td>
+<td>A vector containing the names of the parameterization(s) as strings.  The parameterization name(s) are displayed in the right status window
+(as tree roots) and also in the left status window (as branches of the node Parameterizations).</td></tr>
+<tr><td><b>ParameterizationTreeIndexVec</b></td>
+<td>If three parameterizations are created and then the second one is deleted, the remaining two parameterizations will be stored in ParameterizationList
+as ParameterizationList[[1]] and ParameterizationList[[2]], but unfortunately, the author has not yet learnt a way to modify the names of the nodes in the
+corresponding Tcl/Tk tree widget, so they will still effectively be numbered 1 and 3 after 2 has been deleted.  ParameterizationTreeIndexVec is used to
+map from a parameterizationIndex (e.g. 2) to a parameterizationTreeIndex  (e.g. 3).  The ParameterizationList can be indexed with a number, e.g. [[1]] or
+[[2]], but it can also be indexed with a string containing the (unique) name of the corresponding node of the Tcl/Tk tree widget which will depend on
+parameterizationTreeIndex rather than parameterizationIndex.  Note that a Tcl/Tk tree node has a unique name created internally e.g. "Node.1", which
+is designed to avoid "special Tcl characters", and also a text string which is displayed for the user.</td></tr>
+<tr><td><b>NumParameters</b></td>
+<td>The number of parameters to be initially estimated in the linear model.  Currently global, i.e. for all parameterizations, users are expected to
+estimate the number of parameters suggested by limmaGUI (one less than the number of RNA types for a connected design), then users may estimate
+additional contrasts later on.</td></tr>
+<tr><td><b>LinearModelComputed[NumParameterizations]</b></td>
+<td>A vector, initialized to c(FALSE,FALSE,FALSE,...).  Only the first NumParameterizations components have meaning.  For each parameterization,
+the corresponding component of this vector is set to TRUE, once a linear model fit has been computed.</td></tr>
+</table>
+
+</body>
+</html>
