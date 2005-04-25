@@ -700,7 +700,7 @@ SetLayoutParameters <- function()
 
 OpenGALFile <- function()
 {
-  Try(tmpGALFile <- tclvalue(tkgetOpenFile(filetypes="{{GAL Files} {.gal}} {{All files} *}")))
+  Try(tmpGALFile <- tclvalue(tkgetOpenFile(filetypes="{{GAL Files} {.gal .GAL}} {{All files} *}")))
   Try(if (!nchar(tmpGALFile)) return())
   Try(assign("GALFile",tmpGALFile,limmaGUIenvironment))
   Try(GALFile <- get("GALFile",envir=limmaGUIenvironment))

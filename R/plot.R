@@ -776,8 +776,9 @@ HeatDiagramPlot <- function()
     Try(title(plotTitle))
     Try(TempGraphPar<-par(opar))    
   }
-   Try(LocalHScale <- get("Myhscale",envir=.GlobalEnv)*1.5)
-   Try(LocalVScale <- get("Myvscale",envir=.GlobalEnv)*0.5)   
+  
+  Try(LocalHScale <- .limmaGUIglobals$Myhscale * 1.5)
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale * 0.5)   
    
   Try(plotTitle <- paste("Heat diagram relative to parameter",ParameterNamesVec[coef]))
 
