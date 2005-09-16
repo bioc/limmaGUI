@@ -1,6 +1,6 @@
 Package: limmaGUI
-Version: 1.4.0
-Date: 2 May 2005
+Version: 1.4.1
+Date: 16 Sep 2005
 Title: GUI for limma package
 Author: James Wettenhall Division of Genetics and Bioinformatics, WEHI
 Maintainer: James Wettenhall <wettenhall@wehi.edu.au>
@@ -10,4 +10,5 @@ Description: A Graphical User Interface for the limma Microarray
         package
 License: LGPL
 URL: http://bioinf.wehi.edu.au/limmaGUI/
+biocViews: Microarray,TwoChannel,DataImport,Preprocessing,DifferentialExpression
 
