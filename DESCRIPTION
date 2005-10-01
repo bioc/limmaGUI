@@ -1,9 +1,9 @@
 Package: limmaGUI
-Version: 1.4.1
-Date: 16 Sep 2005
+Version: 1.4.2
+Date: 1 Oct 2005
 Title: GUI for limma package
 Author: James Wettenhall Division of Genetics and Bioinformatics, WEHI
-Maintainer: James Wettenhall <wettenhall@wehi.edu.au> Keith Satterley <keith@wehi.edu.au>
+Maintainer: Keith Satterley <keith@wehi.edu.au>
 Depends: limma, tcltk
 Suggests: statmod, sma, R2HTML, xtable, tkrplot
 Description: A Graphical User Interface for the limma Microarray package
