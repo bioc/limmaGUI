@@ -2,7 +2,7 @@ if (data.class(try(require(limma),TRUE))=="try-error")
 {
     tkmessageBox(title="An error has occured!",message=paste("Cannot find package limma"),icon="error",type="ok")
     stop("Cannot find package limma")
-} 
+}
 if (require(limma)==FALSE)
 {
     tkmessageBox(title="An error has occured!",message=paste("Cannot find package limma"),icon="error",type="ok")
@@ -10,39 +10,39 @@ if (require(limma)==FALSE)
 }
 
 
-Try <- function(expr) 
+Try <- function(expr)
 {
     if (data.class(result<-try(expr,TRUE))=="try-error")
     {
         tkmessageBox(title="An error has occured!",message=as.character(result),icon="error",type="ok")
-    } 
-    else 
+    }
+    else
     {
         return (result)
     }
 }
 
-TryReadImgProcFile <- function(expr) 
+TryReadImgProcFile <- function(expr)
 {
     if (data.class(result<-try(expr,TRUE))=="try-error")
     {
         tkmessageBox(title="Reading Image Processing Files Failed!",
           message="limmaGUI was unable to read the image processing files listed in the Targets file.",icon="error",type="ok")
-    } 
-    else 
+    }
+    else
     {
         return (result)
     }
 }
 
 
-Require <- function(pkg) 
+Require <- function(pkg)
 {
     if (data.class(result<-try(.find.package(pkg),TRUE))=="try-error")
     {
         tkmessageBox(title="An error has occured!",message=paste("Cannot find package",pkg),icon="error",type="ok")
-    } 
-    else 
+    }
+    else
     {
         result <- Try(require(pkg,character.only=TRUE))
     }
@@ -83,16 +83,16 @@ TclRequire <- function(tclPkg)
       "archives for a similar question.\n\n",
       "The URLs for Tktable and BWidget are:\n",
       "http://tktable.sourceforge.net\n",
-      "http://tcllib.sourceforge.net",      
+      "http://tcllib.sourceforge.net",
       sep=""))
-      
+
       # Don't make ttMain a parent of this, because we might want to use TclRequire before
       # defining ttMain.
       Try(ttTclTkExtension <- tktoplevel())
       onDestroy <- function()
       {
         if (exists(".limmaGUIglobals",envir=.GlobalEnv)&&"ttMain" %in% names(.limmaGUIglobals))
-          try(tkdestroy(.limmaGUIglobals$ttMain),silent=TRUE)        
+          try(tkdestroy(.limmaGUIglobals$ttMain),silent=TRUE)
         else
           stop("Tcl/Tk extensions (Tktable and BWidget) not found!")
         stop("Aborted from limmaGUI.")
@@ -109,14 +109,14 @@ TclRequire <- function(tclPkg)
       Try(tkinsert(txt,"end",message))
       Try(tkconfigure(txt, state="disabled"))
       Try(tkfocus(txt))
-      Try(onOK <- function() 
+      Try(onOK <- function()
       {
         try(tkdestroy(ttTclTkExtension),silent=TRUE)
         if (exists(".limmaGUIglobals",envir=.GlobalEnv)&&"ttMain" %in% names(.limmaGUIglobals))
-          try(tkdestroy(.limmaGUIglobals$ttMain),silent=TRUE)        
+          try(tkdestroy(.limmaGUIglobals$ttMain),silent=TRUE)
         else
           stop("Tcl/Tk extensions (Tktable and BWidget) not found!")
-        Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))    
+        Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))
         Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
         if (limmaDataSetNameText!="Untitled")
         {
@@ -129,25 +129,25 @@ TclRequire <- function(tclPkg)
          }
          stop("Tcl/Tk extensions (Tktable and BWidget) not found!")
       })
-      Try(OK.but <- tkbutton(ttTclTkExtension,text="  OK  ",command=onOK))  
+      Try(OK.but <- tkbutton(ttTclTkExtension,text="  OK  ",command=onOK))
       Try(tkgrid.configure(txt,columnspan=2))
       Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))
       Try(tkgrid(tklabel(ttTclTkExtension,text="limmaGUI will now exit."),columnspan=2))
-      Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))      
+      Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))
       Try(tkgrid(OK.but))
       Try(tkgrid.configure(OK.but,sticky="e"))
-      Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))    
+      Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))
       Try(tkfocus(OK.but))
-      Try(tkwait.window(ttTclTkExtension))            
+      Try(tkwait.window(ttTclTkExtension))
     }
 }
 
 onDestroy <- function()
 {
- Try(.JustAskedWhetherToSave <- get(".JustAskedWhetherToSave",envir=.GlobalEnv))    
+ Try(.JustAskedWhetherToSave <- get(".JustAskedWhetherToSave",envir=.GlobalEnv))
  Try(if (.JustAskedWhetherToSave==FALSE)
  {
-	 Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))    
+	 Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))
 	 Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
 	 if (limmaDataSetNameText!="Untitled")
 	 {
@@ -156,7 +156,7 @@ onDestroy <- function()
 					 message=paste("Save changes to ",fixSeps(LimmaFileName),"?",sep=""),
 					 icon="question",type="yesno",default="yes"))
 		 try(if (tclvalue(mbVal)=="yes")
-				 try(SaveLimmaFile(),silent=TRUE),silent=TRUE)              
+				 try(SaveLimmaFile(),silent=TRUE),silent=TRUE)
 	 }
 	 Try(assign(".JustAskedWhetherToSave",TRUE,.GlobalEnv))
  })
@@ -171,7 +171,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   # some limmaGUIfonts which limmaGUI can't control, like menus, so as well as changing BigfontsForlimmaGUIpresentation to TRUE here, I
   # Right-Click the Windows Desktop, click Properties (to get Display properties which can also be accessed
   # through the Control Panel) then click on Appearance, and then change the limmaGUIfont size for menu,window title, etc.)
-  # Rather than change each limmaGUIfont (menu,window title,...) manually each time, I save the changes as a "scheme".  
+  # Rather than change each limmaGUIfont (menu,window title,...) manually each time, I save the changes as a "scheme".
   Try(limmaGUIglobals <- list())
   Try(if (BigfontsForlimmaGUIpresentation==TRUE)
     Try(limmaGUIglobals$limmaGUIpresentation <- TRUE)
@@ -182,17 +182,17 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(initGlobals())
 
   Try(limmaGUIglobals <- get(".limmaGUIglobals",envir=.GlobalEnv))
-  
+
   Try(limmaGUIglobals$graphicsDevice <- "tkrplot")
-  Try(if (Sys.info()["sysname"]=="Darwin")  
+  Try(if (Sys.info()["sysname"]=="Darwin")
     Try(limmaGUIglobals$graphicsDevice <- "R"))
   Try(limmaGUIglobals$Myhscale <- 1)
   Try(limmaGUIglobals$Myvscale <- 1)
   assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
   {
- 
+
    Try(if (Sys.info()["sysname"]=="Darwin")
    {
      Try(addTclPath("/sw/lib/tcl8.4"))
@@ -200,7 +200,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
      Try(addTclPath("./lib"))
      Try(addTclPath("/sw/lib/tk8.4"))
      Try(addTclPath(paste(Sys.getenv("HOME"),.Platform$file.sep,"TkExtensions",sep="")))
-   })    
+   })
    Try(addTclPath("/usr/local/lib"))
    Try(addTclPath("/usr/local/Tcl/lib"))
    Try(addTclPath("/usr/local/lib/Tcl"))
@@ -213,7 +213,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
    Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
  })
 
-  Try(if (Sys.info()["sysname"] == "Windows") 
+  Try(if (Sys.info()["sysname"] == "Windows")
   {
    Try(limmaGUIglobals <- get(".limmaGUIglobals",envir=.GlobalEnv))
    Try(limmaGUIglobals$Myhscale <- 1.6)
@@ -221,7 +221,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
    Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
   })
 
-  Try(if (Sys.info()["sysname"] == "Darwin" && !exists("X11", env=.GlobalEnv)) 
+  Try(if (Sys.info()["sysname"] == "Darwin" && !exists("X11", env=.GlobalEnv))
   {
     Try(addTclPath("/Library/Tcl"))
     Try(addTclPath("/Network/Library/Tcl"))
@@ -246,30 +246,30 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
     Try(limmaGUIglobals$limmaGUIfont1 <- tkfont.create(family="times",size=48,weight="bold",slant="italic"))
   else
     Try(limmaGUIglobals$limmaGUIfont1 <- tkfont.create(family="times",size=24,weight="bold",slant="italic")))
-  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)  
+  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
     Try(limmaGUIglobals$limmaGUIfont2 <- tkfont.create(family="arial",size=16))
   else
     Try(limmaGUIglobals$limmaGUIfont2 <- tkfont.create(family="arial",size=10)))
-  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)  
+  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
     Try(limmaGUIglobals$limmaGUIfontTree <- tkfont.create(family="arial",size=14))
   else
     Try(limmaGUIglobals$limmaGUIfontTree <- tkfont.create(family="arial",size=10)))
 
-  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)  
+  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
     Try(limmaGUIglobals$limmaGUIfontTable <- tkfont.create(family="arial",size=16))
   else
     Try(limmaGUIglobals$limmaGUIfontTable <- tkfont.create(family="arial",size=10)))
-  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)  
+  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
     Try(limmaGUIglobals$limmaGUIfontTopTable <- tkfont.create(family="arial",size=12,weight="bold"))
   else
     Try(limmaGUIglobals$limmaGUIfontTopTable <- limmaGUIglobals$limmaGUIfontTable))
 
-  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)    
+  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
     Try(limmaGUIglobals$limmaGUIfont2b <- tkfont.create(family="arial",size=16,weight="bold"))
   else
     Try(limmaGUIglobals$limmaGUIfont2b <- tkfont.create(family="arial",size=10,weight="bold")))
 
-  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)  
+  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
     Try(limmaGUIglobals$limmaGUIfontCourier <- tkfont.create(family="courier",size=16))
   else
     Try(limmaGUIglobals$limmaGUIfontCourier <- tkfont.create(family="courier",size=10)))
@@ -281,7 +281,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   else
     Try(limmaGUIglobals$ParameterizationTREEWidth <- 30))
 
-  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)  
+  Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
   {
     Try(limmaGUIglobals$ParameterizationTREEHeight <- 20)
     Try(limmaGUIglobals$mainTreeHeight,20)
@@ -289,7 +289,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   else
   {
     Try(limmaGUIglobals$ParameterizationTREEHeight <- 15)
-    Try(limmaGUIglobals$mainTreeHeight <- 15)  
+    Try(limmaGUIglobals$mainTreeHeight <- 15)
   })
 
   Try(limmaGUIglobals$oldOptions <- options(warn=-1)) # Otherwise R complains that I'm trying to set main in plots, i.e. set a plot title)
@@ -304,13 +304,13 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   if ("TclRequireFailed" %in% names(.limmaGUIglobals))
     stop("Error occurred in TclRequire(\"BWidget\")")
   TclRequire("Tktable")
-  if ("TclRequireFailed" %in% names(.limmaGUIglobals))  
+  if ("TclRequireFailed" %in% names(.limmaGUIglobals))
     stop("Error occurred in TclRequire(\"Tktable\")")
-  
+
   Try(if (.limmaGUIglobals$limmaGUIpresentation==FALSE)
     Try(mainFrame <- tkframe(.limmaGUIglobals$ttMain,relief="groove",borderwidth="2"))
   else
-    Try(mainFrame <- tkframe(.limmaGUIglobals$ttMain)))    
+    Try(mainFrame <- tkframe(.limmaGUIglobals$ttMain)))
   Try(if (.limmaGUIglobals$limmaGUIpresentation==FALSE)
   {
     Try(toolbarFrame <- tkframe(mainFrame,relief="groove",borderwidth="2"))
@@ -320,19 +320,19 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
     #   Try(newButton <- tkbutton(tb,image=tkcmd("Bitmap::get","new"),command=NewLimmaFile))
     Try(newButton <- .Tcl(paste("button",.Tk.subwin(tb),"-image [Bitmap::get new]",.Tcl.args(command=NewLimmaFile))))
     Try(openButton <- .Tcl(paste("button",.Tk.subwin(tb),"-image [Bitmap::get open]",.Tcl.args(command=OpenLimmaFile))))
-    Try(saveButton <- .Tcl(paste("button",.Tk.subwin(tb),"-image [Bitmap::get save]",.Tcl.args(command=SaveLimmaFile))))  
+    Try(saveButton <- .Tcl(paste("button",.Tk.subwin(tb),"-image [Bitmap::get save]",.Tcl.args(command=SaveLimmaFile))))
     Try(tkgrid(newButton,openButton,saveButton,sticky="w"))
     Try(tkgrid(tb,sticky="nw"))
   #  Try(tkgrid(toolbarFrame,sticky="ew"))
     Try(tkgrid(toolbarFrame,sticky="w"))
   #  Try(tkgrid.configure(tb,sticky="w"))
   })
-  
+
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(LimmaFileName <- get("LimmaFileName",limmaGUIenvironment))
-  Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only 
+  Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
   Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
-  Try(limmaGUIglobals <- .limmaGUIglobals)  
+  Try(limmaGUIglobals <- .limmaGUIglobals)
   Try(limmaGUIglobals$GALfileBoxTitle <- tclVar("Please select a GenePix Array List (GAL) file. (OPTIONAL)"))
   Try(limmaGUIglobals$GALfileNameTcl <- tclVar("No filename is selected at the moment.  Press the Select GAL File Button."))
   Try(limmaGUIglobals$TargetsfileBoxTitleTcl <- tclVar("Please select a tab-delimited RNA Targets file. (REQUIRED)"))
@@ -340,7 +340,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(limmaGUIglobals$SpotTypesfileBoxTitleTcl <- tclVar("Please select a tab-delimited Spot Types file. (OPTIONAL)"))
   Try(limmaGUIglobals$SpotTypesfileNameTcl <- tclVar("No filename is selected at the moment.  Press the Select Spot-Types File Button."))
   Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
-   
+
   Try(tkgrid(tklabel(mainFrame,text="         "),columnspan=3))
   Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
     Try(tkgrid(tklabel(mainFrame,text="LimmaGUI",font=.limmaGUIglobals$limmaGUIfont1),column=1,columnspan=3,sticky="ew"))
@@ -373,7 +373,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(tkgrid.configure(LinModTreeXScr,sticky="ewn"))
 
   Try(tkgrid(tklabel(mainFrame,text="         "),columnspan=5))
-  
+
   Try(tkgrid(mainFrame))
 
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","RG" ,text="R and G",font=.limmaGUIglobals$limmaGUIfontTree))
@@ -410,7 +410,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   Try(tkconfigure(.limmaGUIglobals$ttMain,menu=topMenu))
   Try(Menus <- read.table(file.path(system.file("etc",package="limmaGUI"),"limmaGUI-menus.txt"), as.is=TRUE))
   Try(for (m in 1:nrow(Menus)){
-    Try(if (Menus[m, 1] == "menu") assign(Menus[m, 2], tkmenu(eval(parse(text=Menus[m, 3])), tearoff=FALSE)) 
+    Try(if (Menus[m, 1] == "menu") assign(Menus[m, 2], tkmenu(eval(parse(text=Menus[m, 3])), tearoff=FALSE))
     else if (Menus[m, 1] == "item") {
       if (Menus[m, 3] == "command")
         tkadd(eval(parse(text=Menus[m, 2])),"command", label=Menus[m, 4], command=eval(parse(text=Menus[m, 5])))
@@ -437,7 +437,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
         {
             recentFilesFileName <- system.file("etc/recent-files.txt",package="limmaGUI")
             recentFiles <- readLines(recentFilesFileName)
-           
+
             recentFiles <- gsub("\\\\","/",recentFiles)
 
             # Remove any blank lines:
@@ -445,7 +445,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
             if (length(blanks)>0)
               recentFiles <- recentFiles[-blanks]
             numRecentFiles <- length(recentFiles)
-            
+
             if (numRecentFiles>0)
             {
               tkadd(eval(parse(text=Menus[m, 2])),"separator")
@@ -454,7 +454,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
                 label <- recentFiles[i]
                 fileNameOnly <- strsplit(label,"/")[[1]]
                 fileNameOnly <- fileNameOnly[length(fileNameOnly)]
-                if (nchar(recentFiles[i])>60)                  
+                if (nchar(recentFiles[i])>60)
                     label <- paste(".../",fileNameOnly)
                 eval(parse(text=paste("assign(\".OpenALimmaFile_",i,"\",function() OpenALimmaFile(\"",recentFiles[i],"\"),.GlobalEnv)",sep="")))
                 Try(if (.Platform$OS.type=="windows")
@@ -463,7 +463,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
                 else
                   tkadd(eval(parse(text=Menus[m,2])),"command",label=paste(i,". ",label,sep=""),
                     command=eval(parse(text=paste(".OpenALimmaFile_",i,sep="")))))
-                  
+
               }
             }
         }
@@ -491,7 +491,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
     Try(tkbind(newButton,"<Enter>",function() tclvalue(CurrentStatus) <- "Start a new Limma analysis."))
     Try(tkbind(newButton,"<Leave>",function() tclvalue(CurrentStatus) <- "    "))
   })
-  
+
   #Try(tkwm.resizable(.limmaGUIglobals$ttMain,"true","false"))
 
   Try(tkbind(.limmaGUIglobals$ttMain, "<Control-N>", NewLimmaFile))
@@ -507,14 +507,14 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   invisible()
 }
 
-limmaGUIhelp <- function() 
+limmaGUIhelp <- function()
 {
     Try(limmaGUIhelpIndex <- file.path(system.file("doc",package="limmaGUI"),"index.html"))
     Try(browseURL(limmaGUIhelpIndex))
     Try(cat(paste("Opening limmaGUI help...\nIf nothing happens, please open :\n",limmaGUIhelpIndex,"\nyourself.",sep="")))
 }
 
-limmaHelp <- function() 
+limmaHelp <- function()
 {
     Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"usersguide.html"))
     Try(browseURL(limmaHelpIndex))
@@ -534,14 +534,14 @@ getPackageVersion <- function(pkgName)
 initGlobals <- function()
 {
   assign("limmaGUIVersion",getPackageVersion("limmaGUI"),limmaGUIenvironment)
-  assign("limmaVersion",getPackageVersion("limma"),limmaGUIenvironment)  
+  assign("limmaVersion",getPackageVersion("limma"),limmaGUIenvironment)
   assign("LimmaFileName","Untitled",limmaGUIenvironment)
   assign("maLayout",list(),limmaGUIenvironment)
   assign("MA" , list(M=matrix(data=0,nrow=1,ncol=1),A=matrix(data=0,nrow=1,ncol=1)),limmaGUIenvironment)
   assign("MAraw" , list(),limmaGUIenvironment)
   assign("MAwithinArrays" , list(),limmaGUIenvironment)
-  assign("MAbetweenArrays" , list(),limmaGUIenvironment)  
-  assign("MAboth" , list(),limmaGUIenvironment)    
+  assign("MAbetweenArrays" , list(),limmaGUIenvironment)
+  assign("MAboth" , list(),limmaGUIenvironment)
   assign("RG" , 0,limmaGUIenvironment)
   assign("GALFile" , "",limmaGUIenvironment)
   assign("ParameterizationList" , list(),limmaGUIenvironment)
@@ -567,17 +567,17 @@ initGlobals <- function()
 #  assign("FlagSpotWeighting", 0.1, limmaGUIenvironment)
   assign("MA.Available",list(Raw=FALSE,WithinArrays=FALSE,BetweenArrays=FALSE,Both=FALSE),limmaGUIenvironment)
   assign("RG.Available",FALSE,limmaGUIenvironment)
-  assign("Layout.Available",FALSE,limmaGUIenvironment)  
+  assign("Layout.Available",FALSE,limmaGUIenvironment)
   assign("numConnectedSubGraphs",1,limmaGUIenvironment)
-  assign("connectedSubGraphs",list(),limmaGUIenvironment)  
+  assign("connectedSubGraphs",list(),limmaGUIenvironment)
   assign("NumRNATypes",2,limmaGUIenvironment)
   assign("WithinArrayNormalizationMethod","printtiploess",limmaGUIenvironment)
-  assign("BetweenArrayNormalizationMethod","scale",limmaGUIenvironment)  
+  assign("BetweenArrayNormalizationMethod","scale",limmaGUIenvironment)
   assign(".JustAskedWhetherToSave",FALSE,.GlobalEnv)
   assign("MAimported",new("MAList"),limmaGUIenvironment)
-  assign("RawMADataWasImported",FALSE,limmaGUIenvironment)  
+  assign("RawMADataWasImported",FALSE,limmaGUIenvironment)
   assign("NormalizedMADataWasImported",FALSE,limmaGUIenvironment)
-  assign("BCMethod","subtract",limmaGUIenvironment)  
+  assign("BCMethod","subtract",limmaGUIenvironment)
   assign("ImageAnalysisExtension","spot",limmaGUIenvironment)
 }
 
@@ -590,9 +590,9 @@ fixSeps <- function(string)
 
 # I wrote the function deleteItemFromList before I discovered
 # that you could simply assign an item to NULL in a list to
-# delete it (or use negative-indexing).  Because I am only 
-# dealing with very small lists, it does not matter that 
-# I am using an inefficient method, and it may actually make 
+# delete it (or use negative-indexing).  Because I am only
+# dealing with very small lists, it does not matter that
+# I am using an inefficient method, and it may actually make
 # the code more readable that assigning an element to NULL.
 deleteItemFromList <- function(list1,itemName=NULL,index=NULL)
 {
@@ -615,23 +615,23 @@ deleteItemFromList <- function(list1,itemName=NULL,index=NULL)
             else
               newlist[[count]] <- list1[[i]]
         }
-    return (newlist)    
+    return (newlist)
 }
 
 SetLayoutParameters <- function()
 {
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Layout Parameters",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
-      Try(tkfocus(.limmaGUIglobals$ttMain))      
+      Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   }
-  
+
   Try(gal <- get("gal",envir=limmaGUIenvironment))
-  
+
   ttLayout<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttLayout)
   tkgrab.set(ttLayout)
@@ -669,14 +669,14 @@ SetLayoutParameters <- function()
   }
 
   ReturnVal <- 0
-  
+
   onOK <- function(){
         Try(assign("Layout.Available",TRUE,limmaGUIenvironment))
-        Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))        
+        Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))
         Try(tkinsert(.limmaGUIglobals$mainTree,"end","Layout","Layout.Status",text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
         Try(assign("maLayout",list(ngrid.r=as.integer(tclvalue(ngrid.r)), ngrid.c=as.integer(tclvalue(ngrid.c)), nspot.r=as.integer(tclvalue(nspot.r)), nspot.c=as.integer(tclvalue(nspot.c))),limmaGUIenvironment))
         Try(tkgrab.release(ttLayout));Try(tkdestroy(ttLayout));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- 1}
-  onCancel <- function() {Try(tkgrab.release(ttLayout));Try(tkdestroy(ttLayout));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- 0}        
+  onCancel <- function() {Try(tkgrab.release(ttLayout));Try(tkdestroy(ttLayout));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- 0}
   OK.but <-tkbutton(ttLayout,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   guess.but <-tkbutton(ttLayout,text="Determine from GAL file",command=GetFromGAL,font=.limmaGUIglobals$limmaGUIfont2)
   Cancel.but <-tkbutton(ttLayout,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
@@ -709,14 +709,14 @@ OpenGALFile <- function()
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(gal <- readGAL(galfile=GALFile,fill=TRUE))
   Try(gal$ID <- as.character(gal$ID))
-  Try(gal$Name <- as.character(gal$Name))  
+  Try(gal$Name <- as.character(gal$Name))
   Try(assign("gal",gal,limmaGUIenvironment))
   Try(if (data.class(tmp<-try(getLayout(gal),TRUE))!="try-error")
     assign("maLayout",tmp,limmaGUIenvironment))
   Try(assign("Layout.Available",TRUE,limmaGUIenvironment))
-  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))        
+  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","Layout","Layout.Status",text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))  
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(ArraysLoaded <- FALSE)
   Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
 
@@ -744,8 +744,8 @@ OpenTargetsFile <- function()
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
     return()
   })
-    
-  
+
+
   Try(assign("Targets",Targets,limmaGUIenvironment))
   Try(assign("NumSlides",nrow(Targets),limmaGUIenvironment))
 
@@ -789,7 +789,7 @@ OpenSpotTypesFile <- function()
       "(but one spot type can have multiple spot sub-types, e.g. you could have a spot type \"ratio\" which matches ID's in the GAL file equivalent to \"Ratio_Control_*\", i.e. \"Ratio_Control_1\", \"Ratio_Control_2\", etc.)"),icon="error"))
     return()
   })
-  Try(assign("SpotTypes",SpotTypes,limmaGUIenvironment))  
+  Try(assign("SpotTypes",SpotTypes,limmaGUIenvironment))
   Try(ArraysLoaded <- FALSE)
   Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
   Try(tkfocus(.limmaGUIglobals$ttMain))
@@ -799,12 +799,12 @@ GetImageProcessingFileType <- function()
 {
   ttGetImageProcessingFileType<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetImageProcessingFileType)
-  tkgrab.set(ttGetImageProcessingFileType)  
+  tkgrab.set(ttGetImageProcessingFileType)
   Try(tkwm.title(ttGetImageProcessingFileType,"Type of Image Processing Files"))
 
   # Don't remove this! We need at least one tclVar initialization, not just tclvalue()'s.
   Try(fileTypeTcl <- tclVar("spot"))
-  
+
   Try(ImageAnalysisExtension <- get("ImageAnalysisExtension",envir=limmaGUIenvironment))
   Try(Targets <- get("Targets",envir=limmaGUIenvironment))
   Try(if ("FileNameCy3" %in% colnames(Targets))
@@ -817,7 +817,7 @@ GetImageProcessingFileType <- function()
     Try(tclvalue(fileTypeTcl) <- "arrayvision")
   else if (length(grep("\\.xls$",tolower(Targets$FileName))) > 0)
     Try(tclvalue(fileTypeTcl) <- "smd")
-  else 
+  else
     Try(tclvalue(fileTypeTcl) <- "quantarray"))
 
   Try(tkframe1 <- tkframe(ttGetImageProcessingFileType,borderwidth=2))
@@ -832,13 +832,13 @@ GetImageProcessingFileType <- function()
   Try(GenePix.but <- tkradiobutton(tkframe2,text="GenePix",variable=fileTypeTcl,value="genepix",font=.limmaGUIglobals$limmaGUIfont2))
   Try(QuantArray.but <- tkradiobutton(tkframe2,text="QuantArray",variable=fileTypeTcl,value="quantarray",font=.limmaGUIglobals$limmaGUIfont2))
   Try(ImaGene.but <- tkradiobutton(tkframe2,text="ImaGene",variable=fileTypeTcl,value="imagene",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(ArrayVision.but <- tkradiobutton(tkframe2,text="ArrayVision",variable=fileTypeTcl,value="arrayvision",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(ArrayVision.but <- tkradiobutton(tkframe2,text="ArrayVision",variable=fileTypeTcl,value="arrayvision",font=.limmaGUIglobals$limmaGUIfont2))
   Try(Agilent.but <- tkradiobutton(tkframe2,text="Agilent",variable=fileTypeTcl,value="agilent",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(SMD.but <- tkradiobutton(tkframe2,text="SMD (Stanford Microarray Database)",variable=fileTypeTcl,value="smd",font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(SMD.but <- tkradiobutton(tkframe2,text="SMD (Stanford Microarray Database)",variable=fileTypeTcl,value="smd",font=.limmaGUIglobals$limmaGUIfont2))
 
-  Try(ReturnVal <- "")  
+  Try(ReturnVal <- "")
   Try(columnHeadings <- list())
-  Try(onOther <- function() 
+  Try(onOther <- function()
   {
     Try(columnHeadings <- GetImageAnalysisColumnHeadings())
     Try(if (length(columnHeadings)>0)
@@ -850,17 +850,17 @@ GetImageProcessingFileType <- function()
     Try(tkgrab.release(ttGetImageProcessingFileType));Try(tkdestroy(ttGetImageProcessingFileType));Try(tkfocus(.limmaGUIglobals$ttMain))
     Try(ReturnVal <<- "other")
   })
-  
+
   Try(other.but <- tkbutton(tkframe2,text="Other...",command=onOther,font=.limmaGUIglobals$limmaGUIfont2))
-  
+
   Try(tkgrid(Spot.but,columnspan=2))
   Try(tkgrid(Spot.close.open.but,columnspan=2))
-  Try(tkgrid(GenePix.but,columnspan=2))  
-  Try(tkgrid(QuantArray.but,columnspan=2))    
+  Try(tkgrid(GenePix.but,columnspan=2))
+  Try(tkgrid(QuantArray.but,columnspan=2))
   Try(tkgrid(ImaGene.but,columnspan=2))
-  Try(tkgrid(ArrayVision.but,columnspan=2))  
-  Try(tkgrid(Agilent.but,columnspan=2))      
-  Try(tkgrid(SMD.but,columnspan=2))  
+  Try(tkgrid(ArrayVision.but,columnspan=2))
+  Try(tkgrid(Agilent.but,columnspan=2))
+  Try(tkgrid(SMD.but,columnspan=2))
   Try(tkgrid(tklabel(tkframe2,text="    ")))
   Try(tkgrid(tklabel(tkframe2,text="    "),other.but))
   Try(tkgrid.configure(other.but,sticky="w"))
@@ -874,7 +874,7 @@ GetImageProcessingFileType <- function()
       Try(tkgrab.release(ttGetImageProcessingFileType));Try(tkdestroy(ttGetImageProcessingFileType));Try(tkfocus(.limmaGUIglobals$ttMain))
       Try(ReturnVal <<- fileTypeVal)
   }
-  onCancel <- function(){tkgrab.release(ttGetImageProcessingFileType);tkdestroy(ttGetImageProcessingFileType);tkfocus(.limmaGUIglobals$ttMain);ReturnVal <<- ""} 
+  onCancel <- function(){tkgrab.release(ttGetImageProcessingFileType);tkdestroy(ttGetImageProcessingFileType);tkfocus(.limmaGUIglobals$ttMain);ReturnVal <<- ""}
   Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(tkframe4,text="                    ")))
@@ -885,7 +885,7 @@ GetImageProcessingFileType <- function()
   Try(tkgrid(tkframe4))
   Try(tkgrid(tkframe1))
   Try(tkfocus(ttGetImageProcessingFileType))
-  Try(tkbind(ttGetImageProcessingFileType, "<Destroy>", function(){tkgrab.release(ttGetImageProcessingFileType);tkfocus(.limmaGUIglobals$ttMain);} )) 
+  Try(tkbind(ttGetImageProcessingFileType, "<Destroy>", function(){tkgrab.release(ttGetImageProcessingFileType);tkfocus(.limmaGUIglobals$ttMain);} ))
   Try(tkwait.window(ttGetImageProcessingFileType))
   return (ReturnVal)
 }
@@ -904,7 +904,7 @@ ReadImageProcessingFiles <- function()
   else
     Try(WhetherToUseBackgroundCorrection <- tclvalue(tkmessageBox(title="Background Correction",message="Use Background Correction?",type="yesnocancel",icon="question",default="yes"))))
   Try(if (WhetherToUseBackgroundCorrection=="cancel")
-    return(0))    
+    return(0))
   Try(if (WhetherToUseBackgroundCorrection=="yes")
   {
     Try(GetBCReturnVal <- GetBackgroundCorrectionMethod())
@@ -923,12 +923,12 @@ ReadImageProcessingFiles <- function()
   Try(if (WhetherToUseSpotQualityWeighting=="yes" && imageFileType!="spot" && imageFileType!="spot.close.open" && imageFileType!="genepix" && imageFileType!="quantarray")
     {
       Try(tkmessageBox(title="Spot Quality Weighting",message="Currently, spot quality weighting is only available for Spot, GenePix and QuantArray files.  Arrays will be processed without spot quality weighting.",icon="warning",type="ok"))
-      Try(WhetherToUseSpotQualityWeighting <- "no")    
+      Try(WhetherToUseSpotQualityWeighting <- "no")
     })
-        
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  
+
   Try(WeightingType <- "none")
   Try(assign("WeightingType",WeightingType,limmaGUIenvironment))
   Try(if (WhetherToUseSpotQualityWeighting=="yes")
@@ -943,30 +943,30 @@ ReadImageProcessingFiles <- function()
       Try(AreaLowerLimit    <- get("AreaLowerLimit",envir=limmaGUIenvironment))
       Try(AreaUpperLimit    <- get("AreaUpperLimit",envir=limmaGUIenvironment))
     }
-    if (imageFileType=="genepix")        
+    if (imageFileType=="genepix")
     {
       Try(GenePixFlagWeightings <- GetGenePixFlagWeightings())
-      Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))      
+      Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
       if (length(GenePixFlagWeightings)==0)
       {
-        Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))         
+        Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
         return(0)
       }
-#      Try(FlagSpotWeighting <- get("FlagSpotWeighting",envir=limmaGUIenvironment))  
+#      Try(FlagSpotWeighting <- get("FlagSpotWeighting",envir=limmaGUIenvironment))
        Try(assign("WeightingType","wtflagsVec",limmaGUIenvironment))
     }
     if (imageFileType=="quantarray")
       Try(assign("WeightingType","wtIgnore.Filter",limmaGUIenvironment))
     if (imageFileType=="imagene")
-      Try(assign("WeightingType","none",limmaGUIenvironment))      
-    Try(WeightingType <- get("WeightingType",envir=limmaGUIenvironment))        
+      Try(assign("WeightingType","none",limmaGUIenvironment))
+    Try(WeightingType <- get("WeightingType",envir=limmaGUIenvironment))
   })
   Try(TargetsFile <- get("TargetsFile",envir=limmaGUIenvironment))
-  Try(if (!nchar(TargetsFile))  
+  Try(if (!nchar(TargetsFile))
   {
     tkmb <- tkmessageBox(title="ERROR",message="Please select a Targets file first, e.g. SwirlSample.txt",icon="warning",type="ok",default="ok")
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-    return(0)  
+    return(0)
   })
   Try(Targets <- read.table(TargetsFile,header=TRUE,sep="\t",quote="\"",as.is=TRUE))
   Try(assign("Targets",Targets,limmaGUIenvironment))
@@ -981,13 +981,13 @@ ReadImageProcessingFiles <- function()
     Try(tkmessageBox(title="RNA Targets File Error",message="The RNA Targets file should have a \"FileName\" column."))
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
     return(0)
-  })  
+  })
   Try(if (imageFileType=="imagene" && !("FileNameCy3" %in% colnames(Targets) && "FileNameCy5" %in% colnames(Targets)))
   {
     Try(tkmessageBox(title="RNA Targets File Error",message="When using ImaGene, the RNA Targets file should have a \"FileNameCy3\" column and a \"FileNameCy5\" column."))
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
     return(0)
-  })  
+  })
   Try(if ("FileName" %in% colnames(Targets))
     Try(slides <- Targets$FileName))
   Try(if ("FileNameCy3" %in% colnames(Targets) && "FileNameCy5" %in% colnames(Targets))
@@ -999,29 +999,29 @@ ReadImageProcessingFiles <- function()
   {
       if ("Name" %in% colnames(Targets))
           SlideNamesVec[j] <- Targets[j,"Name"]
-      else    
+      else
           SlideNamesVec[j] <- paste(Targets[j,"SlideNumber"])
   })
   Try(assign("SlideNamesVec",SlideNamesVec,limmaGUIenvironment))
-  
+
   Try(filesExist <- file.exists(slides))
   Try(filesWhichDontExist <- slides[!filesExist])
   Try(if (length(filesWhichDontExist)>0)
     Try(for (i in (1:length(filesWhichDontExist)))
       Try(tkmessageBox(title="Error opening file",message=paste("Failed to open file: \"",filesWhichDontExist[i],"\"",sep=""),icon="error"))))
-  Try(if (length(filesWhichDontExist)>0) 
+  Try(if (length(filesWhichDontExist)>0)
   {
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
     return(0)
   })
-  
+
   Try(if (WhetherToUseSpotQualityWeighting=="yes")
   {
     if (imageFileType=="spot")
         TryReadImgProcFile(RG<-read.maimages(slides,wt.fun=wtarea(ideal=c(AreaLowerLimit,AreaUpperLimit)),source="spot"))
     if (imageFileType=="spot.close.open")
         TryReadImgProcFile(RG<-read.maimages(slides,wt.fun=wtarea(ideal=c(AreaLowerLimit,AreaUpperLimit)),source="spot.close.open"))
-    if (imageFileType=="genepix")   
+    if (imageFileType=="genepix")
         TryReadImgProcFile(RG<-read.maimages(slides,wt.fun=wtflags2(GenePixFlagWeightings),source="genepix"))
     if (imageFileType=="quantarray")
         TryReadImgProcFile(RG<-read.maimages(slides,wt.fun=wtIgnore.Filter,source="quantarray"))
@@ -1050,9 +1050,9 @@ ReadImageProcessingFiles <- function()
   Try(assign("RG",RG,limmaGUIenvironment))
   Try(assign("RG.Available",TRUE,limmaGUIenvironment)  )
   Try(assign("MAimported",FALSE,limmaGUIenvironment))
-  Try(tkdelete(.limmaGUIglobals$mainTree,"RG.Status"))        
+  Try(tkdelete(.limmaGUIglobals$mainTree,"RG.Status"))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","RG","RG.Status",text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-  Try(tkdelete(.limmaGUIglobals$mainTree,"BC.Status"))        
+  Try(tkdelete(.limmaGUIglobals$mainTree,"BC.Status"))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","BC","BC.Status" ,text=BCMethod,font=.limmaGUIglobals$limmaGUIfontTree))
   Try(tkdelete(.limmaGUIglobals$mainTree,"WeightingType.Status"))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","WeightingType","WeightingType.Status" ,text=WeightingType,font=.limmaGUIglobals$limmaGUIfontTree))
@@ -1071,7 +1071,7 @@ ReadImageProcessingFiles <- function()
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 
-  Try(ArraysLoaded <- TRUE)    
+  Try(ArraysLoaded <- TRUE)
   Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
   return (1)
 }
@@ -1103,7 +1103,7 @@ GetGenePixFlagWeightings <- function()
   Try(tkgrid(tklabel(ttGenePixFlagWeightings,text="Unflagged (0)       ",font=.limmaGUIglobals$limmaGUIfont2),entry.UnflaggedFlagWeighting,sticky="w"))
 
   ReturnVal <- list()
-  
+
   onOK <- function()
   {
     Try(Good     <- as.numeric(tclvalue(GoodFlagWeightingTcl)))
@@ -1158,34 +1158,34 @@ tclArrayVar <- function()
 
 GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
   parameterizationIndex=0) # parameterizationIndex argument is for contrasts only
-{ 
+{
   Try(if ((Design==TRUE && Contrasts==TRUE) || (Design==FALSE && Contrasts==FALSE))
-    tkmessageBox(title="GetDesignOrContrasts",message="Error: Only one of DesignOrContrasts and Contrasts should be set to TRUE",icon="error"))    
+    tkmessageBox(title="GetDesignOrContrasts",message="Error: Only one of DesignOrContrasts and Contrasts should be set to TRUE",icon="error"))
 
   Try(NumSlides     <- get("NumSlides",    envir=limmaGUIenvironment))
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
-  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
+  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
   Try(Targets       <- get("Targets",      envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(RawMADataWasImported<- get("RawMADataWasImported", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment)) 
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(RawMADataWasImported<- get("RawMADataWasImported", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
 
   Try(if (Design==TRUE)
     Try(ReturnVal <- list(design=data.frame(),designCreatedFromDropDowns=FALSE))
   else
     Try(ReturnVal <- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=FALSE)))
 
-  
+
   Try(if (Contrasts==TRUE)
     ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       if (Design==TRUE)
         tkmessageBox(title="Design Matrix",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
       else
-        tkmessageBox(title="Contrasts Matrix",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")      
-      Try(tkfocus(.limmaGUIglobals$ttMain))      
+        tkmessageBox(title="Contrasts Matrix",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
+      Try(tkfocus(.limmaGUIglobals$ttMain))
       return(ReturnVal)
   }
 
@@ -1209,14 +1209,14 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       Try(ReturnVal <- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=FALSE))
       Try(designOrContrasts <- designOrContrastsFromDropDowns$contrasts)
     }
-    
+
 #   Try(n <- evalq(TclVarCount <- TclVarCount + 1, .TkRoot$env))
 #   Try(tclArrayName <- paste("::RTcl", n, sep = ""))
     Try(tclArrayVar1 <- tclArrayVar())
     Try(tclArrayName <- ls(tclArrayVar1$env)) # This wouldn't work if I'd used tclArray().  Should update this stuff!
 
     onOK <- function()
-    {      
+    {
         Try(.Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<Leave>"))))
         if (Design==TRUE)
         {
@@ -1253,25 +1253,25 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
         if (Design==TRUE)
           Try(ReturnVal <<- list(design=designOrContrasts,designCreatedFromDropDowns=FALSE))
         else
-          Try(ReturnVal <<- list(contrasts=designOrContrasts,contrastsCreatedFromDropDowns=FALSE))        
+          Try(ReturnVal <<- list(contrasts=designOrContrasts,contrastsCreatedFromDropDowns=FALSE))
     }
-    onCancel <- function() 
+    onCancel <- function()
     {
       Try(tkgrab.release(ttDesignOrContrastsTable))
       Try(tkdestroy(ttDesignOrContrastsTable))
       Try(tkfocus(.limmaGUIglobals$ttMain))
-      if (Design==TRUE) 
+      if (Design==TRUE)
         ReturnVal <<- list(design=data.frame(),designCreatedFromDropDowns=FALSE)
       else
         ReturnVal <<- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=FALSE)
-    }       
+    }
     Try(OK.but <-tkbutton(ttDesignOrContrastsTable,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
     Try(Cancel.but <-tkbutton(ttDesignOrContrastsTable,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
     Try(tkgrid(tklabel(ttDesignOrContrastsTable,text="    ")))
     if (Design==TRUE)
       Try(PleaseEnterDesignOrContrastsLabel<-tklabel(ttDesignOrContrastsTable,text="Please enter the design matrix to be used for linear-modelling.",font=.limmaGUIglobals$limmaGUIfont2))
     else
-      Try(PleaseEnterDesignOrContrastsLabel<-tklabel(ttDesignOrContrastsTable,text="Please enter the contrasts matrix to be used for linear-modelling.",font=.limmaGUIglobals$limmaGUIfont2))      
+      Try(PleaseEnterDesignOrContrastsLabel<-tklabel(ttDesignOrContrastsTable,text="Please enter the contrasts matrix to be used for linear-modelling.",font=.limmaGUIglobals$limmaGUIfont2))
     Try(tkgrid(tklabel(ttDesignOrContrastsTable,text="    "),PleaseEnterDesignOrContrastsLabel))
     Try(tkgrid.configure(PleaseEnterDesignOrContrastsLabel,columnspan=2))
     Try(tkgrid(tklabel(ttDesignOrContrastsTable,text="    ")))
@@ -1285,14 +1285,14 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       NumRows <- NumParameters
       NumCols <- NumContrasts
     }
-    
+
     if (Design==TRUE)
     {
       Try(if (nrow(designOrContrasts)==0)
       {
         Try(ParameterNamesVec <- c())
         if (NumParameters>0)
-          for (i in (1:NumParameters)) 
+          for (i in (1:NumParameters))
             Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param ",i,sep="")))
       }
       else
@@ -1302,20 +1302,20 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     else
     {
       Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
-      Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))          
+      Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
       Try(if (nrow(designOrContrasts)==0)
       {
         Try(ContrastsNamesVec <- c())
         if (NumContrasts>0)
-          for (i in (1:NumContrasts)) 
-            Try(ContrastsNamesVec <- c(ContrastsNamesVec,paste("Contrast ",i,sep="")))              
+          for (i in (1:NumContrasts))
+            Try(ContrastsNamesVec <- c(ContrastsNamesVec,paste("Contrast ",i,sep="")))
       }
       else
-          Try(ContrastsNamesVec <- colnames(designOrContrasts)))      
+          Try(ContrastsNamesVec <- colnames(designOrContrasts)))
       Try(ColNamesVec <- ContrastsNamesVec)
     }
 
-    
+
     Try(rownamesDesignOrContrasts <- c())
     Try(myRarray <- "    ")
     for (i in (1:NumRows))
@@ -1328,17 +1328,17 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
         Try(myRarray <- c(myRarray,paste(RowName)))
     }
     if (NumCols>0)
-      for (j in (1:NumCols))      
+      for (j in (1:NumCols))
       {
         Try(myRarray <- c(myRarray,paste(ColNamesVec[j])))
         for (i in (1:NumRows))
-        {          
+        {
             if (nrow(designOrContrasts)==0)
                 Try(myRarray <- c(myRarray,"0"))
             else
                 Try(myRarray <- c(myRarray,paste(designOrContrasts[i,j])))
-        }      
-      } 
+        }
+      }
       # This will give an error if tclArray doesn't exist.
       # .Tcl("unset tclArray")
       Try(dim(myRarray) <- c(NumRows+1,NumCols+1))
@@ -1347,7 +1347,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
           for (j in (0:NumCols))
           {
              # Modified to use tkcmd!
-             Try(tkcmd("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(myRarray[i+1,j+1])))             
+             Try(tkcmd("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(myRarray[i+1,j+1])))
           }
 
       # Below, can I just use tkwidget(ttDesignOrContrastsTable,"table",...) ?
@@ -1357,9 +1357,9 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
 
       Try(tkcmd(.Tk.ID(table1),"width","0",paste(max(4,max(nchar(rownamesDesignOrContrasts))+2))))
       Try(if (nrow(designOrContrasts)>0)
-      {     
+      {
 
-        Try(for (j in (1:NumCols))      
+        Try(for (j in (1:NumCols))
           Try(tkcmd(.Tk.ID(table1),"width",paste(j),paste(max(4,max(nchar(ColNamesVec))+2,max(nchar(designOrContrasts[,j]))+2)))))
       })
 
@@ -1417,9 +1417,9 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
 
       Try(topMenu <- tkmenu(ttDesignOrContrastsTable, tearoff=FALSE))
       Try(fileMenu <- tkmenu(topMenu, tearoff=FALSE))
-      Try(tkadd(fileMenu, "command", label="Open",      command=openDesignOrContrastsMatrixFile)) 
+      Try(tkadd(fileMenu, "command", label="Open",      command=openDesignOrContrastsMatrixFile))
       Try(tkadd(fileMenu, "command", label="Save As",      command=saveDesignOrContrastsMatrixFile))
-      Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu)) 
+      Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu))
 
       Try(editMenu <- tkmenu(topMenu, tearoff=FALSE))
       Try(tkadd(editMenu, "command", label="Copy <Ctrl-C>",      command=copyFcn))
@@ -1452,7 +1452,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
         Try(ReturnValDesignOrContrastsTable <- GetDesignOrContrastsTable(designOrContrastsFromDropDowns)) # Returns designOrContrasts list object including designOrContrasts matrix as data.frame
       }
       else
-      {        
+      {
         Try(ReturnValDesignOrContrastsTable <- GetDesignOrContrastsTable(list(design=data.frame(),designOrContrastsCreatedFromDropDowns=TRUE,TargetVector=c(),RNAType1=c(),RNAType2=c(),plusOrMinus=c()))) # Returns designOrContrasts list object including designOrContrasts matrix as data.frame
       })
       if (Design==TRUE)
@@ -1468,7 +1468,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
           })
           Try(tkfocus(.limmaGUIglobals$ttMain))
           ReturnVal <<- ReturnValDesignOrContrastsTable   # List contains designOrContrasts matrix as data.frame
-      }   
+      }
   }
 
   Try(if (RawMADataWasImported || NormalizedMADataWasImported)
@@ -1523,7 +1523,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       }
     }
 
-  # NumParameters should be OK as a global, because the number of parameters is the same, no matter what the 
+  # NumParameters should be OK as a global, because the number of parameters is the same, no matter what the
   # parametrization (unless we start dealing with Scorecard Controls, but they would need a whole new Targets file).
 
   # We now allow for unconnected designOrContrastss.
@@ -1532,9 +1532,9 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     RNATypesGraph <- list()
     Try(for (i in (1:NumSlides))
       RNATypesGraph[[i]] <- c(Cy3Targets[i],Cy5Targets[i]))
-    countConnectedSubGraphs <- function(graph)  
+    countConnectedSubGraphs <- function(graph)
     {
-      count <- 0  
+      count <- 0
       connectedSubGraphs <- list()
       while (length(graph))
       {
@@ -1553,14 +1553,14 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
             closed <- c(closed,test)
             while (g <= length(graph))
               if (test %in% graph[[g]])
-              {  
+              {
                 n <- graph[[g]]
                 open <- c(open,n[1],n[2])
-                graph <- deleteItemFromList(graph,index=g)                
-              }            
+                graph <- deleteItemFromList(graph,index=g)
+              }
               else
                 g <- g + 1
-          }  
+          }
         }
         connectedSubGraphs <- c(connectedSubGraphs,list(closed))
         count <- count + 1
@@ -1577,7 +1577,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
 
     Try(assign("NumParameters", TargetsCounted - numConnectedSubGraphs,limmaGUIenvironment))
     Try(assign("NumRNATypes", TargetsCounted,limmaGUIenvironment))
-    Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))    
+    Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
     ParameterNamesVec <- c()
     if (NumParameters>0)
       for (i in (1:NumParameters))
@@ -1591,9 +1591,9 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     if (Design==TRUE)
       return(list(design=data.frame(),designCreatedFromDropDowns=FALSE))
     else
-      return(list(contrasts=data.frame(),contrastsCreatedFromDropDowns=FALSE))    
+      return(list(contrasts=data.frame(),contrastsCreatedFromDropDowns=FALSE))
   }
-  
+
   if (Design==TRUE)
   {
     NumRows <- NumSlides
@@ -1608,7 +1608,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
   if (Contrasts==TRUE)
   {
     Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
-    Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))          
+    Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
   }
 
   ttDesignOrContrasts<-tktoplevel(.limmaGUIglobals$ttMain)
@@ -1618,12 +1618,12 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
   if (Design==TRUE)
     tkwm.title(ttDesignOrContrasts,"Parameters To Estimate")
   else
-    tkwm.title(ttDesignOrContrasts,"Contrasts")  
+    tkwm.title(ttDesignOrContrasts,"Contrasts")
 
   if (Design==TRUE)
     lbl2<-tklabel(ttDesignOrContrasts,text="Please specify pairs of RNA for which M parameters will be estimated",font=.limmaGUIglobals$limmaGUIfont2)
   else
-    lbl2<-tklabel(ttDesignOrContrasts,text="Please specify pairs of parameters for which contrasts will be estimated",font=.limmaGUIglobals$limmaGUIfont2)  
+    lbl2<-tklabel(ttDesignOrContrasts,text="Please specify pairs of parameters for which contrasts will be estimated",font=.limmaGUIglobals$limmaGUIfont2)
   lbl3<-tklabel(ttDesignOrContrasts,text="                                                                    ")
   tkgrid(tklabel(ttDesignOrContrasts,text="       "),row=0,column=1,columnspan=1)
   tkgrid(tklabel(ttDesignOrContrasts,text="       "),row=0,column=4,columnspan=1)
@@ -1653,15 +1653,15 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     TclList1AsString <- paste(TclList1AsString,"}",sep="")
     TclList2AsString <- TclList1AsString
   })
-  
-  Try(if (Design==TRUE) 
+
+  Try(if (Design==TRUE)
     plusOrMinusTclListAsString <- "{{minus}}"
   else
     plusOrMinusTclListAsString <- "{{minus} {plus}}")
-    
+
   combo1 <- c()
   combo2 <- c()
-  combo3 <- c()    
+  combo3 <- c()
   Try(if (NumCols>0)
     for (paramORcontrast in (1:NumCols))
     {
@@ -1675,24 +1675,24 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       Try(combo3 <- c(combo3,plusOrMinusDropDown))
       Try(.Tcl(paste("ComboBox",.Tk.ID(plusOrMinusDropDown),"-editable false -values",plusOrMinusTclListAsString)))
       Try(tkcmd(.Tk.ID(plusOrMinusDropDown),"setvalue","first"))
-      Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)            
+      Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
       {
        Try(tkconfigure(FirstDropDownColumn,width=10))
-        Try(tkconfigure(SecondDropDownColumn,width=10))      
-        Try(tkconfigure(plusOrMinusDropDown,width=10))              
+        Try(tkconfigure(SecondDropDownColumn,width=10))
+        Try(tkconfigure(plusOrMinusDropDown,width=10))
       })
       if (Design==TRUE)
         Try(dropdownLabel <- paste("Parameter",paramORcontrast,"  "))
       else
         Try(dropdownLabel <- paste("Contrast",paramORcontrast, "  ")  )
-      
+
       Try(tkgrid(tklabel(ttDesignOrContrasts,text=dropdownLabel,font=.limmaGUIglobals$limmaGUIfont2),row=2+paramORcontrast,
                         column=0,sticky="w"))
       Try(tkconfigure(FirstDropDownColumn,font=.limmaGUIglobals$limmaGUIfont2))
       Try(tkconfigure(SecondDropDownColumn,font=.limmaGUIglobals$limmaGUIfont2))
-      Try(tkconfigure(plusOrMinusDropDown,font=.limmaGUIglobals$limmaGUIfont2))      
+      Try(tkconfigure(plusOrMinusDropDown,font=.limmaGUIglobals$limmaGUIfont2))
       Try(tkgrid(FirstDropDownColumn,row=2+paramORcontrast,column=2,columnspan=1,rowspan=1))
-      Try(tkgrid(plusOrMinusDropDown,row=2+paramORcontrast,column=4,columnspan=1,rowspan=1))      
+      Try(tkgrid(plusOrMinusDropDown,row=2+paramORcontrast,column=4,columnspan=1,rowspan=1))
       Try(tkgrid(SecondDropDownColumn,row=2+paramORcontrast,column=6,columnspan=1,rowspan=1))
 
       Try(tkgrid(tklabel(ttDesignOrContrasts,text="    "),row=2+paramORcontrast,column=7))
@@ -1702,11 +1702,11 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
   if (Design==TRUE)
     ReturnVal <- list(design=data.frame(),designCreatedFromDropDowns=TRUE,TargetVector=TargetVector,RNAType1=c(),RNAType2=c(),plusOrMinus=c())
   else
-    ReturnVal <- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=c(),Param2=c(),plusOrMinus=c())  
-  
+    ReturnVal <- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=c(),Param2=c(),plusOrMinus=c())
+
   GetDesignOrContrastsFromDropDowns <- function()
   {
-   
+
     if (Design==TRUE)
     {
       NumRows <- NumSlides
@@ -1717,37 +1717,37 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       NumRows <- NumParameters
       NumCols <- NumContrasts
     }
-    
+
     RNATypeOrParam1 <-c()
-    RNATypeOrParam2 <-c()    
+    RNATypeOrParam2 <-c()
     plusOrMinusStringVec <- c("-","+")
     plusOrMinus <- c()
-        
+
     if (NumCols>0)
       for (paramORcontrast in (1:NumCols))
       {
         # I think I wrote this code when I was an R Tcl/Tk beginner.  Check and update!
         # I think combo1 and combo2 should really be lists, not vectors!!!
-        # *2 below, because the c() combines the tkwin objects which are acutally         
+        # *2 below, because the c() combines the tkwin objects which are acutally
         # lists with 2 components: window ID and environment.
 
         selection1 <- tclvalue(.Tcl(paste(.Tk.ID(combo1[paramORcontrast*2-1]),"getvalue")))
-        selection2 <- tclvalue(.Tcl(paste(.Tk.ID(combo2[paramORcontrast*2-1]),"getvalue")))        
-        selection3 <- tclvalue(.Tcl(paste(.Tk.ID(combo3[paramORcontrast*2-1]),"getvalue")))                
+        selection2 <- tclvalue(.Tcl(paste(.Tk.ID(combo2[paramORcontrast*2-1]),"getvalue")))
+        selection3 <- tclvalue(.Tcl(paste(.Tk.ID(combo3[paramORcontrast*2-1]),"getvalue")))
         if (Design==TRUE)
-        {        
-          Try(if ((selection1=="-1")||(selection2=="-1")) 
+        {
+          Try(if ((selection1=="-1")||(selection2=="-1"))
             return (list(design=data.frame(),designCreatedFromDropDowns=TRUE,TargetVector=TargetVector,RNAType1=c(),RNAType2=c(),plusOrMinus=c())))
         }
         else
         {
           Try(if ((selection1=="-1")||(selection2=="-1"))
             return (list(contrasts=data.frame(),contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=c(),Param2=c(),plusOrMinus=c())))
-        }        
+        }
         RNATypeOrParam1 <- c(RNATypeOrParam1,as.numeric(selection1)+1)
         RNATypeOrParam2 <- c(RNATypeOrParam2,as.numeric(selection2)+1)
         plusOrMinus <- c(plusOrMinus,plusOrMinusStringVec[as.numeric(selection3)+1])
-        
+
       }
 
     designOrContrasts <- as.data.frame(matrix(nrow=NumRows,ncol=NumCols))
@@ -1756,7 +1756,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     else
       Try(rownames(designOrContrasts) <- ParameterNamesVec)
 
-    Try(if (Design==TRUE)    
+    Try(if (Design==TRUE)
     {
       ParameterNamesVec <- vector(length=NumParameters)
       if (NumParameters>0)
@@ -1767,12 +1767,12 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     else
     {
       Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
-      Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))            
-      ContrastNamesVec <- vector(length=NumContrasts)    
+      Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
+      ContrastNamesVec <- vector(length=NumContrasts)
       if (NumContrasts>0)
-        for (j in (1:NumContrasts))          
-          ContrastNamesVec[j] <- SimplifyContrastsExpression(paste("(",ParameterNamesVec[RNATypeOrParam1[j]],")",plusOrMinus[j],"(",ParameterNamesVec[RNATypeOrParam2[j]],")",sep=""))                                       
-      colnames(designOrContrasts) <- ContrastNamesVec    
+        for (j in (1:NumContrasts))
+          ContrastNamesVec[j] <- SimplifyContrastsExpression(paste("(",ParameterNamesVec[RNATypeOrParam1[j]],")",plusOrMinus[j],"(",ParameterNamesVec[RNATypeOrParam2[j]],")",sep=""))
+      colnames(designOrContrasts) <- ContrastNamesVec
     })
 
     if (Design==TRUE)
@@ -1780,7 +1780,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       ParamMatrix <- matrix(nrow=TargetsCounted,ncol=NumParameters)
       if (NumParameters>0)
         for (i in (1:NumParameters))
-        { 
+        {
           for (j in (1:TargetsCounted))
             ParamMatrix[j,i] <- 0
           ParamMatrix[RNATypeOrParam1[i],i] <-  1
@@ -1797,8 +1797,8 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       for (i in (1:NumSlides))
       {
         for (j in (1:TargetsCounted))
-        { 
-          RNATargetsVec[j] <- 0 
+        {
+          RNATargetsVec[j] <- 0
           if (paste(Cy5Targets[i])==paste(TargetVector[j]))
             RNATargetsVec[j] <- 1
           if (paste(Cy3Targets[i])==paste(TargetVector[j]))
@@ -1814,24 +1814,24 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
         for (j in (1:NumContrasts))
         {
           Try(designOrContrasts[i,j] <- 0)
-          Try(if (RNATypeOrParam1[j]==i)  
+          Try(if (RNATypeOrParam1[j]==i)
             designOrContrasts[i,j] <- 1)
           Try(if (plusOrMinus[j]=="-")
           {
             Try(if(RNATypeOrParam2[j]==i)
-              designOrContrasts[i,j] <- -1)         
+              designOrContrasts[i,j] <- -1)
           }
           else  # "+"
           {
             Try(if(RNATypeOrParam2[j]==i)
               designOrContrasts[i,j] <-  1)
           })
-        })        
+        })
     }
-    if (Design==TRUE)   
-      return(list(design=designOrContrasts,designCreatedFromDropDowns=TRUE,TargetVector=TargetVector,RNAType1=RNATypeOrParam1,RNAType2=RNATypeOrParam2,plusOrMinus=plusOrMinus))  
+    if (Design==TRUE)
+      return(list(design=designOrContrasts,designCreatedFromDropDowns=TRUE,TargetVector=TargetVector,RNAType1=RNATypeOrParam1,RNAType2=RNATypeOrParam2,plusOrMinus=plusOrMinus))
     else
-      return(list(contrasts=designOrContrasts,contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=RNATypeOrParam1,Param2=RNATypeOrParam2,plusOrMinus=plusOrMinus))      
+      return(list(contrasts=designOrContrasts,contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=RNATypeOrParam1,Param2=RNATypeOrParam2,plusOrMinus=plusOrMinus))
   }
 
   onOK <- function()
@@ -1842,8 +1842,8 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       Try(if (nrow(designOrContrastsList$design)==0)
       {
         Try(tkmessageBox(title="Parameterization",message=paste("Error in creating parameterization from drop-down selection. ",
-                       "Make sure you have selected an RNA pair for each parameter and that your parameters are linearly independent."),type="ok",icon="error"))                    
-        Try(ReturnVal <<- list(design=data.frame(),designCreatedFromDropDowns=TRUE,TargetVector=TargetVector,RNAType1=c(),RNAType2=c(),plusOrMinus=c()))        
+                       "Make sure you have selected an RNA pair for each parameter and that your parameters are linearly independent."),type="ok",icon="error"))
+        Try(ReturnVal <<- list(design=data.frame(),designCreatedFromDropDowns=TRUE,TargetVector=TargetVector,RNAType1=c(),RNAType2=c(),plusOrMinus=c()))
         return()
       }
       else
@@ -1851,21 +1851,21 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
           Try(tkgrab.release(ttDesignOrContrasts))
           Try(tkdestroy(ttDesignOrContrasts))
           Try(tkfocus(.limmaGUIglobals$ttMain))
-          Try(ReturnVal <<- designOrContrastsList)      
+          Try(ReturnVal <<- designOrContrastsList)
           Try(tkfocus(.limmaGUIglobals$ttMain))
           return()
       })
-      
+
     })
     Try(if (Contrasts==TRUE)
-    {   
-      Try(if (nrow(designOrContrastsList$contrasts)==0)    
+    {
+      Try(if (nrow(designOrContrastsList$contrasts)==0)
       {
         Try(tkmessageBox(title="Contrasts",message=paste("Error in creating contrasts matrix from drop-down selection. ",
-                         "Make sure you have selected a parameter pair for each contrast."),type="ok",icon="error"))                    
+                         "Make sure you have selected a parameter pair for each contrast."),type="ok",icon="error"))
         Try(ReturnVal <<- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=c(),Param2=c(),plusOrMinus=c()))
         return()
-      } 
+      }
       else
       {
         Try(tkgrab.release(ttDesignOrContrasts))
@@ -1877,7 +1877,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       })
     })
   }
-  onCancel <- function() 
+  onCancel <- function()
   {
     Try(tkgrab.release(ttDesignOrContrasts))
     Try(tkdestroy(ttDesignOrContrasts))
@@ -1885,8 +1885,8 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
     if (Design==TRUE)
       ReturnVal <<- list(design=data.frame(),designCreatedFromDropDowns=TRUE,TargetVector=TargetVector,RNAType1=c(),RNAType2=c(),plusOrMinus=c())
     else
-      ReturnVal <<- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=c(),Param2=c(),plusOrMinus=c())    
-  }   
+      ReturnVal <<- list(contrasts=data.frame(),contrastsCreatedFromDropDowns=TRUE,TargetVector=c(),Param1=c(),Param2=c(),plusOrMinus=c())
+  }
   Advanced.but <- tkbutton(ttDesignOrContrasts,text="Advanced...",command=OnAdvanced,font=.limmaGUIglobals$limmaGUIfont2)
   Try(OK.but <-tkbutton(ttDesignOrContrasts,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(ttDesignOrContrasts,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
@@ -1894,9 +1894,9 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
   Try(tkgrid(Cancel.but,column=4,row=9+NumParameters))
   Try(tkgrid(Advanced.but,column=6,row=9+NumParameters))
   Try(tkgrid(tklabel(ttDesignOrContrasts,text="    ")))
-      
+
   Try(tkfocus(ttDesignOrContrasts))
-  
+
   Try(tkbind(ttDesignOrContrasts, "<Destroy>", function() {Try(tkgrab.release(ttDesignOrContrasts));Try(tkfocus(.limmaGUIglobals$ttMain));}))
   Try(tkwait.window(ttDesignOrContrasts))
   return (ReturnVal)
@@ -1912,17 +1912,17 @@ SimplifyContrastsExpression <- function(string)
   RNA4 <- RNATypesAndSign$RNA4
   plusOrMinusSign <- RNATypesAndSign$plusOrMinusSign
   ReturnVal <- string
-  
+
   if (RNA1==RNA3&&plusOrMinusSign=='-')
-    ReturnVal <- paste("(",RNA4,")-(",RNA2,")",sep="")  
-  if (RNA2==RNA4&&plusOrMinusSign=='-')  
-    ReturnVal <- paste("(",RNA1,")-(",RNA3,")",sep="")  
+    ReturnVal <- paste("(",RNA4,")-(",RNA2,")",sep="")
+  if (RNA2==RNA4&&plusOrMinusSign=='-')
+    ReturnVal <- paste("(",RNA1,")-(",RNA3,")",sep="")
   if (RNA1==RNA4&&plusOrMinusSign=='+')
-    ReturnVal <- paste("(",RNA3,")-(",RNA2,")",sep="")    
-  if (RNA2==RNA3&&plusOrMinusSign=='+')  
-    ReturnVal <- paste("(",RNA1,")-(",RNA4,")",sep="")      
+    ReturnVal <- paste("(",RNA3,")-(",RNA2,")",sep="")
+  if (RNA2==RNA3&&plusOrMinusSign=='+')
+    ReturnVal <- paste("(",RNA1,")-(",RNA4,")",sep="")
   return(ReturnVal)
-  
+
 }
 
 GetRNATypesFrom.ContrastsFromDropDowns.String <- function(string)
@@ -1937,7 +1937,7 @@ GetRNATypesFrom.ContrastsFromDropDowns.String <- function(string)
   RNA1 <- substr(string,1,i-1)
   len <- nchar(string)
   string <- substr(string,i+3,len)
-  len <- nchar(string)  
+  len <- nchar(string)
   i<-1
   while (substr(string,i,i)!=")" && (i<=len))
     i <- i + 1
@@ -1945,14 +1945,14 @@ GetRNATypesFrom.ContrastsFromDropDowns.String <- function(string)
   len <- nchar(string)
   plusOrMinusSign <- substr(string,i+2,i+2)
   string <- substr(string,i+5,len)
-  len <- nchar(string)  
+  len <- nchar(string)
   i<-1
   while (substr(string,i,i)!=")" && (i<=len))
     i <- i + 1
   RNA3 <- substr(string,1,i-1)
   len <- nchar(string)
   string <- substr(string,i+3,len)
-  len <- nchar(string)  
+  len <- nchar(string)
   i<-1
   while (substr(string,i,i)!=")" && (i<=len))
     i <- i + 1
@@ -1963,7 +1963,7 @@ GetRNATypesFrom.ContrastsFromDropDowns.String <- function(string)
 
 GetParameterNames <- function(parameterizationTreeIndex)
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(ParameterNamesVec <- c())
@@ -1971,14 +1971,14 @@ GetParameterNames <- function(parameterizationTreeIndex)
     for (i in (1:NumParameters))
     {
       Try(ParametersNameNode<- paste("PMFParams.",parameterizationTreeIndex,".",i,sep=""))
-      Try(ParameterNamesVec[i] <- (ParameterizationList[[ParameterizationNameNode]])[[ParametersNameNode]])    
-    }  
+      Try(ParameterNamesVec[i] <- (ParameterizationList[[ParameterizationNameNode]])[[ParametersNameNode]])
+    }
   return (ParameterNamesVec)
 }
 
 GetReducedDuplicateSpacing <- function(parameterizationTreeIndex)
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(spacing <- get("spacing",envir=limmaGUIenvironment))
@@ -1986,8 +1986,8 @@ GetReducedDuplicateSpacing <- function(parameterizationTreeIndex)
   Try(gal     <- get("gal",envir=limmaGUIenvironment))
   Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
-  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))    
-  Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+  Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
   Try(RG <- get("RG",envir=limmaGUIenvironment))
   Try(MA <- MA.RG(RG)) # Locally only.
   Try(oldNumRows <- nrow(MA$M))
@@ -2004,16 +2004,16 @@ GetReducedDuplicateSpacing <- function(parameterizationTreeIndex)
       Try(Omit <- "("))
     Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
   })
-  
+
   Try(if (nchar(Omit)>0)
   {
     Try(Omit <- paste(Omit,")"))
-    Try(Omit <- eval(parse(text=Omit)))  
+    Try(Omit <- eval(parse(text=Omit)))
     MA$M <- MA$M[!Omit,]
-    MA$A <- MA$A[!Omit,]  
+    MA$A <- MA$A[!Omit,]
   })
-  
-  Try(newNumRows <- nrow(MA$M))  
+
+  Try(newNumRows <- nrow(MA$M))
   Try(parameterizationSpacing <- spacing)
   Try(spacingCorrected <- 0)
   Try(if (oldNumRows/spacing==2  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/2;  spacingCorrected <- 1})
@@ -2023,9 +2023,9 @@ GetReducedDuplicateSpacing <- function(parameterizationTreeIndex)
   Try(if (oldNumRows/spacing==6  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/6;  spacingCorrected <- 1})
   Try(if (oldNumRows/spacing==7  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/7;  spacingCorrected <- 1})
   Try(if (oldNumRows/spacing==8  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/8;  spacingCorrected <- 1})
-  Try(if (oldNumRows/spacing==9  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/9;  spacingCorrected <- 1})      
-  Try(if (oldNumRows/spacing==10 && oldNumRows!=newNumRows){ parameterizationSpacing <- newNumRows/10; spacingCorrected <- 1})  
-  
+  Try(if (oldNumRows/spacing==9  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/9;  spacingCorrected <- 1})
+  Try(if (oldNumRows/spacing==10 && oldNumRows!=newNumRows){ parameterizationSpacing <- newNumRows/10; spacingCorrected <- 1})
+
   return (parameterizationSpacing)
 }
 
@@ -2040,8 +2040,8 @@ GetContrastsParameterizationNames <- function(parameterizationTreeIndex)
     for (i in (1:NumContrastParameterizations))
     {
       Try(ContrastsParameterizationNamesNode<- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".",i,sep=""))
-      Try(ContrastsParameterizationNamesVec[i] <- (ParameterizationList[[ParameterizationNameNode]])[[ContrastsParameterizationNamesNode]])    
-    }  
+      Try(ContrastsParameterizationNamesVec[i] <- (ParameterizationList[[ParameterizationNameNode]])[[ContrastsParameterizationNamesNode]])
+    }
   return (ContrastsParameterizationNamesVec)
 }
 
@@ -2052,7 +2052,7 @@ GetSpotTypesIncludedNames <- function(parameterizationTreeIndex)
   Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
   Try(SpotTypesForLinearModel <- (ParameterizationList[[ParameterizationNameNode]])$SpotTypesForLinearModel)
-  
+
   count <- 0
   Try(SpotTypesIncludedNamesVec <- c())
   if (numSpotTypes>0)
@@ -2062,24 +2062,24 @@ GetSpotTypesIncludedNames <- function(parameterizationTreeIndex)
           next()
       count <- count + 1
       Try(SpotTypesNode<- paste("PMFSpotTypes.",parameterizationTreeIndex,".",i,sep=""))
-      Try(SpotTypesIncludedNamesVec[count] <- (ParameterizationList[[ParameterizationNameNode]])[[SpotTypesNode]])    
-    }  
+      Try(SpotTypesIncludedNamesVec[count] <- (ParameterizationList[[ParameterizationNameNode]])[[SpotTypesNode]])
+    }
   return (SpotTypesIncludedNamesVec)
 }
 
 HowManyDups <- function()
 {
   Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
-  Try(spacing <- get("spacing",envir=limmaGUIenvironment))    
+  Try(spacing <- get("spacing",envir=limmaGUIenvironment))
   ttHowManyDups<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttHowManyDups)
   tkgrab.set(ttHowManyDups)
-  tkfocus(ttHowManyDups)  
+  tkfocus(ttHowManyDups)
   tkwm.title(ttHowManyDups,"Number of Duplicates")
 
   tkframe1 <- tkframe(ttHowManyDups,relief="groove",borderwidth=2)
   tkframe2 <- tkframe(ttHowManyDups,relief="groove",borderwidth=2)
-  
+
   tkgrid(tklabel(ttHowManyDups,text="    "))
   tkgrid(tklabel(ttHowManyDups,text="Looking at the GAL file will help you to answer these questions.",font=.limmaGUIglobals$limmaGUIfont2),columnspan=2)
   tkgrid(tklabel(ttHowManyDups,text="    "))
@@ -2128,13 +2128,13 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
     return()
   })
 
-  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))  
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
-  Try(NumSlides <- get("NumSlides",envir=limmaGUIenvironment))    
+  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
+  Try(NumSlides <- get("NumSlides",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
-  Try(ContrastsParameterizationNamesVec <- GetContrastsParameterizationNames(parameterizationTreeIndex))  
+  Try(ContrastsParameterizationNamesVec <- GetContrastsParameterizationNames(parameterizationTreeIndex))
   Try(ttViewDesignOrContrastsTable <- tktoplevel(.limmaGUIglobals$ttMain))
   Try(tkwm.deiconify(ttViewDesignOrContrastsTable))
   Try(tkgrab.set(ttViewDesignOrContrastsTable))
@@ -2144,13 +2144,13 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
   else
   {
     Try(tkwm.title(ttViewDesignOrContrastsTable,paste("Contrasts matrix for contrasts parameterization ", ContrastsParameterizationNamesVec[contrastsParameterizationIndex],
-     " in parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep="")))  
+     " in parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep="")))
   })
   Try(if (DesignOrContrasts=="Design")
     Try(designOrContrasts <- designOrContrastsList$design)
   else
     Try(designOrContrasts <- designOrContrastsList$contrasts))
-    
+
   onClose <- function() {Try(.Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<Leave>"))));Try(tkgrab.release(ttViewDesignOrContrastsTable));Try(tkdestroy(ttViewDesignOrContrastsTable));Try(tkfocus(.limmaGUIglobals$ttMain))}
 
   Try(if (DesignOrContrasts=="Design")
@@ -2164,16 +2164,16 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
     NumRows <- NumParameters
     NumCols <- NumContrasts
   })
-    
+
   if (is.null(colnames(designOrContrasts)))
   {
       Try(ColumnNamesVec <- c())
       if (NumCols>0)
-        for (i in (1:NumCols)) 
+        for (i in (1:NumCols))
           Try(if (DesignOrContrasts=="Design")
             Try(ColumnNamesVec <- c(ColumnNamesVec,paste("Param",i)))
           else
-            Try(ColumnNamesVec <- c(ColumnNamesVec,paste("Contrast",i))))            
+            Try(ColumnNamesVec <- c(ColumnNamesVec,paste("Contrast",i))))
   }
   else
       Try(ColumnNamesVec <- colnames(designOrContrasts))
@@ -2182,12 +2182,12 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
   Try(myRarray <- "    ")
   Try(for (i in (1:NumRows))
   {
-      Try(if (DesignOrContrasts=="Design")      
+      Try(if (DesignOrContrasts=="Design")
       {
         Try(if(is.null(rownames(designOrContrasts)))
           Try(RowName <- SlideNamesVec[i])
         else
-          Try(RowName <- rownames(designOrContrasts)[i]))        
+          Try(RowName <- rownames(designOrContrasts)[i]))
       }
       else # Contrasts
       {
@@ -2199,22 +2199,22 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
       Try(RowNamesVec <- c(RowNamesVec,RowName))
       Try(myRarray <- c(myRarray,paste(RowName)))
   })
-  
+
   if (NumCols>0)
-    for (j in (1:NumCols))      
+    for (j in (1:NumCols))
     {
       Try(myRarray <- c(myRarray,paste(ColumnNamesVec[j])))
       for (i in (1:NumRows))
-      {          
+      {
           if (nrow(designOrContrasts)==0)
               Try(myRarray <- c(myRarray,"0"))
           else
               Try(myRarray <- c(myRarray,paste(designOrContrasts[i,j])))
-      }      
-    }      
+      }
+    }
 
 #      Try(n <- evalq(TclVarCount <- TclVarCount + 1, .TkRoot$env))
-#      Try(tclArrayName <- paste("::RTcl", n, sep = ""))  
+#      Try(tclArrayName <- paste("::RTcl", n, sep = ""))
 #      Try(l <- list(env = new.env()))
 #      Try(assign(tclArrayName, NULL, envir = l$env))
 #      Try(reg.finalizer(l$env, function(env) tkcmd("unset", ls(env))))
@@ -2236,7 +2236,7 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
         colseparator="\"\t\"",resizeborders="col",multiline="0",
         xscrollcommand=function(...) tkset(xscr,...),yscrollcommand=function(...) tkset(yscr,...),state="disabled"))
       Try(xscr <- tkscrollbar(ttViewDesignOrContrastsTable,orient="horizontal", command=function(...)tkxview(table1,...)))
-      Try(yscr <- tkscrollbar(ttViewDesignOrContrastsTable,command=function(...)tkyview(table1,...)))               
+      Try(yscr <- tkscrollbar(ttViewDesignOrContrastsTable,command=function(...)tkyview(table1,...)))
       Try(tkgrid(table1,yscr))
       Try(tkgrid.configure(yscr,sticky="nsw"))
       Try(tkconfigure(table1,font=.limmaGUIglobals$limmaGUIfontTable))
@@ -2245,16 +2245,16 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
 
 
       Try(tkcmd(.Tk.ID(table1),"width","0",paste(max(4,max(nchar(rownames(designOrContrasts)))+2))))
-      Try(for (j in (1:NumCols))      
+      Try(for (j in (1:NumCols))
         Try(tkcmd(.Tk.ID(table1),"width",paste(j),paste(max(4,nchar(colnames(designOrContrasts)[j])+2,max(nchar(designOrContrasts[,j]))+2)))))
 
 
       onSaveDesignOrContrastsMatrixAs <- function()
       {
-        Try(if (DesignOrContrasts=="Design")        
+        Try(if (DesignOrContrasts=="Design")
           Try(DesignOrContrastsFileName <- tclvalue(tkgetSaveFile(filetypes="{{Design Matrix Files} {.txt}} {{All files} *}")))
         else
-          Try(DesignOrContrastsFileName <- tclvalue(tkgetSaveFile(filetypes="{{Contrasts Matrix Files} {.txt}} {{All files} *}"))))         
+          Try(DesignOrContrastsFileName <- tclvalue(tkgetSaveFile(filetypes="{{Contrasts Matrix Files} {.txt}} {{All files} *}"))))
         Try(if (!nchar(DesignOrContrastsFileName)) return())
         Try(len <- nchar(DesignOrContrastsFileName))
         if (len<=4)
@@ -2284,12 +2284,12 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
       Try(topMenu <- tkmenu(ttViewDesignOrContrastsTable, tearoff=FALSE))
 
       Try(fileMenu <- tkmenu(topMenu, tearoff=FALSE))
-      Try(tkadd(fileMenu, "command", label="Save As",    command=onSaveDesignOrContrastsMatrixAs))       
-      Try(tkadd(fileMenu, "command", label="Close",      command=onClose)) 
-      Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu)) 
+      Try(tkadd(fileMenu, "command", label="Save As",    command=onSaveDesignOrContrastsMatrixAs))
+      Try(tkadd(fileMenu, "command", label="Close",      command=onClose))
+      Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu))
       Try(editMenu <- tkmenu(topMenu, tearoff=FALSE))
-      Try(tkadd(editMenu, "command", label="Copy <Ctrl-C>",      command=copyFcn)) 
-      Try(tkadd(topMenu,  "cascade", label="Edit",menu=editMenu)) 
+      Try(tkadd(editMenu, "command", label="Copy <Ctrl-C>",      command=copyFcn))
+      Try(tkadd(topMenu,  "cascade", label="Edit",menu=editMenu))
 
       Try(tkconfigure(ttViewDesignOrContrastsTable,menu=topMenu))
 
@@ -2300,13 +2300,13 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
 
 ViewDesignOrContrastsMatrixAsPairs <- function(DesignOrContrasts,designOrContrastsList,parameterizationIndex,contrastsParameterizationIndex=NULL)
 {
-  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))  
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
-  Try(ContrastsParameterizationNamesVec <- GetContrastsParameterizationNames(parameterizationTreeIndex))  
-  Try(NumSlides <- get("NumSlides",envir=limmaGUIenvironment))    
+  Try(ContrastsParameterizationNamesVec <- GetContrastsParameterizationNames(parameterizationTreeIndex))
+  Try(NumSlides <- get("NumSlides",envir=limmaGUIenvironment))
 
   Try(if (DesignOrContrasts=="Design")
   {
@@ -2316,12 +2316,12 @@ ViewDesignOrContrastsMatrixAsPairs <- function(DesignOrContrasts,designOrContras
   }
   else # Contrasts
   {
-    Try(designOrContrasts <- designOrContrastsList$contrasts)  
+    Try(designOrContrasts <- designOrContrastsList$contrasts)
     Try(NumContrasts <- ncol(designOrContrasts))
     NumRows <- NumParameters
     NumCols <- NumContrasts
   })
-    
+
   ttViewDesignOrContrastsAsPairs<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttViewDesignOrContrastsAsPairs)
   tkgrab.set(ttViewDesignOrContrastsAsPairs)
@@ -2334,15 +2334,15 @@ ViewDesignOrContrastsMatrixAsPairs <- function(DesignOrContrasts,designOrContras
   else
   {
     Try(tkwm.title(ttViewDesignOrContrastsAsPairs,paste("Contrasts in contrasts parameterization ", ContrastsParameterizationNamesVec[contrastsParameterizationIndex],
-     " in parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep="")))  
+     " in parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep="")))
     Try(TitleLabel<-tklabel(ttViewDesignOrContrastsAsPairs,text=paste("Contrasts in contrasts parameterization ", ContrastsParameterizationNamesVec[contrastsParameterizationIndex],
-     " in parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep=""),font=.limmaGUIglobals$limmaGUIfont2b))     
+     " in parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep=""),font=.limmaGUIglobals$limmaGUIfont2b))
   })
 
-  Try(tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    ")))    
+  Try(tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    ")))
   Try(tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    "),TitleLabel))
   Try(tkgrid.configure(TitleLabel,columnspan=4))
-  Try(tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    ")))  
+  Try(tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    ")))
   Try(if (DesignOrContrasts=="Design")
     ParameterOrContrastLabel <- tklabel(ttViewDesignOrContrastsAsPairs,text="Parameter",font=.limmaGUIglobals$limmaGUIfont2b)
   else
@@ -2359,11 +2359,11 @@ ViewDesignOrContrastsMatrixAsPairs <- function(DesignOrContrasts,designOrContras
   {
       Try(ColumnNamesVec <- c())
       if (NumCols>0)
-        for (i in (1:NumCols)) 
+        for (i in (1:NumCols))
           Try(if (DesignOrContrasts=="Design")
             Try(ColumnNamesVec <- c(ColumnNamesVec,paste("Param",i)))
           else
-            Try(ColumnNamesVec <- c(ColumnNamesVec,paste("Contrast",i))))            
+            Try(ColumnNamesVec <- c(ColumnNamesVec,paste("Contrast",i))))
   }
   else
       Try(ColumnNamesVec <- colnames(designOrContrasts))
@@ -2371,12 +2371,12 @@ ViewDesignOrContrastsMatrixAsPairs <- function(DesignOrContrasts,designOrContras
   Try(RowNamesVec <- c())
   Try(for (i in (1:NumRows))
   {
-      Try(if (DesignOrContrasts=="Design")      
+      Try(if (DesignOrContrasts=="Design")
       {
         Try(if(is.null(rownames(designOrContrasts)))
           Try(RowName <- SlideNamesVec[i])
         else
-          Try(RowName <- rownames(designOrContrasts)[i]))        
+          Try(RowName <- rownames(designOrContrasts)[i]))
       }
       else # Contrasts
       {
@@ -2394,7 +2394,7 @@ ViewDesignOrContrastsMatrixAsPairs <- function(DesignOrContrasts,designOrContras
       Try(if (DesignOrContrasts=="Design")
       {
         Try(FirstItemOfPair  <- paste(designOrContrastsList$TargetVector[designOrContrastsList$RNAType1[i]]))
-        Try(SecondItemOfPair <- paste(designOrContrastsList$TargetVector[designOrContrastsList$RNAType2[i]]))      
+        Try(SecondItemOfPair <- paste(designOrContrastsList$TargetVector[designOrContrastsList$RNAType2[i]]))
       }
       else
       {
@@ -2407,23 +2407,23 @@ ViewDesignOrContrastsMatrixAsPairs <- function(DesignOrContrasts,designOrContras
                  tklabel(ttViewDesignOrContrastsAsPairs,text="    "),
                  tklabel(ttViewDesignOrContrastsAsPairs,text=FirstItemOfPair,background="white",font=.limmaGUIglobals$limmaGUIfont2),
                  tklabel(ttViewDesignOrContrastsAsPairs,text="    "),
-                 tklabel(ttViewDesignOrContrastsAsPairs,text=plusOrMinusText,font=.limmaGUIglobals$limmaGUIfont2,bg="white"),                 
+                 tklabel(ttViewDesignOrContrastsAsPairs,text=plusOrMinusText,font=.limmaGUIglobals$limmaGUIfont2,bg="white"),
                  tklabel(ttViewDesignOrContrastsAsPairs,text="    "),
                  tklabel(ttViewDesignOrContrastsAsPairs,text=SecondItemOfPair,background="white",font=.limmaGUIglobals$limmaGUIfont2),
-                 tklabel(ttViewDesignOrContrastsAsPairs,text="    ")                 
+                 tklabel(ttViewDesignOrContrastsAsPairs,text="    ")
                  ))
       Try(tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    ")))
     }
   tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="     "))
-  
+
   Advanced.but <- tkbutton(ttViewDesignOrContrastsAsPairs,text="Advanced...",command=function() {ViewDesignOrContrastsMatrixInTable(DesignOrContrasts,designOrContrastsList,parameterizationIndex,contrastsParameterizationIndex)},font=.limmaGUIglobals$limmaGUIfont2)
   onOK <- function() {Try(tkgrab.release(ttViewDesignOrContrastsAsPairs));Try(tkdestroy(ttViewDesignOrContrastsAsPairs));Try(tkfocus(.limmaGUIglobals$ttMain))}
   OK.but <-tkbutton(ttViewDesignOrContrastsAsPairs,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    "),OK.but,Advanced.but)
   tkgrid(tklabel(ttViewDesignOrContrastsAsPairs,text="    "))
-      
+
   Try(tkfocus(ttViewDesignOrContrastsAsPairs))
-  
+
   Try(tkbind(ttViewDesignOrContrastsAsPairs, "<Destroy>", function() {Try(tkgrab.release(ttViewDesignOrContrastsAsPairs));Try(tkfocus(.limmaGUIglobals$ttMain))}))
   Try(tkwait.window(ttViewDesignOrContrastsAsPairs))
 }
@@ -2436,30 +2436,30 @@ ViewExistingContrastsParameterization <- function()
   {
     Try(tkmessageBox(title="View Existing Contrasts Parameterization",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
+    return()
   }
-  
+
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
 
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-  
-  Try(NumContrastParameterizations <- (ParameterizationList[[ParameterizationNameNode]])$NumContrastParameterizations)  
-  
+
+  Try(NumContrastParameterizations <- (ParameterizationList[[ParameterizationNameNode]])$NumContrastParameterizations)
+
   if (NumContrastParameterizations==0)
   {
     Try(tkmessageBox(title="View Existing Contrasts Parameterization",message="There are no contrasts parameterizations available.  Select \"Compute Contrasts\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
+    return()
   }
   Try(contrastsParameterizationIndex <- ChooseContrastsParameterization(parameterizationTreeIndex))
   Try(if (contrastsParameterizationIndex==0)    return()    )
   Try(ContrastsParameterizationTreeIndexVec <- ParameterizationList[[ParameterizationNameNode]]$ContrastsParameterizationTreeIndexVec)
-  Try(contrastsParameterizationTreeIndex <- ContrastsParameterizationTreeIndexVec[contrastsParameterizationIndex])          
-  Try(ContrastsParameterizationListNode <- paste("ContrastsParameterization.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex, sep=""))  
-  Try(contrastsList <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[ContrastsParameterizationListNode]])$contrastsMatrixInList)  
+  Try(contrastsParameterizationTreeIndex <- ContrastsParameterizationTreeIndexVec[contrastsParameterizationIndex])
+  Try(ContrastsParameterizationListNode <- paste("ContrastsParameterization.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex, sep=""))
+  Try(contrastsList <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[ContrastsParameterizationListNode]])$contrastsMatrixInList)
   Try(if (contrastsList$contrastsCreatedFromDropDowns==FALSE)
       Try(ViewDesignOrContrastsMatrixInTable(DesignOrContrasts="Contrasts",contrastsList,parameterizationIndex,contrastsParameterizationIndex))
   else
@@ -2475,9 +2475,9 @@ ViewExistingParameterization <- function()
   {
     Try(tkmessageBox(title="View Existing Parameterization",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
+    return()
   }
-  
+
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -2493,9 +2493,9 @@ ViewExistingParameterization <- function()
 
 InitNewParameterization <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment)) 
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
   Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
@@ -2514,12 +2514,12 @@ InitNewParameterization <- function()
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))  
+  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(designList <- GetDesignOrContrasts(Design=TRUE))
   Try(if (nrow(designList$design)==0) return(list(result="cancel")))
   Try(designCreatedFromDropDowns <- designList$designCreatedFromDropDowns)
   Try(design <- designList$design)
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))        
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterNamesVec <- colnames(design))
   Try(ParameterizationNameText <- GetParameterizationName())
   Try(if (ParameterizationNameText=="GetParameterizationName.CANCEL") return(list(result="cancel")))
@@ -2527,9 +2527,9 @@ InitNewParameterization <- function()
   {
       Try(tkmessageBox(title="Parameterization Name",message="Please enter a name for this parameterization (design matrix)",type="ok",icon="error"))
       Try(ParameterizationNameText <- GetParameterizationName())
-      if (ParameterizationNameText=="GetParameterizationName.CANCEL") 
+      if (ParameterizationNameText=="GetParameterizationName.CANCEL")
       {
-          Try(tkfocus(.limmaGUIglobals$ttMain))          
+          Try(tkfocus(.limmaGUIglobals$ttMain))
           return(list(result="cancel"))
       }
   })
@@ -2584,7 +2584,7 @@ InitNewParameterization <- function()
   Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
   Try(assign("NumParameterizations",NumParameterizations,limmaGUIenvironment))
 
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 
   return(list(result="ok",parameterizationIndex=parameterizationIndex,
          parameterizationTreeIndex=parameterizationTreeIndex,
@@ -2598,27 +2598,27 @@ CreateTreeAndList <- function(parameterizationIndex,parameterizationTreeIndex,
     ParameterizationNameText,ParameterNamesVec,designList,SpotTypesForLinearModel)
 {
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))        
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec     <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList         <- get("ParameterizationList",envir=limmaGUIenvironment))
-  Try(design <- designList$design) 
+  Try(design <- designList$design)
   Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
-  Try(spacing <- get("spacing",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
+  Try(spacing <- get("spacing",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
   Try(WeightingType <- get("WeightingType",envir=limmaGUIenvironment))
-  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))  
+  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
   Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
   Try(RG <- get("RG",envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
- 
+
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(ParamMainFitNode   <- paste("ParamMainFit.",parameterizationTreeIndex,sep=""))
   Try(ParamContrastsNode <- paste("ParamContrasts.",parameterizationTreeIndex,sep=""))
   Try(PMFNoneNode <- paste("PMFNone.",parameterizationTreeIndex,sep=""))
-  Try(PMFSpotTypesNode <- paste("PMFSpotTypes.",parameterizationTreeIndex,sep=""))  
-  Try(PMFMANormMethodNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,sep=""))    
+  Try(PMFSpotTypesNode <- paste("PMFSpotTypes.",parameterizationTreeIndex,sep=""))
+  Try(PMFMANormMethodNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,sep=""))
   Try(PMFParamsNode <- paste("PMFParams.",parameterizationTreeIndex,sep=""))
   Try(PMFLinModNode <- paste("PMFLinMod.",parameterizationTreeIndex,sep=""))
   Try(PMFLinModStatusNode <- paste("PMFLinModStatus.",parameterizationTreeIndex,sep=""))
@@ -2647,19 +2647,19 @@ CreateTreeAndList <- function(parameterizationIndex,parameterizationTreeIndex,
   Try(ParameterizationList[[ParameterizationNameNode]][[ParamMainFitNode]] <- "Main fit")
 
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"1",ParameterizationNameNode,ParamContrastsNode,text="Contrasts",font=.limmaGUIglobals$limmaGUIfontTree))
-  
+
   Try(ParameterizationList[[ParameterizationNameNode]][[ParamContrastsNode]] <- "Contrasts")
 
   # Here we are creating a parameterization, so initially there will be no contrasts, but we will still
   # have one contrasts node, labeled "none".
   Try(ContrastsParameterizationNamesNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".1",sep=""))
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParamContrastsNode,ContrastsParameterizationNamesNode,text="none",font=.limmaGUIglobals$limmaGUIfontTree))
-  Try(ParameterizationList[[ParameterizationNameNode]][[ContrastsParameterizationNamesNode]] <- "none") 
+  Try(ParameterizationList[[ParameterizationNameNode]][[ContrastsParameterizationNamesNode]] <- "none")
 
 ##################################################################################################################
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParamMainFitNode,PMFSpotTypesNode,text="Spot Type(s) Included",font=.limmaGUIglobals$limmaGUIfontTree))
-  Try(ParameterizationList[[ParameterizationNameNode]][[PMFSpotTypesNode]] <- "SpotTypes") 
-    
+  Try(ParameterizationList[[ParameterizationNameNode]][[PMFSpotTypesNode]] <- "SpotTypes")
+
   Try(if (numSpotTypes>0)
     for (i in (1:numSpotTypes))
     {
@@ -2675,7 +2675,7 @@ CreateTreeAndList <- function(parameterizationIndex,parameterizationTreeIndex,
 
 ##################################################################################################################
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFMANormMethodNode,text="M A Normalization Method",font=.limmaGUIglobals$limmaGUIfontTree))
-  Try(ParameterizationList[[ParameterizationNameNode]][[PMFMANormMethodNode]] <- "MANormMethod") 
+  Try(ParameterizationList[[ParameterizationNameNode]][[PMFMANormMethodNode]] <- "MANormMethod")
   Try(NewNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,".",1,sep=""))
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",PMFMANormMethodNode, NewNode,text="Not available",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(ParameterizationList[[ParameterizationNameNode]][[NewNode]] <- "Not available")
@@ -2683,7 +2683,7 @@ CreateTreeAndList <- function(parameterizationIndex,parameterizationTreeIndex,
 ##################################################################################################################
 
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFParamsNode,text="Parameters",font=.limmaGUIglobals$limmaGUIfontTree))
-      Try(ParameterizationList[[ParameterizationNameNode]][[PMFParamsNode]] <- "Parameters") 
+      Try(ParameterizationList[[ParameterizationNameNode]][[PMFParamsNode]] <- "Parameters")
 
       if (NumParameters>0)
         for (i in (1:NumParameters))
@@ -2695,7 +2695,7 @@ CreateTreeAndList <- function(parameterizationIndex,parameterizationTreeIndex,
 
     # Insert design matrix list object (containing design matrix and a flag saying whether
     # the design matrix was created from drop-downs) into list version of tree.
-      Try(ParameterizationList[[ParameterizationNameNode]][["designList"]] <- designList) 
+      Try(ParameterizationList[[ParameterizationNameNode]][["designList"]] <- designList)
 
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFLinModNode,text="Linear Model Fit",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(ParameterizationList[[ParameterizationNameNode]][[PMFLinModNode]] <- "Linear Model Fit")
@@ -2720,7 +2720,7 @@ CreateTreeAndList <- function(parameterizationIndex,parameterizationTreeIndex,
 
       Try(ParameterizationList[[ParameterizationNameNode]][["Contrasts"]] <- list())
 
-      Try(ParameterizationList[[ParameterizationNameNode]][["ContrastsParameterizationTreeIndexVec"]] <- c()) 
+      Try(ParameterizationList[[ParameterizationNameNode]][["ContrastsParameterizationTreeIndexVec"]] <- c())
 
       Try(assign("ParameterizationTreeIndexVec",ParameterizationTreeIndexVec,limmaGUIenvironment))
       Try(assign("ParameterizationNamesVec",ParameterizationNamesVec,limmaGUIenvironment))
@@ -2733,12 +2733,12 @@ CreateTreeAndList <- function(parameterizationIndex,parameterizationTreeIndex,
 
 CreateNewParameterization <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
   Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Create New Parameterization",
@@ -2752,7 +2752,7 @@ CreateNewParameterization <- function()
   Try(if (InitNewParameterizationReturnVal$result=="cancel") return())
   Try(parameterizationIndex <- InitNewParameterizationReturnVal$parameterizationIndex)
   Try(parameterizationTreeIndex <- InitNewParameterizationReturnVal$parameterizationTreeIndex)
-  Try(ParameterizationNameText <- InitNewParameterizationReturnVal$ParameterizationNameText) 
+  Try(ParameterizationNameText <- InitNewParameterizationReturnVal$ParameterizationNameText)
   Try(ParameterNamesVec <- InitNewParameterizationReturnVal$ParameterNamesVec)
   Try(designList <- InitNewParameterizationReturnVal$designList)
   Try(SpotTypesForLinearModel <- InitNewParameterizationReturnVal$SpotTypesForLinearModel)
@@ -2764,16 +2764,16 @@ CreateNewParameterization <- function()
 ViewRNATargets <- function()
 {
       Try(NumSlides <- get("NumSlides",envir=limmaGUIenvironment))
-      Try(Targets <- get("Targets",envir=limmaGUIenvironment))      
-      Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-      Try(RawMADataWasImported<- get("RawMADataWasImported", envir=limmaGUIenvironment))       
-      Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))       
-  
+      Try(Targets <- get("Targets",envir=limmaGUIenvironment))
+      Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+      Try(RawMADataWasImported<- get("RawMADataWasImported", envir=limmaGUIenvironment))
+      Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+
       if (RawMADataWasImported==TRUE || NormalizedMADataWasImported==TRUE)
       {
           Try(tkmessageBox(title="RNA Targets",message="MA Data was imported. Targets are unknown.",type="ok",icon="error"))
           Try(tkfocus(.limmaGUIglobals$ttMain))
-          return()      
+          return()
       }
       if (ArraysLoaded==FALSE)
       {
@@ -2793,28 +2793,28 @@ ViewRNATargets <- function()
       Try(tkgrab.set(ttViewRNATargets))
       Try(tkfocus(ttViewRNATargets))
       Try(tkwm.title(ttViewRNATargets,"RNA Targets"))
-      
+
 #      Try(n <- evalq(TclVarCount <- TclVarCount + 1, .TkRoot$env))
 #     Try(tclArrayName <- paste("::RTcl", n, sep = ""))
       Try(tclArrayVar1 <- tclArrayVar())
       Try(tclArrayName <- ls(tclArrayVar1$env))
-      
+
       onClose <- function() {Try(tkgrab.release(ttViewRNATargets));Try(tkdestroy(ttViewRNATargets));Try(tkfocus(.limmaGUIglobals$ttMain))}
-  
+
       Try(NumCols <- ncol(Targets))
       Try(NumRows <- nrow(Targets))
-     
+
       Try(myRarray <- c())
 
       if (NumCols>0)
-        for (j in (1:NumCols))      
+        for (j in (1:NumCols))
         {
           Try(myRarray <- c(myRarray,paste(colnames(Targets)[j])))
           for (i in (1:NumRows))
-          {          
+          {
               Try(myRarray <- c(myRarray,paste(Targets[i,j])))
-          }      
-        }      
+          }
+        }
 
           Try(dim(myRarray) <- c(NumRows+1,NumCols))
 
@@ -2823,23 +2823,23 @@ ViewRNATargets <- function()
           if (NumRows>0 && NumCols>0)
             for (i in (0:NumRows))
               for (j in (1:NumCols))
-#                 Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j-1,") ",myRarray[i+1,j],sep="")))                 
+#                 Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j-1,") ",myRarray[i+1,j],sep="")))
                  Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(myRarray[i+1,j])))
-         
-          # Below, I should just use tkwidget(ttViewRNATargets,"table",...) 
+
+          # Below, I should just use tkwidget(ttViewRNATargets,"table",...)
           Try(table1 <- .Tk.subwin(ttViewRNATargets))
           Try(.Tcl(paste("table",.Tk.ID(table1),.Tcl.args(variable=tclArrayName,rows=paste(NumRows+1),cols=paste(NumCols),titlerows="0",titlecols="0",selectmode="extended",colwidth="13",background="white",rowseparator="\"\n\"",colseparator="\"\t\"",resizeborders="col",multiline="0",
                 titlerows=1,colstretchmode="unset",
                 xscrollcommand=function(...) tkset(xscr,...),yscrollcommand=function(...) tkset(yscr,...),state="disabled"))))
           Try(xscr <- tkscrollbar(ttViewRNATargets,orient="horizontal", command=function(...)tkxview(table1,...)))
-          Try(yscr <- tkscrollbar(ttViewRNATargets,command=function(...)tkyview(table1,...)))               
+          Try(yscr <- tkscrollbar(ttViewRNATargets,command=function(...)tkyview(table1,...)))
           Try(tkgrid(table1,yscr))
           Try(tkgrid.configure(yscr,sticky="nsw"))
           Try(tkgrid(xscr))
           Try(tkgrid.configure(xscr,sticky="new"))
           Try(tkconfigure(table1,font=.limmaGUIglobals$limmaGUIfontTable))
 
-          for (j in (1:NumCols))      
+          for (j in (1:NumCols))
             Try(tkcmd(.Tk.ID(table1),"width",paste(j-1),paste(max(4,nchar(colnames(Targets)[j])+2,max(nchar(Targets[,j]))+2))))
 
           Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<<Copy>>"))))
@@ -2858,7 +2858,7 @@ ViewRNATargets <- function()
             if (NumCols>0)
               Try(for (j in (1:NumCols))
                 colnamesTargets[j] <- tclvalue(paste(tclArrayName,"(0,",j-1,")",sep="")))
-            Try(colnames(Targets) <- colnamesTargets)       
+            Try(colnames(Targets) <- colnamesTargets)
             if (NumRows>0 && NumCols>0)
               Try(for (i in (1:NumRows))
                  for (j in (1:NumCols))
@@ -2872,14 +2872,14 @@ ViewRNATargets <- function()
 
           Try(topMenu <- tkmenu(ttViewRNATargets, tearoff=FALSE))
           Try(fileMenu <- tkmenu(topMenu, tearoff=FALSE))
-          Try(tkadd(fileMenu, "command", label="Save As",   command=saveTargetsFile)) 
-          Try(tkadd(fileMenu, "command", label="Close",   command=onClose)) 
-          Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu)) # ) 
+          Try(tkadd(fileMenu, "command", label="Save As",   command=saveTargetsFile))
+          Try(tkadd(fileMenu, "command", label="Close",   command=onClose))
+          Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu)) # )
 
           Try(editMenu <- tkmenu(topMenu, tearoff=FALSE))
-          Try(tkadd(editMenu, "command", label="Copy <Ctrl-C>",      command=copyFcn)) 
-          Try(tkadd(topMenu,  "cascade", label="Edit",menu=editMenu)) 
-                   
+          Try(tkadd(editMenu, "command", label="Copy <Ctrl-C>",      command=copyFcn))
+          Try(tkadd(topMenu,  "cascade", label="Edit",menu=editMenu))
+
           Try(tkconfigure(ttViewRNATargets,menu=topMenu))
 
           Try(tkfocus(ttViewRNATargets))
@@ -2888,7 +2888,7 @@ ViewRNATargets <- function()
 }
 
 ########################################################################################################
-# Some C-style string searching functions, because I'm not very good at using regular expressions ;-) 
+# Some C-style string searching functions, because I'm not very good at using regular expressions ;-)
 
 # Returns the index where needle is found in haystack or zero if not found.
 nstrstr <- function(haystack,needle)
@@ -2919,10 +2919,10 @@ strstr <- function(haystack,needle)
 
 ViewSpotTypes <- function()
 {
-      Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))      
-      Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-      Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))       
-  
+      Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
+      Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+      Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+
       if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
       {
           Try(tkmessageBox(title="Spot Types",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
@@ -2943,17 +2943,17 @@ ViewSpotTypes <- function()
       Try(tkwm.title(ttViewSpotTypes,"Spot Types"))
 
 #      Try(n <- evalq(TclVarCount <- TclVarCount + 1, .TkRoot$env))
-#     Try(tclArrayName <- paste("::RTcl", n, sep = ""))      
+#     Try(tclArrayName <- paste("::RTcl", n, sep = ""))
       Try(tclArrayVar1 <- tclArrayVar())
       Try(tclArrayName <- ls(tclArrayVar1$env))
-      
-      onUpdate <- function() 
+
+      onUpdate <- function()
       {
           Try(.Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<Leave>"))))
 
           NumRows <- as.integer(strsplit(tclvalue(tkcmd(table1,"configure","-rows"))," ")[[1]][5])-1
           NumCols <- as.integer(strsplit(tclvalue(tkcmd(table1,"configure","-cols"))," ")[[1]][5])
-          
+
           Try(SpotTypes <- as.data.frame(matrix(nrow=NumRows,ncol=NumCols)))
           Try(colnamesSpotTypes <- c())
           if (NumCols>0)
@@ -2964,10 +2964,10 @@ ViewSpotTypes <- function()
             for (i in (1:NumRows))
                for (j in (1:NumCols))
                     Try(SpotTypes[i,j] <- tclvalue(paste(tclArrayName,"(",i,",",j-1,")",sep="")))
-          Try(assign("SpotTypes",SpotTypes,limmaGUIenvironment))           
-          tkconfigure(ttViewSpotTypes,cursor="watch")   
+          Try(assign("SpotTypes",SpotTypes,limmaGUIenvironment))
+          tkconfigure(ttViewSpotTypes,cursor="watch")
           Try(UpdateSpotTypesStatus())
-          tkconfigure(ttViewSpotTypes,cursor="arrow")             
+          tkconfigure(ttViewSpotTypes,cursor="arrow")
           Try(tkgrab.release(ttViewSpotTypes));Try(tkdestroy(ttViewSpotTypes));Try(tkfocus(.limmaGUIglobals$ttMain))
       }
       onClose <- function() {Try(tkgrab.release(ttViewSpotTypes));Try(tkdestroy(ttViewSpotTypes));Try(tkfocus(.limmaGUIglobals$ttMain))}
@@ -2975,21 +2975,21 @@ ViewSpotTypes <- function()
 #      Try(labelSpotTypes <- tklabel(ttViewSpotTypes,text=paste("Spot Types"),font=.limmaGUIglobals$limmaGUIfont2b))
 #      Try(tkgrid(labelSpotTypes,column=2,columnspan=2))
 #      Try(tkgrid(tklabel(ttViewSpotTypes,text="    ")))
-  
+
       Try(NumCols <- ncol(SpotTypes))
       Try(NumRows <- nrow(SpotTypes))
-     
+
       Try(myRarray <- c())
 
       if (NumCols>0)
-        for (j in (1:NumCols))      
+        for (j in (1:NumCols))
         {
           Try(myRarray <- c(myRarray,paste(colnames(SpotTypes)[j])))
           for (i in (1:NumRows))
-          {          
+          {
               Try(myRarray <- c(myRarray,paste(SpotTypes[i,j])))
-          }      
-        }      
+          }
+        }
 
           Try(dim(myRarray) <- c(NumRows+1,NumCols))
 
@@ -2999,22 +2999,22 @@ ViewSpotTypes <- function()
             for (i in (0:NumRows))
               for (j in (1:NumCols))
 #                 Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j-1,") ",myRarray[i+1,j],sep="")))
-                Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(myRarray[i+1,j])))                 
-         
-          # Below, I should just use tkwidget(ttViewSpotTypes,"table",...) 
+                Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(myRarray[i+1,j])))
+
+          # Below, I should just use tkwidget(ttViewSpotTypes,"table",...)
           Try(table1 <- .Tk.subwin(ttViewSpotTypes))
           Try(.Tcl(paste("table",.Tk.ID(table1),.Tcl.args(variable=tclArrayName,rows=paste(NumRows+1),cols=paste(NumCols),titlerows="0",titlecols="0",selectmode="extended",colwidth="13",background="white",rowseparator="\"\n\"",colseparator="\"\t\"",resizeborders="col",multiline="0",
                 titlerows=1,
                 xscrollcommand=function(...) tkset(xscr,...),yscrollcommand=function(...) tkset(yscr,...)))))
           Try(xscr <- tkscrollbar(ttViewSpotTypes,orient="horizontal", command=function(...)tkxview(table1,...)))
-          Try(yscr <- tkscrollbar(ttViewSpotTypes,command=function(...)tkyview(table1,...)))                
+          Try(yscr <- tkscrollbar(ttViewSpotTypes,command=function(...)tkyview(table1,...)))
           Try(tkgrid(table1,yscr))
           Try(tkgrid.configure(yscr,sticky="nsw"))
           Try(tkgrid(xscr))
           Try(tkgrid.configure(xscr,sticky="new"))
           Try(tkconfigure(table1,font=.limmaGUIglobals$limmaGUIfontTable))
 
-          for (j in (1:NumCols))      
+          for (j in (1:NumCols))
             Try(tkcmd(.Tk.ID(table1),"width",paste(j-1),paste(max(4,nchar(colnames(SpotTypes)[j])+2,max(nchar(SpotTypes[,j]))+2))))
 
           Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<<Copy>>"))))
@@ -3025,7 +3025,7 @@ ViewSpotTypes <- function()
             Try(if (!nchar(SpotTypesFileName)) return())
             Try(SpotTypes <- read.table(SpotTypesFileName,header=FALSE,sep="\t",quote="\"",as.is=TRUE,comment.char=""))
             Try(NumRows <<- nrow(SpotTypes)-1)
-            Try(NumCols <<- ncol(SpotTypes))            
+            Try(NumCols <<- ncol(SpotTypes))
             Try(tkconfigure(table1,rows=paste(NumRows+1),cols=paste(NumCols)))
             # This will give an error if tclArray doesn't exist.
             # .Tcl("unset tclArray")
@@ -3033,7 +3033,7 @@ ViewSpotTypes <- function()
                for (i in (0:NumRows))
                  for (j in (1:NumCols))
 #                   Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j-1,") \"",SpotTypes[i+1,j],"\"",sep="")))
-                   Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(SpotTypes[i+1,j])))                   
+                   Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(SpotTypes[i+1,j])))
           }
 
           saveSpotTypesFile <- function()
@@ -3050,7 +3050,7 @@ ViewSpotTypes <- function()
             if (NumCols>0)
               Try(for (j in (1:NumCols))
                 colnamesSpotTypes[j] <- tclvalue(paste(tclArrayName,"(0,",j-1,")",sep="")))
-            Try(colnames(SpotTypes) <- colnamesSpotTypes)       
+            Try(colnames(SpotTypes) <- colnamesSpotTypes)
             if (NumRows>0 && NumCols>0)
               Try(for (i in (1:NumRows))
                  for (j in (1:NumCols))
@@ -3060,12 +3060,12 @@ ViewSpotTypes <- function()
           }
 
           addRowFcn <- function()
-          {         
+          {
             Try(tkinsert(table1,"rows","end","1"))
           }
-          
+
           insertRowFcn <- function()
-          {         
+          {
             if (data.class(result<-try(tkinsert(table1,"rows",paste(as.integer(tclvalue(tkindex(table1,"active","row")))),"-1"),TRUE))=="try-error")
             {
               Try(errorMessage <- strstr(as.character(result),"[tcl]"))
@@ -3074,12 +3074,12 @@ ViewSpotTypes <- function()
               Try(tkmessageBox(title="Failed to Insert Row",message=errorMessage,icon="error",type="ok"))
             }
           }
-          
+
           deleteLastRowFcn <- function()
           {
-            Try(tkdelete(table1,"rows","end","1"))  
+            Try(tkdelete(table1,"rows","end","1"))
           }
-          
+
           deleteCurrentRowFcn <- function()
           {
             if (data.class(result<-try(tkdelete(table1,"rows",tclvalue(tkindex(table1,"active","row")),"1"),TRUE))=="try-error")
@@ -3095,39 +3095,39 @@ ViewSpotTypes <- function()
 
           Try(topMenu <- tkmenu(ttViewSpotTypes, tearoff=FALSE))
           Try(fileMenu <- tkmenu(topMenu, tearoff=FALSE))
-          Try(tkadd(fileMenu, "command", label="Open",      command=openSpotTypesFile)) 
-          Try(tkadd(fileMenu, "command", label="Save As",   command=saveSpotTypesFile)) 
-          Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu)) # ) 
+          Try(tkadd(fileMenu, "command", label="Open",      command=openSpotTypesFile))
+          Try(tkadd(fileMenu, "command", label="Save As",   command=saveSpotTypesFile))
+          Try(tkadd(topMenu,  "cascade", label="File",menu=fileMenu)) # )
 
           Try(editMenu <- tkmenu(topMenu, tearoff=FALSE))
-          Try(tkadd(editMenu, "command", label="Copy <Ctrl-C>",      command=copyFcn)) 
+          Try(tkadd(editMenu, "command", label="Copy <Ctrl-C>",      command=copyFcn))
           Try(tkadd(topMenu,  "cascade", label="Edit",menu=editMenu))
-          
+
           Try(rowsMenu <- tkmenu(topMenu, tearoff=FALSE))
           Try(tkadd(rowsMenu, "command", label="Add Row",                            command=addRowFcn))
-          Try(tkadd(rowsMenu, "command", label="Insert Row before Current Row",      command=insertRowFcn))          
+          Try(tkadd(rowsMenu, "command", label="Insert Row before Current Row",      command=insertRowFcn))
           Try(tkadd(rowsMenu, "separator"))
           Try(tkadd(rowsMenu, "command", label="Delete Last Row",                    command=deleteLastRowFcn))
-          Try(tkadd(rowsMenu, "command", label="Delete Current Row",                 command=deleteCurrentRowFcn))          
+          Try(tkadd(rowsMenu, "command", label="Delete Current Row",                 command=deleteCurrentRowFcn))
           Try(tkadd(topMenu,  "cascade", label="Rows",menu=rowsMenu))
-          
+
           Try(columnsMenu <- tkmenu(topMenu, tearoff=FALSE))
           Try(editableColumnHeadings <- tclVar("0"))
           Try(tkadd(columnsMenu, "checkbutton",variable=editableColumnHeadings,label="Editable Column Headings",
                 command=function() {if (tclvalue(editableColumnHeadings)=="1") tkconfigure(table1,titlerows=0) else tkconfigure(table1,titlerows=1)}))
           Try(tkadd(topMenu,  "cascade", label="Columns",menu=columnsMenu))
-          
+
           Try(tkconfigure(ttViewSpotTypes,menu=topMenu))
 
           Try(BlankLabel1<-tklabel(ttViewSpotTypes,text="    "))
           Try(tkgrid(BlankLabel1))
           Try(BlankLabel2<-tklabel(ttViewSpotTypes,text="    "))
-          Try(UpdateCloseFrame <- tkframe(ttViewSpotTypes)) 
+          Try(UpdateCloseFrame <- tkframe(ttViewSpotTypes))
           Try(Update.but <-tkbutton(UpdateCloseFrame,text=" Update ",command=onUpdate,font=.limmaGUIglobals$limmaGUIfont2))
-          Try(Close.but <-tkbutton(UpdateCloseFrame,text=" Close ",command=onClose,font=.limmaGUIglobals$limmaGUIfont2))      
+          Try(Close.but <-tkbutton(UpdateCloseFrame,text=" Close ",command=onClose,font=.limmaGUIglobals$limmaGUIfont2))
           Try(tkgrid(Update.but,Close.but))
           Try(tkgrid.configure(Update.but,sticky="e"))
-          Try(tkgrid.configure(Close.but,sticky="w"))          
+          Try(tkgrid.configure(Close.but,sticky="w"))
           Try(tkgrid(UpdateCloseFrame))
           Try(BlankLabel3<-tklabel(ttViewSpotTypes,text="    "))
           Try(tkgrid(BlankLabel3))
@@ -3148,8 +3148,8 @@ ComputeContrasts <- function()
   # In that case, it will be limited to 6 columns, and the user will have to add extra columns themselves.
   # (6 columns is  [ 5 Choose 2 - (5-1)  = 6 ] i.e. it is sufficient for 5 RNA types in a connected design).
 
-  # For an unconnected design, the number of parameters estimated in the main linear model fit is 
-  # NumRNATypes - NumSubGraphs (where the empty graph is not counted as a subgraph, and if there is 
+  # For an unconnected design, the number of parameters estimated in the main linear model fit is
+  # NumRNATypes - NumSubGraphs (where the empty graph is not counted as a subgraph, and if there is
   # only one connected graph, it is counted as one subgraph).
   # The total number of contrasts in this case is the sum of each of the numbers of contrasts for each
   # subgraph.  For each subgraph, the total number of contrasts is :
@@ -3163,15 +3163,15 @@ ComputeContrasts <- function()
   Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(Targets <- get("Targets",envir=limmaGUIenvironment))
   Try(NumRNATypes <- get("NumRNATypes",envir=limmaGUIenvironment))
-  Try(numConnectedSubGraphs <- get("numConnectedSubGraphs",envir=limmaGUIenvironment))    
-  Try(connectedSubGraphs <- get("connectedSubGraphs",envir=limmaGUIenvironment))        
+  Try(numConnectedSubGraphs <- get("numConnectedSubGraphs",envir=limmaGUIenvironment))
+  Try(connectedSubGraphs <- get("connectedSubGraphs",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
+  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
 
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
@@ -3179,13 +3179,13 @@ ComputeContrasts <- function()
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   }
-  
+
   if (NumParameterizations==0)
   {
     Try(tkmessageBox(title="Compute Contrasts",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
+    return()
+  }
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -3205,9 +3205,9 @@ ComputeContrasts <- function()
 #  Try(tkmessageBox(message=paste("NumParameters :",NumParameters)))
 #  Try(tkmessageBox(message=paste("numConnectedSubGraphs :",numConnectedSubGraphs)))
 
-  # The unique(vec) function in R returns a vector with duplicate entries removed.    
+  # The unique(vec) function in R returns a vector with duplicate entries removed.
   Try(RNATypesInSubGraph <- c())
-  Try(NumContrastsInSubGraph <- c())  
+  Try(NumContrastsInSubGraph <- c())
   Try(TotalNumContrasts <- 0)
   Try(for (i in (1:numConnectedSubGraphs))
   {
@@ -3217,14 +3217,14 @@ ComputeContrasts <- function()
 #    Try(tkmessageBox(message=paste("RNATypesInSubGraph[",i,"] : ",RNATypesInSubGraph[i],sep="")))
 #    for (j in (1:RNATypesInSubGraph[i]))
 #      tkmessageBox(message=paste("RNATypesInSubgraph[",i,"][",j,"] = ",connectedSubGraphs[[i]][j],sep=""))
-#    Try(tkmessageBox(message=paste("NumContrastsInSubGraph[",i,"] : ",NumContrastsInSubGraph[i],sep="")))    
+#    Try(tkmessageBox(message=paste("NumContrastsInSubGraph[",i,"] : ",NumContrastsInSubGraph[i],sep="")))
   })
-  
+
   Try(NumContrasts <- TotalNumContrasts - NumParameters)
 
-#  Try(tkmessageBox(message=paste("TotalNumContrasts :",TotalNumContrasts)))    
-#  Try(tkmessageBox(message=paste("NumContrasts :",NumContrasts)))  
-  
+#  Try(tkmessageBox(message=paste("TotalNumContrasts :",TotalNumContrasts)))
+#  Try(tkmessageBox(message=paste("NumContrasts :",NumContrasts)))
+
   Try(if (NumContrasts<=0)
   {
     tkmessageBox(title="Compute Contrasts",message=paste("For this experiment, all possible RNA comparisons can be obtained from one parameterization.  There is no need to compute contrasts.",
@@ -3232,30 +3232,30 @@ ComputeContrasts <- function()
     Try(tkfocus(.limmaGUIglobals$ttMain))
     return()
   })
-  
+
   Try(NumContrasts <- min(NumContrasts,6))
-  
-  Try(contrastsMatrixInList <- GetDesignOrContrasts(Contrasts=TRUE,NumContrasts=NumContrasts,parameterizationIndex=parameterizationIndex))  
+
+  Try(contrastsMatrixInList <- GetDesignOrContrasts(Contrasts=TRUE,NumContrasts=NumContrasts,parameterizationIndex=parameterizationIndex))
   Try(if (nrow(contrastsMatrixInList$contrasts)==0) return())
   Try(contrastsMatrix <- as.matrix(contrastsMatrixInList$contrasts))
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")     
+  tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")
   Try(contrastsFit <- contrasts.fit(fit,contrastsMatrix))
   Try(contrastsEbayes <- ebayes(contrastsFit))
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")       
-  Try(contrastsParameterizationNameText <- GetContrastsParameterizationName())  
+  tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")
+  Try(contrastsParameterizationNameText <- GetContrastsParameterizationName())
   Try(if (contrastsParameterizationNameText=="GetContrastsParameterizationName.CANCEL") return())
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")     
+  tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")
   Try(while (nchar(contrastsParameterizationNameText)==0)
   {
       Try(tkmessageBox(title="Contrasts Name",message="Please enter a name for this set of contrasts",type="ok",icon="error"))
       Try(contrastsParameterizationNameText <- GetContrastsParameterizationName())
-      if (contrastsParameterizationNameText=="GetContrastsParameterizationName.CANCEL") 
+      if (contrastsParameterizationNameText=="GetContrastsParameterizationName.CANCEL")
       {
-          Try(tkfocus(.limmaGUIglobals$ttMain))          
+          Try(tkfocus(.limmaGUIglobals$ttMain))
           return()
       }
   })
-  
+
   Try(ContrastsParameterizationNamesVec <- GetContrastsParameterizationNames(parameterizationTreeIndex))
 
   Try(contrastsParameterizationIndex <- 0)
@@ -3292,19 +3292,19 @@ ComputeContrasts <- function()
       Try(ContrastsParameterizationTreeIndexVec[contrastsParameterizationIndex] <- contrastsParameterizationTreeIndex)
 
       Try(ContrastsParameterizationNamesVec <- c(ContrastsParameterizationNamesVec,contrastsParameterizationNameText))
-      
-      
+
+
       Try(ContrastsParameterizationNamesNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex,sep=""))
-      Try(ParameterizationList[[ParameterizationNameNode]][[ContrastsParameterizationNamesNode]] <- contrastsParameterizationNameText)  
+      Try(ParameterizationList[[ParameterizationNameNode]][[ContrastsParameterizationNamesNode]] <- contrastsParameterizationNameText)
   }
   else # Replace existing contrasts parameterization with the same name.
   {
       Try(contrastsParameterizationTreeIndex <- ContrastsParameterizationTreeIndexVec[contrastsParameterizationIndex])
       Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,paste("ContrastsParameterizationName.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex,sep="")))
-  }  
-  
+  }
+
   Try(ParamContrastsNode <- paste("ParamContrasts.",parameterizationTreeIndex,sep=""))
-  
+
   Try(ContrastsParameterizationNamesVec <- c(ContrastsParameterizationNamesVec,contrastsParameterizationNameText))
 
   Try(ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations <- NumContrastParameterizations)
@@ -3313,30 +3313,30 @@ ComputeContrasts <- function()
 
   Try(ParameterizationList[[ParameterizationNameNode]][["Contrasts"]][[ContrastsParameterizationNamesNode]] <-
         list(fit=contrastsFit,eb=contrastsEbayes,contrastsMatrixInList=contrastsMatrixInList,contrastsParameterizationNameText=contrastsParameterizationNameText))
-  
+
   Try(ParamContrastsNode <- paste("ParamContrasts.",parameterizationTreeIndex,sep=""))
   Try(ContrastsParameterizationNamesNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex,sep=""))
-  
+
   if (NumContrastParameterizations>0)
     Try(ContrastsNames <- colnames(contrastsMatrix))
 
   if (NumContrastParameterizations==1)
   {
     # This is the first one, so we have to delete "none"
-    Try(NoneNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".1",sep=""))  
+    Try(NoneNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".1",sep=""))
     Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,NoneNode))
-  }  
-  Try(ContrastsParameterizationNamesNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex,sep=""))  
+  }
+  Try(ContrastsParameterizationNamesNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex,sep=""))
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamContrastsNode,ContrastsParameterizationNamesNode,text=contrastsParameterizationNameText,font=.limmaGUIglobals$limmaGUIfontTree))
   Try(NumContrastsInContrastParameterization <- length(ContrastsNames))
   Try(for (j in (1:NumContrastsInContrastParameterization))
-    Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ContrastsParameterizationNamesNode,paste("Contrasts.",parameterizationIndex,".",contrastsParameterizationTreeIndex,".",j,sep=""),text=ContrastsNames[j],font=.limmaGUIglobals$limmaGUIfontTree)))          
-  
+    Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ContrastsParameterizationNamesNode,paste("Contrasts.",parameterizationIndex,".",contrastsParameterizationTreeIndex,".",j,sep=""),text=ContrastsNames[j],font=.limmaGUIglobals$limmaGUIfontTree)))
+
   Try(ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations <- NumContrastParameterizations)
   Try(ParameterizationList[[ParameterizationNameNode]]$ContrastsParameterizationTreeIndexVec <- ContrastsParameterizationTreeIndexVec)
 
   Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
-  tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")       
+  tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")
 
   Try(tkmessageBox(title="Contrasts Fit Complete",
       message=paste("Calculation of the contrasts fit is complete. ",
@@ -3346,29 +3346,29 @@ ComputeContrasts <- function()
 ComputeLinearModelFit <- function()
 {
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))        
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
-  Try(spacing <- get("spacing",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
+  Try(spacing <- get("spacing",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
   Try(WeightingType <- get("WeightingType",envir=limmaGUIenvironment))
-  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))  
+  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
   Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
   Try(RG <- get("RG",envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Linear Model",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   }
-  
+
   SetLayoutParamReturnVal<-1
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))  
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
   if (length(maLayout)==0) SetLayoutParamReturnVal <-Try(SetLayoutParameters())
-  if (SetLayoutParamReturnVal==0) return()  
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))    
+  if (SetLayoutParamReturnVal==0) return()
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
   if (NumParameterizations>0)
   {
       Try(NewParameterizationMB <-tkmessageBox(title="Linear Model",message="Create a new parameterization?",type="yesnocancel",icon="question",default="yes"))
@@ -3379,29 +3379,29 @@ ComputeLinearModelFit <- function()
 
   if (WhetherToCreateNewParameterization=="cancel")
       return()
-  
+
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  
+
   if (WhetherToCreateNewParameterization=="yes")
   {
     Try(InitNewParameterizationReturnVal <- InitNewParameterization())
     Try(if (InitNewParameterizationReturnVal$result=="cancel") return())
     Try(parameterizationIndex <- InitNewParameterizationReturnVal$parameterizationIndex)
     Try(parameterizationTreeIndex <- InitNewParameterizationReturnVal$parameterizationTreeIndex)
-    Try(ParameterizationNameText <- InitNewParameterizationReturnVal$ParameterizationNameText) 
+    Try(ParameterizationNameText <- InitNewParameterizationReturnVal$ParameterizationNameText)
     Try(ParameterNamesVec <- InitNewParameterizationReturnVal$ParameterNamesVec)
     Try(designList <- InitNewParameterizationReturnVal$designList)
-    Try(design <- designList$design) 
+    Try(design <- designList$design)
     Try(SpotTypesForLinearModel <- InitNewParameterizationReturnVal$SpotTypesForLinearModel)
 
     Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
     Try(ParameterizationNamesVec     <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
     Try(ParameterizationList         <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(NumParameterizations         <- get("NumParameterizations",envir=limmaGUIenvironment))
-  
+
   }
   else # The user said, "No, don't create a new parameterization"
   {
@@ -3409,15 +3409,15 @@ ComputeLinearModelFit <- function()
     {
       Try(tkmessageBox(title="Use Existing Parameterization",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
       Try(tkfocus(.limmaGUIglobals$ttMain))
-      return()  
-    }  
+      return()
+    }
     Try(parameterizationIndex <- ChooseParameterization())
     Try(if (parameterizationIndex==0)    return())
     Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-    Try(designList <-               (ParameterizationList[[ParameterizationNameNode]])$designList)  
+    Try(designList <-               (ParameterizationList[[ParameterizationNameNode]])$designList)
     Try(design <- designList$design)
-    Try(ParameterizationNameText <- (ParameterizationList[[ParameterizationNameNode]])[[ParameterizationNameNode]])      
+    Try(ParameterizationNameText <- (ParameterizationList[[ParameterizationNameNode]])[[ParameterizationNameNode]])
     Try(ParameterNamesVec <- colnames(design))
     Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
 
@@ -3425,7 +3425,7 @@ ComputeLinearModelFit <- function()
     Try(ParameterizationList <- deleteItemFromList(ParameterizationList,paste("ParameterizationName.",parameterizationTreeIndex,sep="")))
     Try(ParameterizationList[[ParameterizationNameNode]] <- list())
   }
-  
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
@@ -3441,8 +3441,8 @@ ComputeLinearModelFit <- function()
   Try(ParamMainFitNode   <- paste("ParamMainFit.",parameterizationTreeIndex,sep=""))
   Try(ParamContrastsNode <- paste("ParamContrasts.",parameterizationTreeIndex,sep=""))
   Try(PMFNoneNode <- paste("PMFNone.",parameterizationTreeIndex,sep=""))
-  Try(PMFSpotTypesNode <- paste("PMFSpotTypes.",parameterizationTreeIndex,sep=""))  
-  Try(PMFMANormMethodNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,sep=""))    
+  Try(PMFSpotTypesNode <- paste("PMFSpotTypes.",parameterizationTreeIndex,sep=""))
+  Try(PMFMANormMethodNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,sep=""))
   Try(PMFParamsNode <- paste("PMFParams.",parameterizationTreeIndex,sep=""))
   Try(PMFLinModNode <- paste("PMFLinMod.",parameterizationTreeIndex,sep=""))
   Try(PMFLinModStatusNode <- paste("PMFLinModStatus.",parameterizationTreeIndex,sep=""))
@@ -3452,7 +3452,7 @@ ComputeLinearModelFit <- function()
   Try(PMFDupCorStatusNode <- paste("PMFDupCorStatus.",parameterizationTreeIndex,sep=""))
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-  
+
   Try(NormalizedMADataWasImported <- get("NormalizedMADataWasImported"))
   Try(if (!NormalizedMADataWasImported)
   {
@@ -3498,9 +3498,9 @@ ComputeLinearModelFit <- function()
     Try(ParameterizationList[[ParameterizationNameNode]][["WhetherToNormalizeWithinArrays"]] <- WhetherToNormalizeWithinArrays)
     Try(ParameterizationList[[ParameterizationNameNode]][["WhetherToNormalizeBetweenArrays"]] <- WhetherToNormalizeBetweenArrays)
   })
-  
+
   Try(MANormMethodValueNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,".",1,sep=""))
-  Try(ParameterizationList[[ParameterizationNameNode]] <- 
+  Try(ParameterizationList[[ParameterizationNameNode]] <-
             deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],MANormMethodValueNode))
   Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,MANormMethodValueNode))
 
@@ -3525,15 +3525,15 @@ ComputeLinearModelFit <- function()
   lmFitMethod <- "ls"
   Try(lmFitMethod <- GetlmFitMethod())
   Try(if (lmFitMethod == "") return(0))
-  
+
   ####################################################################################################################
-  
+
   HowManyDupsReturnVal<-1
   Try(HowManyDupsReturnVal <- HowManyDups())
   if (HowManyDupsReturnVal==0) return()
 
   Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
-  Try(spacing <- get("spacing",envir=limmaGUIenvironment))    
+  Try(spacing <- get("spacing",envir=limmaGUIenvironment))
 
   Try(if (ndups>1)
   {
@@ -3561,16 +3561,16 @@ ComputeLinearModelFit <- function()
       Try(tkgrid(entry.DupCor,columnspan=2))
       Try(ReturnVal <- "ID_CancelFromGetDupCor")
       onOK <- function()
-      {    
+      {
         Try(DupCorTxt <- tclvalue(DupCorTcl))
         Try(ReturnVal <<- DupCorTxt)
         Try(tkgrab.release(ttGetDupCor));Try(tkdestroy(ttGetDupCor));Try(tkfocus(.limmaGUIglobals$ttMain))
       }
       onCancel <- function()
-      {    
+      {
         Try(ReturnVal <<- "ID_CancelFromGetDupCor")
         Try(tkgrab.release(ttGetDupCor));Try(tkdestroy(ttGetDupCor));Try(tkfocus(.limmaGUIglobals$ttMain))
-      }     
+      }
       Try(OK.but <-tkbutton(ttGetDupCor,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
       Try(Cancel.but <-tkbutton(ttGetDupCor,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
       Try(tkgrid(tklabel(ttGetDupCor,text="    ")))
@@ -3583,9 +3583,9 @@ ComputeLinearModelFit <- function()
       Try(tkbind(ttGetDupCor, "<Destroy>", function(){Try(tkgrab.release(ttGetDupCor));Try(tkfocus(.limmaGUIglobals$ttMain));return("ID_CancelFromGetDupCor")}))
       Try(tkwait.window(ttGetDupCor))
       Try(tkfocus(.limmaGUIglobals$ttMain))
-      return (ReturnVal)          
+      return (ReturnVal)
     }
-    Try(if (WhetherToCalculateDuplicateCorrelation=="no")    
+    Try(if (WhetherToCalculateDuplicateCorrelation=="no")
     {
       Try(dupcorText <- GetDupCor())
       Try(if (dupcorText=="ID_CancelFromGetDupCor") return())
@@ -3626,18 +3626,18 @@ ComputeLinearModelFit <- function()
 					Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
 					Try(assign("MA",MA,limmaGUIenvironment))
 				}
-				else          
+				else
 				{
 					if (WeightingType == "none")
 						Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
 					else
 						Try(MA <- normalizeWithinArrays(RG,weights=RG$weights,maLayout,method=WithinArrayNormalizationMethod))
-					Try(assign("MA",MA,limmaGUIenvironment))        
+					Try(assign("MA",MA,limmaGUIenvironment))
 					Try(assign("MAwithinArrays",MA,limmaGUIenvironment))
 					Try(MA.Available$WithinArrays <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))        
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
 				}
 		}
 		else
@@ -3647,37 +3647,37 @@ ComputeLinearModelFit <- function()
 					Try(MA <- get("MAraw",envir=limmaGUIenvironment))
 					Try(assign("MA",MA,limmaGUIenvironment))
 				}
-				else          
+				else
 				{
 					Try (MA <- MA.RG(RG))
-					Try(assign("MA",MA,limmaGUIenvironment))        
+					Try(assign("MA",MA,limmaGUIenvironment))
 					Try(assign("MAraw",MA,limmaGUIenvironment))
 					Try(MA.Available$Raw <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
 					Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-				}        
+				}
 		}
 		Try(MA <- get("MA",envir=limmaGUIenvironment))
 
-		if (WhetherToNormalizeBetweenArrays=="yes") 
+		if (WhetherToNormalizeBetweenArrays=="yes")
 		{
 			if (WhetherToNormalizeWithinArrays=="yes")
 			{
 				if (MA.Available$Both)
 				{
 					Try(MA <- get("MAboth",envir=limmaGUIenvironment))
-					Try(assign("MA",MA,limmaGUIenvironment))                    
+					Try(assign("MA",MA,limmaGUIenvironment))
 				}
 				else
 				{
           Try (MA <- normalizeBetweenArrays(MA,method=BetweenArrayNormalizationMethod))
-					Try(assign("MA",MA,limmaGUIenvironment))        
+					Try(assign("MA",MA,limmaGUIenvironment))
 					Try(assign("MAboth",MA,limmaGUIenvironment))
 					Try(MA.Available$Both <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))                   
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
 				}
 
 			}
@@ -3686,25 +3686,25 @@ ComputeLinearModelFit <- function()
 				if (MA.Available$BetweenArrays)
 				{
 					Try(MA <- get("MAbetweenArrays",envir=limmaGUIenvironment))
-					Try(assign("MA",MA,limmaGUIenvironment))                    
+					Try(assign("MA",MA,limmaGUIenvironment))
 				}
 				else
 				{
           Try (MA <- normalizeBetweenArrays(MA,method=BetweenArrayNormalizationMethod))
-					Try(assign("MA",MA,limmaGUIenvironment))        
+					Try(assign("MA",MA,limmaGUIenvironment))
 					Try(assign("MAbetweenArrays",MA,limmaGUIenvironment))
 					Try(MA.Available$BetweenArrays <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))        
-				}        
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+				}
 			}
-		}      
+		}
 		Try(MA <- get("MA",envir=limmaGUIenvironment))
-  }  
+  }
   else
     Try(MA <- get("MAimported",envir=limmaGUIenvironment)))
-  
+
   # NOW THAT WE HAVE NORMALIZED, IT IS TIME TO REMOVE SOME OF THE SPOTS (e.g. CONTROLS AND BLANKS)
 
   Try(SpotTypesIncluded <- c())
@@ -3727,17 +3727,17 @@ ComputeLinearModelFit <- function()
       Omit <- "("
     Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
   })
-  
+
   Try(if (nchar(Omit)>0)
   {
     Omit <- paste(Omit,")")
-    Try(Omit <- eval(parse(text=Omit)))  
+    Try(Omit <- eval(parse(text=Omit)))
     MA$M <- MA$M[!Omit,]
-    MA$A <- MA$A[!Omit,]  
+    MA$A <- MA$A[!Omit,]
   })
-  
-# Below: We shouldn't save MA globally because it depends on the spot-type ommissions of this parameterization.  
-#  Try(assign("MA",MA,limmaGUIenvironment)) 
+
+# Below: We shouldn't save MA globally because it depends on the spot-type ommissions of this parameterization.
+#  Try(assign("MA",MA,limmaGUIenvironment))
   Try(newNumRows <- nrow(MA$M))
   Try(parameterizationSpacing <- spacing)
   Try(spacingCorrected <- 0)
@@ -3748,23 +3748,23 @@ ComputeLinearModelFit <- function()
   Try(if (oldNumRows/spacing==6  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/6;  spacingCorrected <- 1})
   Try(if (oldNumRows/spacing==7  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/7;  spacingCorrected <- 1})
   Try(if (oldNumRows/spacing==8  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/8;  spacingCorrected <- 1})
-  Try(if (oldNumRows/spacing==9  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/9;  spacingCorrected <- 1})      
+  Try(if (oldNumRows/spacing==9  && oldNumRows!=newNumRows) { parameterizationSpacing <- newNumRows/9;  spacingCorrected <- 1})
   Try(if (oldNumRows/spacing==10 && oldNumRows!=newNumRows){ parameterizationSpacing <- newNumRows/10; spacingCorrected <- 1})
 #  Try(if (spacingCorrected==1) tkmessageBox(title="Duplicate Spacing",message="Correcting duplicate spacing to allow for omitted spot types",icon="info"))
 
   Try(spacing <- parameterizationSpacing) # Local assignment only
-  
+
   # I should delete the above code and just call GetReducedDuplicateSpacing.
 
   # Calling the A matrix, "A" would risk getting confused with another attribute starting with 'A'.
   Try(ParameterizationList[[ParameterizationNameNode]][["Amatrix"]] <- MA$A)
-  
+
   if (ndups==1)
   {
     Try(fit <- lmFit(MA,as.matrix(design),method=lmFitMethod))
 
-    Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFDupCorStatusNode))  
-    Try(ParameterizationList[[ParameterizationNameNode]] <- 
+    Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFDupCorStatusNode))
+    Try(ParameterizationList[[ParameterizationNameNode]] <-
             deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFDupCorStatusNode))
     Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFDupCorNode,PMFDupCorStatusNode,text="No duplicates",font=.limmaGUIglobals$limmaGUIfontTree))
     Try(ParameterizationList[[ParameterizationNameNode]] <- deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFDupCorStatusNode))
@@ -3778,9 +3778,9 @@ ComputeLinearModelFit <- function()
       Try(dupcor <- duplicateCorrelation(MA,design=as.matrix(design),ndups=ndups,spacing=spacing))
       Try(if (!("cor" %in% names(dupcor))) dupcor$cor <- dupcor$consensus)
     })
-    Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFDupCorStatusNode))  
-    Try(ParameterizationList[[ParameterizationNameNode]] <- 
-            deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFDupCorStatusNode))    
+    Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFDupCorStatusNode))
+    Try(ParameterizationList[[ParameterizationNameNode]] <-
+            deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFDupCorStatusNode))
     Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFDupCorNode,PMFDupCorStatusNode,text=paste(dupcor$cor),font=.limmaGUIglobals$limmaGUIfontTree))
     Try(ParameterizationList[[ParameterizationNameNode]] <- deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFDupCorStatusNode))
     Try(ParameterizationList[[ParameterizationNameNode]][[PMFDupCorStatusNode]] <- paste(dupcor$cor))
@@ -3790,8 +3790,8 @@ ComputeLinearModelFit <- function()
     Try(fit <- gls.series(MA$M,as.matrix(design),ndups=ndups,spacing=spacing,correlation=dupcor$cor))
   }
 
-  Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFLinModStatusNode))  
-  Try(ParameterizationList[[ParameterizationNameNode]] <- 
+  Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFLinModStatusNode))
+  Try(ParameterizationList[[ParameterizationNameNode]] <-
             deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFLinModStatusNode))
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFLinModNode,PMFLinModStatusNode,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(ParameterizationList[[ParameterizationNameNode]] <- deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFLinModStatusNode))
@@ -3801,24 +3801,24 @@ ComputeLinearModelFit <- function()
 
   Try(eb <- ebayes(fit))
 
-  Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFEBayesStatusNode))    
-  Try(ParameterizationList[[ParameterizationNameNode]] <- 
+  Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,PMFEBayesStatusNode))
+  Try(ParameterizationList[[ParameterizationNameNode]] <-
             deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFEBayesStatusNode))
   Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFEBayesNode,PMFEBayesStatusNode,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(ParameterizationList[[ParameterizationNameNode]] <- deleteItemFromList(ParameterizationList[[ParameterizationNameNode]],PMFEBayesStatusNode))
   Try(ParameterizationList[[ParameterizationNameNode]][[PMFEBayesStatusNode]] <- "Available")
 
   Try(ParameterizationList[[ParameterizationNameNode]][["eb"]] <- eb)
-  
+
   Try(gal <- get("gal",envir=limmaGUIenvironment))
-  Try(if (ndups==1) 
+  Try(if (ndups==1)
   {
    if (nchar(Omit)>0)
      Try(ParameterizationList[[ParameterizationNameNode]][["genelist"]] <- gal[!Omit,])
    else
      Try(ParameterizationList[[ParameterizationNameNode]][["genelist"]] <- gal)
   }
-  else  
+  else
   {
      if (nchar(Omit)>0)
        Try(ParameterizationList[[ParameterizationNameNode]][["genelist"]] <- uniquegenelist(gal[!Omit,],ndups=ndups,spacing=spacing))
@@ -3845,16 +3845,16 @@ ChooseParameterization <- function()
 {
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
-  
+
   ttChooseParameterization<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttChooseParameterization)
-  tkgrab.set(ttChooseParameterization)  
+  tkgrab.set(ttChooseParameterization)
   tkfocus(ttChooseParameterization)
   tkwm.title(ttChooseParameterization,"Choose a Parameterization")
   scr <- tkscrollbar(ttChooseParameterization, repeatinterval=5,
                        command=function(...)tkyview(tl,...))
   ## Safest to make sure scr exists before setting yscrollcommand
-  tl<-tklistbox(ttChooseParameterization,height=4,selectmode="single",yscrollcommand=function(...)tkset(scr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2)   
+  tl<-tklistbox(ttChooseParameterization,height=4,selectmode="single",yscrollcommand=function(...)tkset(scr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2)
   lbl2<-tklabel(ttChooseParameterization,text="Which parameterization is this for?",font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttChooseParameterization,text="       "),row=0,column=1,columnspan=1)
   tkgrid(tklabel(ttChooseParameterization,text="       "),row=0,column=4,columnspan=1)
@@ -3882,9 +3882,9 @@ ChooseParameterization <- function()
   tkgrid(tklabel(ttChooseParameterization,text="    "),tklabel(ttChooseParameterization,text="    "),OK.but,Cancel.but)
   tkgrid.configure(OK.but,    sticky="e")
   tkgrid.configure(Cancel.but,sticky="w")
-  Try(tkbind(OK.but, "<Return>",onOK))  
-  Try(tkbind(tl, "<Return>",onOK))    
-  Try(tkbind(Cancel.but, "<Return>",onCancel))    
+  Try(tkbind(OK.but, "<Return>",onOK))
+  Try(tkbind(tl, "<Return>",onOK))
+  Try(tkbind(Cancel.but, "<Return>",onCancel))
   tkgrid(tklabel(ttChooseParameterization,text="    "))
   Try(tkfocus(ttChooseParameterization))
   Try(tkbind(ttChooseParameterization, "<Destroy>", function() {Try(tkgrab.release(ttChooseParameterization));Try(tkfocus(.limmaGUIglobals$ttMain))}))
@@ -3897,12 +3897,12 @@ ChooseParameterization <- function()
 GetCoef <- function(parameterizationTreeIndex,whichCoef="onlyOne")
 {
   # Firstly, NumParameters in main fit:
-  Try(NumParameters     <- get("NumParameters",    envir=limmaGUIenvironment))        
+  Try(NumParameters     <- get("NumParameters",    envir=limmaGUIenvironment))
 
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))    
+  Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
   Try(ContrastsParameterizationNamesVec <- c() )
   Try(contrastNames <- list())
@@ -3920,13 +3920,13 @@ GetCoef <- function(parameterizationTreeIndex,whichCoef="onlyOne")
   Try(tkgrab.set(ttGetCoef)  )
   Try(tkfocus(ttGetCoef))
   Try(if (whichCoef=="onlyOne")    tkwm.title(ttGetCoef,"Choose a parameter"))
-  Try(if (whichCoef=="heat")       tkwm.title(ttGetCoef,"Choose a parameter"))  
+  Try(if (whichCoef=="heat")       tkwm.title(ttGetCoef,"Choose a parameter"))
   Try(if (whichCoef=="first")      tkwm.title(ttGetCoef,"Choose the first parameter"))
-  Try(if (whichCoef=="second")     tkwm.title(ttGetCoef,"Choose the second parameter"))            
+  Try(if (whichCoef=="second")     tkwm.title(ttGetCoef,"Choose the second parameter"))
   Try(scr <- tkscrollbar(ttGetCoef, repeatinterval=5,
                        command=function(...)tkyview(tl,...)))
   Try(xscr <- tkscrollbar(ttGetCoef, repeatinterval=5,
-                       command=function(...)tkxview(tl,...) ,orient="horizontal"))                       
+                       command=function(...)tkxview(tl,...) ,orient="horizontal"))
   ## Safest to make sure scr exists before setting yscrollcommand
   Try(tl<-tklistbox(ttGetCoef,height=4,selectmode="single",xscrollcommand=function(...)tkset(xscr,...),yscrollcommand=function(...)tkset(scr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2)   )
   Try(if (whichCoef=="heat")
@@ -3945,13 +3945,13 @@ GetCoef <- function(parameterizationTreeIndex,whichCoef="onlyOne")
   Try(tkgrid(tl,row=2,column=2,columnspan=2,rowspan=4,sticky="ew"))
   Try(tkgrid(scr,row=2,column=4,columnspan=1,rowspan=4,sticky="wns"))
   Try(tkgrid(xscr,row=6,column=2,columnspan=2,sticky="wne"))
-  
+
   Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
 
   coefIndexList <- list()
 
   if (NumParameters>0)
-    Try(for (i in (1:NumParameters))     
+    Try(for (i in (1:NumParameters))
     {
       Try(tkinsert(tl,"end",ParameterNamesVec[i]))
       Try(coefIndexList[[i]] <- list(coefOrContrastIndex=i,ContrastParameterizationIndex=0))
@@ -3959,11 +3959,11 @@ GetCoef <- function(parameterizationTreeIndex,whichCoef="onlyOne")
   Try(currentIndex <- NumParameters+1)
   Try(if (NumContrastParameterizations>0)
     Try(for (i in (1:NumContrastParameterizations))
-    {      
+    {
       Try(for (j in (1:length(contrastNames[[i]])))
       {
         Try(tkinsert(tl,"end",paste(contrastNames[[i]][j]," [",ContrastsParameterizationNamesVec[i],"]",sep="")))
-        Try(coefIndexList[[currentIndex]] <- list(coefOrContrastIndex=j,ContrastParameterizationIndex=i))        
+        Try(coefIndexList[[currentIndex]] <- list(coefOrContrastIndex=j,ContrastParameterizationIndex=i))
         Try(currentIndex <- currentIndex + 1)
       })
      }))
@@ -3987,10 +3987,10 @@ GetCoef <- function(parameterizationTreeIndex,whichCoef="onlyOne")
   Try(tkgrid(tklabel(ttGetCoef,text="    ")))
   Try(tkgrid(tklabel(ttGetCoef,text="    "),tklabel(ttGetCoef,text="    "),OK.but,Cancel.but))
   Try(tkgrid.configure(OK.but,sticky="e"))
-  Try(tkgrid.configure(Cancel.but,sticky="w"))  
+  Try(tkgrid.configure(Cancel.but,sticky="w"))
   Try(tkbind(OK.but, "<Return>",onOK))
-  Try(tkbind(tl, "<Return>",onOK))    
-  Try(tkbind(Cancel.but, "<Return>",onCancel))      
+  Try(tkbind(tl, "<Return>",onOK))
+  Try(tkbind(Cancel.but, "<Return>",onCancel))
   Try(tkgrid(tklabel(ttGetCoef,text="    ")))
   Try(tkfocus(ttGetCoef))
   Try(tkbind(ttGetCoef, "<Destroy>", function() {Try(tkgrab.release(ttGetCoef));Try(tkfocus(.limmaGUIglobals$ttMain));}))
@@ -4009,30 +4009,30 @@ showTopTable <- function(...,export=FALSE)
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
+  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
   Try(spacing   <- get("spacing",envir=limmaGUIenvironment))
   Try(NumSlides <- get("NumSlides",envir=limmaGUIenvironment))
   Try(gal <- get("gal",envir=limmaGUIenvironment))
   Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment)) # for NumSlides=1
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       tkmessageBox(title="Top Table",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   }
-  
+
   if (NumParameterizations==0 && NumSlides>1)
   {
     Try(tkmessageBox(title="Top Table",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
-  
+    return()
+  }
+
   Try(if (NumSlides>1)
   {
     Try(parameterizationIndex <- ChooseParameterization())
@@ -4040,7 +4040,7 @@ showTopTable <- function(...,export=FALSE)
     Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
 
     Try(spacing <- GetReducedDuplicateSpacing(parameterizationTreeIndex))
-  
+
     Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
 
     if (Try(LinearModelComputed[parameterizationIndex]==FALSE))
@@ -4061,51 +4061,51 @@ showTopTable <- function(...,export=FALSE)
     Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
     else
-      Try(genelist <- get("genelist",limmaGUIenvironment)))   
+      Try(genelist <- get("genelist",limmaGUIenvironment)))
     Try(Amatrix <- NULL)
     Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
         Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
     if (GetCoefReturnVal$parameterIsFromMainFit)
     {
       Try(fit <- (ParameterizationList[[ParameterizationNameNode]])$fit)
-      Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)    
+      Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
     }
     else
     {
       Try(fit <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$fit)
-      Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)    
+      Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)
       Try(ParameterNamesVec <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$contrastsMatrixInList$contrasts))
-      Try(NumParameters <- length(ParameterNamesVec))    
+      Try(NumParameters <- length(ParameterNamesVec))
     }
   })
-  
+
   Try(ttToptableDialog<-tktoplevel(.limmaGUIglobals$ttMain))
   Try(tkwm.deiconify(ttToptableDialog))
   Try(tkgrab.set(ttToptableDialog))
   Try(tkfocus(ttToptableDialog))
   Try(tkwm.title(ttToptableDialog,"Toptable Options"))
   Try(tkgrid(tklabel(ttToptableDialog,text="    ")))
-    
+
   Try(frame1 <- tkframe(ttToptableDialog,relief="groove",borderwidth=2))
   Try(HowManyQuestion1 <- tklabel(frame1,text="Number of genes in table:",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(HowManyQuestion1))
   Try(tkgrid.configure(HowManyQuestion1,columnspan=2,sticky="w"))
-  
+
   Try(if (export)
     Try(numberOfGenesTcl <- tclVar("5"))
   else
     Try(numberOfGenesTcl <- tclVar("3")))
   Try(Ten.but      <- tkradiobutton(frame1,text="10",variable=numberOfGenesTcl,value="1",font=.limmaGUIglobals$limmaGUIfont2))
   Try(Thirty.but   <- tkradiobutton(frame1,text="30",variable=numberOfGenesTcl,value="2",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(Fifty.but    <- tkradiobutton(frame1,text="50",variable=numberOfGenesTcl,value="3",font=.limmaGUIglobals$limmaGUIfont2))  
-  Try(Hundred.but  <- tkradiobutton(frame1,text="100",variable=numberOfGenesTcl,value="4",font=.limmaGUIglobals$limmaGUIfont2))    
-  Try(AllGenes.but <- tkradiobutton(frame1,text="All genes",variable=numberOfGenesTcl,value="5",font=.limmaGUIglobals$limmaGUIfont2))      
-  
+  Try(Fifty.but    <- tkradiobutton(frame1,text="50",variable=numberOfGenesTcl,value="3",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Hundred.but  <- tkradiobutton(frame1,text="100",variable=numberOfGenesTcl,value="4",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(AllGenes.but <- tkradiobutton(frame1,text="All genes",variable=numberOfGenesTcl,value="5",font=.limmaGUIglobals$limmaGUIfont2))
+
   Try(tkgrid(Ten.but,sticky="w"))
   Try(tkgrid(Thirty.but,sticky="w"))
   Try(tkgrid(Fifty.but,sticky="w"))
-  Try(tkgrid(Hundred.but,sticky="w"))  
-  Try(tkgrid(AllGenes.but,sticky="w"))  
+  Try(tkgrid(Hundred.but,sticky="w"))
+  Try(tkgrid(AllGenes.but,sticky="w"))
   Try(tkgrid.configure(HowManyQuestion1,Ten.but,Thirty.but,Fifty.but,Hundred.but,AllGenes.but,sticky="w"))
 
   Try(frame2 <- tkframe(ttToptableDialog,relief="groove",borderwidth=2))
@@ -4118,57 +4118,57 @@ showTopTable <- function(...,export=FALSE)
     Try(sortByTcl <- tclVar("M")))
   Try(M.but <- tkradiobutton(frame2,text="M",variable=sortByTcl,value="M",font=.limmaGUIglobals$limmaGUIfont2))
   Try(A.but <- tkradiobutton(frame2,text="A",variable=sortByTcl,value="A",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(T.but <- tkradiobutton(frame2,text="t statistic",variable=sortByTcl,value="T",font=.limmaGUIglobals$limmaGUIfont2))  
-  Try(P.but <- tkradiobutton(frame2,text="P value",variable=sortByTcl,value="P",font=.limmaGUIglobals$limmaGUIfont2))    
-  Try(B.but <- tkradiobutton(frame2,text="B statistic",variable=sortByTcl,value="B",font=.limmaGUIglobals$limmaGUIfont2))      
-  
+  Try(T.but <- tkradiobutton(frame2,text="t statistic",variable=sortByTcl,value="T",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(P.but <- tkradiobutton(frame2,text="P value",variable=sortByTcl,value="P",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(B.but <- tkradiobutton(frame2,text="B statistic",variable=sortByTcl,value="B",font=.limmaGUIglobals$limmaGUIfont2))
+
   Try(tkgrid(M.but,sticky="w"))
   Try(tkgrid(A.but,sticky="w"))
   Try(tkgrid(T.but,sticky="w"))
-  Try(tkgrid(P.but,sticky="w"))  
+  Try(tkgrid(P.but,sticky="w"))
   Try(tkgrid(B.but,sticky="w"))
-  
+
   Try(if (NumSlides==1)
   {
     Try(tkconfigure(T.but,state="disabled"))
-    Try(tkconfigure(P.but,state="disabled"))    
-    Try(tkconfigure(B.but,state="disabled"))        
+    Try(tkconfigure(P.but,state="disabled"))
+    Try(tkconfigure(B.but,state="disabled"))
   })
-  
+
   Try(tkgrid.configure(sortByLabel,M.but,A.but,T.but,P.but,B.but,sticky="w"))
 
   Try(frame3 <- tkframe(ttToptableDialog,relief="groove",borderwidth=2))
   Try(adjustMethodLabel <- tklabel(frame3,text="Adjust method:",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(adjustMethodLabel))
-  Try(tkgrid.configure(adjustMethodLabel,sticky="w"))  
+  Try(tkgrid.configure(adjustMethodLabel,sticky="w"))
   Try(if (NumSlides>1)
     Try(adjustMethodTcl <- tclVar("holm"))
   else
     Try(adjustMethodTcl <- tclVar("none")))
   Try(bonferroni.but <- tkradiobutton(frame3,text="Bonferroni",variable=adjustMethodTcl,value="bonferroni",font=.limmaGUIglobals$limmaGUIfont2))
   Try(holm.but <- tkradiobutton(frame3,text="Holm",variable=adjustMethodTcl,value="holm",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(hochberg.but <- tkradiobutton(frame3,text="Hochberg",variable=adjustMethodTcl,value="hochberg",font=.limmaGUIglobals$limmaGUIfont2))  
-  Try(hommel.but <- tkradiobutton(frame3,text="Hommel",variable=adjustMethodTcl,value="hommel",font=.limmaGUIglobals$limmaGUIfont2))    
-  Try(fdr.but <- tkradiobutton(frame3,text="FDR",variable=adjustMethodTcl,value="fdr",font=.limmaGUIglobals$limmaGUIfont2))      
-  Try(none.but <- tkradiobutton(frame3,text="None",variable=adjustMethodTcl,value="none",font=.limmaGUIglobals$limmaGUIfont2))      
+  Try(hochberg.but <- tkradiobutton(frame3,text="Hochberg",variable=adjustMethodTcl,value="hochberg",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(hommel.but <- tkradiobutton(frame3,text="Hommel",variable=adjustMethodTcl,value="hommel",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(fdr.but <- tkradiobutton(frame3,text="FDR",variable=adjustMethodTcl,value="fdr",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(none.but <- tkradiobutton(frame3,text="None",variable=adjustMethodTcl,value="none",font=.limmaGUIglobals$limmaGUIfont2))
 
   Try(tkgrid(bonferroni.but,sticky="w"))
   Try(tkgrid(holm.but,sticky="w"))
   Try(tkgrid(hochberg.but,sticky="w"))
-  Try(tkgrid(hommel.but,sticky="w"))  
+  Try(tkgrid(hommel.but,sticky="w"))
   Try(tkgrid(fdr.but,sticky="w"))
-  Try(tkgrid(none.but,sticky="w"))  
-  
+  Try(tkgrid(none.but,sticky="w"))
+
   Try(if (NumSlides==1)
   {
 		Try(tkconfigure(bonferroni.but,state="disabled"))
 		Try(tkconfigure(holm.but,state="disabled"))
 		Try(tkconfigure(hochberg.but,state="disabled"))
-		Try(tkconfigure(hommel.but,state="disabled"))  
+		Try(tkconfigure(hommel.but,state="disabled"))
 		Try(tkconfigure(fdr.but,state="disabled"))
-		Try(tkconfigure(none.but,state="disabled"))    
+		Try(tkconfigure(none.but,state="disabled"))
   })
-  
+
   Try(if (NumSlides>1)
     Try(totalGenes <- nrow(genelist))
   else
@@ -4178,7 +4178,7 @@ showTopTable <- function(...,export=FALSE)
   Try(sortBy <- "B")
   Try(adjustMethod <- "holm")
   Try(onOK <- function()
-  {     
+  {
       Try(NumGenesChoice <- as.numeric(tclvalue(numberOfGenesTcl)))
       Try(tkgrab.release(ttToptableDialog))
       Try(tkdestroy(ttToptableDialog))
@@ -4197,47 +4197,47 @@ showTopTable <- function(...,export=FALSE)
   Try(OK.but <-tkbutton(frame4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(frame4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Help.but <-tkbutton(frame4,text=" Help ",command=onHelp,font=.limmaGUIglobals$limmaGUIfont2))
-  
+
   Try(tkgrid(tklabel(frame4,text="    "),OK.but,Cancel.but,Help.but,tklabel(frame4,text="    ")))
 
   Try(tkgrid(tklabel(ttToptableDialog,text="    "),frame1,frame2,tklabel(ttToptableDialog,text="  ")))
   Try(tkgrid(tklabel(ttToptableDialog,text="    ")))
   Try(tkgrid(tklabel(ttToptableDialog,text="    "),frame3,frame4,tklabel(ttToptableDialog,text="  ")))
-  Try(tkgrid(tklabel(ttToptableDialog,text="    ")))  
+  Try(tkgrid(tklabel(ttToptableDialog,text="    ")))
   Try(tkgrid.configure(frame1,frame3,sticky="w"))
 #  Try(tkgrid.configure(frame4,sticky="s"))
-  
+
   Try(tkfocus(ttToptableDialog))
   Try(tkbind(ttToptableDialog, "<Destroy>", function() {Try(tkgrab.release(ttToptableDialog));Try(tkfocus(.limmaGUIglobals$ttMain));}))
   Try(tkwait.window(ttToptableDialog))
-    
-  Try(if (Abort==1) 
+
+  Try(if (Abort==1)
      return())
-  
-  Try(if (numberOfGenes==totalGenes) 
+
+  Try(if (numberOfGenes==totalGenes)
   {
       tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")
       Try(tkfocus(.limmaGUIglobals$ttMain))
   })
 
   Try(options(digits=3))
-  
+
   Try(if (NumSlides==1)
   {
     Try(NormalizeNow())
     Try(MA <- get("MA",envir=limmaGUIenvironment))
     Try(Amatrix <- MA$A)
   })
-  
-  
+
+
   Try(if (is.null(Amatrix))
   {
-    Try(MA <- get("MA",envir=limmaGUIenvironment))  
+    Try(MA <- get("MA",envir=limmaGUIenvironment))
     Try(A <- MA$A)
     Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
     Try(numSpotTypes <- nrow(SpotTypes))
-    Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
-    Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+    Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+    Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
     Omit <- ""
     count <- 0
     Try(for (i in (1:numSpotTypes))
@@ -4248,12 +4248,12 @@ showTopTable <- function(...,export=FALSE)
       if (count>1)
         Omit <-paste(Omit,"|")
       else
-        Omit <- "(" 
+        Omit <- "("
       Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-    })  
+    })
     Try(if (nchar(Omit)>0)
     {
-      Try(Omit <- paste(Omit,")"))  
+      Try(Omit <- paste(Omit,")"))
       Try(Omit <- eval(parse(text=Omit)))
       Try(A <- A[!Omit,])
     })
@@ -4263,7 +4263,7 @@ showTopTable <- function(...,export=FALSE)
   else
     if (NumSlides>1)
       Try(A <- unwrapdups(Amatrix,ndups=ndups,spacing=spacing)))
-  
+
   Try(if (NumSlides>1)
     Try(table1 <- toptable(coef=coef,number=numberOfGenes,genelist=genelist,A=A,fit=fit,eb=eb,adjust.method=adjustMethod,sort.by=sortBy))
   else
@@ -4272,14 +4272,14 @@ showTopTable <- function(...,export=FALSE)
     Try(if (sortBy=="M")
       Try(ord <- order(abs(MA$M),decreasing=TRUE)))
     Try(if (sortBy=="A")
-      Try(ord <- order(abs(MA$A),decreasing=TRUE)))      
+      Try(ord <- order(abs(MA$A),decreasing=TRUE)))
     Try(table1 <- GenesAndLogRatios[ord,])
     Try(table1 <- table1[1:numberOfGenes,])
   })
-  
+
   Try(nrows <- nrow(table1))
-  Try(ncols <- ncol(table1))  
-  
+  Try(ncols <- ncol(table1))
+
   SaveTopTable <- function()
   {
     Try(if (NumSlides>1)
@@ -4289,15 +4289,15 @@ showTopTable <- function(...,export=FALSE)
     Try(if (!nchar(TopTableFile))
       return())
     Try(write.table(table1,file=TopTableFile,quote=FALSE,col.names=NA,sep="\t"))
-  } 
-    
+  }
+
   Try(if (export)
   {
     Try(SaveTopTable())
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
     return()
   })
-  
+
   if (nrows <=100)
   {
     Try(ttToptableTable <- tktoplevel(.limmaGUIglobals$ttMain))
@@ -4325,7 +4325,7 @@ showTopTable <- function(...,export=FALSE)
           item <- format(table1[i,j],digits=4)
         else
           item <- table1[i,j])
-        Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(item)))        
+        Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(item)))
       })
     Try(tkgrid(toptableTable,yscr))
     Try(tkgrid.configure(toptableTable,sticky="news"))
@@ -4339,7 +4339,7 @@ showTopTable <- function(...,export=FALSE)
         Try(if (.limmaGUIglobals$limmaGUIpresentation==FALSE)
           Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,nchar(colnames(table1)[i])+2))))
         else
-          Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,nchar(colnames(table1)[i]))))))        
+          Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,nchar(colnames(table1)[i]))))))
         next()
       }
       if (colnames(table1)[i] %in% c("M","A","t","B"))
@@ -4351,7 +4351,7 @@ showTopTable <- function(...,export=FALSE)
       {
         Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),"8"))
         next()
-      }     
+      }
       if(tolower(colnames(table1)[i]) == "name")
       {
         Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(min(30,max(6,max(nchar(table1[,i]))+2)))))
@@ -4373,7 +4373,7 @@ showTopTable <- function(...,export=FALSE)
 
       Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,max(nchar(table1[,i]))+2))))
     })
-	  Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(toptableTable),"<<Copy>>"))))    
+	  Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(toptableTable),"<<Copy>>"))))
   }
   else
   {
@@ -4417,21 +4417,21 @@ showTopTable <- function(...,export=FALSE)
 
     Try(if (numberOfGenes==totalGenes)
         tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-	  Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(txt),"<<Copy>>"))))        
+	  Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(txt),"<<Copy>>"))))
   }
-  
+
   topMenu2 <- tkmenu(ttToptableTable)
 	tkconfigure(ttToptableTable, menu=topMenu2)
 	fileMenu2 <- tkmenu(topMenu2, tearoff=FALSE)
-	tkadd(fileMenu2, "command", label="Save As",command=SaveTopTable) 
+	tkadd(fileMenu2, "command", label="Save As",command=SaveTopTable)
 	tkadd(fileMenu2, "command", label="Close",command=function() tkdestroy(ttToptableTable))
-	tkadd(topMenu2, "cascade", label="File",menu=fileMenu2) 
+	tkadd(topMenu2, "cascade", label="File",menu=fileMenu2)
 	editMenu2 <- tkmenu(topMenu2, tearoff=FALSE)
 	tkadd(editMenu2, "command", label="Copy <Ctrl-C>",command=copyFcn)
 	tkadd(topMenu2, "cascade", label="Edit",menu=editMenu2)
 
 	Try(tkfocus(ttToptableTable))
-  
+
 }
 
 GetSpotTypesForLinearModel <- function()
@@ -4449,8 +4449,8 @@ GetSpotTypesForLinearModel <- function()
   tkwm.deiconify(ttGetSpotTypesForLinearModel)
   tkgrab.set(ttGetSpotTypesForLinearModel)
   tkfocus(ttGetSpotTypesForLinearModel)
-  tkwm.title(ttGetSpotTypesForLinearModel,"Spot Types to be Included in the Linear Model Fit")   
-  
+  tkwm.title(ttGetSpotTypesForLinearModel,"Spot Types to be Included in the Linear Model Fit")
+
   Try(if (numSpotTypes>10)
   {
     Try(sw <- tkwidget(ttGetSpotTypesForLinearModel,"ScrolledWindow",relief="sunken",borderwidth=2))
@@ -4472,12 +4472,12 @@ GetSpotTypesForLinearModel <- function()
   SpotTypeCheckbox <- list()
   for (i in (1:numSpotTypes))
       Try(SpotTypeCheckbox[[i]] <- tkcmd("checkbutton",paste(subfID,".cb",i,sep=""),variable=IncludeSpotTypeTcl[[i]]))
-       
+
   Try(lbl2 <- tklabel(ttGetSpotTypesForLinearModel,text="Please Choose Spot Types to be Included in the Linear Model Fit",font=.limmaGUIglobals$limmaGUIfont2))
   tkgrid(lbl2)
   Try(tkgrid.configure(lbl2,columnspan=2,sticky="w"))
   tkgrid(tklabel(ttGetSpotTypesForLinearModel,text="    "))
-  
+
   for (i in (1:numSpotTypes))
   {
       Try(blankLabel <- tkcmd("label",paste(subfID,".blank",i,sep=""),text="    ",font=.limmaGUIglobals$limmaGUIfont2))
@@ -4488,7 +4488,7 @@ GetSpotTypesForLinearModel <- function()
   }
 
   Try(tkgrid(sw,columnspan=2,sticky="nsew"))
-  
+
   tkgrid(tklabel(ttGetSpotTypesForLinearModel,text="    "))
   tkgrid(tklabel(ttGetSpotTypesForLinearModel,text="    "))
   ReturnVal <- c()
@@ -4501,7 +4501,7 @@ GetSpotTypesForLinearModel <- function()
       Try(tkgrab.release(ttGetSpotTypesForLinearModel));Try(tkdestroy(ttGetSpotTypesForLinearModel));Try(tkfocus(.limmaGUIglobals$ttMain))
       ReturnVal <<- ReturnVal
   }
-  onCancel <- function() {Try(tkgrab.release(ttGetSpotTypesForLinearModel));Try(tkdestroy(ttGetSpotTypesForLinearModel));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- c()}      
+  onCancel <- function() {Try(tkgrab.release(ttGetSpotTypesForLinearModel));Try(tkdestroy(ttGetSpotTypesForLinearModel));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- c()}
   OK.but <-tkbutton(ttGetSpotTypesForLinearModel,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   Cancel.but <-tkbutton(ttGetSpotTypesForLinearModel,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(OK.but,Cancel.but,tklabel(ttGetSpotTypesForLinearModel,text="    "),tklabel(ttGetSpotTypesForLinearModel,text="    "))
@@ -4520,9 +4520,9 @@ GetSpotTypesForLinearModel <- function()
 
 GetSlideNum <- function()
 {
-  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))  
+  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
   Try(if (min(nchar(gsub("[^0-9]","",SlideNamesVec))==nchar(SlideNamesVec))==TRUE)
-    SlideNamesVec <- paste("Slide",SlideNamesVec))  
+    SlideNamesVec <- paste("Slide",SlideNamesVec))
   Try(NumSlides <- get("NumSlides",envir=limmaGUIenvironment))
   ttGetSlideNum<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetSlideNum)
@@ -4532,7 +4532,7 @@ GetSlideNum <- function()
   scr <- tkscrollbar(ttGetSlideNum, repeatinterval=5,
                        command=function(...)tkyview(tl,...))
   ## Safest to make sure scr exists before setting yscrollcommand
-  tl<-tklistbox(ttGetSlideNum,height=4,selectmode="browse",yscrollcommand=function(...)tkset(scr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2) 
+  tl<-tklistbox(ttGetSlideNum,height=4,selectmode="browse",yscrollcommand=function(...)tkset(scr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttGetSlideNum,text="    "),tklabel(ttGetSlideNum,text="    "),tklabel(ttGetSlideNum,text="    "),
        tklabel(ttGetSlideNum,text="    "),tklabel(ttGetSlideNum,text="    "))
   lbl2<-tklabel(ttGetSlideNum,text="Choose a slide",font=.limmaGUIglobals$limmaGUIfont2)
@@ -4556,7 +4556,7 @@ GetSlideNum <- function()
       Try(tkgrab.release(ttGetSlideNum));Try(tkdestroy(ttGetSlideNum));Try(tkfocus(.limmaGUIglobals$ttMain))
       ReturnVal <<- slidenum
   }
-  onCancel <- function() {Try(tkgrab.release(ttGetSlideNum));Try(tkdestroy(ttGetSlideNum));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- 0}      
+  onCancel <- function() {Try(tkgrab.release(ttGetSlideNum));Try(tkdestroy(ttGetSlideNum));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- 0}
   OK.but <-tkbutton(ttGetSlideNum,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   Cancel.but <-tkbutton(ttGetSlideNum,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttGetSlideNum,text="    "),OK.but,Cancel.but,tklabel(ttGetSlideNum,text="    "),tklabel(ttGetSlideNum,text="    "))
@@ -4564,8 +4564,8 @@ GetSlideNum <- function()
   tkgrid(tklabel(ttGetSlideNum,text="    "),tklabel(ttGetSlideNum,text="    "),tklabel(ttGetSlideNum,text="    "),
        tklabel(ttGetSlideNum,text="    "),tklabel(ttGetSlideNum,text="    "))
   Try(tkbind(OK.but, "<Return>",onOK))
-  Try(tkbind(tl, "<Return>",onOK))    
-  Try(tkbind(Cancel.but, "<Return>",onCancel))      
+  Try(tkbind(tl, "<Return>",onOK))
+  Try(tkbind(Cancel.but, "<Return>",onCancel))
   Try(tkfocus(tl))
   Try(tkbind(ttGetSlideNum, "<Destroy>", function() {Try(tkgrab.release(ttGetSlideNum));Try(tkfocus(.limmaGUIglobals$ttMain));}))
   Try(tkwait.window(ttGetSlideNum))
@@ -4578,7 +4578,7 @@ GetDEcutoff <- function()
 {
   ttGetDEcutoff<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetDEcutoff)
-  tkgrab.set(ttGetDEcutoff)  
+  tkgrab.set(ttGetDEcutoff)
   Try(tkwm.title(ttGetDEcutoff,"Cutoff for Differentially Expressed Genes"))
   Try(cutoffStatisticTcl <- tclVar("abs(t)"))
   Try(tkframe1 <- tkframe(ttGetDEcutoff,borderwidth=2))
@@ -4599,7 +4599,7 @@ GetDEcutoff <- function()
   Try(cutoffValueTcl <- tclVar("0"))
   Try(entry.cutoffValue<-tkentry(tkframe2,width="20",font=.limmaGUIglobals$limmaGUIfont2,textvariable=cutoffValueTcl,bg="white"))
   Try(tkgrid(tklabel(tkframe2,text="Cutoff value ",font=.limmaGUIglobals$limmaGUIfont2),entry.cutoffValue,sticky="w"))
-  
+
   Try(tkgrid(tkframe2))
   Try(ReturnVal <- list())
   onOK <- function()
@@ -4609,7 +4609,7 @@ GetDEcutoff <- function()
       Try(tkgrab.release(ttGetDEcutoff));Try(tkdestroy(ttGetDEcutoff));Try(tkfocus(.limmaGUIglobals$ttMain))
       Try(ReturnVal <<- list(cutoffStatistic=cutoffStatisticVal,cutoff=cutoffValue))
   }
-  onCancel <- function(){tkgrab.release(ttGetDEcutoff);tkdestroy(ttGetDEcutoff);tkfocus(.limmaGUIglobals$ttMain);ReturnVal <<- list()} 
+  onCancel <- function(){tkgrab.release(ttGetDEcutoff);tkdestroy(ttGetDEcutoff);tkfocus(.limmaGUIglobals$ttMain);ReturnVal <<- list()}
   Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(tkframe4,text="                    ")))
@@ -4620,7 +4620,7 @@ GetDEcutoff <- function()
   Try(tkgrid(tkframe4))
   Try(tkgrid(tkframe1))
   Try(tkfocus(ttGetDEcutoff))
-  Try(tkbind(ttGetDEcutoff, "<Destroy>", function(){tkgrab.release(ttGetDEcutoff);tkfocus(.limmaGUIglobals$ttMain);} )) 
+  Try(tkbind(ttGetDEcutoff, "<Destroy>", function(){tkgrab.release(ttGetDEcutoff);tkfocus(.limmaGUIglobals$ttMain);} ))
   Try(tkwait.window(ttGetDEcutoff))
 
   return (ReturnVal)
@@ -4641,20 +4641,20 @@ ChooseEbayesStatistic <- function()
   tkwm.deiconify(ttChooseEbayesStatistic)
   tkgrab.set(ttChooseEbayesStatistic)
   tkfocus(ttChooseEbayesStatistic)
-  tkwm.title(ttChooseEbayesStatistic,"Empirical Bayes Statistic")   
+  tkwm.title(ttChooseEbayesStatistic,"Empirical Bayes Statistic")
   Try(tkgrid(tklabel(ttChooseEbayesStatistic,text="    "),tklabel(ttChooseEbayesStatistic,text="    ")))
 
   Try(EbayesStatisticTcl <- tclVar("t"))
 
   Try(tStatisticRadioButton <- tkradiobutton(ttChooseEbayesStatistic,variable=EbayesStatisticTcl,value="t"))
-  Try(BStatisticRadioButton <- tkradiobutton(ttChooseEbayesStatistic,variable=EbayesStatisticTcl,value="lods"))  
-  Try(PValueRadioButton     <- tkradiobutton(ttChooseEbayesStatistic,variable=EbayesStatisticTcl,value="p.value"))    
-       
+  Try(BStatisticRadioButton <- tkradiobutton(ttChooseEbayesStatistic,variable=EbayesStatisticTcl,value="lods"))
+  Try(PValueRadioButton     <- tkradiobutton(ttChooseEbayesStatistic,variable=EbayesStatisticTcl,value="p.value"))
+
   Try(lbl2 <- tklabel(ttChooseEbayesStatistic,text="Please Choose an Empirical Bayes Statistic",font=.limmaGUIglobals$limmaGUIfont2))
   tkgrid(tklabel(ttChooseEbayesStatistic,text="    "),lbl2)
   Try(tkgrid.configure(lbl2,columnspan=2,sticky="w"))
   tkgrid(tklabel(ttChooseEbayesStatistic,text="    "))
-  
+
   Try(currentLabel <- tklabel(ttChooseEbayesStatistic,text="t Statistic",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(ttChooseEbayesStatistic,text="    "),tStatisticRadioButton,currentLabel))
   Try(tkgrid.configure(tStatisticRadioButton,sticky="e"))
@@ -4667,17 +4667,17 @@ ChooseEbayesStatistic <- function()
   Try(tkgrid(tklabel(ttChooseEbayesStatistic,text="    "),PValueRadioButton,currentLabel))
   Try(tkgrid.configure(PValueRadioButton,sticky="e"))
   Try(tkgrid.configure(currentLabel,sticky="w"))
-  
+
   tkgrid(tklabel(ttChooseEbayesStatistic,text="    "))
   tkgrid(tklabel(ttChooseEbayesStatistic,text="    "))
   ReturnVal <- ""
   onOK <- function()
-  {      
+  {
       Try(ReturnVal <- tclvalue(EbayesStatisticTcl))
       Try(tkgrab.release(ttChooseEbayesStatistic));Try(tkdestroy(ttChooseEbayesStatistic));Try(tkfocus(.limmaGUIglobals$ttMain))
       ReturnVal <<- ReturnVal
   }
-  onCancel <- function() {Try(tkgrab.release(ttChooseEbayesStatistic));Try(tkdestroy(ttChooseEbayesStatistic));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- ""}      
+  onCancel <- function() {Try(tkgrab.release(ttChooseEbayesStatistic));Try(tkdestroy(ttChooseEbayesStatistic));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- ""}
   OK.but <-tkbutton(ttChooseEbayesStatistic,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   Cancel.but <-tkbutton(ttChooseEbayesStatistic,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttChooseEbayesStatistic,text="    "),OK.but,Cancel.but,tklabel(ttChooseEbayesStatistic,text="    "),tklabel(ttChooseEbayesStatistic,text="    "))
@@ -4697,9 +4697,9 @@ ChooseSpotType <- function(parameterizationTreeIndex)
 {
   # This function is designed to be used for selecting a spot type for which t Statistics box plots will be shown.
   # This means that the only available spot types should be those included in the linear model.
-  
-  
-  Try(SpotTypesIncludedNamesVec <- GetSpotTypesIncludedNames(parameterizationTreeIndex)) 
+
+
+  Try(SpotTypesIncludedNamesVec <- GetSpotTypesIncludedNames(parameterizationTreeIndex))
   Try(numSpotTypes <- length(SpotTypesIncludedNamesVec))
 
   if (numSpotTypes==0)
@@ -4712,7 +4712,7 @@ ChooseSpotType <- function(parameterizationTreeIndex)
   tkwm.deiconify(ttChooseSpotType)
   tkgrab.set(ttChooseSpotType)
   tkfocus(ttChooseSpotType)
-  tkwm.title(ttChooseSpotType,"Spot Type for Empirical Bayes Statistics Box Plots")   
+  tkwm.title(ttChooseSpotType,"Spot Type for Empirical Bayes Statistics Box Plots")
   Try(tkgrid(tklabel(ttChooseSpotType,text="    "),tklabel(ttChooseSpotType,text="    ")))
 
   Try(WhichSpotTypeTcl <- tclVar("1"))
@@ -4733,12 +4733,12 @@ ChooseSpotType <- function(parameterizationTreeIndex)
   SpotTypeRadioButton <- list()
   for (i in (1:numSpotTypes))
       Try(SpotTypeRadioButton[[i]] <- tkcmd("radiobutton",paste(subfID,".rb",i,sep=""),variable=WhichSpotTypeTcl,value=paste(i)))
-       
+
   Try(lbl2 <- tklabel(ttChooseSpotType,text="Please Choose a Spot Type for Empirical Bayes Statistics Box Plots",font=.limmaGUIglobals$limmaGUIfont2))
   tkgrid(tklabel(ttChooseSpotType,text="    "),lbl2)
   Try(tkgrid.configure(lbl2,columnspan=2,sticky="w"))
   tkgrid(tklabel(ttChooseSpotType,text="    "))
-  
+
   for (i in (1:numSpotTypes))
   {
       Try(currentLabel <- tkcmd("label",paste(subfID,".lab1_",i,sep=""),text=SpotTypesIncludedNamesVec[i],font=.limmaGUIglobals$limmaGUIfont2))
@@ -4746,29 +4746,29 @@ ChooseSpotType <- function(parameterizationTreeIndex)
       Try(tkgrid.configure(SpotTypeRadioButton[[i]],sticky="e"))
       Try(tkgrid.configure(currentLabel,sticky="w"))
   }
-  
-  Try(tkgrid(sw,columnspan=2,sticky="nsew"))  
-  
+
+  Try(tkgrid(sw,columnspan=2,sticky="nsew"))
+
   tkgrid(tklabel(ttChooseSpotType,text="    "))
   tkgrid(tklabel(ttChooseSpotType,text="    "))
-  
+
   Try(OKCancelFrame <- tkframe(ttChooseSpotType,borderwidth=2))
-  
+
   ReturnVal <- ""
   onOK <- function()
   {
-      Try(radioButtonSelected <- as.integer(tclvalue(WhichSpotTypeTcl)))      
+      Try(radioButtonSelected <- as.integer(tclvalue(WhichSpotTypeTcl)))
       Try(ReturnVal <- SpotTypesIncludedNamesVec[radioButtonSelected])
       Try(tkgrab.release(ttChooseSpotType));Try(tkdestroy(ttChooseSpotType));Try(tkfocus(.limmaGUIglobals$ttMain))
       ReturnVal <<- ReturnVal
   }
-  onCancel <- function() {Try(tkgrab.release(ttChooseSpotType));Try(tkdestroy(ttChooseSpotType));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- ""}      
+  onCancel <- function() {Try(tkgrab.release(ttChooseSpotType));Try(tkdestroy(ttChooseSpotType));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- ""}
   OK.but <-tkbutton(OKCancelFrame,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   Cancel.but <-tkbutton(OKCancelFrame,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(OK.but,Cancel.but)
   tkgrid.configure(OK.but,    sticky="e")
   tkgrid.configure(Cancel.but,sticky="w")
-  tkgrid(OKCancelFrame,columnspan=2)  
+  tkgrid(OKCancelFrame,columnspan=2)
   tkgrid(tklabel(ttChooseSpotType,text="    "),tklabel(ttChooseSpotType,text="    "))
   Try(tkfocus(ttChooseSpotType))
   Try(tkbind(ttChooseSpotType, "<Destroy>", function() {Try(tkgrab.release(ttChooseSpotType));Try(tkfocus(.limmaGUIglobals$ttMain));}))
@@ -4810,11 +4810,11 @@ GetWtAreaParams <- function()
         Try(AreaUpperLimitVal <<- as.integer(tclvalue(AreaUpperLimitTcl)))
         Try(assign("AreaLowerLimit",AreaLowerLimitVal,limmaGUIenvironment))
         Try(assign("AreaUpperLimit",AreaUpperLimitVal,limmaGUIenvironment))
-        Try(assign("WeightingType",paste("wtarea, Ideal=(",AreaLowerLimitVal,",",AreaUpperLimitVal,")",sep=""),limmaGUIenvironment))        
+        Try(assign("WeightingType",paste("wtarea, Ideal=(",AreaLowerLimitVal,",",AreaUpperLimitVal,")",sep=""),limmaGUIenvironment))
         Try(tkgrab.release(ttWeightingwtArea));Try(tkdestroy(ttWeightingwtArea));Try(tkfocus(.limmaGUIglobals$ttMain))
         ReturnVal <<- 1
     }
-    onCancel <- function() {Try(tkgrab.release(ttWeightingwtArea));Try(tkdestroy(ttWeightingwtArea));Try(tkfocus(.limmaGUIglobals$ttMain));ReturnVal<<-0}   
+    onCancel <- function() {Try(tkgrab.release(ttWeightingwtArea));Try(tkdestroy(ttWeightingwtArea));Try(tkfocus(.limmaGUIglobals$ttMain));ReturnVal<<-0}
     Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
     Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
     Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=function()help(wtarea,htmlhelp=TRUE),font=.limmaGUIglobals$limmaGUIfont2))
@@ -4835,7 +4835,7 @@ GetWtAreaParams <- function()
 #    ttWeightingwtFlag <- tktoplevel(.limmaGUIglobals$ttMain)
 #    tkwm.deiconify(ttWeightingwtFlag)
 #    tkgrab.set(ttWeightingwtFlag)
-#    tkfocus(ttWeightingwtFlag)  
+#    tkfocus(ttWeightingwtFlag)
 #    tkwm.title(ttWeightingwtFlag,"Weighting for Spots with Flag Values Less Than Zero")
 #    tkframe1 <- tkframe(ttWeightingwtFlag)
 #    tkframe2 <- tkframe(tkframe1,relief="groove",borderwidth=2)
@@ -4858,7 +4858,7 @@ GetWtAreaParams <- function()
 #        Try(tkgrab.release(ttWeightingwtFlag));Try(tkdestroy(ttWeightingwtFlag));Try(tkfocus(.limmaGUIglobals$ttMain))
 #        ReturnVal <<- 1
 #    }
-#    onCancel <- function() {Try(tkgrab.release(ttWeightingwtFlag));Try(tkdestroy(ttWeightingwtFlag));Try(tkfocus(.limmaGUIglobals$ttMain));ReturnVal<<-0}   
+#    onCancel <- function() {Try(tkgrab.release(ttWeightingwtFlag));Try(tkdestroy(ttWeightingwtFlag));Try(tkfocus(.limmaGUIglobals$ttMain));ReturnVal<<-0}
 #    OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
 #    Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
 #    tkgrid(OK.but,Cancel.but)
@@ -4868,7 +4868,7 @@ GetWtAreaParams <- function()
 #    Try(tkfocus(ttWeightingwtFlag))
 #    Try(tkbind(ttWeightingwtFlag, "<Destroy>", function() {Try(tkgrab.release(ttWeightingwtFlag));Try(tkfocus(.limmaGUIglobals$ttMain));}))
 #    Try(tkwait.window(ttWeightingwtFlag))
-#    
+#
 #    Try(FlagSpotWeighting <- FlagSpotWeightingVal)
 #    Try(assign("FlagSpotWeighting", FlagSpotWeighting,limmaGUIenvironment))
 #
@@ -4910,13 +4910,13 @@ evalRcode <- function()
    Try(.Tcl(paste("tk_popup",.Tcl.args(editPopupMenu,xTxt,yTxt))))
   }
   Try(tkbind(txt, "<Button-3>",RightClick))
-  
+
   Try(tkpack(scrCode, side="right", fill="y"))
   Try(tkpack(xscrCode, side="bottom", fill="x"))
   Try(tkpack(txt, side="left", fill="both", expand="yes"))
   Try(tkfocus(txt))
 
-  SaveRSourceFile <- function() 
+  SaveRSourceFile <- function()
   {
     Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tkfile.tail(wfile)),initialdir=tclvalue(tkfile.dir(wfile)),
            filetypes="{{R Source Files} {.R}} {{All files} *}")))
@@ -4933,7 +4933,7 @@ evalRcode <- function()
     Try(tkfocus(txt))
   }
 
-  OpenRSourceFile <- function() 
+  OpenRSourceFile <- function()
   {
     Try(fileName <- tclvalue(tkgetOpenFile(filetypes="{{R Source Files} {.R}} {{All files} *}")))
     if (nchar(fileName)==0) return()
@@ -4951,11 +4951,11 @@ evalRcode <- function()
   Try(code <- tclvalue(tkget(txt,"0.0","end")))
   if (runType!="runTextOnly")
   {
-  
+
     Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
     {
       Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-      Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+      Try(LocalVScale <- .limmaGUIglobals$Myvscale)
       Try(ttGraph<-tktoplevel(.limmaGUIglobals$ttMain))
       Try(tkwm.withdraw(ttGraph))
       Try(tkwm.title(ttGraph,"Graphical Results from R Code Evaluation"))
@@ -4965,12 +4965,12 @@ evalRcode <- function()
 
   if (runType!="runGraphicsOnly")
   {
-    Try(tmpEvalRcodeResults <- tempfile())  
+    Try(tmpEvalRcodeResults <- tempfile())
     Try(RoutFileObject <- file(tmpEvalRcodeResults, open="wt"))
     Try(sink(RoutFileObject))
     Try(sink(RoutFileObject,type="message"))
     Try(e <- try(parse(text=code)))
-    if (inherits(e, "try-error")) 
+    if (inherits(e, "try-error"))
     {
       Try(tkmessageBox(message="Syntax error",icon="error"))
       Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
@@ -4987,7 +4987,7 @@ evalRcode <- function()
       Try(sink(type="message"))
       Try(sink())
       Try(try(close(RoutFileObject),TRUE))
-      return()      
+      return()
     }
     Try(sink(type="message"))
     Try(sink())
@@ -5002,7 +5002,7 @@ evalRcode <- function()
     Try(sink(RoutFileObjectGraph))
     Try(sink(RoutFileObjectGraph,type="message"))
     Try(e3 <- try(parse(text=codeGraph)))
-    if (inherits(e3, "try-error")) 
+    if (inherits(e3, "try-error"))
     {
       Try(tkmessageBox(message="Syntax error",icon="error"))
       Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
@@ -5019,7 +5019,7 @@ evalRcode <- function()
       Try(sink(type="message"))
       Try(sink())
       Try(close(RoutFileObjectGraph))
-      return()            
+      return()
     }
     Try(sink(type="message"))
     Try(sink())
@@ -5031,14 +5031,14 @@ evalRcode <- function()
       Try(plotFunction <- get("plotFunction",envir=limmaGUIenvironment))
       Try(imgLimmaGUI<-tkrplot(ttGraph,plotFunction,hscale=LocalHScale,vscale=LocalVScale))
       SetupPlotKeyBindings(tt=ttGraph,img=imgLimmaGUI)
-      SetupPlotMenus(tt=ttGraph,initialfile="",plotFunction,img=imgLimmaGUI)      
+      SetupPlotMenus(tt=ttGraph,initialfile="",plotFunction,img=imgLimmaGUI)
       Try(tkgrid(imgLimmaGUI))
       Try(if (as.numeric(tclvalue(tkwinfo("reqheight",imgLimmaGUI)))<10)  # Nothing plotted.
         Try(tkdestroy(ttGraph))
       else
       {
         Try(tkwm.deiconify(ttGraph))
-        Try(tkfocus(imgLimmaGUI))   
+        Try(tkfocus(imgLimmaGUI))
       })
       CopyToClip <- function()
       {
@@ -5051,10 +5051,10 @@ evalRcode <- function()
      Try(plot.new())
      Try(plotFunction())
    })
-    
+
   }
 
-  if (runType!="runGraphicsOnly") 
+  if (runType!="runGraphicsOnly")
   {
     Try(tt2 <-tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(tt2,"Text Results of R Code Evaluation"))
@@ -5100,7 +5100,7 @@ evalRcode <- function()
       if (len<=4)
         Try( fileName <- paste(fileName,".txt",sep=""))
       else if (substring(fileName,len-3,len)!=".txt")
-      Try(fileName <- paste(fileName,".txt",sep=""))    
+      Try(fileName <- paste(fileName,".txt",sep=""))
       Try(chn <- tkopen(fileName,"w"))
       Try(tkputs(chn, tclvalue(tkget(txt2,"0.0","end"))))
       Try(tkclose(chn))
@@ -5137,10 +5137,10 @@ evalRcode <- function()
     Try(code <- tclvalue(tkget(txt,"0.0","end")))
     Try(codeGraph <- paste("assign(\"plotFunction\",function () {\nopar<-par(bg=\"white\")\nTry({\n",code,"\n})\n\ntempGraphPar <- par(opar)\n},limmaGUIenvironment)\n",sep=""))
     Try(menuNameObject <- GetMenuName())
-    Try(if (length(menuNameObject)==0) return())    
+    Try(if (length(menuNameObject)==0) return())
     Try(addMenuItem(codeGraph,menuNameObject$MenuName,newMenu=TRUE,menuPosition="end",
       menuNameObject$MenuItemName,newMenuItem=TRUE,menuItemPosition="end",
-            outputHasGraphics=TRUE))  
+            outputHasGraphics=TRUE))
   }
 
   Try(HTMLhelp <- function() help.start())
@@ -5175,11 +5175,11 @@ evalRcode <- function()
   command=runTextAndGraphics))
   Try(tkadd(topMenu, "cascade", label="Run",
   menu=runMenu))
-  
+
 #  Try(menuMenu <- tkmenu(topMenu,tearoff=FALSE))
 #  Try(tkadd(menuMenu,"command",label="Make limmaGUI Custom Menu Item",command=MakeLimmaGUIMenu))
 #  Try(tkadd(topMenu,"cascade",label="Make limmaGUI Menu Item",menu=menuMenu))
-  
+
   Try(tkadd(helpMenu,"command",label="HTML Help",
   command=HTMLhelp))
   Try(tkadd(topMenu,"cascade",label="Help",
@@ -5200,7 +5200,7 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="watch"))
       Try(tkfocus(ttGALandTargetsandSpotTypes))
       Try(OpenTargetsFile())
-      Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))  
+      Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))
       Try(tkfocus(ttGALandTargetsandSpotTypes))
       Try(tclvalue(.limmaGUIglobals$TargetsfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$TargetsfileNameTcl)))
   }
@@ -5210,7 +5210,7 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="watch"))
       Try(tkfocus(ttGALandTargetsandSpotTypes))
       Try(OpenGALFile())
-      Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))  
+      Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))
       Try(tkfocus(ttGALandTargetsandSpotTypes))
       Try(tclvalue(.limmaGUIglobals$GALfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$GALfileNameTcl)))
   }
@@ -5220,7 +5220,7 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="watch"))
       Try(tkfocus(ttGALandTargetsandSpotTypes))
       Try(OpenSpotTypesFile())
-      Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))  
+      Try(tkconfigure(ttGALandTargetsandSpotTypes,cursor="arrow"))
       Try(tkfocus(ttGALandTargetsandSpotTypes))
       Try(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl) <- fixSeps(tclvalue(.limmaGUIglobals$SpotTypesfileNameTcl)))
   }
@@ -5259,20 +5259,20 @@ OpenGALandTargetsandSpotTypesfiles <- function()
   Try(tkgrid(tklabel(ttGALandTargetsandSpotTypes,text="    ")))
   Try(tkgrid(.limmaGUIglobals$SpotTypesfileBoxTitleTclLabel,columnspan=4))
   Try(tkgrid(.limmaGUIglobals$SpotTypesfileNameTclLabel,columnspan=4))
-  
+
   Try(tkgrid(tklabel(ttGALandTargetsandSpotTypes,text="    ")))
   Try(tkgrid(OpenGALFile.but, OpenTargetsFile.but,OpenSpotTypesFile.but))
   Try(Abort <- 1)
   onOK <- function()
   {
       Try(gal     <- get("gal",envir=limmaGUIenvironment))
-      Try(Targets <- get("Targets",envir=limmaGUIenvironment))  
-      Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))    
+      Try(Targets <- get("Targets",envir=limmaGUIenvironment))
+      Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
       Try(if (length(gal)==0)
       {
         Try(tkmessageBox(title="GAL File",message=paste("Warning: You did not specify a valid GenePix Array List file, so limmaGUI will attempt to read gene information from the raw (image analysis) files."),icon="warning"))
 #        Try(tkmessageBox(title="GAL (GenePix Array List) File",message=paste("Either you did not specify a valid GAL (GenePix Array List) File",
-#          "or an error occurred while reading in the GAL file.  It should be in tab-delimited text format and it should include the column headings \"Block\", \"Column\", \"Row\", \"Name\" and \"ID\"."),icon="error"))        
+#          "or an error occurred while reading in the GAL file.  It should be in tab-delimited text format and it should include the column headings \"Block\", \"Column\", \"Row\", \"Name\" and \"ID\"."),icon="error"))
 #        onCancel()
 #        return()
       })
@@ -5293,9 +5293,9 @@ OpenGALandTargetsandSpotTypesfiles <- function()
       Try(tkfocus(.limmaGUIglobals$ttMain))
       Try(Abort <<- 0)
   }
-  
+
   onHelp <- function() browseURL(system.file("doc/InputFiles.html",package="limmaGUI"))
-  
+
   onCancel <- function() {Try(tkgrab.release(ttGALandTargetsandSpotTypes));Try(tkdestroy(ttGALandTargetsandSpotTypes));Try(tkfocus(.limmaGUIglobals$ttMain));Try(Abort<<-1)}
   Try(OK.but <-tkbutton(ttGALandTargetsandSpotTypes,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(ttGALandTargetsandSpotTypes,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
@@ -5306,7 +5306,7 @@ OpenGALandTargetsandSpotTypesfiles <- function()
   Try(tkfocus(ttGALandTargetsandSpotTypes))
   Try(tkbind(ttGALandTargetsandSpotTypes, "<Destroy>", function() {Try(tkgrab.release(ttGALandTargetsandSpotTypes));Try(tkfocus(.limmaGUIglobals$ttMain));}))
   Try(tkwait.window(ttGALandTargetsandSpotTypes))
-   
+
   if (Abort==1)
         return(0)
 
@@ -5332,7 +5332,7 @@ GetlimmaDataSetName <- function()
   Try(tkgrid(tklabel(ttGetlimmaDataSetName,text="Please enter a name for this data set.",font=.limmaGUIglobals$limmaGUIfont2)))
   Try(tkgrid(entry.limmaDataSetName))
   onOK <- function()
-  {    
+  {
       Try(limmaDataSetNameText <- tclvalue(Local.limmaDataSetName))
       if (nchar(limmaDataSetNameText)==0)
         limmaDataSetNameText <- "Untitled"
@@ -5378,7 +5378,7 @@ GetNumParametersNoTargets <- function()
         Try(tkmessageBox(title="Invalid Number of Parameters",message="Please enter a valid number of parameters to estimate in the linear model.",icon="error"))
         Try(NumParameters <- 1)
         return()
-      })               
+      })
       Try(assign("NumParameters",NumParameters,limmaGUIenvironment))
       Try(tkgrab.release(ttGetNumParametersNoTargets));Try(tkdestroy(ttGetNumParametersNoTargets));Try(tkfocus(.limmaGUIglobals$ttMain))
       Try(ReturnVal <<- NumParameters)
@@ -5491,7 +5491,7 @@ NewLimmaFile <- function()
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))
-  
+
   if (limmaDataSetNameText!="Untitled")
   {
       Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled")  LimmaFileName <- limmaDataSetNameText)  # Local assignment only
@@ -5514,15 +5514,15 @@ NewLimmaFile <- function()
   Try(tkdelete(.limmaGUIglobals$mainTree,"RG"))
   Try(tkdelete(.limmaGUIglobals$mainTree,"BC"))
   Try(tkdelete(.limmaGUIglobals$mainTree,"WeightingType"))
-  Try(tkdelete(.limmaGUIglobals$mainTree,"MA"))  
-  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout"))    
-  Try(tkdelete(.limmaGUIglobals$mainTree,"Parameterizations"))      
+  Try(tkdelete(.limmaGUIglobals$mainTree,"MA"))
+  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout"))
+  Try(tkdelete(.limmaGUIglobals$mainTree,"Parameterizations"))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","RG" ,text="R and G",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","RG","RG.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","BC" ,text="Background Correction",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","BC","BC.Status" ,text="subtract",font=.limmaGUIglobals$limmaGUIfontTree))
-  Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","WeightingType" ,text="Spot Quality Weighting",font=.limmaGUIglobals$limmaGUIfontTree)) 
-  Try(tkinsert(.limmaGUIglobals$mainTree,"end","WeightingType","WeightingType.Status" ,text="none",font=.limmaGUIglobals$limmaGUIfontTree))  
+  Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","WeightingType" ,text="Spot Quality Weighting",font=.limmaGUIglobals$limmaGUIfontTree))
+  Try(tkinsert(.limmaGUIglobals$mainTree,"end","WeightingType","WeightingType.Status" ,text="none",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","MA" ,text="M and A",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","MA","Raw" ,text="Raw",font=.limmaGUIglobals$limmaGUIfontTree))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))
@@ -5548,7 +5548,7 @@ NewLimmaFile <- function()
     }
   Try(initGlobals())
   Try(LimmaFileName <- get("LimmaFileName",limmaGUIenvironment))
-  Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only  
+  Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
   Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
 
   Try(tclvalue(.limmaGUIglobals$GALfileBoxTitle)     <- "Please select a GenePix Array List (GAL) file. (OPTIONAL)")
@@ -5560,7 +5560,7 @@ NewLimmaFile <- function()
   Try(ReturnVal <- OpenGALandTargetsandSpotTypesfiles())
   Try(if (ReturnVal==0)  # The user pressed "Cancel"
   {
-    Try(tkfocus(.limmaGUIglobals$ttMain))  
+    Try(tkfocus(.limmaGUIglobals$ttMain))
     return()
   })
   Try(gal <- get("gal",envir=limmaGUIenvironment))
@@ -5583,11 +5583,11 @@ NewLimmaFile <- function()
   Try(if (("printer" %in% names(RG)) && !is.null(RG$printer) && length(RG$printer)>0)
     Try(assign("maLayout",RG$printer,limmaGUIenvironment))
   else if (!is.null(gal) && length(gal)>0)
-    Try(assign("maLayout",getLayout(gal),limmaGUIenvironment))) 
+    Try(assign("maLayout",getLayout(gal),limmaGUIenvironment)))
         Try(assign("Layout.Available",TRUE,limmaGUIenvironment))
-  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))        
+  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","Layout","Layout.Status",text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-        
+
   Try(isCharacter <- c())
   Try(if (ncol(gal)>0)
   {
@@ -5612,9 +5612,9 @@ NewLimmaFile <- function()
       Try(SpotTypes[1,i] <- "*"))
     Try(SpotTypes[1,"SpotType"] <- "gene")
     Try(SpotTypes[1,"Color"] <- "black")
-    Try(assign("SpotTypes",SpotTypes,limmaGUIenvironment))  
+    Try(assign("SpotTypes",SpotTypes,limmaGUIenvironment))
   })
-  
+
   Try(UpdateSpotTypesStatus())
   Try(GetlimmaDataSetName())
   Try(tkfocus(.limmaGUIglobals$ttMain))
@@ -5632,14 +5632,14 @@ chooseDir <- function()
 	Try(tkgrid(tklabel(ttChooseDir,text="    "),label1,sticky="w"))
 	Try(tkgrid.configure(label1,columnspan=3))
 	Try(tkgrid(tklabel(ttChooseDir,text="    ")))
-	Try(onBrowse <- function() 
+	Try(onBrowse <- function()
 	{
     Try(if (file.exists(gsub("\\\\","/",tclvalue(wd)))) initialdir<-gsub("\\\\","/",tclvalue(wd)) else initialdir<-getwd())
 	  Try(dir1 <- tclvalue(tkchooseDirectory(title="Please choose a working directory for the Limma Analysis",initialdir=initialdir)))
 		Try(if (nchar(dir1)>0) tclvalue(wd) <- fixSeps(dir1))
 	})
 	Try(ReturnVal <- "")
-	Try(onOK <- function() 
+	Try(onOK <- function()
   {
     Try(DirChosen <- tclvalue(wd))
     Try(tkgrab.release(ttChooseDir))
@@ -5665,14 +5665,14 @@ chooseDir <- function()
 	Try(tkbind(ttChooseDir,"<Destroy>",function()tkgrab.release(ttChooseDir)))
 	Try(tkbind(entry1,"<Return>",onOK))
 	Try(tkwait.window(ttChooseDir))
-	return(ReturnVal)	
+	return(ReturnVal)
 }
 
 
 SetWD <- function()
 {
   WD <- chooseDir()
-  if (!nchar(WD)) 
+  if (!nchar(WD))
   {
       tkfocus(.limmaGUIglobals$ttMain)
       return("")
@@ -5707,20 +5707,20 @@ DeleteParameterization <- function()
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))  
-  
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
+
   if (NumParameterizations==0)
   {
     Try(tkmessageBox(title="Delete Parameterization",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
+    return()
+  }
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return()    )
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
   Try(LinearModelComputed[parameterizationIndex]<-FALSE)
   Try(assign("LinearModelComputed",LinearModelComputed,limmaGUIenvironment))
-  
+
   ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep="")
   Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,ParameterizationNameNode))
   Try(ParameterizationList <- deleteItemFromList(ParameterizationList,ParameterizationNameNode))
@@ -5743,12 +5743,12 @@ DeleteParameterization <- function()
     }
   Try(ParameterizationTreeIndexVec <- tempVec2)
 
-  Try(NumParameterizations <- NumParameterizations - 1)        
-  
+  Try(NumParameterizations <- NumParameterizations - 1)
+
   Try(assign("ParameterizationTreeIndexVec",ParameterizationTreeIndexVec,limmaGUIenvironment))
   Try(assign("ParameterizationNamesVec",ParameterizationNamesVec,limmaGUIenvironment))
   Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
-  Try(assign("NumParameterizations",NumParameterizations,limmaGUIenvironment))  
+  Try(assign("NumParameterizations",NumParameterizations,limmaGUIenvironment))
 
   Try(tkdelete(.limmaGUIglobals$mainTree,"Parameterizations"))
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","Parameterizations" ,text="Parameterizations",font=.limmaGUIglobals$limmaGUIfontTree))
@@ -5760,7 +5760,7 @@ DeleteParameterization <- function()
       Try(tkinsert(.limmaGUIglobals$mainTree,"end","Parameterizations",ParameterizationsStatusNameNode ,text=ParameterizationNamesVec[i],font=.limmaGUIglobals$limmaGUIfontTree))
     }
   } else
-    Try(tkinsert(.limmaGUIglobals$mainTree,"end","Parameterizations","Parameterizations.Status.1" ,text="None",font=.limmaGUIglobals$limmaGUIfontTree)) 
+    Try(tkinsert(.limmaGUIglobals$mainTree,"end","Parameterizations","Parameterizations.Status.1" ,text="None",font=.limmaGUIglobals$limmaGUIfontTree))
 }
 
 ChooseContrastsParameterization <- function(parameterizationTreeIndex)
@@ -5772,21 +5772,21 @@ ChooseContrastsParameterization <- function(parameterizationTreeIndex)
   {
     Try(tkmessageBox(title="Choose Contrasts Parameterization",message=paste("There are no contrasts parameterizations available for parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep=""),type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  })      
+    return()
+  })
   Try(ContrastsParameterizationNamesVec <- c() )
   Try(for (i in(1:NumContrastParameterizations))
     ContrastsParameterizationNamesVec[i] <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[i]]$contrastsParameterizationNameText)
-  
+
   ttChooseContrastsParameterization<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttChooseContrastsParameterization)
-  tkgrab.set(ttChooseContrastsParameterization)  
+  tkgrab.set(ttChooseContrastsParameterization)
   tkfocus(ttChooseContrastsParameterization)
   tkwm.title(ttChooseContrastsParameterization,"Choose a Contrasts Parameterization")
   scr <- tkscrollbar(ttChooseContrastsParameterization, repeatinterval=5,
                        command=function(...)tkyview(tl,...))
   ## Safest to make sure scr exists before setting yscrollcommand
-  tl<-tklistbox(ttChooseContrastsParameterization,height=4,selectmode="single",yscrollcommand=function(...)tkset(scr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2)   
+  tl<-tklistbox(ttChooseContrastsParameterization,height=4,selectmode="single",yscrollcommand=function(...)tkset(scr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2)
   lbl2<-tklabel(ttChooseContrastsParameterization,text="Which contrasts parameterization is this for?",font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttChooseContrastsParameterization,text="       "),row=0,column=1,columnspan=1)
   tkgrid(tklabel(ttChooseContrastsParameterization,text="       "),row=0,column=4,columnspan=1)
@@ -5814,7 +5814,7 @@ ChooseContrastsParameterization <- function(parameterizationTreeIndex)
   tkgrid(tklabel(ttChooseContrastsParameterization,text="    "),tklabel(ttChooseContrastsParameterization,text="    "),OK.but,Cancel.but)
   tkgrid.configure(OK.but,    sticky="e")
   tkgrid.configure(Cancel.but,sticky="w")
-  
+
   tkgrid(tklabel(ttChooseContrastsParameterization,text="    "))
   Try(tkfocus(ttChooseContrastsParameterization))
   Try(tkbind(ttChooseContrastsParameterization, "<Destroy>", function() {Try(tkgrab.release(ttChooseContrastsParameterization));Try(tkfocus(.limmaGUIglobals$ttMain))}))
@@ -5829,13 +5829,13 @@ DeleteContrastsParameterization <- function()
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  
+
   Try(if (NumParameterizations==0)
   {
     Try(tkmessageBox(title="Delete Contrasts Parameterization",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  })  
+    return()
+  })
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return()    )
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -5846,16 +5846,16 @@ DeleteContrastsParameterization <- function()
   {
     Try(tkmessageBox(title="Delete Contrasts Parameterization",message=paste("There are no contrasts parameterizations available for parameterization ",ParameterizationNamesVec[parameterizationIndex],".",sep=""),type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  })  
+    return()
+  })
   Try(contrastsParameterizationIndex <- ChooseContrastsParameterization(parameterizationTreeIndex))
   Try(if (contrastsParameterizationIndex==0)    return()    )
   Try(ContrastsParameterizationTreeIndexVec <- ParameterizationList[[ParameterizationNameNode]]$ContrastsParameterizationTreeIndexVec)
-  Try(contrastsParameterizationTreeIndex <- ContrastsParameterizationTreeIndexVec[contrastsParameterizationIndex])          
+  Try(contrastsParameterizationTreeIndex <- ContrastsParameterizationTreeIndexVec[contrastsParameterizationIndex])
   Try(ContrastsParameterizationTreeNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex,sep=""))
-  
-  Try(ContrastsParameterizationListNode <- paste("ContrastsParameterization.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex, sep=""))  
-  
+
+  Try(ContrastsParameterizationListNode <- paste("ContrastsParameterization.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex, sep=""))
+
   Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,ContrastsParameterizationTreeNode))
   Try(ParameterizationList[[ParameterizationNameNode]]$Contrasts <- deleteItemFromList(ParameterizationList[[ParameterizationNameNode]]$Contrasts,
                             ContrastsParameterizationListNode))
@@ -5870,8 +5870,8 @@ DeleteContrastsParameterization <- function()
 
   Try(ParameterizationList[[ParameterizationNameNode]]$ContrastsParameterizationTreeIndexVec <- ContrastsParameterizationTreeIndexVec)
 
-  Try(NumContrastParameterizations <- NumContrastParameterizations - 1)        
-  Try(ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations <- NumContrastParameterizations)  
+  Try(NumContrastParameterizations <- NumContrastParameterizations - 1)
+  Try(ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations <- NumContrastParameterizations)
   Try(ParamContrastsNode <- paste("ParamContrasts.",parameterizationTreeIndex,sep=""))
   Try(if (ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations==0)
     Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParamContrastsNode,paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".1",sep=""),text="none",font=.limmaGUIglobals$limmaGUIfontTree)))
@@ -5888,7 +5888,7 @@ OpenALimmaFile <- function(FileName)
   Try(if (missing(FileName))
   {
     Try(tempLimmaFileName <- tclvalue(tkgetOpenFile(filetypes="{{Limma Files} {.lma}} {{All files} *}")))
-    if (!nchar(tempLimmaFileName)) 
+    if (!nchar(tempLimmaFileName))
     {
       tkfocus(.limmaGUIglobals$ttMain)
       return()
@@ -5896,7 +5896,7 @@ OpenALimmaFile <- function(FileName)
   }
   else
     tempLimmaFileName <- FileName)
-    
+
   limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment)
   if (limmaDataSetNameText!="Untitled")
   {
@@ -5911,21 +5911,21 @@ OpenALimmaFile <- function(FileName)
   }
   Try(LimmaFileName <- tempLimmaFileName)
   Try(assign("LimmaFileName",LimmaFileName,limmaGUIenvironment))
-  
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  
+
   Try(recentFilesFileName <- system.file("etc/recent-files.txt",package="limmaGUI"))
   Try(recentFiles <- readLines(recentFilesFileName))
-    
+
   Try(recentFiles <- gsub("\\\\","/",recentFiles))
-    
+
   # Remove any blank lines:
   Try(blanks <- grep("^[ \t\n]*$",recentFiles))
   Try(if (length(blanks)>0)
     recentFiles <- recentFiles[-blanks])
   Try(numRecentFiles <- length(recentFiles))
-  
+
   Try(if (length(grep(LimmaFileName,recentFiles))==0)
     recentFiles <- c(LimmaFileName,recentFiles))
   Try(if (length(recentFiles)>4)
@@ -5964,8 +5964,8 @@ OpenALimmaFile <- function(FileName)
           command=eval(parse(text=paste(".OpenALimmaFile_",i,sep=""))))))
     })
   })
-    
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))        
+
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
@@ -5979,7 +5979,7 @@ OpenALimmaFile <- function(FileName)
       Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
       Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
       Try(tkdelete(.limmaGUIglobals$ParameterizationTREE,ParameterizationNameNode))
-      Try(assign("ParameterizationList",deleteItemFromList(ParameterizationList,ParameterizationNameNode),limmaGUIenvironment))         
+      Try(assign("ParameterizationList",deleteItemFromList(ParameterizationList,ParameterizationNameNode),limmaGUIenvironment))
     }
 
   # Load the RData File whose name is "LimmaFileName"
@@ -5989,7 +5989,7 @@ OpenALimmaFile <- function(FileName)
   # The user may have changed the filename in the operating system since the last save.
   Try(LimmaFileName <- tempLimmaFileName)
   Try(assign("LimmaFileName",LimmaFileName,limmaGUIenvironment))
-  
+
   Try(if(!exists("NormalizedMADataWasImported",envir=limmaGUIenvironment))
     Try(  assign("NormalizedMADataWasImported",FALSE,limmaGUIenvironment)))
   Try(if (!exists("BCMethod",envir=limmaGUIenvironment))
@@ -6003,9 +6003,9 @@ OpenALimmaFile <- function(FileName)
     Try(assign("RawMADataWasImported",FALSE,limmaGUIenvironment)))
   Try(if (!exists("NormalizedMADataWasImported",envir=limmaGUIenvironment))
     Try(assign("NormalizedMADataWasImported",FALSE,limmaGUIenvironment)))
-  
+
   Try(limmaDataSetNameText <- get("limmaDataSetNameText" , envir=limmaGUIenvironment))
-  Try(NumParameterizations <- get("NumParameterizations", envir=limmaGUIenvironment))  
+  Try(NumParameterizations <- get("NumParameterizations", envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec", envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(NumParameters <- get("NumParameters" , envir=limmaGUIenvironment))
@@ -6014,10 +6014,10 @@ OpenALimmaFile <- function(FileName)
   Try(numSpotTypes <- nrow(SpotTypes))
 
   Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))
-  Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only 
+  Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
   Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
   Try(assign("limmaDataSetNameText",limmaDataSetNameText,limmaGUIenvironment))
-  Try(tclvalue(.limmaGUIglobals$limmaDataSetNameTcl) <- limmaDataSetNameText)  
+  Try(tclvalue(.limmaGUIglobals$limmaDataSetNameTcl) <- limmaDataSetNameText)
 
   if (NumParameterizations>0)
     for (parameterizationIndex in (1:NumParameterizations))
@@ -6027,8 +6027,8 @@ OpenALimmaFile <- function(FileName)
       Try(ParamMainFitNode   <- paste("ParamMainFit.",parameterizationTreeIndex,sep=""))
       Try(ParamContrastsNode <- paste("ParamContrasts.",parameterizationTreeIndex,sep=""))
       Try(PMFNoneNode <- paste("PMFNone.",parameterizationTreeIndex,sep=""))
-      Try(PMFSpotTypesNode <- paste("PMFSpotTypes.",parameterizationTreeIndex,sep=""))        
-      Try(PMFMANormMethodNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,sep=""))    
+      Try(PMFSpotTypesNode <- paste("PMFSpotTypes.",parameterizationTreeIndex,sep=""))
+      Try(PMFMANormMethodNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,sep=""))
       Try(PMFParamsNode <- paste("PMFParams.",parameterizationTreeIndex,sep=""))
       Try(PMFLinModNode <- paste("PMFLinMod.",parameterizationTreeIndex,sep=""))
       Try(PMFLinModStatusNode <- paste("PMFLinModStatus.",parameterizationTreeIndex,sep=""))
@@ -6038,31 +6038,31 @@ OpenALimmaFile <- function(FileName)
       Try(PMFDupCorStatusNode <- paste("PMFDupCorStatus.",parameterizationTreeIndex,sep=""))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end","root",ParameterizationNameNode ,text=ParameterizationNamesVec[parameterizationIndex],font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParameterizationNameNode,ParamMainFitNode,text="Main fit",font=.limmaGUIglobals$limmaGUIfontTree))
-      Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"1",ParameterizationNameNode,ParamContrastsNode,text="Contrasts",font=.limmaGUIglobals$limmaGUIfontTree))      
+      Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"1",ParameterizationNameNode,ParamContrastsNode,text="Contrasts",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(if (!("NumContrastParameterizations" %in% names(ParameterizationList[[ParameterizationNameNode]])))
         ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations <- 0)
-      
+
       Try(if (ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations==0)
         Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParamContrastsNode,paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".1",sep=""),text="none",font=.limmaGUIglobals$limmaGUIfontTree)))
           Try(ContrastsParameterizationTreeIndexVec <- ParameterizationList[[ParameterizationNameNode]]$ContrastsParameterizationTreeIndexVec)
 
       Try(if (ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations>0)
-        for (contrastIndex in (1:ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations))        
+        for (contrastIndex in (1:ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations))
         {
           Try(contrastsParameterizationTreeIndex <- ContrastsParameterizationTreeIndexVec[contrastIndex])
           Try(ContrastsParameterizationNamesNode <- paste("ContrastsParameterizationNames.",parameterizationTreeIndex,".",contrastsParameterizationTreeIndex,sep=""))
           Try(contrastsParameterizationNameText <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[contrastIndex]]$contrastsParameterizationNameText)
           Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamContrastsNode,ContrastsParameterizationNamesNode,text=contrastsParameterizationNameText,font=.limmaGUIglobals$limmaGUIfontTree))
           Try(contrastsMatrixInList <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[contrastIndex]]$contrastsMatrixInList)
-          Try(contrastsMatrix <- contrastsMatrixInList$contrasts)          
-          Try(ContrastsNames <- colnames(contrastsMatrix))          
+          Try(contrastsMatrix <- contrastsMatrixInList$contrasts)
+          Try(ContrastsNames <- colnames(contrastsMatrix))
           Try(NumContrasts <- ncol(contrastsMatrix))
           Try(for (contrast in (1:NumContrasts))
           {
             Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ContrastsParameterizationNamesNode,paste("Contrasts.",parameterizationIndex,".",contrastsParameterizationTreeIndex,".",contrast,sep=""),text=ContrastsNames[contrast],font=.limmaGUIglobals$limmaGUIfontTree))
           })
         })
-      Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParamMainFitNode,PMFSpotTypesNode,text="Spot Type(s) Included",font=.limmaGUIglobals$limmaGUIfontTree))  
+      Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",ParamMainFitNode,PMFSpotTypesNode,text="Spot Type(s) Included",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
       Try(if (numSpotTypes>0)
         for (i in (1:numSpotTypes))
@@ -6072,34 +6072,34 @@ OpenALimmaFile <- function(FileName)
           Try(NewNode <- paste("PMFSpotTypes.",parameterizationTreeIndex,".",i,sep=""))
           Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFSpotTypesNode, NewNode,text=SpotTypes[i,"SpotType"],font=.limmaGUIglobals$limmaGUIfontTree))
         })
-          
+
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFMANormMethodNode,text="M A Normalization Method",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
       {
         Try(WithinArrayNormalizationMethod <- "printtiploess")
         Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
       })
-      Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))      
+      Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
       Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
       {
         Try(BetweenArrayNormalizationMethod <- "scale")
         Try(assign("BetweenArrayNormalizationMethod",BetweenArrayNormalizationMethod,limmaGUIenvironment))
       })
-      Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))      
+      Try(BetweenArrayNormalizationMethod <- get("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
       Try(if ("WithinArrayNormalizationMethod" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
         Try(WithinArrayNormalizationMethod <- (ParameterizationList[[ParameterizationNameNode]])$WithinArrayNormalizationMethod)
       else
       {
         Try(ParameterizationList[[ParameterizationNameNode]][["WithinArrayNormalizationMethod"]] <- WithinArrayNormalizationMethod)
         Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
-      })      
+      })
       Try(if ("BetweenArrayNormalizationMethod" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
         Try(BetweenArrayNormalizationMethod <- (ParameterizationList[[ParameterizationNameNode]])$BetweenArrayNormalizationMethod)
       else
       {
         Try(ParameterizationList[[ParameterizationNameNode]][["BetweenArrayNormalizationMethod"]] <- BetweenArrayNormalizationMethod)
         Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
-      })      
+      })
 
       Try(MANormMethodValueNode <- paste("PMFMANormMethod.",parameterizationTreeIndex,".",1,sep=""))
 
@@ -6116,7 +6116,7 @@ OpenALimmaFile <- function(FileName)
       Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",PMFMANormMethodNode, MANormMethodValueNode,
         text=(ParameterizationList[[ParameterizationNameNode]])[[MANormMethodValueNode]],
-      font=.limmaGUIglobals$limmaGUIfontTree))        
+      font=.limmaGUIglobals$limmaGUIfontTree))
 
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFParamsNode,text="Parameters",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFLinModNode,text="Linear Model Fit",font=.limmaGUIglobals$limmaGUIfontTree))
@@ -6124,33 +6124,33 @@ OpenALimmaFile <- function(FileName)
           (ParameterizationList[[ParameterizationNameNode]])[[PMFLinModStatusNode]],font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFEBayesNode,text="Empirical Bayes Statistics",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFEBayesNode,PMFEBayesStatusNode,text=
-          (ParameterizationList[[ParameterizationNameNode]])[[PMFEBayesStatusNode]],font=.limmaGUIglobals$limmaGUIfontTree)) 
+          (ParameterizationList[[ParameterizationNameNode]])[[PMFEBayesStatusNode]],font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",ParamMainFitNode,PMFDupCorNode,text="Duplicate Correlation",font=.limmaGUIglobals$limmaGUIfontTree))
       Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"0",PMFDupCorNode,PMFDupCorStatusNode,text=
-          (ParameterizationList[[ParameterizationNameNode]])[[PMFDupCorStatusNode]],font=.limmaGUIglobals$limmaGUIfontTree)) 
-      Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))      
+          (ParameterizationList[[ParameterizationNameNode]])[[PMFDupCorStatusNode]],font=.limmaGUIglobals$limmaGUIfontTree))
+      Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
       Try(if (NumParameters>0)
         for (i in (1:NumParameters))
         {
           Try(NewNode <- paste("PMFParams.",parameterizationIndex,".",i,sep=""))
           Try(tkinsert(.limmaGUIglobals$ParameterizationTREE,"end",PMFParamsNode, NewNode,text=ParameterNamesVec[i],font=.limmaGUIglobals$limmaGUIfontTree))
         })
-    } 
-      
+    }
+
   Try(tkdelete(.limmaGUIglobals$mainTree,"RG.Status"))
-  Try(tkdelete(.limmaGUIglobals$mainTree,"BC.Status"))  
+  Try(tkdelete(.limmaGUIglobals$mainTree,"BC.Status"))
   Try(tkdelete(.limmaGUIglobals$mainTree,"WeightingType.Status"))
-  Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))  
-  Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))    
-  Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))      
-  Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))        
-  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))          
+  Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
+  Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
+  Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
+  Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
+  Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))
   Try(tkdelete(.limmaGUIglobals$mainTree,"Parameterizations"))
-  Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","Parameterizations" ,text="Parameterizations",font=.limmaGUIglobals$limmaGUIfontTree))  
-  
-  Try(RG.Available     <- get("RG.Available" , envir=limmaGUIenvironment))  
-  Try(MA.Available     <- get("MA.Available" , envir=limmaGUIenvironment))    
-  Try(Layout.Available <- get("Layout.Available" , envir=limmaGUIenvironment))      
+  Try(tkinsert(.limmaGUIglobals$mainTree,"end","root","Parameterizations" ,text="Parameterizations",font=.limmaGUIglobals$limmaGUIfontTree))
+
+  Try(RG.Available     <- get("RG.Available" , envir=limmaGUIenvironment))
+  Try(MA.Available     <- get("MA.Available" , envir=limmaGUIenvironment))
+  Try(Layout.Available <- get("Layout.Available" , envir=limmaGUIenvironment))
   Try(WeightingType    <- get("WeightingType", envir=limmaGUIenvironment))
 	Try(if (!exists("BCMethod",envir=limmaGUIenvironment))
 	{
@@ -6160,16 +6160,16 @@ OpenALimmaFile <- function(FileName)
 	Try(BCMethod <- get("BCMethod",envir=limmaGUIenvironment))
 
   Try(tkinsert(.limmaGUIglobals$mainTree,"end","BC","BC.Status",text=BCMethod,font=.limmaGUIglobals$limmaGUIfontTree))
-  Try(tkinsert(.limmaGUIglobals$mainTree,"end","WeightingType","WeightingType.Status",text=WeightingType,font=.limmaGUIglobals$limmaGUIfontTree))  
-  Try(if (RG.Available)  
+  Try(tkinsert(.limmaGUIglobals$mainTree,"end","WeightingType","WeightingType.Status",text=WeightingType,font=.limmaGUIglobals$limmaGUIfontTree))
+  Try(if (RG.Available)
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","RG","RG.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
   else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","RG","RG.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))    )
   Try(if (MA.Available$Raw)
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-  else  
+  else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))  )
-  Try(if (MA.Available$WithinArrays)  
+  Try(if (MA.Available$WithinArrays)
   {
     Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
     {
@@ -6181,7 +6181,7 @@ OpenALimmaFile <- function(FileName)
   }
   else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))  )
-  Try(if (MA.Available$BetweenArrays)  
+  Try(if (MA.Available$BetweenArrays)
   {
     Try(if (!exists("BetweenArrayNormalizationMethod",envir=limmaGUIenvironment))
     {
@@ -6194,11 +6194,11 @@ OpenALimmaFile <- function(FileName)
   }
   else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))  )
-  Try(if (MA.Available$Both)  
+  Try(if (MA.Available$Both)
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
   else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))  )
-  Try(if (Layout.Available)  
+  Try(if (Layout.Available)
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","Layout","Layout.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
   else
     Try(tkinsert(.limmaGUIglobals$mainTree,"end","Layout","Layout.Status" ,text="Not Available",font=.limmaGUIglobals$limmaGUIfontTree))  )
@@ -6228,14 +6228,14 @@ SaveLimmaFile <- function()
     return()
   }
   # Don't give an error if main window has been destroyed.
-  try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"),silent=TRUE)  
-#  tkmessageBox(message="About to save Limma File! (0)")  
-  Try(save(list = ls(envir=limmaGUIenvironment), file=LimmaFileName, envir=limmaGUIenvironment))  
-#  tkmessageBox(message="Limma File Saved! (1)")  
+  try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"),silent=TRUE)
+#  tkmessageBox(message="About to save Limma File! (0)")
+  Try(save(list = ls(envir=limmaGUIenvironment), file=LimmaFileName, envir=limmaGUIenvironment))
+#  tkmessageBox(message="Limma File Saved! (1)")
   try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"),silent=TRUE)
   try(tkfocus(.limmaGUIglobals$ttMain),silent=TRUE)
-#  tkmessageBox(message="Limma File Saved! (2)")    
-}    
+#  tkmessageBox(message="Limma File Saved! (2)")
+}
 
 SaveAsLimmaFile <- function()
 {
@@ -6243,7 +6243,7 @@ SaveAsLimmaFile <- function()
   Try(LimmaFileName <- get("LimmaFileName",envir=limmaGUIenvironment))
   Try(if (LimmaFileName=="Untitled" && limmaDataSetNameText!="Untitled") LimmaFileName <- limmaDataSetNameText) # Local assignment only
   Try(tempLimmaFileName <- tclvalue(tkgetSaveFile(initialfile=LimmaFileName,filetypes="{{Limma Files} {.lma}} {{All files} *}")))
-  if (!nchar(tempLimmaFileName)) 
+  if (!nchar(tempLimmaFileName))
   {
     try(tkfocus(.limmaGUIglobals$ttMain),silent=TRUE)
     return()
@@ -6255,12 +6255,12 @@ SaveAsLimmaFile <- function()
         tempLimmaFileName <- paste(tempLimmaFileName,".lma",sep="")
   Try(LimmaFileName <- tempLimmaFileName)
   Try(assign("LimmaFileName",LimmaFileName,limmaGUIenvironment))
-  
+
   Try(recentFilesFileName <- system.file("etc/recent-files.txt",package="limmaGUI"))
   recentFiles <- readLines(recentFilesFileName)
-    
+
   Try(recentFiles <- gsub("\\\\","/",recentFiles))
-    
+
   # Remove any blank lines:
   Try(blanks <- grep("^[ \t\n]*$",recentFiles))
   Try(if (length(blanks)>0)
@@ -6271,7 +6271,7 @@ SaveAsLimmaFile <- function()
     recentFiles <- c(LimmaFileName,recentFiles))
   Try(if (length(recentFiles)>4)
     recentFiles <- recentFiles[1:4])
-  try(writeLines(con=recentFilesFileName,recentFiles),TRUE)  
+  try(writeLines(con=recentFilesFileName,recentFiles),TRUE)
   Try(numRecentFiles <- length(recentFiles))
 
   Try(if (numRecentFiles>0)
@@ -6305,14 +6305,14 @@ SaveAsLimmaFile <- function()
           command=eval(parse(text=paste(".OpenALimmaFile_",i,sep=""))))))
     })
   })
-  
-  
+
+
   # .limmaGUIglobals$ttMain may have been destroyed
   e <- try(tkfocus(.limmaGUIglobals$ttMain),silent=TRUE)
   if (!inherits(e, "try-error"))
     Try(tkwm.title(.limmaGUIglobals$ttMain,paste("LimmaGUI -",fixSeps(LimmaFileName))))
-  try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"),silent=TRUE)    
-  Try(save(list = ls(envir=limmaGUIenvironment), file=LimmaFileName, envir=limmaGUIenvironment))    
+  try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"),silent=TRUE)
+  Try(save(list = ls(envir=limmaGUIenvironment), file=LimmaFileName, envir=limmaGUIenvironment))
   try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"),silent=TRUE)
   try(tkfocus(.limmaGUIglobals$ttMain),silent=TRUE)
 }
