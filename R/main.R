@@ -139,8 +139,8 @@ TclRequire <- function(tclPkg)
       Try(tkgrid(tklabel(ttTclTkExtension,text="    ")))
       Try(tkfocus(OK.but))
       Try(tkwait.window(ttTclTkExtension))
-    }
-}
+    }#end of if result == FALSE
+}# end of TclRequire
 
 onDestroy <- function()
 {
@@ -160,7 +160,7 @@ onDestroy <- function()
 	 }
 	 Try(assign(".JustAskedWhetherToSave",TRUE,.GlobalEnv))
  })
-}
+}#end of onDestroy
 
 
 limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
@@ -174,9 +174,11 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
   # Rather than change each limmaGUIfont (menu,window title,...) manually each time, I save the changes as a "scheme".
   Try(limmaGUIglobals <- list())
   Try(if (BigfontsForlimmaGUIpresentation==TRUE)
-    Try(limmaGUIglobals$limmaGUIpresentation <- TRUE)
-  else
-    Try(limmaGUIglobals$limmaGUIpresentation <- FALSE))
+    		Try(limmaGUIglobals$limmaGUIpresentation <- TRUE)
+  		else
+    		Try(limmaGUIglobals$limmaGUIpresentation <- FALSE)
+
+  )
   Try(limmaGUIglobals$limmaDataSetNameTcl <- tclVar("Untitled"))
   Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
   Try(initGlobals())
@@ -317,7 +319,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
     Try(tb <- tkframe(toolbarFrame,relief="groove",borderwidth="2"))
     # The Bitmap::get stuff below requires the BWidget package.
     # I think this could be done more simply with something like :
-    #   Try(newButton <- tkbutton(tb,image=tkcmd("Bitmap::get","new"),command=NewLimmaFile))
+    #   Try(newButton <- tkbutton(tb,image=tcl("Bitmap::get","new"),command=NewLimmaFile))
     Try(newButton <- .Tcl(paste("button",.Tk.subwin(tb),"-image [Bitmap::get new]",.Tcl.args(command=NewLimmaFile))))
     Try(openButton <- .Tcl(paste("button",.Tk.subwin(tb),"-image [Bitmap::get open]",.Tcl.args(command=OpenLimmaFile))))
     Try(saveButton <- .Tcl(paste("button",.Tk.subwin(tb),"-image [Bitmap::get save]",.Tcl.args(command=SaveLimmaFile))))
@@ -346,7 +348,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE)
     Try(tkgrid(tklabel(mainFrame,text="LimmaGUI",font=.limmaGUIglobals$limmaGUIfont1),column=1,columnspan=3,sticky="ew"))
   else
     Try(tkgrid(tklabel(mainFrame,text="     LimmaGUI ",font=.limmaGUIglobals$limmaGUIfont1),column=2,sticky="ew")))
-  Try(tkgrid(tklabel(mainFrame,text="Welcome to LimmaGUI, a package for Linear Modelling of Microarray Data",font=.limmaGUIglobals$limmaGUIfont2),columnspan=5))
+  Try(tkgrid(tklabel(mainFrame,text="Welcome to LimmaGUI, a package for Linear Modelling of Microarray Data.\nPlease select the Citations item from the Help Menu for citation information.",font=.limmaGUIglobals$limmaGUIfont2),columnspan=5))
   Try(tkgrid(tklabel(mainFrame,text="         "),columnspan=5))
   Try(tkgrid(tklabel(mainFrame,text="         "),columnspan=5))
   Try(limmaDataSetName.but <- tkbutton(mainFrame,text="Data Set Name",command=GetlimmaDataSetName,font=.limmaGUIglobals$limmaGUIfont2))
@@ -516,11 +518,23 @@ limmaGUIhelp <- function()
 
 limmaHelp <- function()
 {
-    Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"usersguide.html"))
+    #Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"usersguide.html"))
+    Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"index.html"))
     Try(browseURL(limmaHelpIndex))
     Try(cat(paste("Opening limma help...\nIf nothing happens, please open :\n",limmaHelpIndex,"\nyourself.",sep="")))
 }
 
+showCitations <- function()
+{
+	Try(tkmessageBox(title="Citations",message="See the R console for the Citation listing."))
+	Try(print(citation("limmaGUI")))
+}
+
+showChangeLog <- function(n=20)
+{
+	Try(tkmessageBox(title="ChangeLog",message="See the R console for the first 20 lines of the ChangeLog file.\nTo see more lines, use the LGChangelog(n=nnn) function, where nnn is the number of lines to view."))
+	Try(LGchangeLog(20))
+}
 
 getPackageVersion <- function(pkgName)
 {
@@ -1149,7 +1163,7 @@ tclArrayVar <- function()
     Try(name <- paste("::RTcl", n,sep = ""))
     Try(l <- list(env = new.env()))
     Try(assign(name, NULL, envir = l$env))
-    Try(reg.finalizer(l$env, function(env) tkcmd("unset", ls(env))))
+    Try(reg.finalizer(l$env, function(env) tcl("unset", ls(env))))
     Try(class(l) <- "tclArrayVar")
     Try(.Tcl(paste("set ",name,"(0,0) \"\"",sep="")))
     l
@@ -1346,8 +1360,8 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
         for (i in (0:NumRows))
           for (j in (0:NumCols))
           {
-             # Modified to use tkcmd!
-             Try(tkcmd("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(myRarray[i+1,j+1])))
+             # Modified to use tcl!
+             Try(tcl("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(myRarray[i+1,j+1])))
           }
 
       # Below, can I just use tkwidget(ttDesignOrContrastsTable,"table",...) ?
@@ -1355,16 +1369,16 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       Try(.Tcl(paste("table",.Tk.ID(table1),.Tcl.args(variable=tclArrayName,rows=paste(NumRows+1),cols=paste(NumCols+1),titlerows="0",titlecols="0",selectmode="extended",colwidth="13",background="white",rowseparator="\"\n\"",colseparator="\"\t\"",resizeborders="col",multiline="0"))))
       Try(tkgrid(tklabel(ttDesignOrContrastsTable,text="    "),table1))
 
-      Try(tkcmd(.Tk.ID(table1),"width","0",paste(max(4,max(nchar(rownamesDesignOrContrasts))+2))))
+      Try(tcl(.Tk.ID(table1),"width","0",paste(max(4,max(nchar(rownamesDesignOrContrasts))+2))))
       Try(if (nrow(designOrContrasts)>0)
       {
 
         Try(for (j in (1:NumCols))
-          Try(tkcmd(.Tk.ID(table1),"width",paste(j),paste(max(4,max(nchar(ColNamesVec))+2,max(nchar(designOrContrasts[,j]))+2)))))
+          Try(tcl(.Tk.ID(table1),"width",paste(j),paste(max(4,max(nchar(ColNamesVec))+2,max(nchar(designOrContrasts[,j]))+2)))))
       })
 
 #       if (Contrasts==TRUE)
-#         Try(tkcmd(.Tk.ID(table1),"width","0","25"))
+#         Try(tcl(.Tk.ID(table1),"width","0","25"))
 
       Try(tkconfigure(table1,font=.limmaGUIglobals$limmaGUIfontTable))
       Try(tkgrid.configure(table1,columnspan=2))
@@ -1385,7 +1399,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
           for (i in (0:NumRows))
             for (j in (0:NumCols))
 #             Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j,") \"",DesignOrContrastsTable[i+1,j+1],"\"",sep="")))
-              Try(tkcmd("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(DesignOrContrastsTable[i+1,j+1])))
+              Try(tcl("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(DesignOrContrastsTable[i+1,j+1])))
       }
 
       saveDesignOrContrastsMatrixFile <- function()
@@ -1674,7 +1688,7 @@ GetDesignOrContrasts <- function(Design=FALSE,Contrasts=FALSE,NumContrasts=0,
       Try(plusOrMinusDropDown <- .Tk.subwin(ttDesignOrContrasts))
       Try(combo3 <- c(combo3,plusOrMinusDropDown))
       Try(.Tcl(paste("ComboBox",.Tk.ID(plusOrMinusDropDown),"-editable false -values",plusOrMinusTclListAsString)))
-      Try(tkcmd(.Tk.ID(plusOrMinusDropDown),"setvalue","first"))
+      Try(tcl(.Tk.ID(plusOrMinusDropDown),"setvalue","first"))
       Try(if (.limmaGUIglobals$limmaGUIpresentation==TRUE)
       {
        Try(tkconfigure(FirstDropDownColumn,width=10))
@@ -2217,7 +2231,7 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
 #      Try(tclArrayName <- paste("::RTcl", n, sep = ""))
 #      Try(l <- list(env = new.env()))
 #      Try(assign(tclArrayName, NULL, envir = l$env))
-#      Try(reg.finalizer(l$env, function(env) tkcmd("unset", ls(env))))
+#      Try(reg.finalizer(l$env, function(env) tcl("unset", ls(env))))
       Try(tclArrayVar1 <- tclArrayVar())
       Try(tclArrayName <- ls(tclArrayVar1$env))
 
@@ -2228,7 +2242,7 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
       if (NumCols>0)
         for (i in (0:NumRows))
           for (j in (0:NumCols))
-             Try(tkcmd("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(myRarray[i+1,j+1])))
+             Try(tcl("set",paste(tclArrayName,"(",i,",",j,")",sep=""),paste(myRarray[i+1,j+1])))
 
       Try(table1 <- tkwidget(ttViewDesignOrContrastsTable,"table"))
       Try(tkconfigure(table1,variable=tclArrayName,rows=paste(NumRows+1),cols=paste(NumCols+1),
@@ -2244,9 +2258,9 @@ ViewDesignOrContrastsMatrixInTable <- function(DesignOrContrasts,designOrContras
       Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<<Copy>>"))))
 
 
-      Try(tkcmd(.Tk.ID(table1),"width","0",paste(max(4,max(nchar(rownames(designOrContrasts)))+2))))
+      Try(tcl(.Tk.ID(table1),"width","0",paste(max(4,max(nchar(rownames(designOrContrasts)))+2))))
       Try(for (j in (1:NumCols))
-        Try(tkcmd(.Tk.ID(table1),"width",paste(j),paste(max(4,nchar(colnames(designOrContrasts)[j])+2,max(nchar(designOrContrasts[,j]))+2)))))
+        Try(tcl(.Tk.ID(table1),"width",paste(j),paste(max(4,nchar(colnames(designOrContrasts)[j])+2,max(nchar(designOrContrasts[,j]))+2)))))
 
 
       onSaveDesignOrContrastsMatrixAs <- function()
@@ -2824,7 +2838,7 @@ ViewRNATargets <- function()
             for (i in (0:NumRows))
               for (j in (1:NumCols))
 #                 Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j-1,") ",myRarray[i+1,j],sep="")))
-                 Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(myRarray[i+1,j])))
+                 Try(tcl("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(myRarray[i+1,j])))
 
           # Below, I should just use tkwidget(ttViewRNATargets,"table",...)
           Try(table1 <- .Tk.subwin(ttViewRNATargets))
@@ -2840,7 +2854,7 @@ ViewRNATargets <- function()
           Try(tkconfigure(table1,font=.limmaGUIglobals$limmaGUIfontTable))
 
           for (j in (1:NumCols))
-            Try(tkcmd(.Tk.ID(table1),"width",paste(j-1),paste(max(4,nchar(colnames(Targets)[j])+2,max(nchar(Targets[,j]))+2))))
+            Try(tcl(.Tk.ID(table1),"width",paste(j-1),paste(max(4,nchar(colnames(Targets)[j])+2,max(nchar(Targets[,j]))+2))))
 
           Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<<Copy>>"))))
 
@@ -2951,8 +2965,8 @@ ViewSpotTypes <- function()
       {
           Try(.Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<Leave>"))))
 
-          NumRows <- as.integer(strsplit(tclvalue(tkcmd(table1,"configure","-rows"))," ")[[1]][5])-1
-          NumCols <- as.integer(strsplit(tclvalue(tkcmd(table1,"configure","-cols"))," ")[[1]][5])
+          NumRows <- as.integer(strsplit(tclvalue(tcl(table1,"configure","-rows"))," ")[[1]][5])-1
+          NumCols <- as.integer(strsplit(tclvalue(tcl(table1,"configure","-cols"))," ")[[1]][5])
 
           Try(SpotTypes <- as.data.frame(matrix(nrow=NumRows,ncol=NumCols)))
           Try(colnamesSpotTypes <- c())
@@ -2999,7 +3013,7 @@ ViewSpotTypes <- function()
             for (i in (0:NumRows))
               for (j in (1:NumCols))
 #                 Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j-1,") ",myRarray[i+1,j],sep="")))
-                Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(myRarray[i+1,j])))
+                Try(tcl("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(myRarray[i+1,j])))
 
           # Below, I should just use tkwidget(ttViewSpotTypes,"table",...)
           Try(table1 <- .Tk.subwin(ttViewSpotTypes))
@@ -3015,7 +3029,7 @@ ViewSpotTypes <- function()
           Try(tkconfigure(table1,font=.limmaGUIglobals$limmaGUIfontTable))
 
           for (j in (1:NumCols))
-            Try(tkcmd(.Tk.ID(table1),"width",paste(j-1),paste(max(4,nchar(colnames(SpotTypes)[j])+2,max(nchar(SpotTypes[,j]))+2))))
+            Try(tcl(.Tk.ID(table1),"width",paste(j-1),paste(max(4,nchar(colnames(SpotTypes)[j])+2,max(nchar(SpotTypes[,j]))+2))))
 
           Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(table1),"<<Copy>>"))))
 
@@ -3033,7 +3047,7 @@ ViewSpotTypes <- function()
                for (i in (0:NumRows))
                  for (j in (1:NumCols))
 #                   Try(.Tcl(paste("set ",tclArrayName,"(",i,",",j-1,") \"",SpotTypes[i+1,j],"\"",sep="")))
-                   Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(SpotTypes[i+1,j])))
+                   Try(tcl("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(SpotTypes[i+1,j])))
           }
 
           saveSpotTypesFile <- function()
@@ -4141,53 +4155,77 @@ showTopTable <- function(...,export=FALSE)
   Try(adjustMethodLabel <- tklabel(frame3,text="Adjust method:",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(adjustMethodLabel))
   Try(tkgrid.configure(adjustMethodLabel,sticky="w"))
-  Try(if (NumSlides>1)
-    Try(adjustMethodTcl <- tclVar("holm"))
-  else
-    Try(adjustMethodTcl <- tclVar("none")))
-  Try(bonferroni.but <- tkradiobutton(frame3,text="Bonferroni",variable=adjustMethodTcl,value="bonferroni",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(holm.but <- tkradiobutton(frame3,text="Holm",variable=adjustMethodTcl,value="holm",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(hochberg.but <- tkradiobutton(frame3,text="Hochberg",variable=adjustMethodTcl,value="hochberg",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(hommel.but <- tkradiobutton(frame3,text="Hommel",variable=adjustMethodTcl,value="hommel",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(fdr.but <- tkradiobutton(frame3,text="FDR",variable=adjustMethodTcl,value="fdr",font=.limmaGUIglobals$limmaGUIfont2))
-  Try(none.but <- tkradiobutton(frame3,text="None",variable=adjustMethodTcl,value="none",font=.limmaGUIglobals$limmaGUIfont2))
 
-  Try(tkgrid(bonferroni.but,sticky="w"))
-  Try(tkgrid(holm.but,sticky="w"))
-  Try(tkgrid(hochberg.but,sticky="w"))
-  Try(tkgrid(hommel.but,sticky="w"))
-  Try(tkgrid(fdr.but,sticky="w"))
+
+  Try(if (NumSlides>1)
+    Try(adjustMethodTcl <- tclVar("BH"))
+  else
+    Try(adjustMethodTcl <- tclVar("none"))
+  )#end of Try(if (NumSlides>1)
+  Try(none.but <- tkradiobutton(frame3,text="None",variable=adjustMethodTcl,value="none",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(bh.but   <- tkradiobutton(frame3,text="BH"  ,variable=adjustMethodTcl,value="BH"  ,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(by.but   <- tkradiobutton(frame3,text="BY"  ,variable=adjustMethodTcl,value="BY"  ,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(holm.but <- tkradiobutton(frame3,text="Holm",variable=adjustMethodTcl,value="holm",font=.limmaGUIglobals$limmaGUIfont2))
+
   Try(tkgrid(none.but,sticky="w"))
+  Try(tkgrid(bh.but  ,sticky="w"))
+  Try(tkgrid(by.but  ,sticky="w"))
+  Try(tkgrid(holm.but,sticky="w"))
+
+  #Try(if (NumSlides>1)
+  #  Try(adjustMethodTcl <- tclVar("holm"))
+  #else
+  #  Try(adjustMethodTcl <- tclVar("none")))
+  #Try(bonferroni.but <- tkradiobutton(frame3,text="Bonferroni",variable=adjustMethodTcl,value="bonferroni",font=.limmaGUIglobals$limmaGUIfont2))
+  #Try(holm.but <- tkradiobutton(frame3,text="Holm",variable=adjustMethodTcl,value="holm",font=.limmaGUIglobals$limmaGUIfont2))
+  #Try(hochberg.but <- tkradiobutton(frame3,text="Hochberg",variable=adjustMethodTcl,value="hochberg",font=.limmaGUIglobals$limmaGUIfont2))
+  #Try(hommel.but <- tkradiobutton(frame3,text="Hommel",variable=adjustMethodTcl,value="hommel",font=.limmaGUIglobals$limmaGUIfont2))
+  #Try(fdr.but <- tkradiobutton(frame3,text="FDR",variable=adjustMethodTcl,value="fdr",font=.limmaGUIglobals$limmaGUIfont2))
+  #Try(none.but <- tkradiobutton(frame3,text="None",variable=adjustMethodTcl,value="none",font=.limmaGUIglobals$limmaGUIfont2))
+
+  #Try(tkgrid(bonferroni.but,sticky="w"))
+  #Try(tkgrid(holm.but,sticky="w"))
+  #Try(tkgrid(hochberg.but,sticky="w"))
+  #Try(tkgrid(hommel.but,sticky="w"))
+  #Try(tkgrid(fdr.but,sticky="w"))
+  #Try(tkgrid(none.but,sticky="w"))
 
   Try(if (NumSlides==1)
   {
-		Try(tkconfigure(bonferroni.but,state="disabled"))
-		Try(tkconfigure(holm.but,state="disabled"))
-		Try(tkconfigure(hochberg.but,state="disabled"))
-		Try(tkconfigure(hommel.but,state="disabled"))
-		Try(tkconfigure(fdr.but,state="disabled"))
 		Try(tkconfigure(none.but,state="disabled"))
+		Try(tkconfigure(bh.but  ,state="disabled"))
+		Try(tkconfigure(by.but  ,state="disabled"))
+		Try(tkconfigure(holm.but,state="disabled"))
+
+		#Try(tkconfigure(bonferroni.but,state="disabled"))
+		#Try(tkconfigure(holm.but,state="disabled"))
+		#Try(tkconfigure(hochberg.but,state="disabled"))
+		#Try(tkconfigure(hommel.but,state="disabled"))
+		#Try(tkconfigure(fdr.but,state="disabled"))
+		#Try(tkconfigure(none.but,state="disabled"))
   })
 
   Try(if (NumSlides>1)
     Try(totalGenes <- nrow(genelist))
   else
-    Try(totalGenes <- nrow(gal)))
-  Try(Abort <- 1)
+    Try(totalGenes  <- nrow(gal))
+  )
+  Try(Abort         <- 1)
   Try(numberOfGenes <- 0)
-  Try(sortBy <- "B")
-  Try(adjustMethod <- "holm")
-  Try(onOK <- function()
+  Try(sortBy        <- "B")
+  Try(adjustMethod  <- "BH")
+  Try(onOK          <- function()
   {
       Try(NumGenesChoice <- as.numeric(tclvalue(numberOfGenesTcl)))
       Try(tkgrab.release(ttToptableDialog))
       Try(tkdestroy(ttToptableDialog))
       Try(tkfocus(.limmaGUIglobals$ttMain))
+
       Try(NumbersOfGenes <- c(10,30,50,100,totalGenes))
-      Try(numberOfGenes <<- NumbersOfGenes[NumGenesChoice]      )
-      Try(sortBy <<- tclvalue(sortByTcl))
-      Try(adjustMethod <<- tclvalue(adjustMethodTcl))
-      Try(Abort <<- 0)
+      Try(numberOfGenes  <<- NumbersOfGenes[NumGenesChoice])
+      Try(sortBy         <<- tclvalue(sortByTcl))
+      Try(adjustMethod   <<- tclvalue(adjustMethodTcl))
+      Try(Abort          <<- 0)
   })
 
   Try(onHelp <- function() Try(help("topTable",htmlhelp=TRUE)))
@@ -4315,9 +4353,9 @@ showTopTable <- function(...,export=FALSE)
     Try(yscr <- tkscrollbar(ttToptableTable,command=function(...)tkyview(toptableTable,...)))
     Try(tclArrayVar1 <- tclArrayVar())
     Try(tclArrayName <- ls(tclArrayVar1$env))
-    Try(tkcmd("set",paste(tclArrayName,"0,0",sep=""),""))
+    Try(tcl("set",paste(tclArrayName,"0,0",sep=""),""))
     Try(for (j in (1:ncols))
-        Try(tkcmd("set",paste(tclArrayName,"(",0,",",j-1,")",sep=""),colnames(table1)[j]))  )
+        Try(tcl("set",paste(tclArrayName,"(",0,",",j-1,")",sep=""),colnames(table1)[j]))  )
     Try(for (i in (1:nrows))
       for (j in (1:ncols))
       {
@@ -4325,7 +4363,7 @@ showTopTable <- function(...,export=FALSE)
           item <- format(table1[i,j],digits=4)
         else
           item <- table1[i,j])
-        Try(tkcmd("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(item)))
+        Try(tcl("set",paste(tclArrayName,"(",i,",",j-1,")",sep=""),paste(item)))
       })
     Try(tkgrid(toptableTable,yscr))
     Try(tkgrid.configure(toptableTable,sticky="news"))
@@ -4337,41 +4375,41 @@ showTopTable <- function(...,export=FALSE)
       if (tolower(colnames(table1)[i]) %in% c("block","row","column","gridrow","gridcolumn","gridcol","grid.row","grid.col","grid.column"))
       {
         Try(if (.limmaGUIglobals$limmaGUIpresentation==FALSE)
-          Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,nchar(colnames(table1)[i])+2))))
+          Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,nchar(colnames(table1)[i])+2))))
         else
-          Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,nchar(colnames(table1)[i]))))))
+          Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,nchar(colnames(table1)[i]))))))
         next()
       }
       if (colnames(table1)[i] %in% c("M","A","t","B"))
       {
-        Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),"6"))
+        Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),"6"))
         next()
       }
       if (colnames(table1)[i] %in% c("P.Value"))
       {
-        Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),"8"))
+        Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),"8"))
         next()
       }
       if(tolower(colnames(table1)[i]) == "name")
       {
-        Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(min(30,max(6,max(nchar(table1[,i]))+2)))))
-        Try(tkcmd(toptableTable,"tag","col","namecol",paste(i-1)))
-        Try(tkcmd(toptableTable,"tag","cell","namecolheading",paste("0",i-1,sep=",")))
-        Try(tkcmd(toptableTable,"tag","configure","namecol",anchor="w"))
-        Try(tkcmd(toptableTable,"tag","configure","namecolheading",anchor="center"))
+        Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),paste(min(30,max(6,max(nchar(table1[,i]))+2)))))
+        Try(tcl(toptableTable,"tag","col","namecol",paste(i-1)))
+        Try(tcl(toptableTable,"tag","cell","namecolheading",paste("0",i-1,sep=",")))
+        Try(tcl(toptableTable,"tag","configure","namecol",anchor="w"))
+        Try(tcl(toptableTable,"tag","configure","namecolheading",anchor="center"))
         next()
       }
 
       if(tolower(colnames(table1)[i]) == "id")
       {
         Try(if (.limmaGUIglobals$limmaGUIpresentation==FALSE)
-          Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,max(nchar(table1[,i]))+2))))
+          Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,max(nchar(table1[,i]))+2))))
         else
-          Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,max(nchar(table1[,i])))))))
+          Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,max(nchar(table1[,i])))))))
         next()
       }
 
-      Try(tkcmd(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,max(nchar(table1[,i]))+2))))
+      Try(tcl(.Tk.ID(toptableTable),"width",paste(i-1),paste(max(4,max(nchar(table1[,i]))+2))))
     })
 	  Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(toptableTable),"<<Copy>>"))))
   }
@@ -4408,9 +4446,9 @@ showTopTable <- function(...,export=FALSE)
     Try(tkpack(xscr, side="bottom", fill="x"))
     Try(tkpack(txt, side="left", fill="both", expand="yes"))
 
-    Try(chn <- tclvalue(tkcmd("open", tempfile1)))
-    Try(tkinsert(txt, "end", tclvalue(tkcmd("read", chn))))
-    Try(tkcmd("close", chn))
+    Try(chn <- tclvalue(tclopen( tempfile1)))
+    Try(tkinsert(txt, "end", tclvalue(tclread( chn))))
+    Try(tclclose(chn))
     Try(tkconfigure(txt, state="disabled"))
     Try(tkmark.set(txt,"insert","0.0"))
     Try(tkfocus(txt))
@@ -4455,8 +4493,8 @@ GetSpotTypesForLinearModel <- function()
   {
     Try(sw <- tkwidget(ttGetSpotTypesForLinearModel,"ScrolledWindow",relief="sunken",borderwidth=2))
     Try(sf <- tkwidget(sw,"ScrollableFrame"))
-    Try(tkcmd(sw,"setwidget",sf))
-    Try(subfID <- tclvalue(tkcmd(sf,"getframe")))
+    Try(tcl(sw,"setwidget",sf))
+    Try(subfID <- tclvalue(tcl(sf,"getframe")))
   }
   else
   {
@@ -4471,7 +4509,7 @@ GetSpotTypesForLinearModel <- function()
 
   SpotTypeCheckbox <- list()
   for (i in (1:numSpotTypes))
-      Try(SpotTypeCheckbox[[i]] <- tkcmd("checkbutton",paste(subfID,".cb",i,sep=""),variable=IncludeSpotTypeTcl[[i]]))
+      Try(SpotTypeCheckbox[[i]] <- tcl("checkbutton",paste(subfID,".cb",i,sep=""),variable=IncludeSpotTypeTcl[[i]]))
 
   Try(lbl2 <- tklabel(ttGetSpotTypesForLinearModel,text="Please Choose Spot Types to be Included in the Linear Model Fit",font=.limmaGUIglobals$limmaGUIfont2))
   tkgrid(lbl2)
@@ -4480,8 +4518,8 @@ GetSpotTypesForLinearModel <- function()
 
   for (i in (1:numSpotTypes))
   {
-      Try(blankLabel <- tkcmd("label",paste(subfID,".blank",i,sep=""),text="    ",font=.limmaGUIglobals$limmaGUIfont2))
-      Try(currentLabel <- tkcmd("label",paste(subfID,".lab",i,sep=""),text=SpotTypes[i,"SpotType"],font=.limmaGUIglobals$limmaGUIfont2))
+      Try(blankLabel <- tcl("label",paste(subfID,".blank",i,sep=""),text="    ",font=.limmaGUIglobals$limmaGUIfont2))
+      Try(currentLabel <- tcl("label",paste(subfID,".lab",i,sep=""),text=SpotTypes[i,"SpotType"],font=.limmaGUIglobals$limmaGUIfont2))
       Try(tkgrid(blankLabel,SpotTypeCheckbox[[i]],currentLabel))
       Try(tkgrid.configure(SpotTypeCheckbox[[i]],sticky="e"))
       Try(tkgrid.configure(currentLabel,sticky="w"))
@@ -4721,8 +4759,8 @@ ChooseSpotType <- function(parameterizationTreeIndex)
   {
     Try(sw <- tkwidget(ttChooseSpotType,"ScrolledWindow",relief="sunken",borderwidth=2))
     Try(sf <- tkwidget(sw,"ScrollableFrame"))
-    Try(tkcmd(sw,"setwidget",sf))
-    Try(subfID <- tclvalue(tkcmd(sf,"getframe")))
+    Try(tcl(sw,"setwidget",sf))
+    Try(subfID <- tclvalue(tcl(sf,"getframe")))
   }
   else
   {
@@ -4732,7 +4770,7 @@ ChooseSpotType <- function(parameterizationTreeIndex)
 
   SpotTypeRadioButton <- list()
   for (i in (1:numSpotTypes))
-      Try(SpotTypeRadioButton[[i]] <- tkcmd("radiobutton",paste(subfID,".rb",i,sep=""),variable=WhichSpotTypeTcl,value=paste(i)))
+      Try(SpotTypeRadioButton[[i]] <- tcl("radiobutton",paste(subfID,".rb",i,sep=""),variable=WhichSpotTypeTcl,value=paste(i)))
 
   Try(lbl2 <- tklabel(ttChooseSpotType,text="Please Choose a Spot Type for Empirical Bayes Statistics Box Plots",font=.limmaGUIglobals$limmaGUIfont2))
   tkgrid(tklabel(ttChooseSpotType,text="    "),lbl2)
@@ -4741,8 +4779,8 @@ ChooseSpotType <- function(parameterizationTreeIndex)
 
   for (i in (1:numSpotTypes))
   {
-      Try(currentLabel <- tkcmd("label",paste(subfID,".lab1_",i,sep=""),text=SpotTypesIncludedNamesVec[i],font=.limmaGUIglobals$limmaGUIfont2))
-      Try(tkgrid(tkcmd("label",paste(subfID,".lab2_",i,sep=""),text="    "),SpotTypeRadioButton[[i]],currentLabel))
+      Try(currentLabel <- tcl("label",paste(subfID,".lab1_",i,sep=""),text=SpotTypesIncludedNamesVec[i],font=.limmaGUIglobals$limmaGUIfont2))
+      Try(tkgrid(tcl("label",paste(subfID,".lab2_",i,sep=""),text="    "),SpotTypeRadioButton[[i]],currentLabel))
       Try(tkgrid.configure(SpotTypeRadioButton[[i]],sticky="e"))
       Try(tkgrid.configure(currentLabel,sticky="w"))
   }
@@ -4918,7 +4956,8 @@ evalRcode <- function()
 
   SaveRSourceFile <- function()
   {
-    Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tkfile.tail(wfile)),initialdir=tclvalue(tkfile.dir(wfile)),
+    ###Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tkfile.tail(wfile)),initialdir=tclvalue(tkfile.dir(wfile)),
+    Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tcl(wfile,"tail")),initialdir=tclvalue(tcl(wfile,"dir")),
            filetypes="{{R Source Files} {.R}} {{All files} *}")))
     if (nchar(fileName)==0) return()
     Try(len <- nchar(fileName))
@@ -5507,7 +5546,7 @@ NewLimmaFile <- function()
       }
       Try(limmaDataSetNameText <- "Untitled")
   }
-#  Try(tkmessageBox(title="Working Directory",message="After clicking OK, please select a working directory.",type="ok"))
+  Try(tkmessageBox(title="Working Directory",message="After clicking OK, please select a working directory.",type="ok"))
   Try(WD <- SetWD())
   if (WD=="") return()
 

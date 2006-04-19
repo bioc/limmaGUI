@@ -26,7 +26,7 @@ GetGeneLabelsOptions <- function()
                            GeneLabelsMaxLength=as.integer(tclvalue(GeneLabelsMaxLengthTcl)),
                            IDorName=galColName))
   }
-  onCancel <- function() {Try(tkgrab.release(ttGeneLabelsOptions));Try(tkdestroy(ttGeneLabelsOptions));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- list()}        
+  onCancel <- function() {Try(tkgrab.release(ttGeneLabelsOptions));Try(tkdestroy(ttGeneLabelsOptions));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- list()}
 
   Try(OK.but <-tkbutton(ttGeneLabelsOptions,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(ttGeneLabelsOptions,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
@@ -47,7 +47,7 @@ GetGeneLabelsOptions <- function()
   Try(tkgrid(maximumLabel,row=5,column=1,columnspan=2))
   Try(tkgrid(entry.GeneLabelsMaxLength,row=5,column=3,sticky="w"))
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="    "),row=5,column=4))
-  
+
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),row=6))
 	Try(IDorNameTcl <- tclVar("Name"))
   Try(rb1 <- tkradiobutton(ttGeneLabelsOptions,text="Use Gene ID",variable=IDorNameTcl,value="ID",font=.limmaGUIglobals$limmaGUIfont2))
@@ -56,25 +56,25 @@ GetGeneLabelsOptions <- function()
 
 
   Try(OtherTcl <- tclVar("Other"))
-  Try(entry.Other <-tkentry(ttGeneLabelsOptions,width="20",textvariable=OtherTcl,font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(entry.Other <-tkentry(ttGeneLabelsOptions,width="20",textvariable=OtherTcl,font=.limmaGUIglobals$limmaGUIfont2))
 
 	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb1,row=7))
-	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb2,row=8))	
+	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb2,row=8))
 	Try(tkgrid.configure(rb1,sticky="w",columnspan=2))
-	Try(tkgrid.configure(rb2,sticky="w",columnspan=2))	
+	Try(tkgrid.configure(rb2,sticky="w",columnspan=2))
 
-	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb3,entry.Other,row=9))		
-	Try(tkgrid.configure(rb3,sticky="w",columnspan=1))		
-	Try(tkgrid.configure(entry.Other,sticky="w"))			
+	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb3,entry.Other,row=9))
+	Try(tkgrid.configure(rb3,sticky="w",columnspan=1))
+	Try(tkgrid.configure(entry.Other,sticky="w"))
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),row=10))
-  
+
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),OK.but,Cancel.but,row=11))
   Try(tkgrid.configure(OK.but,sticky="e"))
-  Try(tkgrid.configure(Cancel.but,sticky="w"))  
+  Try(tkgrid.configure(Cancel.but,sticky="w"))
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="    "),row=12))
 
   Try(tkfocus(ttGeneLabelsOptions))
-  
+
   Try(tkbind(ttGeneLabelsOptions, "<Destroy>", function() {Try(tkgrab.release(ttGeneLabelsOptions));Try(tkfocus(.limmaGUIglobals$ttMain));}))
   Try(tkwait.window(ttGeneLabelsOptions))
 
@@ -85,16 +85,16 @@ GetGeneLabelsOptions <- function()
 
 MAPlotAvg <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(gal <- get("gal",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))   
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
-  Try(ndups   <- get("ndups",  envir=limmaGUIenvironment))  
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
+  Try(ndups   <- get("ndups",  envir=limmaGUIenvironment))
   Try(spacing   <- get("spacing",envir=limmaGUIenvironment))       # Global version
 
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
@@ -103,13 +103,13 @@ MAPlotAvg <- function()
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   }
-  
+
   if (NumParameterizations==0)
   {
     Try(tkmessageBox(title="M A Plot (with fitted M values)",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
+    return()
+  }
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return()    )
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -133,7 +133,7 @@ MAPlotAvg <- function()
   Try(if (length(GeneLabelsOptions)==0) return())
   Try(numDEgenesLabeled   <- GeneLabelsOptions$HowManyDEGeneLabels)
   Try(GeneLabelsMaxLength <- GeneLabelsOptions$GeneLabelsMaxLength)
-  Try(IDorName <- GeneLabelsOptions$IDorName)  
+  Try(IDorName <- GeneLabelsOptions$IDorName)
 
 	Try(ShowColorCodedSpotTypes <- tclvalue(tkmessageBox(title="Color Coded Spot Types",message="Show color-coded spot types?",icon="question",type="yesnocancel")))
 	Try(if (ShowColorCodedSpotTypes=="cancel") return())
@@ -142,7 +142,7 @@ MAPlotAvg <- function()
 	Try(SelectedSpotTypes <- SpotTypes[SpotTypesForLinearModel,])
 	Try(showLegend <- TRUE)
 	Try(if (ShowColorCodedSpotTypes=="yes")
-	{    
+	{
 		Try(PlotSymbols <- SelectPlotSymbols(SelectedSpotTypes))
 		if (length(PlotSymbols)==0)
 				return()
@@ -152,7 +152,7 @@ MAPlotAvg <- function()
 		Try(SpotTypeStatus <- get("SpotTypeStatus", envir=limmaGUIenvironment))
 		Try(numSelectedSpotTypes <- nrow(SelectedSpotTypes))
 
-		Try(pchAllNumeric <- TRUE)       
+		Try(pchAllNumeric <- TRUE)
 		Try(pchAllCharacter <- TRUE)
 		for (i in (1:numSelectedSpotTypes))
 		{
@@ -160,7 +160,7 @@ MAPlotAvg <- function()
 						Try(PlotSymbols[[i]]$pch <- as.numeric(PlotSymbols[[i]]$pch)))
 				Try(pchAllNumeric <- (pchAllNumeric && PlotSymbols[[i]]$pchIsNumeric))
 				Try(pchAllCharacter <- (pchAllCharacter && (!PlotSymbols[[i]]$pchIsNumeric)))
-		}      
+		}
 
 		Try(cex <- c())
 		Try(colVec <- c())
@@ -172,17 +172,17 @@ MAPlotAvg <- function()
 		for (i in (1:numSelectedSpotTypes))
 		{
 				Try(cex[i] <- PlotSymbols[[i]]$cex)
-				Try(colVec[i] <- PlotSymbols[[i]]$col)  
+				Try(colVec[i] <- PlotSymbols[[i]]$col)
 				Try(if (pchAllNumeric || pchAllCharacter)
 						Try(pch[i] <- PlotSymbols[[i]]$pch)
 				else
 						Try(pch[[i]] <- PlotSymbols[[i]]$pch))
-		}      
-		Try(values <- SelectedSpotTypes$SpotType)  
+		}
+		Try(values <- SelectedSpotTypes$SpotType)
 	})
-  
+
   Try(plotTitle <- paste("Average MA Plot showing DE genes for",ParameterNamesVec[coef]))
-  
+
   Try(plotLabels <- GetPlotLabels(plotTitle,"mean(A)","M"))
   Try(if (length(plotLabels)==0) return())
   Try(plotTitle <- plotLabels$plotTitle)
@@ -192,10 +192,10 @@ MAPlotAvg <- function()
   Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
     Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
   else
-    Try(genelist <- get("genelist",limmaGUIenvironment)))   
+    Try(genelist <- get("genelist",limmaGUIenvironment)))
 
   Try(ContrastParameterizationIndex <- GetCoefReturnVal$coefIndexList[[GetCoefReturnVal$coefIndex]]$ContrastParameterizationIndex)
-  
+
   Try(Amatrix <- NULL)
   Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
     Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
@@ -208,22 +208,22 @@ MAPlotAvg <- function()
   else
   {
     Try(fit <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$fit)
-    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)    
+    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)
     Try(ParameterNamesVec <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$contrastsMatrixInList$contrasts))
     Try(NumParameters <- length(ParameterNamesVec))
-  }) 
-    
+  })
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-  Try(tkfocus(.limmaGUIglobals$ttMain))      
-  
+  Try(tkfocus(.limmaGUIglobals$ttMain))
+
   Try(if (is.null(Amatrix))
-  {                                                           
+  {
     Try(MA <- get("MA",envir=limmaGUIenvironment))
     Try(A <- MA$A)
     Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
     Try(numSpotTypes <- nrow(SpotTypes))
-    Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
-    Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+    Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+    Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
     Omit <- ""
     count <- 0
     Try(for (i in (1:numSpotTypes))
@@ -234,12 +234,12 @@ MAPlotAvg <- function()
       if (count>1)
         Omit <-paste(Omit,"|")
       else
-        Omit <- "("  
+        Omit <- "("
       Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-    })  
+    })
     Try(if (nchar(Omit)>0)
-    {     
-      Try(Omit <- paste(Omit,")"))  
+    {
+      Try(Omit <- paste(Omit,")"))
       Try(Omit <- eval(parse(text=Omit)))
       Try(A <- unwrapdups(A[!Omit,],ndups=ndups,spacing=spacing))
     }
@@ -251,27 +251,27 @@ MAPlotAvg <- function()
 
   Try(meanA <- c())
 
-  for (i in (1:nrow(A))) 
+  for (i in (1:nrow(A)))
   {
     Try(meanA[i] <- mean(A[i,]))
   }
 
   Try(A <- meanA)
 
-  Try(if (NumParameters>1) 
+  Try(if (NumParameters>1)
     Try(M <- fit$coefficients[,coef])
-  else 
+  else
     Try(M <- fit$coefficients))
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(if (numDEgenesLabeled>0)
   {
-    Try(if (NumParameters>1) 
+    Try(if (NumParameters>1)
       Try(ord <- order(eb$lods[,coef],decreasing=TRUE))
-    else 
+    else
       Try(ord <- order(eb$lods,decreasing=TRUE)))
     Try(topGenes <- ord[1:numDEgenesLabeled])
   })
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
    Try(cexScalar <- 0.3)
   else
     Try(cexScalar <- 0.1))
@@ -285,11 +285,11 @@ MAPlotAvg <- function()
     else
       Try(plot(A,M,pch=16,cex=cexScalar,xlab=xLabel,ylab=yLabel)))
     Try(title(plotTitle))
-    Try(if (numDEgenesLabeled>0)      
+    Try(if (numDEgenesLabeled>0)
       Try(text(A[topGenes],M[topGenes],labels=substr(as.character(genelist[topGenes,IDorName]),1,GeneLabelsMaxLength),cex=0.8,col="blue")))
-    Try(if (ShowColorCodedSpotTypes=="yes") 
+    Try(if (ShowColorCodedSpotTypes=="yes")
     {
-      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
+      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
 #      Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
 #     Try(PointTypes    <- SpotTypes$SpotType)
 #     Try(PointColors   <- SpotTypes$Color)
@@ -298,7 +298,7 @@ MAPlotAvg <- function()
 #     Try(for (i in (1:numPointTypes))
 #       if (tolower(PointTypes[i])=="gene"||PointTypes[i]=="cDNA")
 #       {
-#         Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+#         Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
 #           cex[i] <- 0.3
 #         else
 #           cex[i] <- 0.1)
@@ -310,33 +310,33 @@ MAPlotAvg <- function()
       Try(cex <- rep(cex,length=numPointTypes))
       Try(for (i in (1:numPointTypes))
       {
-        Try(if (SpotTypesForLinearModel[i]==FALSE)    
+        Try(if (SpotTypesForLinearModel[i]==FALSE)
           next())
         Try(sel <- SpotTypeStatus == SelectedSpotTypes$SpotType[i])
         Try(points(A[sel],M[sel],col=colVec[i],pch=pch[[i]],cex=cex[i]))
       })
       Try(if (showLegend)
         Try(legend(min(A, na.rm = TRUE), pch = 16,
-                max(M, na.rm = TRUE), legend = values, col = colVec, 
+                max(M, na.rm = TRUE), legend = values, col = colVec,
                 cex = 0.9)))
 
-    
-    })      
+
+    })
     Try(tempGraphPar <- par(opar))
   }
 
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
 
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-  Try(tkfocus(.limmaGUIglobals$ttMain))  
+  Try(tkfocus(.limmaGUIglobals$ttMain))
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
   {
-    Try(ttAvgMAPlot <- tktoplevel(.limmaGUIglobals$ttMain))    
+    Try(ttAvgMAPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttAvgMAPlot,plotTitle))
     Try(Require("tkrplot"))
     Try(img <-tkrplot(ttAvgMAPlot,plotAvgMA,hscale=LocalHScale,vscale=LocalVScale) )
@@ -356,16 +356,16 @@ MAPlotAvg <- function()
 
 MMPlot <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-  Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))  
-  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))  
-  Try(gal <- get("gal",envir=limmaGUIenvironment)) 
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))     
+  Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
+  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
+  Try(gal <- get("gal",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       tkmessageBox(title="M M Plot (with fitted M values)",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
@@ -377,8 +377,8 @@ MMPlot <- function()
   {
     Try(tkmessageBox(title="M M Plot (with fitted M values)",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
+    return()
+  }
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -390,12 +390,12 @@ MMPlot <- function()
       return()
   }
 
-  if (NumParameters<=1) 
+  if (NumParameters<=1)
   {
       tkmessageBox(title="M M Plot With Fitted M Values",message="There is only one parameter in the linear model fit.",type="ok",icon="error")
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
-  } 
+  }
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(ParameterNamesVec1  <- GetParameterNames(parameterizationTreeIndex))
@@ -412,7 +412,7 @@ MMPlot <- function()
   else
   {
     Try(fit1 <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex1]])$fit)
-    Try(eb1  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex1]])$eb)    
+    Try(eb1  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex1]])$eb)
     Try(ParameterNamesVec1 <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex1]])$contrastsMatrixInList$contrasts))
   }
 
@@ -428,16 +428,16 @@ MMPlot <- function()
   else
   {
     Try(fit2 <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex2]])$fit)
-    Try(eb2  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex2]])$eb)    
+    Try(eb2  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex2]])$eb)
     Try(ParameterNamesVec2 <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex2]])$contrastsMatrixInList$contrasts))
   }
 
   DEcutoff <- GetDEcutoff()
   if (length(DEcutoff)==0) return()
-  
+
   cutoffStatistic <- DEcutoff$cutoffStatistic
   cutoff          <- DEcutoff$cutoff
-        
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
   # Include option for labelling top 10 or however many DE genes.
@@ -446,14 +446,14 @@ MMPlot <- function()
       sel <- (abs(eb1$t[,coef1])>cutoff | abs(eb2$t[,coef2])>cutoff)
   if (cutoffStatistic=="B")
       sel <- (abs(eb1$lods[,coef1])>cutoff | abs(eb2$lods[,coef2])>cutoff)
-  
+
   Try(M1 <- fit1$coefficients[,coef1])
   Try(M2 <- fit2$coefficients[,coef2])
-  
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
    Try(cex <- 0.3)
   else
-    Try(cex <- 0.1))  
+    Try(cex <- 0.1))
   plotMM <- function()
   {
     Try(opar<-par(bg="white"))
@@ -465,12 +465,12 @@ MMPlot <- function()
   }
 
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
 
   Try(plotTitle <- paste("M M Plot for",ParameterNamesVec1[coef1],"vs",ParameterNamesVec2[coef2],"showing DE genes with",cutoffStatistic,">",cutoff))
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
-  Try(plotTitle <- plotTitleList$plotTitle)  
+  Try(plotTitle <- plotTitleList$plotTitle)
 
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
@@ -481,14 +481,14 @@ MMPlot <- function()
     Try(img <-tkrplot(ttMMPlot,plotMM,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttMMPlot,img=img))
     Try(SetupPlotMenus(tt=ttMMPlot,initialfile=paste(limmaDataSetNameText,"MMPlot",ParameterNamesVec1[coef1],"vs",ParameterNamesVec2[coef2],sep=""),
-                 plotFunction=plotMM,img=img)) 
+                 plotFunction=plotMM,img=img))
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
     Try(tkgrid(img))
     Try(tkfocus(ttMMPlot))
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotMM())
   })
     Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
@@ -498,11 +498,11 @@ MMPlot <- function()
 GetParametersAndOrContrasts <- function(parameterizationTreeIndex,whatFor="heat")
 {
   # Firstly, NumParameters in main fit:
-  Try(NumParameters     <- get("NumParameters",    envir=limmaGUIenvironment))        
+  Try(NumParameters     <- get("NumParameters",    envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))    
+  Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
   Try(ContrastsParameterizationNamesVec <- c() )
   Try(contrastNames <- list())
@@ -523,7 +523,7 @@ GetParametersAndOrContrasts <- function(parameterizationTreeIndex,whatFor="heat"
   Try(yscr <- tkscrollbar(ttGetParametersAndOrContrasts, repeatinterval=5,
                        command=function(...)tkyview(tl,...)))
   Try(xscr <- tkscrollbar(ttGetParametersAndOrContrasts, repeatinterval=5,
-                       command=function(...)tkxview(tl,...) ,orient="horizontal"))                       
+                       command=function(...)tkxview(tl,...) ,orient="horizontal"))
   Try(tl<-tklistbox(ttGetParametersAndOrContrasts,height=4,selectmode="multiple",xscrollcommand=function(...)tkset(xscr,...),yscrollcommand=function(...)tkset(yscr,...),background="white",font=.limmaGUIglobals$limmaGUIfont2)   )
   Try(if (whatFor=="heat")
     Try(lbl2<-tklabel(ttGetParametersAndOrContrasts,text=
@@ -540,13 +540,13 @@ GetParametersAndOrContrasts <- function(parameterizationTreeIndex,whatFor="heat"
   Try(tkgrid.configure(tl,rowspan=4,sticky="ew"))
   Try(tkgrid.configure(yscr,rowspan=4,sticky="wns"))
   Try(tkgrid(tklabel(ttGetParametersAndOrContrasts,text="    "),xscr,sticky="wne"))
-  
+
   Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
 
   coefIndexList <- list()
 
   if (NumParameters>0)
-    Try(for (i in (1:NumParameters))     
+    Try(for (i in (1:NumParameters))
     {
       Try(tkinsert(tl,"end",ParameterNamesVec[i]))
       Try(coefIndexList[[i]] <- list(coefOrContrastIndex=i,ContrastParameterizationIndex=0))
@@ -554,11 +554,11 @@ GetParametersAndOrContrasts <- function(parameterizationTreeIndex,whatFor="heat"
   Try(currentIndex <- NumParameters+1)
   Try(if (NumContrastParameterizations>0)
     Try(for (i in (1:NumContrastParameterizations))
-    {      
+    {
       Try(for (j in (1:length(contrastNames[[i]])))
       {
         Try(tkinsert(tl,"end",paste(contrastNames[[i]][j]," [",ContrastsParameterizationNamesVec[i],"]",sep="")))
-        Try(coefIndexList[[currentIndex]] <- list(coefOrContrastIndex=j,ContrastParameterizationIndex=i))        
+        Try(coefIndexList[[currentIndex]] <- list(coefOrContrastIndex=j,ContrastParameterizationIndex=i))
         Try(currentIndex <- currentIndex + 1)
       })
      }))
@@ -569,7 +569,7 @@ GetParametersAndOrContrasts <- function(parameterizationTreeIndex,whatFor="heat"
   Try(ReturnVal <- list())
   onOK <- function()
   {
-  
+
       Try(indicesSelected <- as.numeric(strsplit(tclvalue(tkcurselection(tl))," ")[[1]])+1)
       Try(numIndicesSelected <- length(indicesSelected))
       Try(ReturnVal <<- list())
@@ -590,7 +590,7 @@ GetParametersAndOrContrasts <- function(parameterizationTreeIndex,whatFor="heat"
   Try(tkgrid(tklabel(tkframeOKCancel,text="    "),columnspan=2))
   Try(tkgrid(OK.but,Cancel.but))
   Try(tkgrid.configure(OK.but,sticky="e"))
-  Try(tkgrid.configure(Cancel.but,sticky="w"))  
+  Try(tkgrid.configure(Cancel.but,sticky="w"))
   Try(tkgrid(tklabel(tkframeOKCancel,text="    "),columnspan=2))
   Try(tkgrid(tklabel(ttGetParametersAndOrContrasts,text="    "),tkframeOKCancel))
   Try(tkfocus(ttGetParametersAndOrContrasts))
@@ -606,7 +606,7 @@ HeatDiagramDialog <- function(parameterName)
   Try(tkwm.title(ttHeatDiagramDialog,"Heat Diagram Options"))
   Try(tkwm.deiconify(ttHeatDiagramDialog))
   Try(tkgrab.set(ttHeatDiagramDialog))
-  Try(tkfocus(ttHeatDiagramDialog))  
+  Try(tkfocus(ttHeatDiagramDialog))
   Try(tkframe1 <- tkframe(ttHeatDiagramDialog))
   Try(tkgrid(tklabel(tkframe1,text="    ")))
   Try(tkgrid(tklabel(tkframe1,text="    "),
@@ -616,17 +616,17 @@ HeatDiagramDialog <- function(parameterName)
              tklabel(tkframe1,text=paste("the heat diagram, relative to parameter ",parameterName,".",sep=""),font=.limmaGUIglobals$limmaGUIfont2),
              tklabel(tkframe1,text="    ")))
   Try(tkgrid(tklabel(tkframe1,text="    ")))
-  Try(primaryCutoffTcl <- tclVar("4"))  
+  Try(primaryCutoffTcl <- tclVar("4"))
   Try(otherCutoffTcl   <- tclVar("3"))
   Try(entry.primaryCutoff <- tkentry(tkframe1,textvariable=primaryCutoffTcl,bg="white",width=10,font=.limmaGUIglobals$limmaGUIfont2))
-  Try(entry.otherCutoff   <- tkentry(tkframe1,textvariable=otherCutoffTcl,  bg="white",width=10,font=.limmaGUIglobals$limmaGUIfont2))  
+  Try(entry.otherCutoff   <- tkentry(tkframe1,textvariable=otherCutoffTcl,  bg="white",width=10,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(tkframe1,text="    "),tklabel(tkframe1,text=paste("D.E. cutoff for parameter ",
     parameterName,":   ",sep=""),font=.limmaGUIglobals$limmaGUIfont2),entry.primaryCutoff,tklabel(tkframe1,text="    ")))
   Try(tkgrid(tklabel(tkframe1,text="    "),tklabel(tkframe1,text=
     "D.E. cutoff for other parameters:   ",font=.limmaGUIglobals$limmaGUIfont2),entry.otherCutoff,tklabel(tkframe1,text="    ")))
   Try(tkgrid.configure(entry.primaryCutoff,sticky="w"))
-  Try(tkgrid.configure(entry.otherCutoff,sticky="w"))  
-  Try(tkgrid(tklabel(tkframe1,text="    ")))    
+  Try(tkgrid.configure(entry.otherCutoff,sticky="w"))
+  Try(tkgrid(tklabel(tkframe1,text="    ")))
   Try(tkgrid(tkframe1))
   Try(tkframeOKCancel <- tkframe(ttHeatDiagramDialog))
   ReturnVal <- list()
@@ -648,24 +648,24 @@ HeatDiagramDialog <- function(parameterName)
   Try(tkfocus(entry.primaryCutoff))
   Try(tkbind(ttHeatDiagramDialog, "<Destroy>", function() {Try(tkgrab.release(ttHeatDiagramDialog));Try(tkfocus(.limmaGUIglobals$ttMain))}))
   Try(tkwait.window(ttHeatDiagramDialog))
-  
+
   return (ReturnVal)
-  
+
 }
 
 
 HeatDiagramPlot <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-  Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))  
-  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
+  Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
+  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
- 
+
   Try(if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       tkmessageBox(title="Heat Diagram",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
@@ -677,15 +677,15 @@ HeatDiagramPlot <- function()
   {
     Try(tkmessageBox(title="Heat Diagram",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  })  
+    return()
+  })
 
   Try(if (NumParameters<=1)
   {
     Try(tkmessageBox(title="Heat Diagram",message="To plot a heat diagram, you need to have more than one parameter, i.e. more than two RNA types.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  })  
+    return()
+  })
 
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
@@ -699,7 +699,7 @@ HeatDiagramPlot <- function()
   }
 
   GetCoefReturnVal <- GetCoef(parameterizationTreeIndex,"heat")
-  if (GetCoefReturnVal$coefIndex==0) return()  
+  if (GetCoefReturnVal$coefIndex==0) return()
   Try(coef <- (GetCoefReturnVal$coefIndexList[[GetCoefReturnVal$coefIndex]])$coefOrContrastIndex)
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
@@ -712,18 +712,18 @@ HeatDiagramPlot <- function()
   else
   {
     Try(fit <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$fit)
-    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)    
+    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)
     Try(ParameterNamesVec <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$contrastsMatrixInList$contrasts))
-    Try(NumParameters <- length(ParameterNamesVec))    
+    Try(NumParameters <- length(ParameterNamesVec))
   }
 
-  Try(fitHD <- list())  
+  Try(fitHD <- list())
   Try(fitHD$coefficients <- as.matrix(as.matrix(fit$coefficients)[,coef]))
   Try(colnames(fitHD$coefficients) <- colnames(fit$coefficients)[coef])
   Try(ebHD <- list())
   Try(ebHD$t  <- as.matrix(as.matrix(eb$t)[,coef]))
-  Try(colnames(ebHD$t) <- colnames(eb$t)[coef])  
-  
+  Try(colnames(ebHD$t) <- colnames(eb$t)[coef])
+
   Try(ParametersAndOrContrasts <- GetParametersAndOrContrasts(parameterizationTreeIndex,whatFor="heat"))
   Try(NumParametersSelected <- length(ParametersAndOrContrasts))
   Try(if (NumParametersSelected==0)
@@ -741,16 +741,16 @@ HeatDiagramPlot <- function()
     else
     {
       Try(fit <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$fit)
-      Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)    
+      Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)
     })
-    
+
     if (colnames(fit$coefficients)[coefList[[i]]]!=colnames(fitHD$coefficients)[1])
     {
       Try(fitHD$coefficients <- cbind(fitHD$coefficients,as.matrix(as.matrix(fit$coefficients)[,coefList[[i]]])))
       Try(ncolfitcoefs <- ncol(fitHD$coefficients))
-      Try(colnames(fitHD$coefficients)[ncolfitcoefs] <- colnames(fit$coefficients)[coefList[[i]]])    
-      Try(ebHD$t             <- cbind(ebHD$t,  as.matrix(as.matrix(eb$t)[,coefList[[i]]])))   
-      Try(colnames(ebHD$t)[ncolfitcoefs] <- colnames(eb$t)[coefList[[i]]])      
+      Try(colnames(fitHD$coefficients)[ncolfitcoefs] <- colnames(fit$coefficients)[coefList[[i]]])
+      Try(ebHD$t             <- cbind(ebHD$t,  as.matrix(as.matrix(eb$t)[,coefList[[i]]])))
+      Try(colnames(ebHD$t)[ncolfitcoefs] <- colnames(eb$t)[coefList[[i]]])
     }
   }
 
@@ -759,41 +759,41 @@ HeatDiagramPlot <- function()
   Try(if (length(HeatDiagramOptions)==0)
     return())
   Try(primaryCutoff <- HeatDiagramOptions$primaryCutoff)
-  Try(otherCutoff   <- HeatDiagramOptions$otherCutoff)  
- 
+  Try(otherCutoff   <- HeatDiagramOptions$otherCutoff)
+
   Try(gal      <- get("gal",envir=limmaGUIenvironment))
   Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
     Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
   else
-    Try(genelist <- get("genelist",limmaGUIenvironment)))   
+    Try(genelist <- get("genelist",limmaGUIenvironment)))
 
-  plotHD <- function() 
+  plotHD <- function()
   {
     Try(opar<-par(bg="white"))
     Try(heatdiagram(abs(ebHD$t),fitHD$coefficients,primary=1,
       critical.primary=primaryCutoff,critical.other=otherCutoff,
       names=genelist[,"Name"]))
     Try(title(plotTitle))
-    Try(TempGraphPar<-par(opar))    
+    Try(TempGraphPar<-par(opar))
   }
-  
+
   Try(LocalHScale <- .limmaGUIglobals$Myhscale * 1.5)
-  Try(LocalVScale <- .limmaGUIglobals$Myvscale * 0.5)   
-   
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale * 0.5)
+
   Try(plotTitle <- paste("Heat diagram relative to parameter",ParameterNamesVec[coef]))
 
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
-  Try(plotTitle <- plotTitleList$plotTitle)  
+  Try(plotTitle <- plotTitleList$plotTitle)
 
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
   {
-    Try(ttHeatDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
+    Try(ttHeatDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttHeatDiagramPlot,plotTitle))
     Try(Require("tkrplot"))
     Try(img <-tkrplot(ttHeatDiagramPlot,plotHD,hscale=LocalHScale,vscale=LocalVScale))
@@ -808,15 +808,15 @@ HeatDiagramPlot <- function()
     Try(plot.new())
     Try(plotHD())
   })
-    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 }
 
 ImageArrayPlotDialog <- function(slidenum)
 {
-  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))  
+  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(NormalizedMADataWasImported <- get("NormalizedMADataWasImported",envir=limmaGUIenvironment))
-  
+
   Try(if (NormalizedMADataWasImported==FALSE)
     Try(RCodeString <- "Mraw")
   else
@@ -835,7 +835,7 @@ ImageArrayPlotDialog <- function(slidenum)
   Try(if (NormalizedMADataWasImported==FALSE)
     tkgrid(tklabel(tkframe1,text="You may use R, Rb, G, Gb, Mraw, Araw, and any standard R functions.",font=.limmaGUIglobals$limmaGUIfont2))
   else
-    tkgrid(tklabel(tkframe1,text="You may use M, A, and any standard R functions.",font=.limmaGUIglobals$limmaGUIfont2)))  
+    tkgrid(tklabel(tkframe1,text="You may use M, A, and any standard R functions.",font=.limmaGUIglobals$limmaGUIfont2)))
   tkgrid(tklabel(tkframe1,text="    "))
   tkgrid(tklabel(tkframe2,text="R expression for image array plot",font=.limmaGUIglobals$limmaGUIfont2),columnspan=2)
   Try(Rexpression<- tclVar(RCodeString))
@@ -848,7 +848,7 @@ ImageArrayPlotDialog <- function(slidenum)
   onOK <- function()
   {
     # OK
-  
+
     Try(RexpressionVal <- tclvalue(Rexpression))
     Try(tkgrab.release(ttImageArrayPlotDialog))
     Try(tkdestroy(ttImageArrayPlotDialog))
@@ -856,7 +856,7 @@ ImageArrayPlotDialog <- function(slidenum)
     Try(ReturnVal <<- RexpressionVal)
   }
   Try(tkbind(entry.Rexpression, "<Return>",onOK))
-  onCancel <- function() {Try(tkgrab.release(ttImageArrayPlotDialog));Try(tkdestroy(ttImageArrayPlotDialog));Try(tkfocus(.limmaGUIglobals$ttMain));Try(ReturnVal <<- "")}        
+  onCancel <- function() {Try(tkgrab.release(ttImageArrayPlotDialog));Try(tkdestroy(ttImageArrayPlotDialog));Try(tkfocus(.limmaGUIglobals$ttMain));Try(ReturnVal <<- "")}
   OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(OK.but,Cancel.but)
@@ -927,12 +927,12 @@ imageplotlimmaGUI <- function(z, layout=list(ngrid.r=12,ngrid.c=4,nspot.r=26,nsp
 
 ImageArrayPlot <- function()
 {
-  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(ParameterizationList <- get("ParameterizationList", envir=limmaGUIenvironment))   
+  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(ParameterizationList <- get("ParameterizationList", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Image Array Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
@@ -945,12 +945,12 @@ ImageArrayPlot <- function()
   if (length(maLayout)==0) SetLayoutParamReturnVal <-SetLayoutParameters()
   if (SetLayoutParamReturnVal==0)
     return()
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))    
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
   Try(slidenum <- GetSlideNum())
   if (slidenum==0)
       return()
-  Try(SlideName <- SlideNamesVec[slidenum])      
-  Try(MA    <- get("MA",envir=limmaGUIenvironment))          
+  Try(SlideName <- SlideNamesVec[slidenum])
+  Try(MA    <- get("MA",envir=limmaGUIenvironment))
 
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
   Try(if (NormalizedMADataWasImported==FALSE)
@@ -958,17 +958,17 @@ ImageArrayPlot <- function()
     Try(RG    <- get("RG",envir=limmaGUIenvironment))
 		if (MA.Available$Raw)
 			Try(MAraw <- get("MAraw",envir=limmaGUIenvironment))
-		else          
+		else
 		{
 			Try (MAraw <- MA.RG(RG))
-			Try(assign("MAraw",MAraw,limmaGUIenvironment))        
+			Try(assign("MAraw",MAraw,limmaGUIenvironment))
 			Try(MA.Available$Raw <- TRUE)
 			Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 			Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-			Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))            
-		}              
+			Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+		}
   })
-  
+
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
 
   if ((nrow(MA$M)>1))
@@ -985,14 +985,14 @@ ImageArrayPlot <- function()
 		Try(Rb <- RG$Rb[,slidenum])
 		Try(G <- RG$G[,slidenum])
 		Try(Gb <- RG$Gb[,slidenum])
-  })  
-  
+  })
+
   Try(RexpressionVal <- ImageArrayPlotDialog(slidenum))
   Try(if (nchar(RexpressionVal)==0) return())
 
   Try(ExpressionContainsRed   <- length(grep("R",RexpressionVal))||length(grep("Rb",RexpressionVal)))
   Try(ExpressionContainsGreen <- length(grep("G",RexpressionVal))||length(grep("Gb",RexpressionVal)))
-  
+
   Try(ExpressionContainsRedOnly   <- (ExpressionContainsRed && !ExpressionContainsGreen))
   Try(ExpressionContainsGreenOnly <- (ExpressionContainsGreen && !ExpressionContainsRed))
 
@@ -1006,28 +1006,28 @@ ImageArrayPlot <- function()
   else
     Try(expr <- paste("imageplotlimmaGUI(",RexpressionVal,",layout=maLayout,mar=0)",sep="")))
   Try(exprResult <- try(parse(text=expr)))
-  if (inherits(exprResult, "try-error")) 
+  if (inherits(exprResult, "try-error"))
   {
     tkmessageBox(message="Syntax error",icon="error")
     return()
   }
   Try(parPlotSize <- c())
   Try(usrCoords <- c())
-  plotImageArray <- function() 
+  plotImageArray <- function()
   {
     Try(eval(exprResult))  # Evaluate in default environment, i.e. parent.frame()
     Try(parPlotSize <<- par("plt"))
     Try(usrCoords   <<- par("usr"))
   }
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-  Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale)
 
   Try(plotTitle <- paste("Image array plot of",RexpressionVal,"for Slide",SlideName,sep=" "))
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
-  
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+
   Try(plotTitle <- plotTitleList$plotTitle)
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
@@ -1048,31 +1048,31 @@ ImageArrayPlot <- function()
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotImageArray())
   })
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-    
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+
   Try(if (.limmaGUIglobals$graphicsDevice!="tkrplot")
     return())
-  
+
   Try(tkconfigure(img,cursor="hand2"))
   Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
   Try(ngrid.r <- maLayout$ngrid.r)
-  Try(ngrid.c <- maLayout$ngrid.c)  
-  Try(nspot.r <- maLayout$nspot.r)    
-  Try(nspot.c <- maLayout$nspot.c)      
-  Try(gal <- get("gal",envir=limmaGUIenvironment))    
+  Try(ngrid.c <- maLayout$ngrid.c)
+  Try(nspot.r <- maLayout$nspot.r)
+  Try(nspot.c <- maLayout$nspot.c)
+  Try(gal <- get("gal",envir=limmaGUIenvironment))
   OnLeftClick <- function(x,y)
   {
     Try(width  <- as.numeric(tclvalue(tkwinfo("reqwidth",img))))
     Try(height <- as.numeric(tclvalue(tkwinfo("reqheight",img))))
-    
+
     Try(xMin <- parPlotSize[1] * width)
     Try(xMax <- parPlotSize[2] * width)
     Try(yMin <- parPlotSize[3] * height)
     Try(yMax <- parPlotSize[4] * height)
-    
+
     Try(rangeX <- usrCoords[2] - usrCoords[1])
     Try(rangeY <- usrCoords[4] - usrCoords[3])
 
@@ -1089,22 +1089,22 @@ ImageArrayPlot <- function()
 
 #   Try(xPlotCoord <- usrCoords[1]+(xClick-xMin)*rangeX/(xMax-xMin))
 #   Try(yPlotCoord <- usrCoords[3]+(yClick-yMin)*rangeY/(yMax-yMin))
-       
+
 #    Try(tkmessageBox(message=paste("xPlotCoord: ",xPlotCoord,", yPlotCoord: ",yPlotCoord,sep="")))
-       
-    # Assume image plot is plotted on its side (the default)       
+
+    # Assume image plot is plotted on its side (the default)
     Try(blockRow    <- as.integer(xPlotCoord*ngrid.r)+1)
-    Try(blockColumn <- as.integer(yPlotCoord*ngrid.c)+1)        
+    Try(blockColumn <- as.integer(yPlotCoord*ngrid.c)+1)
     Try(Block <- (blockRow-1) * maLayout$ngrid.c + blockColumn)
-    
+
     # m mod n
     mod <- function(m,n) m-as.integer(m/n)*n
     Try(xCoordPixels <- as.integer(xPlotCoord*nspot.r*ngrid.r))
     Try(yCoordPixels <- as.integer(yPlotCoord*nspot.c*ngrid.c))
-        
+
     Try(Column <- mod(yCoordPixels,nspot.c)+1)
     Try(Row    <- mod(xCoordPixels,nspot.r)+1)
-    
+
     Try(if ("Block" %in% colnames(gal))
       Try(gene <- gal[gal[,"Block"]==Block&gal[,"Row"]==Row&gal[,"Column"]==Column,])
     else if (("Meta Row" %in% colnames(gal)) && ("Meta Column" %in% colnames(gal)))
@@ -1117,7 +1117,7 @@ ImageArrayPlot <- function()
            "column headings must be (Block,Row,Column) or (Meta Row,Meta Column,Row,Column)"),icon="error"))
        return()
     })
-    
+
     Try(msg <- "")
     Try(ncolGAL <- ncol(gal))
     Try(for (i in (1:ncolGAL))
@@ -1127,22 +1127,22 @@ ImageArrayPlot <- function()
     })
     Try(tkmessageBox(title="Spot Information",message=msg,icon="info"))
   }
-  Try(tkbind(img, "<Button-1>",OnLeftClick))    
-  
+  Try(tkbind(img, "<Button-1>",OnLeftClick))
+
 }
 
 
 LogOddsPlot <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
- 
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Log Odds Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
@@ -1154,8 +1154,8 @@ LogOddsPlot <- function()
   {
     Try(tkmessageBox(title="Log Odds Plot",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
+    return()
+  }
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return()    )
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -1172,7 +1172,7 @@ LogOddsPlot <- function()
   Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
     Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
   else
-    Try(genelist <- get("genelist",limmaGUIenvironment)))   
+    Try(genelist <- get("genelist",limmaGUIenvironment)))
   Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
   GetCoefReturnVal <- GetCoef(parameterizationTreeIndex)
   if (GetCoefReturnVal$coefIndex==0) return()
@@ -1187,9 +1187,9 @@ LogOddsPlot <- function()
   else
   {
     Try(fit <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$fit)
-    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)    
+    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)
     Try(ParameterNamesVec <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$contrastsMatrixInList$contrasts))
-    Try(NumParameters <- length(ParameterNamesVec))    
+    Try(NumParameters <- length(ParameterNamesVec))
   }
 
   # Have to ask the user how many of the top DE genes they want labeled.
@@ -1207,13 +1207,13 @@ LogOddsPlot <- function()
     Try(if (NumParameters>1)
         Try(ord <- order(eb$lods[,coef],decreasing=TRUE))
     else
-        Try(ord <- order(eb$lods,decreasing=TRUE)))    
+        Try(ord <- order(eb$lods,decreasing=TRUE)))
     Try(topGenes <- ord[1:numDEgenesLabeled])
   })
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
     Try(cex <- 0.3)
   else
-    Try(cex <- 0.1))  
+    Try(cex <- 0.1))
   plotLogOdds <- function()
   {
     Try(opar<-par(bg="white"))
@@ -1234,40 +1234,40 @@ LogOddsPlot <- function()
     Try(tempGraphPar <- par(opar))
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-   
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
   Try(plotTitle <- paste("Log Odds Plot for",ParameterNamesVec[coef]))
   Try(plotLabels <- GetPlotLabels(plotTitle,"Log Fold Change","Log Odds"))
   Try(if (length(plotLabels)==0) return())
   Try(plotTitle <- plotLabels$plotTitle)
   Try(xLabel    <- plotLabels$xLabel)
   Try(yLabel    <- plotLabels$yLabel)
-  
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
   Try(plotTitle <- plotTitleList$plotTitle)
 
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
-  Try(tkfocus(.limmaGUIglobals$ttMain))  
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+  Try(tkfocus(.limmaGUIglobals$ttMain))
 
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
   {
-    Try(ttLogOddsPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
+    Try(ttLogOddsPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttLogOddsPlot,plotTitle))
     Try(Require("tkrplot"))
     Try(img <-tkrplot(ttLogOddsPlot,plotLogOdds,hscale=LocalHScale,vscale=LocalVScale))
     Try(SetupPlotKeyBindings(tt=ttLogOddsPlot,img=img))
     Try(SetupPlotMenus(tt=ttLogOddsPlot,initialfile=paste(limmaDataSetNameText,"LogOddsPlot",ParameterNamesVec[coef],sep=""),
-                 plotFunction=plotLogOdds,img=img)) 
+                 plotFunction=plotLogOdds,img=img))
     Try(tkgrid(img))
     Try(tkfocus(ttLogOddsPlot))
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotLogOdds())
   })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
@@ -1280,9 +1280,9 @@ DupCorBoxPlot <- function()
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))    
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
 
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
@@ -1296,15 +1296,15 @@ DupCorBoxPlot <- function()
   {
     Try(tkmessageBox(title="Duplicate Correlation Plot",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }     
+    return()
+  }
 
   Try(if (ndups==1)
   {
     Try(tkmessageBox(title="Duplicate Correlation Plot",message="There are no duplicates.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  })    
+    return()
+  })
 
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return()  )
@@ -1318,22 +1318,22 @@ DupCorBoxPlot <- function()
   }
 
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-  Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))    
+  Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   Try(dupcor <- (ParameterizationList[[ParameterizationNameNode]])$dupcor)
 
   if ((is.numeric(dupcor)) && (dupcor==0))
   {
       Try(tkmessageBox(title="Duplicate Correlation Box Plot",message="There are no duplicates.",type="ok",icon="error"))
       Try(tkfocus(.limmaGUIglobals$ttMain))
-      return()  
+      return()
   }
-  
+
   Try(if (!("cor.genes" %in% names(dupcor))&&!("all.correlations" %in% names(dupcor)))
   {
     Try(tkmessageBox(title="Duplicate Correlation Box Plot",message="Only available if limmaGUI calculates duplicate correlation (rather than the user)",type="ok",icon="error"))
-    return()  
+    return()
   })
-  
+
   plotDupCor <- function()
   {
     Try(opar<-par(bg="white"))
@@ -1342,19 +1342,19 @@ DupCorBoxPlot <- function()
     else
       Try(boxplot(dupcor$all.correlations)))
     Try(title(plotTitle))
-    Try(opar<-par(bg="white")) 
+    Try(opar<-par(bg="white"))
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-   
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
   Try(plotTitle <- paste("Duplicate Correlation Box Plot"))
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
-  Try(plotTitle <- plotTitleList$plotTitle)    
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
-  Try(tkfocus(.limmaGUIglobals$ttMain))  
+  Try(plotTitle <- plotTitleList$plotTitle)
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+  Try(tkfocus(.limmaGUIglobals$ttMain))
 
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
@@ -1365,44 +1365,44 @@ DupCorBoxPlot <- function()
     Try(img <-tkrplot(ttDupCorBoxplot,plotDupCor,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttDupCorBoxplot,img=img))
     Try(SetupPlotMenus(tt=ttDupCorBoxplot,initialfile=paste(limmaDataSetNameText,"DupCorBoxPlot",sep=""),
-                 plotFunction=plotDupCor,img=img)) 
+                 plotFunction=plotDupCor,img=img))
     Try(tkgrid(img))
-    Try(tkfocus(ttDupCorBoxplot))  
+    Try(tkfocus(ttDupCorBoxplot))
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotDupCor())
   })
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-    
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+
 }
 
 
 QQTplot <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))        
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Quantile-Quantile t-Statistic Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
-      Try(tkfocus(.limmaGUIglobals$ttMain))      
+      Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   }
   if (NumParameterizations==0)
   {
     Try(tkmessageBox(title="Quantile-Quantile t-Statistic Plot",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
+    return()
+  }
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -1414,7 +1414,7 @@ QQTplot <- function()
       return()
   }
 
-  Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))  
+  Try(ParameterNamesVec  <- GetParameterNames(parameterizationTreeIndex))
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
   GetCoefReturnVal <- GetCoef(parameterizationTreeIndex)
   if (GetCoefReturnVal$coefIndex==0) return()
@@ -1429,31 +1429,31 @@ QQTplot <- function()
   else
   {
     Try(fit <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$fit)
-    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)    
+    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)
     Try(ParameterNamesVec <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$contrastsMatrixInList$contrasts))
-    Try(NumParameters <- length(ParameterNamesVec))    
+    Try(NumParameters <- length(ParameterNamesVec))
   }
-  
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
     Try(cex <- 0.3)
   else
-    Try(cex <- 0.1))    
-  plotQQT <- function() 
+    Try(cex <- 0.1))
+  plotQQT <- function()
   {
     Try(opar<-par(bg="white"))
-    if (NumParameters>1) 
+    if (NumParameters>1)
       qqt(eb$t[,coef],df=fit$df+eb$df,pch=16,cex=cex,main=plotTitle)
-    else 
+    else
       qqt(eb$t,df=fit$df+eb$df,pch=16,cex=cex,main=plotTitle)
-    abline(0,1) 
+    abline(0,1)
     Try(tempGraphPar <- par(opar))
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-   
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
   Try(plotTitle <- paste("Student's t Quantile-Quantile Plot for",ParameterNamesVec[coef]))
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
   Try(tkfocus(.limmaGUIglobals$ttMain))
   Try(plotTitle <- plotTitleList$plotTitle)
@@ -1475,22 +1475,22 @@ QQTplot <- function()
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotQQT())
   })
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 
 }
 
 
 MBoxPlot <- function()
 {
-  Try(SlideNamesVec   <- get("SlideNamesVec",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded    <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
+  Try(SlideNamesVec   <- get("SlideNamesVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded    <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
   Try(WeightingType   <- get("WeightingType",envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       tkmessageBox(title="M Box Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
@@ -1499,19 +1499,19 @@ MBoxPlot <- function()
   }
 
   SetLayoutParamReturnVal<-1
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))    
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
   if (length(maLayout)==0) SetLayoutParamReturnVal <-SetLayoutParameters()
   if (SetLayoutParamReturnVal==0) return()
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))    
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
   ttMBoxPlot<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttMBoxPlot)
   tkgrab.set(ttMBoxPlot)
-  tkfocus(ttMBoxPlot)  
+  tkfocus(ttMBoxPlot)
   tkwm.title(ttMBoxPlot,"M Box Plot Options")
   plotby <- tclVar("Slide")
   tkframe1 <- tkframe(ttMBoxPlot,borderwidth=2)
   tkframe3 <- tkframe(tkframe1,relief="groove",borderwidth=2)
-  tkframe4<-tkframe(tkframe1,borderwidth=2)  
+  tkframe4<-tkframe(tkframe1,borderwidth=2)
 
   Abort <- 0
   plotbyval <- ""
@@ -1535,14 +1535,14 @@ MBoxPlot <- function()
   tkgrid(PrintTip.but)
   tkgrid(Slide.but)
   tkgrid(tkframe3,sticky="w")
-  tkgrid(tkframe1)  
+  tkgrid(tkframe1)
   tkgrid(tklabel(tkframe4,text="    "),sticky="ew")
   tkgrid(OK.but,Cancel.but)
   tkgrid(tkframe4,sticky="ew")
   tkfocus(ttMBoxPlot)
   tkbind(ttMBoxPlot, "<Destroy>", function() {Try(tkgrab.release(ttMBoxPlot));Try(tkfocus(.limmaGUIglobals$ttMain));})
   tkwait.window(ttMBoxPlot)
-  
+
   if (Abort==1) return()
     slidenum <- 0
 
@@ -1581,7 +1581,7 @@ MBoxPlot <- function()
 		{
 				if (MA.Available$WithinArrays)
 					Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
-				else          
+				else
 				{
 					if (WeightingType == "none")
 						Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
@@ -1589,10 +1589,10 @@ MBoxPlot <- function()
 						Try(MA <- normalizeWithinArrays(RG,weights=RG$weights,maLayout,method=WithinArrayNormalizationMethod))
 					Try(assign("MAwithinArrays",MA,limmaGUIenvironment))
 					Try(MA.Available$WithinArrays <- TRUE)
-					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))        
+					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
 					Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))                
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
 
 				}
 		}
@@ -1600,18 +1600,18 @@ MBoxPlot <- function()
 		{
 				if (MA.Available$Raw)
 					Try(MA <- get("MAraw",envir=limmaGUIenvironment))
-				else          
+				else
 				{
 					Try (MA <- MA.RG(RG))
 					Try(assign("MAraw",MA,limmaGUIenvironment))
 					Try(MA.Available$Raw <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))        
-				}        
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+				}
 		})
 
-		Try(if (WhetherToNormalizeBetweenArrays=="yes") 
+		Try(if (WhetherToNormalizeBetweenArrays=="yes")
 		{
 			if (WhetherToNormalizeWithinArrays=="yes")
 			{
@@ -1639,14 +1639,14 @@ MBoxPlot <- function()
 					Try(MA.Available$BetweenArrays <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))                
-				}        
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+				}
 			}
 		})
   }
   else
     Try(MA <- get("MAimported",envir=limmaGUIenvironment)))
-  
+
   plot.scale.box0 <- function()
   {
       Try(Require("sma"))
@@ -1656,12 +1656,12 @@ MBoxPlot <- function()
            Try(plot.scale.box(MA$M[,slidenum],maLayout,col=rainbow(maLayout$ngrid.r*maLayout$ngrid.c),xlab="Print Tip Group",ylab="M"))
            Try(title(plotTitle))
            Try(tempGraphPar <- par(opar))
-      }   
-      else 
-      {   
+      }
+      else
+      {
            Try(opar<-par(bg="white"))
            # Maybe allow las=2 as an option, i.e. vertical text labels for x axis.
-           
+
            Try(if (min(nchar(gsub("[^0-9]","",SlideNamesVec))==nchar(SlideNamesVec))==TRUE)
              SlideNamesVec <- paste("Slide",SlideNamesVec))
            Try(plot.scale.box(MA$M,x.names=SlideNamesVec,xlab="Slide",ylab="M"))
@@ -1672,44 +1672,44 @@ MBoxPlot <- function()
   }
 
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-   
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
   if (plotbyval=="PrintTip")
   {
     if (NormalizedMADataWasImported==FALSE)
     {
 			if (WhetherToNormalizeWithinArrays=="yes")
 			{
-					if (WhetherToNormalizeBetweenArrays=="yes")         
+					if (WhetherToNormalizeBetweenArrays=="yes")
 						Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with normalization within and between arrays",sep=""))
 					else
 						Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with normalization within arrays only",sep=""))
 			}
 			else
 			{
-					if (WhetherToNormalizeBetweenArrays=="yes")         
+					if (WhetherToNormalizeBetweenArrays=="yes")
 						 Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with normalization between arrays only",sep=""))
 					else
 						 Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with no normalization",sep=""))
 			}
 		}
 		else
-			Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum],sep=""))		
-  }  
-  else 
+			Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum],sep=""))
+  }
+  else
   {
     if (NormalizedMADataWasImported==FALSE)
     {
 			if (WhetherToNormalizeWithinArrays=="yes")
 			{
-					if (WhetherToNormalizeBetweenArrays=="yes")         
+					if (WhetherToNormalizeBetweenArrays=="yes")
 						Try(plotTitle <- paste("M Box Plot for all slides with normalization within and between arrays",sep=""))
 					else
 						Try(plotTitle <- paste("M Box Plot for all slides with normalization within arrays only",sep=""))
 			}
 			else
 			{
-					if (WhetherToNormalizeBetweenArrays=="yes")         
+					if (WhetherToNormalizeBetweenArrays=="yes")
 						 Try(plotTitle <- paste("M Box Plot for all slides with normalization between arrays only",sep=""))
 					else
 						 Try(plotTitle <- paste("M Box Plot for all slides with no normalization",sep=""))
@@ -1718,9 +1718,9 @@ MBoxPlot <- function()
 		else
 			Try(plotTitle <- paste("M Box Plot for all slides"))
   }
-      
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
   Try(tkfocus(.limmaGUIglobals$ttMain))
   Try(plotTitle <- plotTitleList$plotTitle)
@@ -1739,7 +1739,7 @@ MBoxPlot <- function()
     Try(SetupPlotMenus(tt=ttMBoxPlotGraph,initialfile=paste(limmaDataSetNameText,"MBoxPlotSlide",SlideNamesVec[slidenum],sep=""),
                  plotFunction=plot.scale.box0,img=img))
     Try(tkgrid(img))
-    Try(tkconfigure(ttMBoxPlotGraph,cursor="arrow"))  
+    Try(tkconfigure(ttMBoxPlotGraph,cursor="arrow"))
     Try(tkfocus(ttMBoxPlotGraph))
   }
   else
@@ -1754,12 +1754,12 @@ MBoxPlot <- function()
 PrintTipGroupMAPlot <- function()
 {
   Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(RG              <- get("RG", envir=limmaGUIenvironment))
-  Try(MAraw           <- get("MAraw",envir=limmaGUIenvironment))  
-  
+  Try(MAraw           <- get("MAraw",envir=limmaGUIenvironment))
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Print-Tip Group M A Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
@@ -1768,13 +1768,13 @@ PrintTipGroupMAPlot <- function()
   }
 
   SetLayoutParamReturnVal<-1
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))    
-  if (length(maLayout)==0) 
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+  if (length(maLayout)==0)
     SetLayoutParamReturnVal <-SetLayoutParameters()
-  if (SetLayoutParamReturnVal==0) 
+  if (SetLayoutParamReturnVal==0)
     return()
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))        
-  
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+
   slidenum <- GetSlideNum()
   if (slidenum==0)
       return()
@@ -1786,27 +1786,27 @@ PrintTipGroupMAPlot <- function()
 		Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
 		if (MA.Available$Raw)
 			Try(MA <- get("MAraw",envir=limmaGUIenvironment))
-		else          
+		else
 		{
 			Try (MA <- MA.RG(RG))
-			Try(assign("MAraw",MA,limmaGUIenvironment))        
+			Try(assign("MAraw",MA,limmaGUIenvironment))
 			Try(MA.Available$Raw <- TRUE)
 			Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 			Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-			Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))            
-		}              
+			Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+		}
   })
   PrintTipGroupPlot <- function()
   {
-     Try(opar<-par(bg="white"))  
+     Try(opar<-par(bg="white"))
      plotPrintTipLoess(MA,layout=maLayout,array=slidenum)
-     Try(tempGraphPar <- par(opar))  
+     Try(tempGraphPar <- par(opar))
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-   
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
    Try(plotTitle <- paste("Print-Tip Group M A Plots for slide ",SlideNamesVec[slidenum],sep=""))
-    
+
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
   {
     Try(ttPrintTipGroupMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
@@ -1816,13 +1816,13 @@ PrintTipGroupMAPlot <- function()
     Try(SetupPlotKeyBindings(tt=ttPrintTipGroupMAPlotGraph,img=img))
     Try(SetupPlotMenus(tt=ttPrintTipGroupMAPlotGraph,initialfile=paste(limmaDataSetNameText,"PrintTipGroupMAPlotSlide",SlideNamesVec[slidenum],sep=""),
                  plotFunction=PrintTipGroupPlot,img=img))
-    
+
     Try(tkgrid(img))
     Try(tkfocus(ttPrintTipGroupMAPlotGraph))
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(PrintTipGroupPlot())
   })
 }
@@ -1830,8 +1830,8 @@ PrintTipGroupMAPlot <- function()
 MAPlot <- function()
 {
   Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
 
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
@@ -1843,7 +1843,7 @@ MAPlot <- function()
 
   Try(if (NormalizedMADataWasImported==FALSE)
   {
-    Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))  
+    Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
     Try(RG <- get("RG",envir=limmaGUIenvironment))
   }
   else
@@ -1852,17 +1852,17 @@ MAPlot <- function()
     Try(RGtmp <- list())
     Try(RGtmp$R <- 2^(MA$M*.5+MA$A))
     Try(RGtmp$G <- 2^(MA$A-.5*MA$M))
-    Try(RG <- new("RGList",RGtmp))    
+    Try(RG <- new("RGList",RGtmp))
   })
-  
+
   SetLayoutParamReturnVal<-1
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))    
-  if (length(maLayout)==0) 
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+  if (length(maLayout)==0)
     SetLayoutParamReturnVal <-SetLayoutParameters()
-  if (SetLayoutParamReturnVal==0) 
+  if (SetLayoutParamReturnVal==0)
     return()
-  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))        
-  
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+
   slidenum <- GetSlideNum()
   if (slidenum==0)
       return()
@@ -1878,14 +1878,14 @@ MAPlot <- function()
   Try(if (NormalizedMADataWasImported==FALSE)
     if (WhetherToNormalizeWithinArray=="no")
     {
-      # We don't actually need MAraw in this plot.  But users may expect that plotting M and A in this will 
+      # We don't actually need MAraw in this plot.  But users may expect that plotting M and A in this will
       # will create an MAraw object.
       Try (MAraw <- MA.RG(RG))
-      Try(assign("MAraw",MAraw,limmaGUIenvironment))        
+      Try(assign("MAraw",MAraw,limmaGUIenvironment))
       Try(MA.Available$Raw <- TRUE)
       Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
       Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))            
+      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
     })
 
 
@@ -1898,16 +1898,16 @@ MAPlot <- function()
 
   MAraw <- MA.RG(RG)
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
     Try(cex <- 0.3)
   else
-    Try(cex <- 0.1))  
+    Try(cex <- 0.1))
   plotFun <- function()
   {
      Try(Require("sma"))
      Try(opar<-par(bg="white"))
-     
-     Try(if (NormalizedMADataWasImported==FALSE)     
+
+     Try(if (NormalizedMADataWasImported==FALSE)
      {
        Try(if (WhetherToNormalizeWithinArray=="yes")
           normval <- "p"
@@ -1924,7 +1924,7 @@ MAPlot <- function()
        Try(plot.print.tip.lowess(RG,maLayout,pch=16,cex=cex,image=slidenum,norm=normval)))
      Try(if ((lowessChoice!="printtip")  && normval=="p")
        normval <- "l")
-     Try(if (lowessChoice=="none")  
+     Try(if (lowessChoice=="none")
      {
        Try(if (length(SlideNamesVec)>1)
          Try(plot(MAraw$A[,slidenum],MAraw$M[,slidenum],pch=16,cex=0.3,xlab="A",ylab="M"))
@@ -1934,14 +1934,14 @@ MAPlot <- function()
      Try(if (lowessChoice=="global")
      {
        Try(plot.mva(RG,pch=16,cex=cex,image=slidenum,norm=normval,plot.type=plot.type))
-     })       
+     })
      Try(title(plotTitle))
      Try(tempGraphPar <- par(opar))
   }
    Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-   Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-   
-  Try(if (NormalizedMADataWasImported==FALSE)  
+   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
+  Try(if (NormalizedMADataWasImported==FALSE)
   {
     if (WhetherToNormalizeWithinArray=="yes")
       Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum],
@@ -1951,34 +1951,34 @@ MAPlot <- function()
       " with no normalization",sep=""))
   }
   else
-      Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum])))  
-      
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+      Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum])))
+
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
-  Try(plotTitle <- plotTitleList$plotTitle)      
+  Try(plotTitle <- plotTitleList$plotTitle)
 
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
   {
     Try(ttMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))          
-    Try(tkconfigure(ttMAPlotGraph,cursor="watch"))        
-    Try(tkfocus(.limmaGUIglobals$ttMain))  
-    Try(Require("tkrplot"))       
+    Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+    Try(tkconfigure(ttMAPlotGraph,cursor="watch"))
+    Try(tkfocus(.limmaGUIglobals$ttMain))
+    Try(Require("tkrplot"))
     Try(tkwm.title(ttMAPlotGraph,plotTitle))
     Try(img <-tkrplot(ttMAPlotGraph,plotFun,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttMAPlotGraph,img=img))
     Try(SetupPlotMenus(tt=ttMAPlotGraph,initialfile=paste(limmaDataSetNameText,"MAPlotSlide",SlideNamesVec[slidenum],sep=""),
                  plotFunction=plotFun,img=img))
     Try(tkgrid(img))
-    Try(tkconfigure(ttMAPlotGraph,cursor="arrow"))        
+    Try(tkconfigure(ttMAPlotGraph,cursor="arrow"))
     Try(tkfocus(ttMAPlotGraph))
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotFun())
   })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
@@ -1988,10 +1988,10 @@ MAPlot <- function()
 ChoosePlotSymbolByClicking <- function(spotType,cex)
 {
   # This function should only be called if the tkrplot graphics device is being used.
-  # limmaGUI has only recently offered the choice of the standard R graphics device as 
-  # an alternative to tkrplot, and the interactive plots haven't yet been modified to 
+  # limmaGUI has only recently offered the choice of the standard R graphics device as
+  # an alternative to tkrplot, and the interactive plots haven't yet been modified to
   # work with R's locator() function.
-  
+
   Try(ttChoosePlotSymbolByClicking<-tktoplevel(.limmaGUIglobals$ttMain))
   Try(tkwm.deiconify(ttChoosePlotSymbolByClicking))
   Try(tkgrab.set(ttChoosePlotSymbolByClicking))
@@ -2000,7 +2000,7 @@ ChoosePlotSymbolByClicking <- function(spotType,cex)
        paste("Please Choose A Plot Symbol and Size for Points of type \"",spotType,"\" in the Plot",sep="")))
   Try(parPlotSize <- c())
 
-  Try(Pex <- cex) 
+  Try(Pex <- cex)
 
   ChoosePlotSymbol <- function()
   {
@@ -2036,7 +2036,7 @@ ChoosePlotSymbolByClicking <- function(spotType,cex)
   Require("tkrplot")
 
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-  Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale)
 
   Try(img <- tkrplot(ttChoosePlotSymbolByClicking,fun=ChoosePlotSymbol,hscale=2*LocalHScale/1.6,vscale=1.6 *LocalVScale/1.6))
   Try(tkgrid(img,columnspan=3))
@@ -2074,7 +2074,7 @@ ChoosePlotSymbolByClicking <- function(spotType,cex)
    mbVal<-tkmessageBox(title="Plot Symbol and Size Chosen",message=paste("Use plot symbol ",pch[pchNum]," with plot point size ",as.numeric(tclvalue(PlotPointSize))," for spots of type \"",spotType,"\"?",sep=""),type="okcancel",icon="question")
    if (tclvalue(mbVal)=="cancel")
        return()
-       
+
    ### onOK ###
    Try(tkgrab.release(ttChoosePlotSymbolByClicking))
    Try(tkdestroy(ttChoosePlotSymbolByClicking))
@@ -2082,7 +2082,7 @@ ChoosePlotSymbolByClicking <- function(spotType,cex)
    Try(ReturnVal <<- list(pch=pch[pchNum],cex=as.numeric(tclvalue(PlotPointSize)),pchIsNumeric=(pch<=25)))
   }
   onCancel <- function() {tkgrab.release(ttChoosePlotSymbolByClicking); tkdestroy(ttChoosePlotSymbolByClicking); tkfocus(.limmaGUIglobals$ttMain); ReturnVal <- list() }
-  
+
   Try(tkbind(img, "<Button-1>",LeftClick))
   Try(tkbind(img, "<Enter>",   onUpdate))
   Try(tkbind(ttChoosePlotSymbolByClicking, "<Destroy>", function() {tkgrab.release(ttChoosePlotSymbolByClicking); tkfocus(.limmaGUIglobals$ttMain);}))
@@ -2109,7 +2109,7 @@ SelectPlotSymbols <- function(SpotTypes)
   Try(tkfocus(ttSelectPlotSymbolsDialog))
   Try(tkwm.title(ttSelectPlotSymbolsDialog,"Plot point types"))
   Try(tkgrid(tklabel(ttSelectPlotSymbolsDialog,text=blankLabelText)))
- 
+
   Try(PointTypes <- SpotTypes$SpotType)
   Try(PointColors <- SpotTypes$Color)
   Try(if ("PointSize"  %in% colnames(SpotTypes))
@@ -2117,13 +2117,13 @@ SelectPlotSymbols <- function(SpotTypes)
   else
     PointSizes <- c())
   Try(numPointTypes <- length(PointTypes))
-  
+
   #label2 and 3 were separated onto 2 lines for Presentation.  See if they still look OK in normal font sizes.
   Try(label1 <- tklabel(ttSelectPlotSymbolsDialog,text="If desired, you may adjust the symbols, sizes and colors used for plot points.",font=.limmaGUIglobals$limmaGUIfont2))
   Try(if (.limmaGUIglobals$limmaGUIpresentation==FALSE && numPointTypes>10) # scrollable frame tends not to be wide enough.
   {
     Try(label2 <- tklabel(ttSelectPlotSymbolsDialog,text="The plot point symbol can be a character typed from the keyboard or a special symbol selected using the Browse button.",font=.limmaGUIglobals$limmaGUIfont2))
-    Try(label3 <- tklabel(ttSelectPlotSymbolsDialog,text="    ",font=.limmaGUIglobals$limmaGUIfont2))  
+    Try(label3 <- tklabel(ttSelectPlotSymbolsDialog,text="    ",font=.limmaGUIglobals$limmaGUIfont2))
   }
   else
   {
@@ -2132,7 +2132,7 @@ SelectPlotSymbols <- function(SpotTypes)
   })
   Try(tkgrid(label1,columnspan=2))
   Try(tkgrid(label2,columnspan=2))
-  Try(tkgrid(label3,columnspan=2))  
+  Try(tkgrid(label3,columnspan=2))
   Try(tkgrid(tklabel(ttSelectPlotSymbolsDialog,text=blankLabelText)))
 
   pchIsNumeric <- rep(TRUE,numPointTypes)
@@ -2150,10 +2150,10 @@ SelectPlotSymbols <- function(SpotTypes)
   {
     Try(if (length(PointSizes)>0)
       Try(textVariable.cex[[i]] <- tclVar(PointSizes[i]))
-    else      
-      Try(if (tolower(PointTypes[i]) =="gene"||PointTypes[i]=="cDNA")    
+    else
+      Try(if (tolower(PointTypes[i]) =="gene"||PointTypes[i]=="cDNA")
       {
-          Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+          Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
            Try(textVariable.cex[[i]] <- tclVar("0.3"))
           else
             Try(textVariable.cex[[i]] <- tclVar("0.1")))
@@ -2167,46 +2167,46 @@ SelectPlotSymbols <- function(SpotTypes)
   textVariable.color <- list()
   for (i in (1:numPointTypes))
       Try(textVariable.color[[i]] <- tclVar(
-      rgb(col2rgb(PointColors[i])["red",],col2rgb(PointColors[i])["green",],col2rgb(PointColors[i])["blue",],maxColorValue=255)      
+      rgb(col2rgb(PointColors[i])["red",],col2rgb(PointColors[i])["green",],col2rgb(PointColors[i])["blue",],maxColorValue=255)
         ))
-      
+
   Try(if (numPointTypes>10)
   {
     TclRequire("BWidget")
     Try(sw <- tkwidget(ttSelectPlotSymbolsDialog,"ScrolledWindow",relief="sunken",borderwidth=2))
     Try(sf <- tkwidget(sw,"ScrollableFrame"))
-    Try(tkcmd(sw,"setwidget",sf))
-    Try(subfID <- tclvalue(tkcmd(sf,"getframe")))
+    Try(tcl(sw,"setwidget",sf))
+    Try(subfID <- tclvalue(tcl(sf,"getframe")))
   }
   else
   {
     Try(sw <- tkframe(ttSelectPlotSymbolsDialog,borderwidth=2))
     Try(subfID <- .Tk.ID(sw))
   })
-      
+
   entry.pch <- list()
   for (i in (1:numPointTypes))
-      Try(entry.pch[[i]] <- tkcmd("entry",paste(subfID,".pch",i,sep=""),width="10",font=.limmaGUIglobals$limmaGUIfont2,textvariable=textVariable.pch[[i]]))
+      Try(entry.pch[[i]] <- tcl("entry",paste(subfID,".pch",i,sep=""),width="10",font=.limmaGUIglobals$limmaGUIfont2,textvariable=textVariable.pch[[i]]))
 
   entry.cex <- list()
   for (i in (1:numPointTypes))
-      Try(entry.cex[[i]] <- tkcmd("entry",paste(subfID,".cex",i,sep=""),width="10",font=.limmaGUIglobals$limmaGUIfont2,textvariable=textVariable.cex[[i]]))
+      Try(entry.cex[[i]] <- tcl("entry",paste(subfID,".cex",i,sep=""),width="10",font=.limmaGUIglobals$limmaGUIfont2,textvariable=textVariable.cex[[i]]))
 
   canvas.color <- list()
   for (i in (1:numPointTypes))
-      Try(canvas.color[[i]] <- tkcmd("canvas",paste(subfID,".canvas",i,sep=""),width="80",height="25",bg=tclvalue(textVariable.color[[i]])))
+      Try(canvas.color[[i]] <- tcl("canvas",paste(subfID,".canvas",i,sep=""),width="80",height="25",bg=tclvalue(textVariable.color[[i]])))
 
   onBrowseColor <- function(indexPointType)
-  {      
+  {
       Try(color <- tclvalue(.Tcl(paste("tk_chooseColor",.Tcl.args(initialcolor=tclvalue(textVariable.color[[indexPointType]]),title="Choose a color")))))
       if (nchar(color)==0)
-          return()          
+          return()
       Try(tclvalue(textVariable.color[[indexPointType]]) <- color)
-      Try(tkcmd(paste(subfID,".canvas",indexPointType,sep=""),"configure",bg=color))
+      Try(tcl(paste(subfID,".canvas",indexPointType,sep=""),"configure",bg=color))
   }
 
   onBrowse <- function(indexPointType)
-  {   
+  {
       Try(if (.limmaGUIglobals$graphicsDevice!="tkrplot")
       {
         Try(tkmessageBox(title="Browse unavailable",message="This feature is only available when using the Tk R Plot graphics device.",
@@ -2216,12 +2216,12 @@ SelectPlotSymbols <- function(SpotTypes)
       Try(plotSymbolAndSize <- ChoosePlotSymbolByClicking(PointTypes[indexPointType],
                                as.numeric(tclvalue(textVariable.cex[[indexPointType]]))))
       if (length(plotSymbolAndSize)==0)
-          return()          
+          return()
       Try(tclvalue(textVariable.pch[[indexPointType]]) <- paste(plotSymbolAndSize$pch))
       Try(tclvalue(textVariable.cex[[indexPointType]]) <- paste(plotSymbolAndSize$cex))
       Try(pchIsNumeric[indexPointType] <- plotSymbolAndSize$pchIsNumeric)
   }
-      
+
   for (i in (1:numPointTypes))
       eval(parse(text=paste("onBrowse",i," <- function() {onBrowse(",i,",)}",sep="")))
 
@@ -2230,46 +2230,46 @@ SelectPlotSymbols <- function(SpotTypes)
 
   button.browse <- list()
   for (i in (1:numPointTypes))
-      Try(button.browse[[i]] <- tkcmd("button",paste(subfID,".browse",i,sep=""),text="Browse",command=eval(parse(text=paste("onBrowse",i,sep=""))),font=.limmaGUIglobals$limmaGUIfont2))
+      Try(button.browse[[i]] <- tcl("button",paste(subfID,".browse",i,sep=""),text="Browse",command=eval(parse(text=paste("onBrowse",i,sep=""))),font=.limmaGUIglobals$limmaGUIfont2))
 
   button.browse.color <- list()
   for (i in (1:numPointTypes))
-      Try(button.browse.color[[i]] <- tkcmd("button",paste(subfID,".browsecol",i,sep=""),text="Browse",command=eval(parse(text=paste("onBrowseColor",i,sep=""))),font=.limmaGUIglobals$limmaGUIfont2))
-     
-  Try(tkgrid(tkcmd("label",paste(subfID,".lab",1,sep=""),text=blankLabelText),
-         tkcmd("label",paste(subfID,".lab",2,sep=""),text="Spot Type ",font=.limmaGUIglobals$limmaGUIfont2),
-         tkcmd("label",paste(subfID,".lab",3,sep=""),text="Plot Point Symbol",font=.limmaGUIglobals$limmaGUIfont2),
-         tkcmd("label",paste(subfID,".lab",4,sep=""),text="Plot Point Size  ",font=.limmaGUIglobals$limmaGUIfont2),
-         tkcmd("label",paste(subfID,".lab",5,sep=""),text=blankLabelText),
-         tkcmd("label",paste(subfID,".lab",6,sep=""),text=blankLabelText),
-         tkcmd("label",paste(subfID,".lab",7,sep=""),text="Plot Point Color",font=.limmaGUIglobals$limmaGUIfont2),
-         tkcmd("label",paste(subfID,".lab",8,sep=""),text=blankLabelText),         
-         tkcmd("label",paste(subfID,".lab",9,sep=""),text=blankLabelText)))
-         
-  tkgrid(tkcmd("label",paste(subfID,".lab",10,sep=""),text=blankLabelText))
+      Try(button.browse.color[[i]] <- tcl("button",paste(subfID,".browsecol",i,sep=""),text="Browse",command=eval(parse(text=paste("onBrowseColor",i,sep=""))),font=.limmaGUIglobals$limmaGUIfont2))
+
+  Try(tkgrid(tcl("label",paste(subfID,".lab",1,sep=""),text=blankLabelText),
+         tcl("label",paste(subfID,".lab",2,sep=""),text="Spot Type ",font=.limmaGUIglobals$limmaGUIfont2),
+         tcl("label",paste(subfID,".lab",3,sep=""),text="Plot Point Symbol",font=.limmaGUIglobals$limmaGUIfont2),
+         tcl("label",paste(subfID,".lab",4,sep=""),text="Plot Point Size  ",font=.limmaGUIglobals$limmaGUIfont2),
+         tcl("label",paste(subfID,".lab",5,sep=""),text=blankLabelText),
+         tcl("label",paste(subfID,".lab",6,sep=""),text=blankLabelText),
+         tcl("label",paste(subfID,".lab",7,sep=""),text="Plot Point Color",font=.limmaGUIglobals$limmaGUIfont2),
+         tcl("label",paste(subfID,".lab",8,sep=""),text=blankLabelText),
+         tcl("label",paste(subfID,".lab",9,sep=""),text=blankLabelText)))
+
+  tkgrid(tcl("label",paste(subfID,".lab",10,sep=""),text=blankLabelText))
 
   for (i in (1:numPointTypes))
   {
-      Try(tkgrid(tkcmd("label",paste(subfID,".lab",11,"_",i,sep=""),text=blankLabelText),
-             tkcmd("label",paste(subfID,".lab",12,"_",i,sep=""),text=PointTypes[i],font=.limmaGUIglobals$limmaGUIfont2,bg="white"),
+      Try(tkgrid(tcl("label",paste(subfID,".lab",11,"_",i,sep=""),text=blankLabelText),
+             tcl("label",paste(subfID,".lab",12,"_",i,sep=""),text=PointTypes[i],font=.limmaGUIglobals$limmaGUIfont2,bg="white"),
              entry.pch[[i]],entry.cex[[i]],button.browse[[i]],
-             tkcmd("label",paste(subfID,".lab",13,"_",i,sep=""),text=blankLabelText),canvas.color[[i]],
+             tcl("label",paste(subfID,".lab",13,"_",i,sep=""),text=blankLabelText),canvas.color[[i]],
              button.browse.color[[i]],
-             tkcmd("label",paste(subfID,".lab",14,"_",i,sep=""),text=blankLabelText)))
-      Try(tkgrid.configure(button.browse[[i]],sticky="w"))             
-  }             
+             tcl("label",paste(subfID,".lab",14,"_",i,sep=""),text=blankLabelText)))
+      Try(tkgrid.configure(button.browse[[i]],sticky="w"))
+  }
 
   tkgrid(sw,columnspan=2,sticky="nsew")
-    
+
   Try(legendCheckboxTcl <- tclVar("1"))
-  Try(legendCheckbox <- tkcheckbutton(ttSelectPlotSymbolsDialog,variable=legendCheckboxTcl))  
+  Try(legendCheckbox <- tkcheckbutton(ttSelectPlotSymbolsDialog,variable=legendCheckboxTcl))
   Try(tkgrid(tklabel(ttSelectPlotSymbolsDialog,text=blankLabelText))  )
   Try(legendLabel <- tklabel(ttSelectPlotSymbolsDialog,text="Show Legend",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(legendCheckbox,legendLabel))
   Try(tkgrid.configure(legendCheckbox,sticky="e"))
-  Try(tkgrid.configure(legendLabel,sticky="w"))  
+  Try(tkgrid.configure(legendLabel,sticky="w"))
   Try(tkgrid(tklabel(ttSelectPlotSymbolsDialog,text=blankLabelText))  )
-  
+
   ReturnVal <- list()
   onOK <- function()
   {
@@ -2277,11 +2277,11 @@ SelectPlotSymbols <- function(SpotTypes)
       Try(ReturnVal <<- list())
       Try(for (i in (1:numPointTypes))
       {
-          Try(if (is.na(as.numeric(tclvalue(textVariable.pch[[i]])))) 
+          Try(if (is.na(as.numeric(tclvalue(textVariable.pch[[i]]))))
               pchIsNumeric[i] <- FALSE
           else
               pchIsNumeric[i] <- TRUE)
-      
+
           if (pchIsNumeric[i])
               Try(listToAdd <- list(pch=as.numeric(tclvalue(textVariable.pch[[i]])),
                                                  cex=as.numeric(tclvalue(textVariable.cex[[i]])),
@@ -2291,13 +2291,13 @@ SelectPlotSymbols <- function(SpotTypes)
               Try(listToAdd <- list(pch=tclvalue(textVariable.pch[[i]]),
                                                  cex=as.numeric(tclvalue(textVariable.cex[[i]])),
                                                  col=tclvalue(textVariable.color[[i]]),
-                                                 pchIsNumeric=pchIsNumeric[i]))          
+                                                 pchIsNumeric=pchIsNumeric[i]))
           Try(ReturnVal[[i]] <<- listToAdd)
       })
-      Try(if (tclvalue(legendCheckboxTcl)=="1") 
+      Try(if (tclvalue(legendCheckboxTcl)=="1")
         showLegend <- TRUE
       else
-        showLegend <- FALSE)        
+        showLegend <- FALSE)
       Try(ReturnVal <<- list(PlotSymbols=ReturnVal,showLegend=showLegend))
       Try(tkgrab.release(ttSelectPlotSymbolsDialog))
       Try(tkdestroy(ttSelectPlotSymbolsDialog))
@@ -2322,15 +2322,15 @@ SelectPlotSymbols <- function(SpotTypes)
 plotMAColorCoded <- function()
 {
   Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(SpotTypes     <- get("SpotTypes", envir=limmaGUIenvironment)) 
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(SpotTypes     <- get("SpotTypes", envir=limmaGUIenvironment))
 
-  Try(gal <- get("gal",envir=limmaGUIenvironment))    
+  Try(gal <- get("gal",envir=limmaGUIenvironment))
   Try(WeightingType <- get("WeightingType",envir=limmaGUIenvironment))
   Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-  
+
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="Color-Coded M A Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
@@ -2341,12 +2341,12 @@ plotMAColorCoded <- function()
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
   Try(if (NormalizedMADataWasImported==FALSE)
   {
-    Try(RG <- get("RG",envir=limmaGUIenvironment))  
+    Try(RG <- get("RG",envir=limmaGUIenvironment))
     Try(MAraw <- get("MAraw",envir=limmaGUIenvironment))
   }
   else
   {
-    Try(MA <- get("MAimported",envir=limmaGUIenvironment))  
+    Try(MA <- get("MAimported",envir=limmaGUIenvironment))
   })
 
   if (nrow(SpotTypes)==0)
@@ -2360,16 +2360,16 @@ plotMAColorCoded <- function()
   if (slidenum==0)
       return()
 
-  Try(PlotSymbols <- SelectPlotSymbols(SpotTypes))  
+  Try(PlotSymbols <- SelectPlotSymbols(SpotTypes))
   if (length(PlotSymbols)==0)
       return()
   Try(showLegend  <- PlotSymbols$showLegend)
   Try(PlotSymbols <- PlotSymbols$PlotSymbols)
-    
+
   Try(SpotTypeStatus <- get("SpotTypeStatus", envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
-  
-  Try(pchAllNumeric <- TRUE)       
+
+  Try(pchAllNumeric <- TRUE)
   Try(pchAllCharacter <- TRUE)
   for (i in (1:numSpotTypes))
   {
@@ -2377,34 +2377,34 @@ plotMAColorCoded <- function()
           Try(PlotSymbols[[i]]$pch <- as.numeric(PlotSymbols[[i]]$pch)))
       Try(pchAllNumeric <- (pchAllNumeric && PlotSymbols[[i]]$pchIsNumeric))
       Try(pchAllCharacter <- (pchAllCharacter && (!PlotSymbols[[i]]$pchIsNumeric)))
-  }      
-      
+  }
+
   Try(cex <- c())
   Try(col <- c())
   Try(if (pchAllNumeric || pchAllCharacter)
       Try(pch <- c())
   else
       Try(pch <- list()))
-        
+
   for (i in (1:numSpotTypes))
   {
   # Some of the i's below have been changed from numSpotTypes-i+1
       Try(cex[i] <- PlotSymbols[[i]]$cex)
-      Try(col[i] <- PlotSymbols[[i]]$col)  
+      Try(col[i] <- PlotSymbols[[i]]$col)
       Try(if (pchAllNumeric || pchAllCharacter)
           Try(pch[i] <- PlotSymbols[[i]]$pch)
       else
           Try(pch[[i]] <- PlotSymbols[[i]]$pch))
-  }      
+  }
 #  Try(values <- rev(SpotTypes$SpotType))
   Try(values <- SpotTypes$SpotType)
-  
+
 # For debugging
   Try(assign("values",values,limmaGUIenvironment))
   Try(assign("pch",pch,limmaGUIenvironment))
   Try(assign("cex",cex,limmaGUIenvironment))
-  Try(assign("col",col,limmaGUIenvironment))   
-   
+  Try(assign("col",col,limmaGUIenvironment))
+
   Try(if (NormalizedMADataWasImported==FALSE)
   {
 		Try(NormalizeWithinArraysMB <-tkmessageBox(title="Normalization Within Arrays",message="Normalize Within Arrays?",type="yesnocancel",icon="question",default="no"))
@@ -2417,10 +2417,10 @@ plotMAColorCoded <- function()
 		if (WhetherToNormalizeBetweenArrays=="cancel")
 				return()
 	})
-  
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  
+
   Try(if (NormalizedMADataWasImported==FALSE)
   {
 		Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
@@ -2429,16 +2429,16 @@ plotMAColorCoded <- function()
 			Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
 		})
 		Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-  
+
 		SetLayoutParamReturnVal<-1
 		Try(if (WhetherToNormalizeWithinArrays=="yes")
 		{
 				if (length(maLayout)==0) SetLayoutParamReturnVal <-Try(SetLayoutParameters())
-				if (SetLayoutParamReturnVal==0) return()  
-				Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))    
+				if (SetLayoutParamReturnVal==0) return()
+				Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
 				if (MA.Available$WithinArrays)
 					Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
-				else          
+				else
 				{
 					if (WeightingType == "none")
 						Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
@@ -2446,10 +2446,10 @@ plotMAColorCoded <- function()
 						Try(MA <- normalizeWithinArrays(RG,weights=RG$weights,maLayout,method=WithinArrayNormalizationMethod))
 					Try(assign("MAwithinArrays",MA,limmaGUIenvironment))
 					Try(MA.Available$WithinArrays <- TRUE)
-					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))        
+					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
 					Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))                
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
 
 				}
 		}
@@ -2457,18 +2457,18 @@ plotMAColorCoded <- function()
 		{
 				if (MA.Available$Raw)
 					Try(MA <- get("MAraw",envir=limmaGUIenvironment))
-				else          
+				else
 				{
 					Try (MA <- MA.RG(RG))
 					Try(assign("MAraw",MA,limmaGUIenvironment))
 					Try(MA.Available$Raw <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))        
-				}        
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+				}
 		})
 
-		Try(if (WhetherToNormalizeBetweenArrays=="yes") 
+		Try(if (WhetherToNormalizeBetweenArrays=="yes")
 		{
 			if (WhetherToNormalizeWithinArrays=="yes")
 			{
@@ -2496,37 +2496,37 @@ plotMAColorCoded <- function()
 					Try(MA.Available$BetweenArrays <- TRUE)
 					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
 					Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))                
-				}        
+					Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+				}
 			}
-		})          
-  }) 
+		})
+  })
 
   Try(if (min(nchar(gsub("[^0-9]","",SlideNamesVec))==nchar(SlideNamesVec))==TRUE)
      SlideNamesVec <- paste("Slide",SlideNamesVec))
-  Try(plotTitle <- paste("M A Plot for ",SlideNamesVec[slidenum],sep="")) 
+  Try(plotTitle <- paste("M A Plot for ",SlideNamesVec[slidenum],sep=""))
   Try(if (NormalizedMADataWasImported==FALSE)
   {
 		Try(if (WhetherToNormalizeWithinArrays=="no"&&WhetherToNormalizeBetweenArrays=="no")
 			Try(plotTitle <- paste(plotTitle,"with no normalization")))
 		Try(if (WhetherToNormalizeWithinArrays=="yes"&&WhetherToNormalizeBetweenArrays=="no")
-			Try(plotTitle <- paste(plotTitle,"with normalization within arrays only")))    
+			Try(plotTitle <- paste(plotTitle,"with normalization within arrays only")))
 		Try(if (WhetherToNormalizeWithinArrays=="no"&&WhetherToNormalizeBetweenArrays=="yes")
-			Try(plotTitle <- paste(plotTitle,"with normalization between arrays only")))    
+			Try(plotTitle <- paste(plotTitle,"with normalization between arrays only")))
 		Try(if (WhetherToNormalizeWithinArrays=="yes"&&WhetherToNormalizeBetweenArrays=="yes")
 			Try(plotTitle <- paste(plotTitle,"with normalization within and between arrays only")))
-  }) 
+  })
   Try(plotLabels <- GetPlotLabels(plotTitle,"A","M"))
   Try(if (length(plotLabels)==0) return())
   Try(plotTitle <- plotLabels$plotTitle)
   Try(xLabel    <- plotLabels$xLabel)
   Try(yLabel    <- plotLabels$yLabel)
-  
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-  Try(tkfocus(.limmaGUIglobals$ttMain))  
+  Try(tkfocus(.limmaGUIglobals$ttMain))
 
   Try(xlim <- c(min(MA$A[,slidenum],na.rm=TRUE),max(MA$A[,slidenum],na.rm=TRUE))) # For default x limits.
-  
+
   plotMA0 <- function()
   {
      Try(opar<-par(bg="white"))
@@ -2536,20 +2536,20 @@ plotMAColorCoded <- function()
      Try(tempGraphPar <- par(opar))
   }
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-  Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
-   
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
 #  Try(LocalHScale <- LocalHScale * 1.25)
-   
-   
+
+
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
-  { 
+  {
     Try(ttplotMAColorCodedGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-    Try(Require("tkrplot"))  
+    Try(Require("tkrplot"))
     Try(tkwm.title(ttplotMAColorCodedGraph,plotTitle))
     Try(img <-tkrplot(ttplotMAColorCodedGraph,plotMA0,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttplotMAColorCodedGraph,img=img))
     Try(plotMenus<-SetupPlotMenus(tt=ttplotMAColorCodedGraph,initialfile=paste(limmaDataSetNameText,"plotMAColorCodedSlide",SlideNamesVec[slidenum],sep=""),
-                 plotFunction=plotMA0,img=img))                 
+                 plotFunction=plotMA0,img=img))
     Try(resizeMenu<-plotMenus$resizeMenu)
     Try(tkadd(resizeMenu, "command", label="Resize Horizontal (A) Axis",command=function() {Try(GetNEWxlimReturnVal<-GetNEWxlim(xlim));if (length(GetNEWxlimReturnVal)==0) return() else xlim <<- GetNEWxlimReturnVal;Try(tkconfigure(img,cursor="watch"));Try(tkrreplot(img,fun=plotMA0,hscale=LocalHScale,vscale=LocalVScale));Try(tkconfigure(img,cursor="arrow"))}))
     Try(tkgrid(img))
@@ -2557,7 +2557,7 @@ plotMAColorCoded <- function()
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotMA0())
   })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
@@ -2568,7 +2568,7 @@ GetNEWxlim <- function(xlim)
   ttGetNEWxlim<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetNEWxlim)
   tkgrab.set(ttGetNEWxlim)
-  tkfocus(ttGetNEWxlim)  
+  tkfocus(ttGetNEWxlim)
   tkwm.title(ttGetNEWxlim,"Horizontal axis limits")
   tkgrid(tklabel(ttGetNEWxlim,text="    "))
   Try(xminTcl <- tclVar(init=format(xlim[1],digits=4)))
@@ -2607,15 +2607,15 @@ GetNEWxlim <- function(xlim)
 ebayesBoxPlots <- function()
 {
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-  Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))  
+  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(gal <- get("gal",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
-  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))    
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
+  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
 
   if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
@@ -2623,13 +2623,13 @@ ebayesBoxPlots <- function()
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   }
-  
+
   if (NumParameterizations==0)
   {
     Try(tkmessageBox(title="Empirical Bayes Statistics Box Plots",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  }  
+    return()
+  }
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
   Try(parameterizationTreeIndex <- ParameterizationTreeIndexVec[parameterizationIndex])
@@ -2646,7 +2646,7 @@ ebayesBoxPlots <- function()
   Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
     Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
   else
-    Try(genelist <- get("genelist",limmaGUIenvironment)))   
+    Try(genelist <- get("genelist",limmaGUIenvironment)))
   GetCoefReturnVal <- GetCoef(parameterizationTreeIndex)
   if (GetCoefReturnVal$coefIndex==0) return()
   Try(coef <- (GetCoefReturnVal$coefIndexList[[GetCoefReturnVal$coefIndex]])$coefOrContrastIndex)
@@ -2656,9 +2656,9 @@ ebayesBoxPlots <- function()
     Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
   else
   {
-    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)        
+    Try(eb  <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb)
     Try(ParameterNamesVec <- colnames(((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$contrastsMatrixInList$contrasts))
-    Try(NumParameters <- length(ParameterNamesVec))    
+    Try(NumParameters <- length(ParameterNamesVec))
   }
 
   ebayesStatistic <- ChooseEbayesStatistic()
@@ -2670,7 +2670,7 @@ ebayesBoxPlots <- function()
     return()
 
 ### Now check (using table) how many spot sub-types there are for that spot type, e.g.
-### for spot type "Calibration", there might be sub types "Calibration Control 1", ... "Calibration Control 6" 
+### for spot type "Calibration", there might be sub types "Calibration Control 1", ... "Calibration Control 6"
 
   Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
   Try(spacing   <- get("spacing",envir=limmaGUIenvironment))       # Global version
@@ -2678,8 +2678,8 @@ ebayesBoxPlots <- function()
   Try(gal2 <-      cbind(gal,SpotTypeStatus=SpotTypeStatus))
   Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
   Try(numSpotTypes <- nrow(SpotTypes))
-  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
-  Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+  Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+  Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
   Omit <- ""
   count <- 0
   Try(for (i in (1:numSpotTypes))
@@ -2692,7 +2692,7 @@ ebayesBoxPlots <- function()
     else
       Omit <- "("
     Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-  })  
+  })
   Try(if (nchar(Omit)>0)
   {
     Try(Omit <- paste(Omit,")"))
@@ -2717,13 +2717,13 @@ ebayesBoxPlots <- function()
       "\".",sep="")))
     return()
   }
-      
+
   Try(if (NumParameters>1)
     ebayesStatisticsVector <- eb[[ebayesStatistic]][,coef]
   else
     ebayesStatisticsVector <- eb[[ebayesStatistic]])
-  
-  Try(plotTitle <- "")  
+
+  Try(plotTitle <- "")
   Try(if (ebayesStatistic=="t")
   {
     plotTitle <- paste("t Statistic Box Plot(s) for Spot Type",SpotType)
@@ -2732,22 +2732,22 @@ ebayesBoxPlots <- function()
   Try(if (ebayesStatistic=="lods")
   {
     plotTitle <- paste("B Statistic Box Plot(s) for Spot Type",SpotType)
-    ylabel <- "B Statistic"    
+    ylabel <- "B Statistic"
   })
   Try(if (ebayesStatistic=="p.value")
   {
-    plotTitle <- paste("P Value Box Plot(s) for Spot Type",SpotType)    
-    ylabel <- "P Value"        
+    plotTitle <- paste("P Value Box Plot(s) for Spot Type",SpotType)
+    ylabel <- "P Value"
   })
-  
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow")) 
+
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  Try(plotTitleList <- GetPlotTitle(plotTitle)) 
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
   Try(if (length(plotTitleList)==0) return())
-  Try(plotTitle <- plotTitleList$plotTitle)    
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
-  Try(tkfocus(.limmaGUIglobals$ttMain))    
-  
+  Try(plotTitle <- plotTitleList$plotTitle)
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+  Try(tkfocus(.limmaGUIglobals$ttMain))
+
   Try(if (numMatches<=50)
   {
     Try(plotCommand <- "boxplot(")
@@ -2769,44 +2769,44 @@ ebayesBoxPlots <- function()
     Try(plotCommand <- "boxplot(")
     Try(plotCommand <- paste(plotCommand,"ebayesStatisticsVector[genelist2[,\"SpotTypeStatus\"]==\"",SpotType,"\"],",sep=""))
     Try(plotCommand <- paste(plotCommand,"xlab=\"",SpotType,"\",","names=\"",SpotType,"\",",sep=""))
-    Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\");title(plotTitle)",sep=""))    
+    Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\");title(plotTitle)",sep=""))
   })
-  
+
 #  tkmessageBox(message=plotCommand)
-  
+
   plotEbayesBoxPlot <- function()
   {
-    Try(if (numMatches>50) 
+    Try(if (numMatches>50)
     {
       Try(numMatches <- 1)
       Try(opar<-par(bg="white",lab=c(numMatches,20,7)))
     }
     else
       Try(opar<-par(bg="white",cex.axis=0.7,las=2,plt=c(0.15,0.9,0.2,0.85),lab=c(numMatches,20,7))))
-      
+
     Try(eval(parse(text=plotCommand)))
-    Try(tempGraphPar <- par(opar))    
+    Try(tempGraphPar <- par(opar))
     Try(grid(NULL,col="navy"))
   }
 
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-  Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale)
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
-  { 
+  {
     Try(ttEbayesBoxPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttEbayesBoxPlot,plotTitle))
     Try(Require("tkrplot"))
     Try(img <-tkrplot(ttEbayesBoxPlot,plotEbayesBoxPlot,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttEbayesBoxPlot,img=img))
     Try(SetupPlotMenus(tt=ttEbayesBoxPlot,initialfile=paste(limmaDataSetNameText,"EBayesBoxPlot",ParameterNamesVec[coef],sep=""),
-                 plotFunction=plotEbayesBoxPlot,img=img))  
+                 plotFunction=plotEbayesBoxPlot,img=img))
     Try(tkgrid(img))
-    Try(tkfocus(ttEbayesBoxPlot))      
+    Try(tkfocus(ttEbayesBoxPlot))
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotEbayesBoxPlot())
   })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
@@ -2818,7 +2818,7 @@ GetPlotLabels <- function(plottitle="",xlabel="",ylabel="")
   ttGetPlotLabels<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetPlotLabels)
   tkgrab.set(ttGetPlotLabels)
-  tkfocus(ttGetPlotLabels)  
+  tkfocus(ttGetPlotLabels)
   tkwm.title(ttGetPlotLabels,"Plot title and axis labels")
   tkgrid(tklabel(ttGetPlotLabels,text="    "))
   TitleTcl <- tclVar(init=plottitle)
@@ -2863,7 +2863,7 @@ GetPlotTitle <- function(plottitle="")
   ttGetPlotTitle<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetPlotTitle)
   tkgrab.set(ttGetPlotTitle)
-  tkfocus(ttGetPlotTitle)  
+  tkfocus(ttGetPlotTitle)
   tkwm.title(ttGetPlotTitle,"Plot title")
   tkgrid(tklabel(ttGetPlotTitle,text="    "))
   TitleTcl <- tclVar(init=plottitle)
@@ -2886,9 +2886,9 @@ GetPlotTitle <- function(plottitle="")
   Cancel.but <-tkbutton(ttGetPlotTitle,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttGetPlotTitle,text="    "),OK.but,Cancel.but)
   tkgrid(tklabel(ttGetPlotTitle,text="    "))
-  Try(tkbind(entry.Title, "<Return>",onOK))  
+  Try(tkbind(entry.Title, "<Return>",onOK))
   Try(tkbind(ttGetPlotTitle, "<Destroy>", function() {Try(tkgrab.release(ttGetPlotTitle));Try(tkfocus(.limmaGUIglobals$ttMain));}))
-  Try(tkfocus(ttGetPlotTitle))  
+  Try(tkfocus(ttGetPlotTitle))
   Try(tkwait.window(ttGetPlotTitle))
 
   return (ReturnVal)
@@ -2902,7 +2902,7 @@ GetPlotSize <- function()
   ttGetPlotSize<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetPlotSize)
   tkgrab.set(ttGetPlotSize)
-  tkfocus(ttGetPlotSize)  
+  tkfocus(ttGetPlotSize)
   tkwm.title(ttGetPlotSize,"Plot size")
   tkgrid(tklabel(ttGetPlotSize,text="    "))
   tkgrid(tklabel(ttGetPlotSize,text="If desired, you may adjust the horizontal and vertical size of the plot.",font=.limmaGUIglobals$limmaGUIfont2),columnspan=2)
@@ -2934,7 +2934,7 @@ GetPlotSize <- function()
   tkgrid(tklabel(ttGetPlotSize,text="    "))
   Try(tkfocus(ttGetPlotSize))
   Try(tkbind(ttGetPlotSize, "<Destroy>", function() {Try(tkgrab.release(ttGetPlotSize));Try(tkfocus(.limmaGUIglobals$ttMain));}))
-  Try(tkbind(entry.HScale, "<Return>",function() tkfocus(entry.VScale))) 
+  Try(tkbind(entry.HScale, "<Return>",function() tkfocus(entry.VScale)))
   Try(tkbind(entry.VScale, "<Return>", onOK))
   Try(tkwait.window(ttGetPlotSize))
 
@@ -2944,7 +2944,7 @@ GetPlotSize <- function()
 SaveGraphAsJpeg <- function(initialfile,plotFunction)
 {
   Try(jpegFileName <- tclvalue(tkgetSaveFile(initialfile=initialfile,filetypes="{{JPEG Files} {.jpg .jpeg}} {{All files} *}"))  )
-  if (!nchar(jpegFileName)) 
+  if (!nchar(jpegFileName))
     return()
   Try(len <- nchar(jpegFileName))
   if (len<4)
@@ -2953,9 +2953,9 @@ SaveGraphAsJpeg <- function(initialfile,plotFunction)
   (len<5 || (tolower(substring(jpegFileName,len-4,len))!=".jpeg")))
         Try(jpegFileName <- paste(jpegFileName,".jpg",sep=""))
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")  
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
   {
-    Try(jpegParams <- GetJpegOrPngX11Params(graphFileType="JPEG"))  
+    Try(jpegParams <- GetJpegOrPngX11Params(graphFileType="JPEG"))
     Try(bitmap(file=jpegFileName,bg=jpegParams$bg,res=jpegParams$res,type="jpeg"))
   }
   else
@@ -2971,7 +2971,7 @@ SaveGraphAsJpeg <- function(initialfile,plotFunction)
 SaveGraphAsPNG <- function(initialfile,plotFunction)
 {
   Try(pngFileName <- tclvalue(tkgetSaveFile(initialfile=initialfile,filetypes="{{PNG Files} {.png}} {{All files} *}"))  )
-  if (!nchar(pngFileName)) 
+  if (!nchar(pngFileName))
     return()
   Try(len <- nchar(pngFileName))
   if (len<4)
@@ -2979,9 +2979,9 @@ SaveGraphAsPNG <- function(initialfile,plotFunction)
   else if   ((tolower(substring(pngFileName,len-3,len))!=".png"))
         Try(pngFileName <- paste(pngFileName,".png",sep=""))
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")  
+  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
   {
-    Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))  
+    Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))
     Try(bitmap(file=pngFileName,bg=pngParams$bg,res=pngParams$res))
   }
   else
@@ -2997,7 +2997,7 @@ SaveGraphAsPNG <- function(initialfile,plotFunction)
 SaveGraphAsPostscript <- function(initialfile,plotFunction)
 {
   Try(psFileName <- tclvalue(tkgetSaveFile(initialfile=initialfile,filetypes="{{Postscript Files} {.ps .eps}} {{All files} *}"))  )
-  if (!nchar(psFileName)) 
+  if (!nchar(psFileName))
     return()
   Try(len <- nchar(psFileName))
   if (len<2)
@@ -3013,7 +3013,7 @@ SaveGraphAsPostscript <- function(initialfile,plotFunction)
 SaveGraphAsPDF <- function(initialfile,plotFunction)
 {
   Try(pdfFileName <- tclvalue(tkgetSaveFile(initialfile=initialfile,filetypes="{{PDF Files} {.pdf}} {{All files} *}"))  )
-  if (!nchar(pdfFileName)) 
+  if (!nchar(pdfFileName))
     return()
   Try(len <- nchar(pdfFileName))
   if (len<2)
@@ -3033,19 +3033,19 @@ Resize <- function(img,plotFunction)
   Try(if (length(PlotSize)==0)      return())
   Try(LocalHScale <- PlotSize$HScale)
   Try(LocalVScale <- PlotSize$VScale)
-  Try(tkconfigure(img,cursor="watch"))    
-  Try(tkfocus(img))  
+  Try(tkconfigure(img,cursor="watch"))
+  Try(tkfocus(img))
   Try(tkrreplot(img,fun=plotFunction,hscale=LocalHScale,vscale=LocalVScale))
-  Try(tkconfigure(img,cursor="arrow"))        
+  Try(tkconfigure(img,cursor="arrow"))
 }
 
-CopyGraph <- function(img) Try(tkrreplot(img))  
+CopyGraph <- function(img) Try(tkrreplot(img))
 
 SetupPlotKeyBindings <- function(tt,img)
 {
-  Try(tkbind(tt, "<Control-C>", function() CopyGraph(img)))  
-  Try(tkbind(tt, "<Control-c>", function() CopyGraph(img)))  
-}  
+  Try(tkbind(tt, "<Control-C>", function() CopyGraph(img)))
+  Try(tkbind(tt, "<Control-c>", function() CopyGraph(img)))
+}
 
 SetupPlotMenus <- function(tt,initialfile,plotFunction,img)
 {
@@ -3053,12 +3053,12 @@ SetupPlotMenus <- function(tt,initialfile,plotFunction,img)
   Try(tkconfigure(tt, menu=topMenu))
   Try(fileMenu <- tkmenu(topMenu, tearoff=FALSE))
   Try(editMenu <- tkmenu(topMenu, tearoff=FALSE))
-  Try(resizeMenu <- tkmenu(topMenu, tearoff=FALSE))  
+  Try(resizeMenu <- tkmenu(topMenu, tearoff=FALSE))
 
   Try(tkadd(fileMenu, "command", label="Save As PNG",command=function() SaveGraphAsPNG(initialfile=initialfile,plotFunction=plotFunction))) # ) # ,font=limmaGUIfontMenu))
-  Try(tkadd(fileMenu, "command", label="Save As JPEG",command=function() SaveGraphAsJpeg(initialfile=initialfile,plotFunction=plotFunction))) # ) # ,font=limmaGUIfontMenu))  
+  Try(tkadd(fileMenu, "command", label="Save As JPEG",command=function() SaveGraphAsJpeg(initialfile=initialfile,plotFunction=plotFunction))) # ) # ,font=limmaGUIfontMenu))
   Try(tkadd(fileMenu, "command", label="Save As Postscript",command=function() SaveGraphAsPostscript(initialfile=initialfile,plotFunction=plotFunction))) # ) # ,font=limmaGUIfontMenu))
-  Try(tkadd(fileMenu, "command", label="Save As PDF",command=function() SaveGraphAsPDF(initialfile=initialfile,plotFunction=plotFunction))) # ) # ,font=limmaGUIfontMenu))    
+  Try(tkadd(fileMenu, "command", label="Save As PDF",command=function() SaveGraphAsPDF(initialfile=initialfile,plotFunction=plotFunction))) # ) # ,font=limmaGUIfontMenu))
   Try(tkadd(fileMenu, "separator"))
   Try(tkadd(fileMenu, "command", label="Close",command=function() tkdestroy(tt))) # ) # ,font=limmaGUIfontMenu))
   Try(tkadd(topMenu, "cascade", label="File",menu=fileMenu)) # ) # ,font=limmaGUIfontMenu))
@@ -3076,7 +3076,7 @@ GetJpegOrPngParams <- function(graphFileType)
   ttGetJpegOrPngParams<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetJpegOrPngParams)
   tkgrab.set(ttGetJpegOrPngParams)
-  tkfocus(ttGetJpegOrPngParams)  
+  tkfocus(ttGetJpegOrPngParams)
   tkwm.title(ttGetJpegOrPngParams,paste(graphFileType,"Image Parameters"))
   tkgrid(tklabel(ttGetJpegOrPngParams,text="    "))
   tkgrid(tklabel(ttGetJpegOrPngParams,text=paste(graphFileType,"Image Parameters"),font=.limmaGUIglobals$limmaGUIfont2),columnspan=2)
@@ -3097,19 +3097,19 @@ GetJpegOrPngParams <- function(graphFileType)
   entry.PointSize<-tkentry(ttGetJpegOrPngParams,width="10",font=.limmaGUIglobals$limmaGUIfont2,textvariable=PointSizeTcl,bg="white")
   tkgrid(tklabel(ttGetJpegOrPngParams,text="Font Size    ",font=.limmaGUIglobals$limmaGUIfont2),entry.PointSize,tklabel(ttGetJpegOrPngParams,text="    "),sticky="w")
   tkgrid(tklabel(ttGetJpegOrPngParams,text="    "))
-    
+
   ReturnVal <- list()
   Width <- 600
   Height <- 600
   Background <- "white"
   PointSize <- 12
-  
+
   onOK <- function()
   {
       Try(Width  <<- as.numeric(tclvalue(WidthTcl)))
       Try(Height <<- as.numeric(tclvalue(HeightTcl)))
       Try(Background <<- tclvalue(BackgroundTcl))
-      Try(PointSize <<- as.numeric(tclvalue(PointSizeTcl)))      
+      Try(PointSize <<- as.numeric(tclvalue(PointSizeTcl)))
       Try(tkgrab.release(ttGetJpegOrPngParams))
       Try(tkdestroy(ttGetJpegOrPngParams))
       Try(tkfocus(.limmaGUIglobals$ttMain))
@@ -3132,7 +3132,7 @@ GetJpegOrPngX11Params <- function(graphFileType)
   ttGetJpegOrPngX11Params<-tktoplevel(.limmaGUIglobals$ttMain)
   tkwm.deiconify(ttGetJpegOrPngX11Params)
   tkgrab.set(ttGetJpegOrPngX11Params)
-  tkfocus(ttGetJpegOrPngX11Params)  
+  tkfocus(ttGetJpegOrPngX11Params)
   tkwm.title(ttGetJpegOrPngX11Params,paste(graphFileType,"Image Parameters"))
   tkgrid(tklabel(ttGetJpegOrPngX11Params,text="    "))
   tkgrid(tklabel(ttGetJpegOrPngX11Params,text=paste(graphFileType,"Image Parameters"),font=.limmaGUIglobals$limmaGUIfont2),columnspan=2)
@@ -3145,11 +3145,11 @@ GetJpegOrPngX11Params <- function(graphFileType)
   entry.Resolution<-tkentry(ttGetJpegOrPngX11Params,width="20",font=.limmaGUIglobals$limmaGUIfont2,textvariable=ResolutionTcl,bg="white")
   tkgrid(tklabel(ttGetJpegOrPngX11Params,text="Resolution    ",font=.limmaGUIglobals$limmaGUIfont2),entry.Resolution,sticky="w")
   tkgrid(tklabel(ttGetJpegOrPngX11Params,text="    "))
-    
+
   ReturnVal <- list()
   Background <- "white"
   Resolution <- 72
-  
+
   onOK <- function()
   {
       Try(Background <<- tclvalue(BackgroundTcl))
@@ -3173,16 +3173,16 @@ GetJpegOrPngX11Params <- function(graphFileType)
 
 VennDiagramPlot <- function()
 {
-  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))  
+  Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
   Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-  Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))  
-  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))  
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment)) 
-  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))   
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
+  Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
+  Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
- 
+
   Try(if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       tkmessageBox(title="Venn Diagram",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
@@ -3194,8 +3194,8 @@ VennDiagramPlot <- function()
   {
     Try(tkmessageBox(title="Venn Diagram",message="There are no parameterizations loaded.  Select \"Create New Parameterization\" or \"Compute Linear Model Fit\" from the \"Linear Model\" menu.",type="ok",icon="error"))
     Try(tkfocus(.limmaGUIglobals$ttMain))
-    return()  
-  })  
+    return()
+  })
 
   Try(parameterizationIndex <- ChooseParameterization())
   Try(if (parameterizationIndex==0)    return())
@@ -3211,24 +3211,24 @@ VennDiagramPlot <- function()
   Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
 
   Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-  Try(design <- designList$design)      
+  Try(design <- designList$design)
 
   Try(tstats <- c())
-  
+
   Try(ParametersAndOrContrasts <- GetParametersAndOrContrasts(parameterizationTreeIndex,whatFor="venn"))
   Try(NumParametersSelected <- length(ParametersAndOrContrasts))
   Try(if (NumParametersSelected==0)
     return())
-    
+
   Try(include <- UpDownOrBoth())
   Try(if (include=="")
     return())
-   
+
   Try(coefList <- list())
   Try(contrastsMatrix <- c())
-  
+
 #  Try(tkmessageBox(message=paste("NumParametersSelected :",NumParametersSelected)))
-  
+
   for (i in (1:NumParametersSelected))
   {
     Try(coefList[[i]] <- ((ParametersAndOrContrasts[[i]])$coefIndexList[[(ParametersAndOrContrasts[[i]])$coefIndex]])$coefOrContrastIndex)
@@ -3240,7 +3240,7 @@ VennDiagramPlot <- function()
       Try(if (ncol(tstat)>1)
         tstat <- tstat[,coefList[[i]]])
       Try(contrastsMatrix <- cbind(contrastsMatrix,as.matrix(rep(0,NumParameters))))
-      Try(contrastsMatrix[coefList[[i]],ncol(contrastsMatrix)] <- 1)      
+      Try(contrastsMatrix[coefList[[i]],ncol(contrastsMatrix)] <- 1)
       Try(ParameterOrContrastName <- colnames(design)[coefList[[i]]])
     }
     else
@@ -3249,18 +3249,18 @@ VennDiagramPlot <- function()
       Try(tstat <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$eb$t)
       Try(tstat <- as.matrix(tstat))
       Try(if (ncol(tstat)>1)
-        tstat <- tstat[,coefList[[i]]])     
+        tstat <- tstat[,coefList[[i]]])
       Try(contrasts.matrix <- ((ParameterizationList[[ParameterizationNameNode]])$Contrasts[[ContrastParameterizationIndex]])$contrastsMatrixInList$contrasts)
 #    Try(for (j in (1:ncol(contrasts.matrix)))
 #      for (i in (1:nrow(contrasts.matrix)))
 #        Try(tkmessageBox(message=paste("contrasts.matrix[",i,",",j,"] = ",contrasts.matrix[i,j],sep=""))))
-#    Try(for (j in (1:ncol(contrasts.matrix)))      
-#        Try(tkmessageBox(message=paste("colnames(contrasts.matrix)[",j,"] = ",colnames(contrasts.matrix)[j],sep=""))))        
+#    Try(for (j in (1:ncol(contrasts.matrix)))
+#        Try(tkmessageBox(message=paste("colnames(contrasts.matrix)[",j,"] = ",colnames(contrasts.matrix)[j],sep=""))))
       Try(contrastsMatrix <- cbind(contrastsMatrix,as.matrix(contrasts.matrix[,coefList[[i]]])))
-      Try(ParameterOrContrastName <- colnames(contrasts.matrix)[coefList[[i]]])      
+      Try(ParameterOrContrastName <- colnames(contrasts.matrix)[coefList[[i]]])
     })
-    
-    Try(if (length(tstats)==0) 
+
+    Try(if (length(tstats)==0)
       Try(tstats <- as.matrix(tstat))
     else
     {
@@ -3277,48 +3277,48 @@ VennDiagramPlot <- function()
     Try(tkmessageBox(title="Invalid P-Value",message="Please enter a valid decimal number for the p-value cutoff.",icon="error",type="ok",default="ok"))
     Try(pvalueText <- GetPValueCutoff())
     Try(if (pvalueText=="ID_CancelFromGetPValueCutoff") return())
-  })  
+  })
 
   Try(clas <- classifyTestsF(tstats,p.value=p.value))
   Try(vc   <- vennCounts(clas,include=include))
-  
+
   plotVennDiagram <- function()
   {
     Try(opar<-par(bg="white"))
     Try(vennDiagramlimmaGUI(vc,include=include,cex=0.85,mar=rep(1,4)))
     Try(TempGraphPar<-par(opar))
   }
-  
+
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-  Try(LocalVScale <- .limmaGUIglobals$Myvscale)   
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale)
 
   # FIXME: It'd be nice to list the one, two or three parameters.
   Try(plotTitle <- paste("Venn diagram for parameterization",ParameterizationNamesVec[parameterizationIndex]))
 
   # Also it'd be nice to allow user labels for the sets, if the default labels are too large.
 
-  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch")) 
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
-  { 
-    Try(ttVennDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))  
+  {
+    Try(ttVennDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttVennDiagramPlot,plotTitle))
     Try(Require("tkrplot"))
     Try(img <- tkrplot(ttVennDiagramPlot,plotVennDiagram,hscale=LocalHScale,vscale=LocalVScale))
     Try(SetupPlotKeyBindings(tt=ttVennDiagramPlot,img=img))
     Try(SetupPlotMenus(tt=ttVennDiagramPlot,initialfile=paste(limmaDataSetNameText,"VennDiagram",sep=""),
-                 plotFunction=plotVennDiagram,img=img))  
+                 plotFunction=plotVennDiagram,img=img))
     Try(tkgrid(img))
     Try(tkfocus(ttVennDiagramPlot))
   }
   else
   {
-    Try(plot.new())  
+    Try(plot.new())
     Try(plotVennDiagram())
   })
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-  
+
 }
 
 
@@ -3349,13 +3349,13 @@ UpDownOrBoth <- function()
   Try(tkgrid(tklabel(tkframeOKCancel,text="    "),columnspan=2))
   Try(tkgrid(OK.but,Cancel.but))
   Try(tkgrid.configure(OK.but,sticky="e"))
-  Try(tkgrid.configure(Cancel.but,sticky="w"))  
+  Try(tkgrid.configure(Cancel.but,sticky="w"))
   Try(tkgrid(tklabel(tkframeOKCancel,text="    "),columnspan=2))
   Try(tkgrid(tklabel(ttUpDownOrBoth,text="    "),tkframeOKCancel))
-  
+
   Try(tkbind(ttUpDownOrBoth, "<Destroy>", function() {Try(tkgrab.release(ttUpDownOrBoth));Try(tkfocus(.limmaGUIglobals$ttMain))}))
-  Try(tkwait.window(ttUpDownOrBoth))  
-  
+  Try(tkwait.window(ttUpDownOrBoth))
+
   return (ReturnVal)
 }
 
@@ -3423,16 +3423,16 @@ GetPValueCutoff <- function(p.value=0.01)
   Try(tkgrid(entry.PValueCutoff,columnspan=2))
   Try(ReturnVal <- "ID_CancelFromGetPValueCutoff")
   onOK <- function()
-  {    
+  {
     Try(PValueCutoffTxt <- tclvalue(PValueCutoffTcl))
     Try(ReturnVal <<- PValueCutoffTxt)
     Try(tkgrab.release(ttGetPValueCutoff));Try(tkdestroy(ttGetPValueCutoff));Try(tkfocus(.limmaGUIglobals$ttMain))
   }
   onCancel <- function()
-  {    
+  {
     Try(ReturnVal <<- "ID_CancelFromGetPValueCutoff")
     Try(tkgrab.release(ttGetPValueCutoff));Try(tkdestroy(ttGetPValueCutoff));Try(tkfocus(.limmaGUIglobals$ttMain))
-  }     
+  }
   Try(OK.but <-tkbutton(ttGetPValueCutoff,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
   Try(Cancel.but <-tkbutton(ttGetPValueCutoff,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(ttGetPValueCutoff,text="    ")))
@@ -3445,7 +3445,7 @@ GetPValueCutoff <- function(p.value=0.01)
   Try(tkbind(ttGetPValueCutoff, "<Destroy>", function(){Try(tkgrab.release(ttGetPValueCutoff));Try(tkfocus(.limmaGUIglobals$ttMain));return("ID_CancelFromGetPValueCutoff")}))
   Try(tkwait.window(ttGetPValueCutoff))
   Try(tkfocus(.limmaGUIglobals$ttMain))
-  return (ReturnVal)          
+  return (ReturnVal)
 }
 
 GetLowessType <- function()
@@ -3469,7 +3469,7 @@ GetLowessType <- function()
   Try(global.but <- tkradiobutton(tkframe2,text="Global Lowess Curve",variable=LowessTypeTcl,value="global",font=.limmaGUIglobals$limmaGUIfont2))
   Try(printtip.but <- tkradiobutton(tkframe2,text="Print-Tip Group Lowess Curves",variable=LowessTypeTcl,value="printtip",font=.limmaGUIglobals$limmaGUIfont2))
 
-    
+
   Try(tkgrid(none.but,column=2))
   Try(tkgrid(global.but,column=2))
   Try(tkgrid(printtip.but,column=2))
@@ -3482,7 +3482,7 @@ GetLowessType <- function()
     Try(tkgrab.release(ttGetLowessType))
     Try(tkdestroy(ttGetLowessType))
     Try(LowessType <- NewLowessType)
-    Try(tkfocus(.limmaGUIglobals$ttMain))  
+    Try(tkfocus(.limmaGUIglobals$ttMain))
   }
   onHelp <- function()
   {
@@ -3504,7 +3504,7 @@ GetLowessType <- function()
   Try(tkgrid(OK.but,Cancel.but,Help.but))
   Try(tkgrid.configure(OK.but,sticky="e"))
   Try(tkgrid.configure(Cancel.but,sticky="e"))
-  Try(tkgrid.configure(Help.but,sticky="e"))  
+  Try(tkgrid.configure(Help.but,sticky="e"))
   Try(tkgrid(tklabel(tkframe4,text="       ")))
   Try(tkgrid(tkframe4))
   Try(tkgrid(tkframe1))
@@ -3513,7 +3513,7 @@ GetLowessType <- function()
   Try(tkbind(ttGetLowessType, "<Destroy>", function() {Try(tkgrab.release(ttGetLowessType));Try(tkfocus(.limmaGUIglobals$ttMain))}))
   Try(tkwait.window(ttGetLowessType))
 
-  Try(tkdestroy(ttGetLowessType))  
+  Try(tkdestroy(ttGetLowessType))
 
 # This return value below is not used.  The function above is used for its effect
 # on LowessType in limmaGUIenvironment

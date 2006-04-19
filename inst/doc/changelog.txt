@@ -1,0 +1,35 @@
+
+------------------------- limmaGUI ChangeLog -------------------------
+12 April 2006 limmaGUI 1.7.0
+	Replace deprecated tkcmd with tcl
+
+30 November 2005: limmaGUI 1.6.4
+	Add ChangeLog item to Help Menu - shows 20 lines
+	Add the showChangeLog function to main.R
+	Add Citations item to Help Menu.
+	Add Sentence on Main window telling users about the Citations item
+	on the Help Menu.
+	Fix limma help function on Help menu.
+	Make message for help functions appear in R console rather than as a
+	separate tkmessage box.
+
+28 November 2005: limmaGUI 1.6.3
+	changed Top Table Adjust Methods to
+	None, BH, BY, Holm
+
+28 November 2005: limmaGUI 1.6.3
+	This changelog instigated by Keith Satterley
+
+October 14 2005: limmaGUI 1.6.0
+	limmaGUI version upgraded from 1.4 to 1.6.0 for release
+	by Bioconductor for release with Bioconductor
+	version 1.7 (for release after R 2.2.0)
+	Maintainer changed from James Wettenhall to Keith Satterley
+
+
+PRE-HISTORY
+
+LimmaGUI was developed by James Wettenhall and Gordon Smyth
+between 2003 and October 2005.
+
+=======================================================================

@@ -1,5 +1,5 @@
 
-.First.lib <- function(libname, pkgname, where) 
+.First.lib <- function(libname, pkgname, where)
 {
      if (length(grep("^affylmGUI$", .packages()))>0)
        stop("Please run limmaGUI and affylmGUI in separate R sessions.")
@@ -27,7 +27,7 @@
   {
     tkmessageBox(title="An error has occured!",message=paste("Cannot find package limma"),icon="error",type="ok")
     stop("Cannot find package limma")
-  } 
+  }
   if (require(limma)==FALSE)
   {
     tkmessageBox(title="An error has occured!",message=paste("Cannot find package limma"),icon="error",type="ok")
@@ -40,8 +40,8 @@
 		{
 			regPath  <- "HKEY_CURRENT_USER\\SOFTWARE\\ActiveState\\ActiveTcl"
 			regPath2 <- "HKEY_LOCAL_MACHINE\\SOFTWARE\\ActiveState\\ActiveTcl"
-			if(inherits(try(TclVersion <- tclvalue(tkcmd("registry","get",regPath,"CurrentVersion")),TRUE),"try-error")&&
-				 inherits(try(TclVersion2 <- tclvalue(tkcmd("registry","get",regPath2,"CurrentVersion")),TRUE),"try-error"))
+			if(inherits(try(TclVersion <- tclvalue(tcl("registry","get",regPath,"CurrentVersion")),TRUE),"try-error")&&
+				 inherits(try(TclVersion2 <- tclvalue(tcl("registry","get",regPath2,"CurrentVersion")),TRUE),"try-error"))
 			{
 				cat(paste("\nWarning: ActiveTcl could not be found in the Windows Registry.\n"))
 				cat(paste("\nEither it has not been installed or it has not been installed with sufficient privileges.\n\n"))
@@ -50,19 +50,19 @@
 			}
 			else
 			{
-				if (!inherits(try(TclVersion <- tclvalue(tkcmd("registry","get",regPath,"CurrentVersion")),TRUE),"try-error"))
+				if (!inherits(try(TclVersion <- tclvalue(tcl("registry","get",regPath,"CurrentVersion")),TRUE),"try-error"))
 				{
 					regPath <- paste(regPath,TclVersion,sep="\\")
-					TclPath <-  tclvalue(tkcmd("registry","get",regPath,""))
+					TclPath <-  tclvalue(tcl("registry","get",regPath,""))
 					cat(paste("\nActiveTcl was found in the Windows Registry (for CURRENT_USER), installed in",TclPath,sep="\n"))
 					cat(paste("\nThis directory will be added to the Tcl search path to enable limmaGUI\n"))
 					cat(paste("to find the Tktable and BWidget extensions.\n"))
 					addTclPath(paste(gsub("\\\\","/",TclPath),"lib",sep="/"))
 				}
-				if (!inherits(try(TclVersion2 <- tclvalue(tkcmd("registry","get",regPath2,"CurrentVersion")),TRUE),"try-error"))      
+				if (!inherits(try(TclVersion2 <- tclvalue(tcl("registry","get",regPath2,"CurrentVersion")),TRUE),"try-error"))
 				{
 					regPath2 <- paste(regPath2,TclVersion2,sep="\\")
-					TclPath2 <-  tclvalue(tkcmd("registry","get",regPath2,""))
+					TclPath2 <-  tclvalue(tcl("registry","get",regPath2,""))
 					cat(paste("\nActiveTcl was found in the Windows Registry (for LOCAL_MACHINE), installed in",TclPath2,sep="\n"))
 					cat(paste("\nThis directory will be added to the Tcl search path to enable limmaGUI\n"))
 					cat(paste("to find the Tktable and BWidget extensions.\n"))
@@ -88,7 +88,7 @@
     if (.Platform$OS.type=="windows")
     {
 		  BeginLimmaGUI <- tclvalue(tkmessageBox(title="limmaGUI",message="Begin limmaGUI?",type="yesno",icon="question"))
-		  if (BeginLimmaGUI=="yes") 
+		  if (BeginLimmaGUI=="yes")
 		  	limmaGUI()
 		  else
 				bringToTop(-1)

@@ -8,9 +8,9 @@
 GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
 {
 
-  Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))  
+  Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(LinearModelComputed  <- get("LinearModelComputed", envir=limmaGUIenvironment))
-  Try(ndups   <- get("ndups",envir=limmaGUIenvironment))  
+  Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
 
   Try(ttHTMLreportDialog<-tktoplevel(.limmaGUIglobals$ttMain))
   Try(tkwm.deiconify(ttHTMLreportDialog))
@@ -20,13 +20,13 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
   Try(tkgrid(tklabel(ttHTMLreportDialog,text="    "),tklabel(ttHTMLreportDialog,text="    ")))
 
 
-  Try(TargetsTcl           <- tclVar("1"))  
+  Try(TargetsTcl           <- tclVar("1"))
   Try(SpotTypesTcl         <- tclVar("1"))
   Try(LayoutTcl            <- tclVar("1"))
   Try(BackgroundCorrectionTcl <- tclVar("1"))
   Try(SpotWeightingTcl     <- tclVar("1"))
   Try(RawMATcl             <- tclVar("1"))
-  Try(RawPrintTipGroupTcl  <- tclVar("1"))  
+  Try(RawPrintTipGroupTcl  <- tclVar("1"))
   Try(ScaleBoxPlotTcl      <- tclVar("1"))
   Try(if (NumParameterizations>0)
     Try(SpotTypesInLinearModelTcl <- tclVar("1"))
@@ -35,48 +35,48 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
   Try(if (NumParameterizations>0)
     Try(NormalizationInLinearModelTcl <- tclVar("1"))
   else
-    Try(NormalizationInLinearModelTcl <- tclVar("0")))    
+    Try(NormalizationInLinearModelTcl <- tclVar("0")))
   Try(if (NumParameterizations>0)
     Try(DesignMatrixTcl      <- tclVar("1"))
   else
     Try(DesignMatrixTcl      <- tclVar("0")))
-  Try(if (NumParameterizations>0 && ndups>1)    
-    Try(DupCorTcl            <- tclVar("1"))  
+  Try(if (NumParameterizations>0 && ndups>1)
+    Try(DupCorTcl            <- tclVar("1"))
   else
     Try(DupCorTcl            <- tclVar("0")))
-  Try(if (NumParameterizations>0)  
-    Try(Top50ToptablesTcl    <- tclVar("1"))    
+  Try(if (NumParameterizations>0)
+    Try(Top50ToptablesTcl    <- tclVar("1"))
   else
     Try(Top50ToptablesTcl    <- tclVar("0")))
-  Try(CompleteToptablesTcl <- tclVar("0"))      
-  Try(if (NumParameterizations>0)  
+  Try(CompleteToptablesTcl <- tclVar("0"))
+  Try(if (NumParameterizations>0)
     Try(AvgMAPlotTcl <- tclVar("1"))
   else
     Try(AvgMAPlotTcl    <- tclVar("0")))
-  Try(tStatisticBoxPlotsTcl <- tclVar("0"))  
+  Try(tStatisticBoxPlotsTcl <- tclVar("0"))
 
   Try(TargetsCheckbox                     <- tkcheckbutton(ttHTMLreportDialog,variable=TargetsTcl))
-  Try(SpotTypesCheckbox                   <- tkcheckbutton(ttHTMLreportDialog,variable=SpotTypesTcl))  
-  Try(LayoutCheckbox                      <- tkcheckbutton(ttHTMLreportDialog,variable=LayoutTcl))    
-  Try(BackgroundCorrectionCheckbox        <- tkcheckbutton(ttHTMLreportDialog,variable=BackgroundCorrectionTcl))      
-  Try(SpotWeightingCheckbox               <- tkcheckbutton(ttHTMLreportDialog,variable=SpotWeightingTcl))      
-  Try(RawMACheckbox                       <- tkcheckbutton(ttHTMLreportDialog,variable=RawMATcl))    
-  Try(RawPrintTipGroupCheckbox            <- tkcheckbutton(ttHTMLreportDialog,variable=RawPrintTipGroupTcl))      
-  Try(ScaleBoxPlotCheckbox                <- tkcheckbutton(ttHTMLreportDialog,variable=ScaleBoxPlotTcl))        
-  Try(SpotTypesInLinearModelCheckbox      <- tkcheckbutton(ttHTMLreportDialog,variable=SpotTypesInLinearModelTcl))        
-  Try(NormalizationInLinearModelCheckbox  <- tkcheckbutton(ttHTMLreportDialog,variable=NormalizationInLinearModelTcl))          
-  Try(DesignMatrixCheckbox                <- tkcheckbutton(ttHTMLreportDialog,variable=DesignMatrixTcl))          
-  Try(DupCorCheckbox                      <- tkcheckbutton(ttHTMLreportDialog,variable=DupCorTcl))            
-  Try(Top50ToptablesCheckbox              <- tkcheckbutton(ttHTMLreportDialog,variable=Top50ToptablesTcl))              
-  Try(CompleteToptablesCheckbox           <- tkcheckbutton(ttHTMLreportDialog,variable=CompleteToptablesTcl))                
+  Try(SpotTypesCheckbox                   <- tkcheckbutton(ttHTMLreportDialog,variable=SpotTypesTcl))
+  Try(LayoutCheckbox                      <- tkcheckbutton(ttHTMLreportDialog,variable=LayoutTcl))
+  Try(BackgroundCorrectionCheckbox        <- tkcheckbutton(ttHTMLreportDialog,variable=BackgroundCorrectionTcl))
+  Try(SpotWeightingCheckbox               <- tkcheckbutton(ttHTMLreportDialog,variable=SpotWeightingTcl))
+  Try(RawMACheckbox                       <- tkcheckbutton(ttHTMLreportDialog,variable=RawMATcl))
+  Try(RawPrintTipGroupCheckbox            <- tkcheckbutton(ttHTMLreportDialog,variable=RawPrintTipGroupTcl))
+  Try(ScaleBoxPlotCheckbox                <- tkcheckbutton(ttHTMLreportDialog,variable=ScaleBoxPlotTcl))
+  Try(SpotTypesInLinearModelCheckbox      <- tkcheckbutton(ttHTMLreportDialog,variable=SpotTypesInLinearModelTcl))
+  Try(NormalizationInLinearModelCheckbox  <- tkcheckbutton(ttHTMLreportDialog,variable=NormalizationInLinearModelTcl))
+  Try(DesignMatrixCheckbox                <- tkcheckbutton(ttHTMLreportDialog,variable=DesignMatrixTcl))
+  Try(DupCorCheckbox                      <- tkcheckbutton(ttHTMLreportDialog,variable=DupCorTcl))
+  Try(Top50ToptablesCheckbox              <- tkcheckbutton(ttHTMLreportDialog,variable=Top50ToptablesTcl))
+  Try(CompleteToptablesCheckbox           <- tkcheckbutton(ttHTMLreportDialog,variable=CompleteToptablesTcl))
   Try(AvgMAPlotCheckbox                   <- tkcheckbutton(ttHTMLreportDialog,variable=AvgMAPlotTcl))
-  Try(tStatisticBoxPlotsCheckbox          <- tkcheckbutton(ttHTMLreportDialog,variable=tStatisticBoxPlotsTcl))                  
+  Try(tStatisticBoxPlotsCheckbox          <- tkcheckbutton(ttHTMLreportDialog,variable=tStatisticBoxPlotsTcl))
 
   Try(lbl2 <- tklabel(ttHTMLreportDialog,text="Components to be Included in the HTML Report",font=.limmaGUIglobals$limmaGUIfont2))
   tkgrid(tklabel(ttHTMLreportDialog,text="    "),lbl2)
   Try(tkgrid.configure(lbl2,columnspan=3,sticky="w"))
   tkgrid(tklabel(ttHTMLreportDialog,text="    "))
-  
+
   Try(currentLabel <- tklabel(ttHTMLreportDialog,text="RNA Targets",font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(ttHTMLreportDialog,text="    "),TargetsCheckbox,currentLabel))
   Try(tkgrid.configure(TargetsCheckbox,sticky="e"));  Try(tkgrid.configure(currentLabel,sticky="w",columnspan=2))
@@ -130,19 +130,19 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
 
   if (NumParameterizations==0 || LinearModelComputed[parameterizationIndex]==FALSE)
   {
-    Try(tkconfigure(SpotTypesInLinearModelCheckbox,state="disabled"))  
-    Try(tkconfigure(NormalizationInLinearModelCheckbox,state="disabled"))      
+    Try(tkconfigure(SpotTypesInLinearModelCheckbox,state="disabled"))
+    Try(tkconfigure(NormalizationInLinearModelCheckbox,state="disabled"))
     Try(tkconfigure(DesignMatrixCheckbox,state="disabled"))
-    Try(tkconfigure(DupCorCheckbox,state="disabled"))  
-    Try(tkconfigure(Top50ToptablesCheckbox,state="disabled"))    
-    Try(tkconfigure(CompleteToptablesCheckbox,state="disabled"))      
+    Try(tkconfigure(DupCorCheckbox,state="disabled"))
+    Try(tkconfigure(Top50ToptablesCheckbox,state="disabled"))
+    Try(tkconfigure(CompleteToptablesCheckbox,state="disabled"))
     Try(tkconfigure(tStatisticBoxPlotsCheckbox,state="disabled"))
-    Try(tkconfigure(AvgMAPlotCheckbox,state="disabled"))    
+    Try(tkconfigure(AvgMAPlotCheckbox,state="disabled"))
   }
-  
+
   if (ndups<=1)
-    Try(tkconfigure(DupCorCheckbox,state="disabled"))  
-  
+    Try(tkconfigure(DupCorCheckbox,state="disabled"))
+
   tkgrid(tklabel(ttHTMLreportDialog,text="    "))
   tkgrid(tklabel(ttHTMLreportDialog,text="    "))
   ReturnVal <- list()
@@ -150,25 +150,25 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
   {
       if (tclvalue(TargetsTcl)=="1") ReturnVal[[1]] <- TRUE else ReturnVal[[1]] <- FALSE; attributes(ReturnVal)$names[1] <- "Targets"
       if (tclvalue(SpotTypesTcl)=="1") ReturnVal[[2]] <- TRUE else ReturnVal[[2]] <- FALSE; attributes(ReturnVal)$names[2] <- "SpotTypes"
-      if (tclvalue(LayoutTcl)=="1") ReturnVal[[3]] <- TRUE else ReturnVal[[3]] <- FALSE; attributes(ReturnVal)$names[3] <- "Layout"      
-      if (tclvalue(BackgroundCorrectionTcl)=="1") ReturnVal[[4]] <- TRUE else ReturnVal[[4]] <- FALSE; attributes(ReturnVal)$names[4] <- "BackgroundCorrection"      
-      if (tclvalue(SpotWeightingTcl)=="1") ReturnVal[[5]] <- TRUE else ReturnVal[[5]] <- FALSE; attributes(ReturnVal)$names[5] <- "SpotWeighting"      
-      if (tclvalue(RawMATcl)=="1") ReturnVal[[6]] <- TRUE else ReturnVal[[6]] <- FALSE; attributes(ReturnVal)$names[6] <- "RawMA"            
-      if (tclvalue(RawPrintTipGroupTcl)=="1") ReturnVal[[7]] <- TRUE else ReturnVal[[7]] <- FALSE; attributes(ReturnVal)$names[7] <- "RawPrintTipGroup"                  
-      if (tclvalue(ScaleBoxPlotTcl)=="1") ReturnVal[[8]] <- TRUE else ReturnVal[[8]] <- FALSE; attributes(ReturnVal)$names[8] <- "ScaleBoxPlot"                        
-      if (tclvalue(SpotTypesInLinearModelTcl)=="1") ReturnVal[[9]] <- TRUE else ReturnVal[[9]] <- FALSE; attributes(ReturnVal)$names[9] <- "SpotTypesInLinearModel"      
-      if (tclvalue(NormalizationInLinearModelTcl)=="1") ReturnVal[[10]] <- TRUE else ReturnVal[[10]] <- FALSE; attributes(ReturnVal)$names[10] <- "NormalizationInLinearModel"            
-      if (tclvalue(DesignMatrixTcl)=="1") ReturnVal[[11]] <- TRUE else ReturnVal[[11]] <- FALSE; attributes(ReturnVal)$names[11] <- "DesignMatrix"                              
-      if (tclvalue(DupCorTcl)=="1") ReturnVal[[12]] <- TRUE else ReturnVal[[12]] <- FALSE; attributes(ReturnVal)$names[12] <- "DupCor"                                    
-      if (tclvalue(Top50ToptablesTcl)=="1") ReturnVal[[13]] <- TRUE else ReturnVal[[13]] <- FALSE; attributes(ReturnVal)$names[13] <- "Top50Toptables"                                          
-      if (tclvalue(CompleteToptablesTcl)=="1") ReturnVal[[14]] <- TRUE else ReturnVal[[14]] <- FALSE; attributes(ReturnVal)$names[14] <- "CompleteToptables"      
-      if (tclvalue(AvgMAPlotTcl)=="1") ReturnVal[[15]] <- TRUE else ReturnVal[[15]] <- FALSE; attributes(ReturnVal)$names[15] <- "AvgMAPlot"            
-      if (tclvalue(tStatisticBoxPlotsTcl)=="1") ReturnVal[[16]] <- TRUE else ReturnVal[[16]] <- FALSE; attributes(ReturnVal)$names[16] <- "tStatisticBoxPlots"            
-      
+      if (tclvalue(LayoutTcl)=="1") ReturnVal[[3]] <- TRUE else ReturnVal[[3]] <- FALSE; attributes(ReturnVal)$names[3] <- "Layout"
+      if (tclvalue(BackgroundCorrectionTcl)=="1") ReturnVal[[4]] <- TRUE else ReturnVal[[4]] <- FALSE; attributes(ReturnVal)$names[4] <- "BackgroundCorrection"
+      if (tclvalue(SpotWeightingTcl)=="1") ReturnVal[[5]] <- TRUE else ReturnVal[[5]] <- FALSE; attributes(ReturnVal)$names[5] <- "SpotWeighting"
+      if (tclvalue(RawMATcl)=="1") ReturnVal[[6]] <- TRUE else ReturnVal[[6]] <- FALSE; attributes(ReturnVal)$names[6] <- "RawMA"
+      if (tclvalue(RawPrintTipGroupTcl)=="1") ReturnVal[[7]] <- TRUE else ReturnVal[[7]] <- FALSE; attributes(ReturnVal)$names[7] <- "RawPrintTipGroup"
+      if (tclvalue(ScaleBoxPlotTcl)=="1") ReturnVal[[8]] <- TRUE else ReturnVal[[8]] <- FALSE; attributes(ReturnVal)$names[8] <- "ScaleBoxPlot"
+      if (tclvalue(SpotTypesInLinearModelTcl)=="1") ReturnVal[[9]] <- TRUE else ReturnVal[[9]] <- FALSE; attributes(ReturnVal)$names[9] <- "SpotTypesInLinearModel"
+      if (tclvalue(NormalizationInLinearModelTcl)=="1") ReturnVal[[10]] <- TRUE else ReturnVal[[10]] <- FALSE; attributes(ReturnVal)$names[10] <- "NormalizationInLinearModel"
+      if (tclvalue(DesignMatrixTcl)=="1") ReturnVal[[11]] <- TRUE else ReturnVal[[11]] <- FALSE; attributes(ReturnVal)$names[11] <- "DesignMatrix"
+      if (tclvalue(DupCorTcl)=="1") ReturnVal[[12]] <- TRUE else ReturnVal[[12]] <- FALSE; attributes(ReturnVal)$names[12] <- "DupCor"
+      if (tclvalue(Top50ToptablesTcl)=="1") ReturnVal[[13]] <- TRUE else ReturnVal[[13]] <- FALSE; attributes(ReturnVal)$names[13] <- "Top50Toptables"
+      if (tclvalue(CompleteToptablesTcl)=="1") ReturnVal[[14]] <- TRUE else ReturnVal[[14]] <- FALSE; attributes(ReturnVal)$names[14] <- "CompleteToptables"
+      if (tclvalue(AvgMAPlotTcl)=="1") ReturnVal[[15]] <- TRUE else ReturnVal[[15]] <- FALSE; attributes(ReturnVal)$names[15] <- "AvgMAPlot"
+      if (tclvalue(tStatisticBoxPlotsTcl)=="1") ReturnVal[[16]] <- TRUE else ReturnVal[[16]] <- FALSE; attributes(ReturnVal)$names[16] <- "tStatisticBoxPlots"
+
       Try(tkgrab.release(ttHTMLreportDialog));Try(tkdestroy(ttHTMLreportDialog));Try(tkfocus(.limmaGUIglobals$ttMain))
       ReturnVal <<- ReturnVal
   }
-  onCancel <- function() {Try(tkgrab.release(ttHTMLreportDialog));Try(tkdestroy(ttHTMLreportDialog));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- list()}      
+  onCancel <- function() {Try(tkgrab.release(ttHTMLreportDialog));Try(tkdestroy(ttHTMLreportDialog));Try(tkfocus(.limmaGUIglobals$ttMain)); ReturnVal <<- list()}
   OK.but <-tkbutton(ttHTMLreportDialog,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
   Cancel.but <-tkbutton(ttHTMLreportDialog,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
   tkgrid(tklabel(ttHTMLreportDialog,text="    "),tklabel(ttHTMLreportDialog,text="    "),OK.but,Cancel.but,tklabel(ttHTMLreportDialog,text="    "),tklabel(ttHTMLreportDialog,text="    "))
@@ -198,41 +198,41 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
 
 #    AbsGraphFileName <- paste(GraphRelativeDirectory,.Platform$file.sep,GraphFileName,sep="")
     AbsGraphFileName <- file.path(GraphAbsoluteDirectory, GraphFileName)
-    if (GraphSaveAs=="png") 
+    if (GraphSaveAs=="png")
     {
       if (is.null(plotFunction))
         dev.print(png, file = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)
       else
       {
-        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")  
+        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
           Try(bitmap(file = AbsGraphFileName,bg=BG,res=res))
         else
           Try(png(filename = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)))
-        plotFunction()      
+        plotFunction()
         dev.off()
       }
     }
-    else if (GraphSaveAs=="jpg") 
+    else if (GraphSaveAs=="jpg")
     {
       if (is.null(plotFunction))
         dev.print(jpeg, file = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)
       else
       {
-        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")  
+        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
           Try(bitmap(filename = AbsGraphFileName,bg=BG,res=res,type="jpeg"))
         else
           Try(jpeg(filename = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)))
-        plotFunction()      
+        plotFunction()
         dev.off()
       }
     }
-    else if (GraphSaveAs=="gif") 
+    else if (GraphSaveAs=="gif")
     {
       if (is.null(plotFunction))
         dev.print(gif, file = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)
       else
       {
-        stop("When passing a plot function to HTMLplot, device must be jpg or png.")      
+        stop("When passing a plot function to HTMLplot, device must be jpg or png.")
       }
     }
     else stop("GraphSaveAs must be either jpg, png or gif")
@@ -255,12 +255,12 @@ ExportHTMLreport <- function()
   Require("R2HTML")
 
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))   
-  Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))  
-  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))   
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
+  Try(LinearModelComputed <- get("LinearModelComputed", envir=limmaGUIenvironment))
   Try(ParameterizationTreeIndexVec <- get("ParameterizationTreeIndexVec",envir=limmaGUIenvironment))
   Try(RG <- get("RG",envir=limmaGUIenvironment))
-  
+
   if (ArraysLoaded==FALSE)
   {
       Try(tkmessageBox(title="Export HTML Report",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
@@ -277,16 +277,18 @@ ExportHTMLreport <- function()
     Try(ComponentsToExport <- GetComponentsToExportInHTMLreport(parameterizationIndex))
  }
  else
-     Try(ComponentsToExport <- GetComponentsToExportInHTMLreport()) 
- 
+     Try(ComponentsToExport <- GetComponentsToExportInHTMLreport())
+
   if (length(ComponentsToExport)==0) return()
 
-  Try(fileNameWithPath<- tkgetSaveFile(initialfile=limmaDataSetNameText,filetypes="{{HTML Files} {.html .htm}} {{All files} *}"))  
+  Try(fileNameWithPath<- tkgetSaveFile(initialfile=limmaDataSetNameText,filetypes="{{HTML Files} {.html .htm}} {{All files} *}"))
   Try(if (nchar(tclvalue(fileNameWithPath))==0)
     return())
   Try(path     <- tclvalue(tkfile.dir (tclvalue(fileNameWithPath))))
   Try(fileName <- tclvalue(tkfile.tail(tclvalue(fileNameWithPath))))
-   
+  ###Try(path     <- tclvalue(tcl( (tclvalue(fileNameWithPath)),"dir" )))###not working yet - no timee to fix now - do it later
+  ###Try(fileName <- tclvalue(tcl( (tclvalue(fileNameWithPath)),"tail")))###not working yet - no timee to fix now - do it later
+
   Try(len <- nchar(fileName))
   if (len<4)
       Try(fileName <- paste(fileName,".html",sep=""))
@@ -295,58 +297,58 @@ ExportHTMLreport <- function()
           Try(fileName <- paste(fileName,".html",sep=""))
 
   Try(fileNameWithoutExtension <- substring(fileName,1,nchar(fileName)-5))
-                                                                
+
   Try(HTMLfilePath <- paste(path,.Platform$file.sep,fileNameWithoutExtension,"_files",sep=""))
   Try(HTMLfileRelativePath <- paste(fileNameWithoutExtension,"_files",sep=""))
   Try(dir.create(HTMLfilePath))
-  
-  Try(fileNameWithPath <- paste(path,"/",fileName,sep=""))                                                 
+
+  Try(fileNameWithPath <- paste(path,"/",fileName,sep=""))
 
   Try(R2HTMLpath <- system.file(package="R2HTML","output"))
   Try(cssFileSource <- paste(R2HTMLpath,"/","R2HTML.css",sep=""))
-  Try(cssFileDestination <- paste(path,"/","R2HTML.css",sep=""))  
+  Try(cssFileDestination <- paste(path,"/","R2HTML.css",sep=""))
   Try(R2HTMLlogoSource <- paste(R2HTMLpath,"/","R2HTMLlogo.gif",sep=""))
-  Try(R2HTMLlogoDestination <- paste(path,"/","R2HTMLlogo.gif",sep=""))  
-  Try(file.copy(cssFileSource,cssFileDestination,overwrite=TRUE))  
-  Try(file.copy(R2HTMLlogoSource,R2HTMLlogoDestination,overwrite=TRUE))    
+  Try(R2HTMLlogoDestination <- paste(path,"/","R2HTMLlogo.gif",sep=""))
+  Try(file.copy(cssFileSource,cssFileDestination,overwrite=TRUE))
+  Try(file.copy(R2HTMLlogoSource,R2HTMLlogoDestination,overwrite=TRUE))
 
   Try(HTMLtarget <- HTMLInitFile(path,filename=fileNameWithoutExtension,Title=paste(limmaDataSetNameText,"- Statistical Microarray Analysis using LimmaGUI"), HTMLframe=FALSE,BackGroundColor="#FFFFFF"))
 
   Try(HTML.title(paste(limmaDataSetNameText,"- Statistical Microarray Analysis using LimmaGUI"),HR=1))
 
-  Try(ExportTargets                    <- ComponentsToExport$Targets)  
+  Try(ExportTargets                    <- ComponentsToExport$Targets)
   Try(ExportSpotTypes                  <- ComponentsToExport$SpotTypes)
   Try(ExportLayout                     <- ComponentsToExport$Layout)
   Try(ExportBackgroundCorrection       <- ComponentsToExport$BackgroundCorrection)
   Try(ExportSpotWeighting              <- ComponentsToExport$SpotWeighting)
   Try(ExportRawMA                      <- ComponentsToExport$RawMA)
-  Try(ExportRawPrintTipGroup           <- ComponentsToExport$RawPrintTipGroup)  
+  Try(ExportRawPrintTipGroup           <- ComponentsToExport$RawPrintTipGroup)
   Try(ExportScaleBoxPlot               <- ComponentsToExport$ScaleBoxPlot)
-  Try(ExportSpotTypesInLinearModel     <- ComponentsToExport$SpotTypesInLinearModel)  
-  Try(ExportNormalizationInLinearModel <- ComponentsToExport$NormalizationInLinearModel)    
+  Try(ExportSpotTypesInLinearModel     <- ComponentsToExport$SpotTypesInLinearModel)
+  Try(ExportNormalizationInLinearModel <- ComponentsToExport$NormalizationInLinearModel)
   Try(ExportDesignMatrix               <- ComponentsToExport$DesignMatrix)
-  Try(ExportDupCor                     <- ComponentsToExport$DupCor)  
-  Try(ExportTop50Toptables             <- ComponentsToExport$Top50Toptables)    
-  Try(ExportCompleteToptables          <- ComponentsToExport$CompleteToptables)      
-  Try(ExportAvgMAPlot                  <- ComponentsToExport$AvgMAPlot)    
-  Try(ExporttStatisticBoxPlots         <- ComponentsToExport$tStatisticBoxPlots)      
+  Try(ExportDupCor                     <- ComponentsToExport$DupCor)
+  Try(ExportTop50Toptables             <- ComponentsToExport$Top50Toptables)
+  Try(ExportCompleteToptables          <- ComponentsToExport$CompleteToptables)
+  Try(ExportAvgMAPlot                  <- ComponentsToExport$AvgMAPlot)
+  Try(ExporttStatisticBoxPlots         <- ComponentsToExport$tStatisticBoxPlots)
 
   if (ExportRawMA || ExportRawPrintTipGroup || ExportScaleBoxPlot || ExportAvgMAPlot || ExporttStatisticBoxPlots)
   {
     Try(if (capabilities("png")==FALSE)
         Try(tkmessageBox(title="PNG unavailable",message="Your R installation is unable to save PNG images of plots.",icon="warning"))
     else
-      Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")  
+      Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
       {
-        Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))  
+        Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))
         Try(if (length(pngParams)==0) return())
         Try(plotBG        <- pngParams$bg)
-        Try(plotRes       <- pngParams$res)    
+        Try(plotRes       <- pngParams$res)
       }
       else
       {
         Try(pngParams <- GetJpegOrPngParams(graphFileType="PNG"))
-        Try(if (length(pngParams)==0) return())    
+        Try(if (length(pngParams)==0) return())
         Try(plotWidth     <- pngParams$width)
         Try(plotHeight    <- pngParams$height)
         Try(plotPointSize <- pngParams$pointsize)
@@ -360,20 +362,20 @@ ExportHTMLreport <- function()
   if (ExportLayout) Try(HTMLli(txt="<a href=\"#Layout\"><b>Layout</b></a>"))
   if (ExportBackgroundCorrection) Try(HTMLli(txt="<a href=\"#BackgroundCorrection\"><b>Background Correction</b></a>"))
   if (ExportSpotWeighting) Try(HTMLli(txt="<a href=\"#SpotWeighting\"><b>Spot Quality Weighting</b></a>"))
-  if (ExportRawMA) Try(HTMLli(txt="<a href=\"#RawMA\"><b>Raw M A Plots</b></a>"))  
-  if (ExportRawPrintTipGroup) Try(HTMLli(txt="<a href=\"#RawPrintTipGroup\"><b>Raw Print-Tip Group Loess M A Plots</b></a>"))    
-  if (ExportScaleBoxPlot) Try(HTMLli(txt="<a href=\"#ScaleBoxPlot\"><b>M Box Plot for each Slide</b></a>"))      
-  if (ExportSpotTypesInLinearModel) Try(HTMLli(txt="<a href=\"#SpotTypesInLinearModel\"><b>Spot Types Included In Linear Model</b></a>"))  
-  if (ExportNormalizationInLinearModel) Try(HTMLli(txt="<a href=\"#NormalizationInLinearModel\"><b>Normalization Used In Linear Model</b></a>"))  
-  if (ExportDesignMatrix) Try(HTMLli(txt="<a href=\"#DesignMatrix\"><b>Design Matrix</b></a>"))          
-  if (ExportDupCor) Try(HTMLli(txt="<a href=\"#DupCor\"><b>Duplicate Correlation</b></a>"))          
-  if (ExportTop50Toptables) Try(HTMLli(txt="<a href=\"#Top50Toptables\"><b>Tables of Top 50 Differentially Expressed Genes</b></a>"))            
-  if (ExportCompleteToptables) Try(HTMLli(txt="<a href=\"#CompleteToptables\"><b>Complete Tables of Genes Ranked in order of Evidence for Differential Expression</b></a>")) 
-  if (ExportAvgMAPlot) Try(HTMLli(txt="<a href=\"#AvgMAPlot\"><b>M A Plots (with fitted M values)</b></a>")) 
-  if (ExporttStatisticBoxPlots) Try(HTMLli(txt="<a href=\"#tStatisticBoxPlots\"><b>Box Plots showing the Range of t Statistics for each Spot Type</b></a>")) 
+  if (ExportRawMA) Try(HTMLli(txt="<a href=\"#RawMA\"><b>Raw M A Plots</b></a>"))
+  if (ExportRawPrintTipGroup) Try(HTMLli(txt="<a href=\"#RawPrintTipGroup\"><b>Raw Print-Tip Group Loess M A Plots</b></a>"))
+  if (ExportScaleBoxPlot) Try(HTMLli(txt="<a href=\"#ScaleBoxPlot\"><b>M Box Plot for each Slide</b></a>"))
+  if (ExportSpotTypesInLinearModel) Try(HTMLli(txt="<a href=\"#SpotTypesInLinearModel\"><b>Spot Types Included In Linear Model</b></a>"))
+  if (ExportNormalizationInLinearModel) Try(HTMLli(txt="<a href=\"#NormalizationInLinearModel\"><b>Normalization Used In Linear Model</b></a>"))
+  if (ExportDesignMatrix) Try(HTMLli(txt="<a href=\"#DesignMatrix\"><b>Design Matrix</b></a>"))
+  if (ExportDupCor) Try(HTMLli(txt="<a href=\"#DupCor\"><b>Duplicate Correlation</b></a>"))
+  if (ExportTop50Toptables) Try(HTMLli(txt="<a href=\"#Top50Toptables\"><b>Tables of Top 50 Differentially Expressed Genes</b></a>"))
+  if (ExportCompleteToptables) Try(HTMLli(txt="<a href=\"#CompleteToptables\"><b>Complete Tables of Genes Ranked in order of Evidence for Differential Expression</b></a>"))
+  if (ExportAvgMAPlot) Try(HTMLli(txt="<a href=\"#AvgMAPlot\"><b>M A Plots (with fitted M values)</b></a>"))
+  if (ExporttStatisticBoxPlots) Try(HTMLli(txt="<a href=\"#tStatisticBoxPlots\"><b>Box Plots showing the Range of t Statistics for each Spot Type</b></a>"))
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-  Try(tkfocus(.limmaGUIglobals$ttMain))    
+  Try(tkfocus(.limmaGUIglobals$ttMain))
 
   if (ExportTargets)
   {
@@ -386,14 +388,14 @@ ExportHTMLreport <- function()
         Try(displayVector[i] <- "d")))
     Try(TargetsXtable <- xtable(Targets,display=displayVector))
     Try(HTML.title("<a name=\"Targets\">RNA Targets</a>",HR=2))
-    Try(print(TargetsXtable,type="html",file=fileNameWithPath,append=TRUE))    
+    Try(print(TargetsXtable,type="html",file=fileNameWithPath,append=TRUE))
   }
   if (ExportSpotTypes)
   {
     Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
     Try(SpotTypesXtable <- xtable(SpotTypes))
     Try(HTML.title("<a name=\"SpotTypes\">Spot Types</a>",HR=2))
-    Try(print(SpotTypesXtable,type="html",file=fileNameWithPath,append=TRUE))    
+    Try(print(SpotTypesXtable,type="html",file=fileNameWithPath,append=TRUE))
   }
   if (ExportLayout)
   {
@@ -402,7 +404,7 @@ ExportHTMLreport <- function()
                                   NumRowsPerBlock=maLayout$nspot.r,NumColsPerBlock=maLayout$nspot.c))
     Try(layoutXtable <- xtable(layoutDataFrame,display=c("d","d","d","d","d")))
     Try(HTML.title("<a name=\"Layout\">Layout</a>",HR=2))
-    Try(print(layoutXtable,type="html",file=fileNameWithPath,append=TRUE))    
+    Try(print(layoutXtable,type="html",file=fileNameWithPath,append=TRUE))
   }
   if (ExportBackgroundCorrection)
   {
@@ -414,35 +416,35 @@ ExportHTMLreport <- function()
 		Try(BCMethod <- get("BCMethod",envir=limmaGUIenvironment))
     Try(HTML.title("<a name=\"BackgroundCorrection\">Background Correction Method</a>",HR=2))
     Try(HTMLli(txt=paste("<b>Background Correction Method : </b> ",BCMethod)))
-  }  
+  }
   if (ExportSpotWeighting)
   {
     Try(WeightingType     <- get("WeightingType",envir=limmaGUIenvironment))
     Try(HTML.title("<a name=\"SpotWeighting\">Spot Quality Weighting</a>",HR=2))
     Try(HTMLli(txt=paste("<b>Weighting Type : </b> ",WeightingType)))
-  }  
+  }
   if (ExportRawMA && capabilities("png"))
   {
     Try(HTML.title("<a name=\"RawMA\">M A Plots Using Raw (Unnormalized) Data</a>",HR=2))
     Try(NumSlides      <- get("NumSlides",envir=limmaGUIenvironment))
-    Try(SlideNamesVec  <- get("SlideNamesVec",envir=limmaGUIenvironment))    
-    Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))    
-    Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))    
+    Try(SlideNamesVec  <- get("SlideNamesVec",envir=limmaGUIenvironment))
+    Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
+    Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
     Try(MAraw <- get("MAraw",envir=limmaGUIenvironment))
 
     Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
     if (MA.Available$Raw)
       Try(MAraw <- get("MAraw",envir=limmaGUIenvironment))
-    else          
+    else
     {
       Try (MAraw <- MA.RG(RG))
-      Try(assign("MAraw",MAraw,limmaGUIenvironment))        
+      Try(assign("MAraw",MAraw,limmaGUIenvironment))
       Try(MA.Available$Raw <- TRUE)
       Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
       Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))              
-    }              
-  
+      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+    }
+
     Try(PointTypes    <- SpotTypes$SpotType)
     Try(PointColors   <- SpotTypes$Color)
     Try(numPointTypes <- length(PointTypes))
@@ -450,7 +452,7 @@ ExportHTMLreport <- function()
     Try(for (i in (1:numPointTypes))
       if (tolower(PointTypes[i])=="gene"||PointTypes[i]=="cDNA")
       {
-        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
           cex[i] <- 0.3
         else
           cex[i] <- 0.1)
@@ -462,66 +464,66 @@ ExportHTMLreport <- function()
 
     Try(for (slidenum in (1:NumSlides))
     {
-      Try(plotTitle <- paste("M A Scatter Plot for ",SlideNamesVec[slidenum],sep=""))      
+      Try(plotTitle <- paste("M A Scatter Plot for ",SlideNamesVec[slidenum],sep=""))
       Try(plotFunction <- function() plotMA(MAraw,pch=16,cex=cex,array=slidenum,
-          status=SpotTypeStatus,values=values,col=colVec,main=plotTitle,xlab="A",ylab="M"))    
-      Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
-        GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("plotMArawSlide",slidenum,sep=""), 
+          status=SpotTypeStatus,values=values,col=colVec,main=plotTitle,xlab="A",ylab="M"))
+      Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath ,
+        GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("plotMArawSlide",slidenum,sep=""),
         GraphSaveAs = "png", GraphBorder = 1,  Align = "left", plotFunction=plotFunction,
         Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))
     })
   }
-  
+
   if (ExportRawPrintTipGroup && capabilities("png"))
   {
     Try(HTML.title("<a name=\"RawPrintTipGroup\">Print-Tip Group M A Plots (With Loess Curves) Using Raw (Unnormalized Data)</a>",HR=2))
     Try(maLayout       <- get("maLayout",     envir=limmaGUIenvironment))
     Try(NumSlides      <- get("NumSlides",    envir=limmaGUIenvironment))
-    Try(SlideNamesVec  <- get("SlideNamesVec",envir=limmaGUIenvironment))    
+    Try(SlideNamesVec  <- get("SlideNamesVec",envir=limmaGUIenvironment))
     Try(MAraw          <- get("MAraw",        envir=limmaGUIenvironment))
 
     Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
     if (MA.Available$Raw)
       Try(MAraw <- get("MAraw",envir=limmaGUIenvironment))
-    else          
+    else
     {
       Try (MAraw <- MA.RG(RG))
-      Try(assign("MAraw",MAraw,limmaGUIenvironment))        
+      Try(assign("MAraw",MAraw,limmaGUIenvironment))
       Try(MA.Available$Raw <- TRUE)
       Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
       Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))              
-    }              
-    
-    Try(for (slidenum in (1:NumSlides)) 
+      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+    }
+
+    Try(for (slidenum in (1:NumSlides))
     {
       Try(plotTitle <- paste("Print-Tip Group Loess M A Plots for ",SlideNamesVec[slidenum],sep=""))
       Try(plotFunction <- function() plotPrintTipLoess(MAraw,layout=maLayout,array=slidenum))
-      Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
-        GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("PrintTipLoessPlotSlide",slidenum,sep=""), 
+      Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath ,
+        GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("PrintTipLoessPlotSlide",slidenum,sep=""),
         GraphSaveAs = "png", GraphBorder = 1,  Align = "left", plotFunction=plotFunction,
-        Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))      
-    })      
+        Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))
+    })
   }
-  
+
   if (ExportScaleBoxPlot && capabilities("png"))
   {
-    Try(HTML.title("<a name=\"ScaleBoxPlot\">M Box Plot Showing the Range of M Values for Each Slide</a>",HR=2))  
+    Try(HTML.title("<a name=\"ScaleBoxPlot\">M Box Plot Showing the Range of M Values for Each Slide</a>",HR=2))
     Try(Require("sma"))
-    Try(RG       <- get("RG",envir=limmaGUIenvironment))    
-    Try(maLayout <- get("maLayout",     envir=limmaGUIenvironment))    
-    Try(SlideNamesVec  <- get("SlideNamesVec",envir=limmaGUIenvironment))        
+    Try(RG       <- get("RG",envir=limmaGUIenvironment))
+    Try(maLayout <- get("maLayout",     envir=limmaGUIenvironment))
+    Try(SlideNamesVec  <- get("SlideNamesVec",envir=limmaGUIenvironment))
     Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
     if (MA.Available$WithinArrays)
       Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
-    else          
+    else
     {
       Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
       {
         Try(WithinArrayNormalizationMethod <- "printtiploess")
         Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
       })
-      Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))          
+      Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
       if (WeightingType == "none")
         Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
       else
@@ -531,14 +533,14 @@ ExportHTMLreport <- function()
       Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
       Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
       Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-      Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))                
+      Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
     }
     Try(plotTitle <- "M Box Plot for all slides with normalization within arrays only")
     Try(plotFunction <- function() plot.scale.box(MA$M,x.names=SlideNamesVec,xlab="Slide",ylab="M",main=plotTitle))
-    Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
-      GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = "MScaleBoxPlot", 
+    Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath ,
+      GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = "MScaleBoxPlot",
       GraphSaveAs = "png", GraphBorder = 1,  Align = "left", plotFunction=plotFunction,
-      Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))      
+      Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))
   }
   if (ExportSpotTypesInLinearModel)
   {
@@ -547,22 +549,22 @@ ExportHTMLreport <- function()
     Try(colnames(SpotTypesInLinearModel)[1] <- "Spot Types Included In Linear Model")
     Try(SpotTypesInLinearModelXtable <- xtable(SpotTypesInLinearModel))
     Try(HTML.title("<a name=\"SpotTypesInLinearModel\">Spot Types Included In Linear Model</a>",HR=2))
-    Try(print(SpotTypesInLinearModelXtable,type="html",file=fileNameWithPath,append=TRUE))    
-  }  
+    Try(print(SpotTypesInLinearModelXtable,type="html",file=fileNameWithPath,append=TRUE))
+  }
   if (ExportNormalizationInLinearModel)
   {
-    if (NumParameterizations==0) break()    
+    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-    Try(WhetherToNormalizeWithinArrays  <- (ParameterizationList[[ParameterizationNameNode]])$WhetherToNormalizeWithinArrays)  
-    Try(WhetherToNormalizeBetweenArrays <- (ParameterizationList[[ParameterizationNameNode]])$WhetherToNormalizeBetweenArrays)    
+    Try(WhetherToNormalizeWithinArrays  <- (ParameterizationList[[ParameterizationNameNode]])$WhetherToNormalizeWithinArrays)
+    Try(WhetherToNormalizeBetweenArrays <- (ParameterizationList[[ParameterizationNameNode]])$WhetherToNormalizeBetweenArrays)
     Try(HTML.title("<a name=\"NormalizationInLinearModel\">Normalization Used In Linear Model</a>",HR=2))
     Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
     {
       Try(WithinArrayNormalizationMethod <- "printtiploess")
       Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
-    })    
-    Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))    
+    })
+    Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
     Try(if ("WithinArrayNormalizationMethod" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Try(WithinArrayNormalizationMethod <- (ParameterizationList[[ParameterizationNameNode]])$WithinArrayNormalizationMethod)
     else
@@ -570,22 +572,22 @@ ExportHTMLreport <- function()
       Try(ParameterizationList[[ParameterizationNameNode]][[WithinArrayNormalizationMethod]] <- WithinArrayNormalizationMethod)
       Try(assign("ParameterizationList",ParameterizationList,limmaGUIenvironment))
     })
-     
+
     Try(HTMLli(txt=paste("Within Arrays : ", WhetherToNormalizeWithinArrays," (",WithinArrayNormalizationMethod,")",sep="")))
     Try(HTMLli(txt=paste("Between Arrays : ",WhetherToNormalizeBetweenArrays,sep="")))
   }
   if (ExportDesignMatrix)
   {
-    if (NumParameterizations==0) break()    
+    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(design <- designList$design)      
+    Try(design <- designList$design)
     Try(display <- rep("g",ncol(design)))
     Try(display <- c("d",display))
     Try(designXtable <- xtable(design,display=display))
     Try(HTML.title("<a name=\"DesignMatrix\">Design Matrix</a>",HR=2))
-    Try(print(designXtable,type="html",file=fileNameWithPath,append=TRUE))    
+    Try(print(designXtable,type="html",file=fileNameWithPath,append=TRUE))
   }
   if (ExportDupCor)
   {
@@ -595,49 +597,49 @@ ExportHTMLreport <- function()
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(dupcor <- (ParameterizationList[[ParameterizationNameNode]])$dupcor)
     Try(HTML.title("<a name=\"DupCor\">Duplicate Correlation</a>",HR=2))
-    Try(HTMLli(txt=paste("Duplicate Correlation :",dupcor$cor)))    
+    Try(HTMLli(txt=paste("Duplicate Correlation :",dupcor$cor)))
   }
-  
+
   if (ExportTop50Toptables)
   {
     Try(ndups <- get("ndups",envir=limmaGUIenvironment))
     Try(spacing <- GetReducedDuplicateSpacing(parameterizationTreeIndex))
-    Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))  
+    Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
     Try(if (NumParameterizations==0) break())
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(design <- designList$design)    
+    Try(design <- designList$design)
     Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
-    Try(HTML.title(paste("<a name=\"Top50Toptables\">Top 50 Differentially Expressed Genes for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))    
+    Try(HTML.title(paste("<a name=\"Top50Toptables\">Top 50 Differentially Expressed Genes for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
     Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
     Try(if (nrow(design)==0)
     {
         Try(ParameterNamesVec <- c())
         if (NumParameters>0)
-          for (i in (1:NumParameters)) 
-            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))              
+          for (i in (1:NumParameters))
+            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
     }
     else
         Try(ParameterNamesVec <- colnames(design)))
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-    
+
     Try(Amatrix <- NULL)
-    
+
     Try(fit <- (ParameterizationList[[ParameterizationNameNode]])$fit)
     Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
     Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
-    
+
     Try(if (is.null(Amatrix))
     {
-      Try(MA <- get("MA",envir=limmaGUIenvironment))  
+      Try(MA <- get("MA",envir=limmaGUIenvironment))
       Try(A <- MA$A)
       Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
       Try(numSpotTypes <- nrow(SpotTypes))
-      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
-      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
       Omit <- ""
       count <- 0
       Try(for (i in (1:numSpotTypes))
@@ -648,12 +650,12 @@ ExportHTMLreport <- function()
         if (count>1)
           Omit <-paste(Omit,"|")
         else
-          Omit <- "(" 
+          Omit <- "("
         Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-      })  
+      })
       Try(if (nchar(Omit)>0)
       {
-        Try(Omit <- paste(Omit,")"))  
+        Try(Omit <- paste(Omit,")"))
         Try(Omit <- eval(parse(text=Omit)))
         Try(A <- A[!Omit,])
       })
@@ -662,12 +664,12 @@ ExportHTMLreport <- function()
     }
     else
       Try(A <- unwrapdups(Amatrix,ndups=ndups,spacing=spacing)))
-    
+
     Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
     else
-      Try(genelist <- get("genelist",limmaGUIenvironment)))   
-  
+      Try(genelist <- get("genelist",limmaGUIenvironment)))
+
     for (coef in (1:NumParameters))
     {
       Try(options(digits=3))
@@ -675,26 +677,26 @@ ExportHTMLreport <- function()
       Try(toptableDisplay <- rep("s",ncol(table1)+1))
       Try(toptableDisplay[1] <- "d")
       Try(for (i in (2:(ncol(table1)+1)))
-      {                
+      {
         Try(if (tolower(colnames(table1)[i-1])=="block") toptableDisplay[i] <- "d")
-        Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")        
-        Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )             
-        Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )             
-        Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")                        
-        Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")                                
-        Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")         
-        Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")      
-        Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")              
-        Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")                      
-        Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")                                            
-        Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")                                      
+        Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")
+        Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )
+        Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )
+        Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")
+        Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")
+        Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")
+        Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")
+        Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")
+        Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")
+        Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")
+        Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")
       })
 #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
       Try(toptableXtable <- xtable(table1,display=toptableDisplay))
       Try(HTML.title(paste("Top 50 Differentially Expressed Genes for",ParameterNamesVec[coef]),HR=3))
       Try(print(toptableXtable,type="html",file=fileNameWithPath,append=TRUE))
     }
-    
+
     # Now the Contrasts
     Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
     Try(ContrastsParameterizationNamesVec <- c() )
@@ -705,10 +707,10 @@ ExportHTMLreport <- function()
           Try(ContrastsParameterizationNamesVec[cp] <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsParameterizationNameText)
           Try(contrastsMatrixInList <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsMatrixInList)
           Try(contrastsMatrix <- contrastsMatrixInList$contrasts)
-          Try(contrastNames[[cp]] <- colnames(contrastsMatrix))        
+          Try(contrastNames[[cp]] <- colnames(contrastsMatrix))
           Try(fit <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$fit)
-          Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)           
-          
+          Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)
+
           for (coef in (1:ncol(contrastsMatrix)))
           {
             Try(options(digits=3))
@@ -716,47 +718,47 @@ ExportHTMLreport <- function()
             Try(toptableDisplay <- rep("s",ncol(table1)+1))
             Try(toptableDisplay[1] <- "d")
             Try(for (i in (2:(ncol(table1)+1)))
-            {                
+            {
               Try(if (tolower(colnames(table1)[i-1])=="block") toptableDisplay[i] <- "d")
-              Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")        
-              Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )             
-              Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )             
-              Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")                        
-              Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")                                
-              Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")         
-              Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")      
-              Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")              
-              Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")                      
-              Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")                                            
-              Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")                                      
+              Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")
+              Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )
+              Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )
+              Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")
+              Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")
+              Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")
+              Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")
+              Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")
+              Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")
+              Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")
+              Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")
             })
       #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
             Try(toptableXtable <- xtable(table1,display=toptableDisplay))
             Try(HTML.title(paste("Top 50 Differentially Expressed Genes for ",colnames(contrastsMatrix)[coef]," [",ContrastsParameterizationNamesVec[cp],"]",sep=""),HR=3))
-            Try(print(toptableXtable,type="html",file=fileNameWithPath,append=TRUE))                        
+            Try(print(toptableXtable,type="html",file=fileNameWithPath,append=TRUE))
         }
       }))
 
-    
+
   }
-  if (ExportCompleteToptables) 
+  if (ExportCompleteToptables)
   {
     Try(ndups <- get("ndups",envir=limmaGUIenvironment))
     Try(spacing <- GetReducedDuplicateSpacing(parameterizationTreeIndex))
-    if (NumParameterizations==0) break()    
+    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(design <- designList$design)    
+    Try(design <- designList$design)
     Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
-    Try(HTML.title(paste("<a name=\"CompleteToptables\">Complete Tables of Genes Ranked in order of Evidence for Differential Expression for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))     
+    Try(HTML.title(paste("<a name=\"CompleteToptables\">Complete Tables of Genes Ranked in order of Evidence for Differential Expression for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
     Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
     Try(if (nrow(design)==0)
     {
         Try(ParameterNamesVec <- c())
         if (NumParameters>0)
-          for (i in (1:NumParameters)) 
-            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))              
+          for (i in (1:NumParameters))
+            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
     }
     else
         Try(ParameterNamesVec <- colnames(design)))
@@ -766,15 +768,15 @@ ExportHTMLreport <- function()
     Try(Amatrix <- NULL)
     Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
-    
+
     Try(if (is.null(Amatrix))
     {
-      Try(MA <- get("MA",envir=limmaGUIenvironment))  
+      Try(MA <- get("MA",envir=limmaGUIenvironment))
       Try(A <- MA$A)
       Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
       Try(numSpotTypes <- nrow(SpotTypes))
-      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
-      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
       Omit <- ""
       count <- 0
       Try(for (i in (1:numSpotTypes))
@@ -785,12 +787,12 @@ ExportHTMLreport <- function()
         if (count>1)
           Omit <-paste(Omit,"|")
         else
-          Omit <- "(" 
+          Omit <- "("
         Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-      })  
+      })
       Try(if (nchar(Omit)>0)
       {
-        Try(Omit <- paste(Omit,")"))  
+        Try(Omit <- paste(Omit,")"))
         Try(Omit <- eval(parse(text=Omit)))
         Try(A <- A[!Omit,])
       })
@@ -805,8 +807,8 @@ ExportHTMLreport <- function()
     Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
     else
-      Try(genelist <- get("genelist",limmaGUIenvironment)))   
-  
+      Try(genelist <- get("genelist",limmaGUIenvironment)))
+
     for (coef in (1:NumParameters))
     {
       Try(options(digits=3))
@@ -814,9 +816,9 @@ ExportHTMLreport <- function()
 #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
       Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
       Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
-      Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))      
+      Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))
       Try(HTML.title(paste("Complete Table of Genes Ranked in order of Evidence for Differential Expression for ",ParameterNamesVec[coef]),HR=3))
-      Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_Param",coef,".xls",sep=""),"</b></a>",sep=""))) 
+      Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_Param",coef,".xls",sep=""),"</b></a>",sep="")))
     }
     # Now the Contrasts
     Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
@@ -828,9 +830,9 @@ ExportHTMLreport <- function()
           Try(ContrastsParameterizationNamesVec[cp] <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsParameterizationNameText)
           Try(contrastsMatrixInList <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsMatrixInList)
           Try(contrastsMatrix <- contrastsMatrixInList$contrasts)
-          Try(contrastNames[[cp]] <- colnames(contrastsMatrix))        
+          Try(contrastNames[[cp]] <- colnames(contrastsMatrix))
           Try(fit <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$fit)
-          Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)           
+          Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)
           for (coef in (1:ncol(contrastsMatrix)))
           {
             Try(options(digits=3))
@@ -838,33 +840,33 @@ ExportHTMLreport <- function()
       #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
             Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""))
             Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""))
-            Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))      
+            Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))
             Try(HTML.title(paste("Complete Table of Genes Ranked in order of Evidence for Differential Expression for ",colnames(contrastsMatrix)[coef]," [",ContrastsParameterizationNamesVec[cp],"]",sep=""),HR=3))
-            Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""),"</b></a>",sep=""))) 
+            Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""),"</b></a>",sep="")))
 
         }
-      }))    
-    
-    
-    
+      }))
+
+
+
   }
-  
+
   if (ExportAvgMAPlot && capabilities("png"))
   {
-    Try(HTML.title(paste("<a name=\"AvgMAPlot\">M A Plots (with fitted M values) in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))     
-    if (NumParameterizations==0) break()    
+    Try(HTML.title(paste("<a name=\"AvgMAPlot\">M A Plots (with fitted M values) in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
+    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(design <- designList$design)    
+    Try(design <- designList$design)
     Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
     Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
     Try(if (nrow(design)==0)
     {
         Try(ParameterNamesVec <- c())
         if (NumParameters>0)
-          for (i in (1:NumParameters)) 
-            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))              
+          for (i in (1:NumParameters))
+            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
     }
     else
         Try(ParameterNamesVec <- colnames(design)))
@@ -874,15 +876,15 @@ ExportHTMLreport <- function()
     Try(Amatrix <- NULL)
     Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
-    
+
     Try(if (is.null(Amatrix))
     {
-      Try(MA <- get("MA",envir=limmaGUIenvironment))  
+      Try(MA <- get("MA",envir=limmaGUIenvironment))
       Try(A <- MA$A)
       Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
       Try(numSpotTypes <- nrow(SpotTypes))
-      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
-      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
       Omit <- ""
       count <- 0
       Try(for (i in (1:numSpotTypes))
@@ -893,12 +895,12 @@ ExportHTMLreport <- function()
         if (count>1)
           Omit <-paste(Omit,"|")
         else
-          Omit <- "(" 
+          Omit <- "("
         Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-      })  
+      })
       Try(if (nchar(Omit)>0)
       {
-        Try(Omit <- paste(Omit,")"))  
+        Try(Omit <- paste(Omit,")"))
         Try(Omit <- eval(parse(text=Omit)))
         Try(A <- A[!Omit,])
       })
@@ -909,7 +911,7 @@ ExportHTMLreport <- function()
       Try(A <- unwrapdups(Amatrix,ndups=ndups,spacing=spacing)))
 
     Try(meanA <- c())
-    Try(for (i in (1:nrow(A))) 
+    Try(for (i in (1:nrow(A)))
     {
       Try(meanA[i] <- mean(A[i,]))
     })
@@ -918,46 +920,46 @@ ExportHTMLreport <- function()
 
     Try(fit <- (ParameterizationList[[ParameterizationNameNode]])$fit)
     Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
-        
+
     Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
     else
-      Try(genelist <- get("genelist",limmaGUIenvironment)))   
-  
+      Try(genelist <- get("genelist",limmaGUIenvironment)))
+
     for (coef in (1:NumParameters))
     {
       Try(HTML.title(paste("Average M A Plot showing DE genes for",ParameterNamesVec[coef]),HR=3))
       Try(plotTitle <- paste("Average M A Plot showing DE genes for",ParameterNamesVec[coef]))
-      Try(if (NumParameters>1) 
+      Try(if (NumParameters>1)
         Try(M <- fit$coefficients[,coef])
-      else 
+      else
         Try(M <- fit$coefficients))
       Try(numDEgenesLabeled   <- 10)
       Try(GeneLabelsMaxLength <- 10)
-      Try(if (NumParameters>1) 
+      Try(if (NumParameters>1)
         Try(ord <- order(eb$lods[,coef],decreasing=TRUE))
-      else 
+      else
         Try(ord <- order(eb$lods,decreasing=TRUE)))
       Try(topGenes <- ord[1:numDEgenesLabeled])
-      
-      Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+
+      Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
         Try(cex <- 0.3)
       else
-        Try(cex <- 0.1))        
+        Try(cex <- 0.1))
       AvgMAPlotFunction <- function()
       {
         Try(plot(A,M,pch=16,cex=cex,xlab="mean(A)",ylab=paste("M (",ParameterNamesVec[coef],")",sep=""),main=plotTitle))
         Try(text(A[topGenes],M[topGenes],labels=substr(genelist[topGenes,"Name"],1,GeneLabelsMaxLength),cex=0.8,col="blue"))
       }
-      Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
-        GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("AvgMAPlot",coef,sep=""), 
+      Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath ,
+        GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("AvgMAPlot",coef,sep=""),
         GraphSaveAs = "png", GraphBorder = 1,  Align = "left", plotFunction=AvgMAPlotFunction,
-        Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))      
+        Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))
 
     }
-    
+
     # Now the Contrasts.
-    
+
     Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
     Try(ContrastsParameterizationNamesVec <- c() )
     Try(contrastNames <- list())
@@ -967,96 +969,96 @@ ExportHTMLreport <- function()
           Try(ContrastsParameterizationNamesVec[cp] <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsParameterizationNameText)
           Try(contrastsMatrixInList <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsMatrixInList)
           Try(contrastsMatrix <- contrastsMatrixInList$contrasts)
-          Try(contrastNames[[cp]] <- colnames(contrastsMatrix))        
+          Try(contrastNames[[cp]] <- colnames(contrastsMatrix))
           Try(fit <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$fit)
-          Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)           
+          Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)
           Try(NumContrasts <- ncol(contrastsMatrix))
           for (coef in (1:NumContrasts))
           {
             Try(HTML.title(paste("Average M A Plot showing DE genes for",  contrastNames[coef]),HR=3))
             Try(plotTitle <- paste("Average M A Plot showing DE genes for",contrastNames[coef]))
-            Try(if (NumContrasts>1) 
+            Try(if (NumContrasts>1)
               Try(M <- fit$coefficients[,coef])
-            else 
+            else
               Try(M <- fit$coefficients))
             Try(numDEgenesLabeled   <- 10)
             Try(GeneLabelsMaxLength <- 10)
-            Try(if (NumContrasts>1) 
+            Try(if (NumContrasts>1)
               Try(ord <- order(eb$lods[,coef],decreasing=TRUE))
-            else 
+            else
               Try(ord <- order(eb$lods,decreasing=TRUE)))
             Try(topGenes <- ord[1:numDEgenesLabeled])
 
-            Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows") 
+            Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
               Try(cex <- 0.3)
             else
-              Try(cex <- 0.1))  
+              Try(cex <- 0.1))
             AvgMAPlotFunction2 <- function()
             {
               Try(plot(A,M,pch=16,cex=cex,xlab="mean(A)",ylab=paste("M (",contrastNames[coef],")",sep=""),main=plotTitle))
               Try(text(A[topGenes],M[topGenes],labels=substr(genelist[topGenes,"Name"],1,GeneLabelsMaxLength),cex=0.8,col="blue"))
             }
-            Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
-              GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("AvgMAPlot_CP_",cp,"_",coef,sep=""), 
+            Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath ,
+              GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("AvgMAPlot_CP_",cp,"_",coef,sep=""),
               GraphSaveAs = "png", GraphBorder = 1,  Align = "left", plotFunction=AvgMAPlotFunction2,
-              Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))      
+              Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))
 
           }
-      }))    
-  
+      }))
+
   }
-  
-  if (ExporttStatisticBoxPlots && capabilities("png")) 
+
+  if (ExporttStatisticBoxPlots && capabilities("png"))
   {
-    if (NumParameterizations==0) break()    
+    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))    
-    Try(design <- designList$design)    
+    Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
+    Try(design <- designList$design)
     Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
-    Try(HTML.title(paste("<a name=\"tStatisticBoxPlots\">Box Plots showing the Range of t Statistics for each Spot Type, for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))     
+    Try(HTML.title(paste("<a name=\"tStatisticBoxPlots\">Box Plots showing the Range of t Statistics for each Spot Type, for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
     Try(if (nrow(design)==0)
     {
         Try(ParameterNamesVec <- c())
         if (NumParameters>0)
-          for (i in (1:NumParameters)) 
-            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))              
+          for (i in (1:NumParameters))
+            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
     }
     else
         Try(ParameterNamesVec <- colnames(design)))
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
-    Try(ndups   <- get("ndups",envir=limmaGUIenvironment))    
+    Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
     Try(spacing   <- get("spacing",envir=limmaGUIenvironment))       # Global version
     Try(spacing <- GetReducedDuplicateSpacing(parameterizationTreeIndex))
 
     Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
       Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
     else
-      Try(genelist <- get("genelist",limmaGUIenvironment)))   
+      Try(genelist <- get("genelist",limmaGUIenvironment)))
     Try(gal <- get("gal",envir=limmaGUIenvironment))
     Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
-        
+
     Try(ebayesStatistic <- "t")
-    Try(SpotTypesIncludedNamesVec <- GetSpotTypesIncludedNames(parameterizationTreeIndex)) 
+    Try(SpotTypesIncludedNamesVec <- GetSpotTypesIncludedNames(parameterizationTreeIndex))
     Try(numSpotTypes <- length(SpotTypesIncludedNamesVec))
-    
+
     for (coef in (1:NumParameters))
     {
       Try(options(digits=3))
-      Try(HTML.title(paste("Box Plots showing the Range of t Statistics for each Spot Type, for Parameter ",ParameterNamesVec[coef],sep=""),HR=3))           
+      Try(HTML.title(paste("Box Plots showing the Range of t Statistics for each Spot Type, for Parameter ",ParameterNamesVec[coef],sep=""),HR=3))
       # There is a heading HR=4 in the R2HTML cascaded style sheet.
       Try(for (SpotTypeIndex in (1:numSpotTypes))
       {
         Try(SpotType <- SpotTypesIncludedNamesVec[SpotTypeIndex])
-        Try(HTML.title(paste("Box Plot(s) showing the Range of t Statistics for each Spot Type, for Parameter ",ParameterNamesVec[coef]," and Spot Type ",SpotType,".",sep=""),HR=3))           
+        Try(HTML.title(paste("Box Plot(s) showing the Range of t Statistics for each Spot Type, for Parameter ",ParameterNamesVec[coef]," and Spot Type ",SpotType,".",sep=""),HR=3))
         Try(gal2 <-      cbind(gal,SpotTypeStatus=SpotTypeStatus))
         Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
         Try(numSpotTypes <- nrow(SpotTypes))
-        Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))      
-        Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)  
+        Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+        Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
         Omit <- ""
         count <- 0
         Try(for (i in (1:numSpotTypes))
@@ -1069,7 +1071,7 @@ ExportHTMLreport <- function()
           else
             Omit <- "("
           Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-        })  
+        })
         Try(if (nchar(Omit)>0)
         {
           Try(Omit <- paste(Omit,")"))
@@ -1110,14 +1112,14 @@ ExportHTMLreport <- function()
           Try(plotCommand <- "boxplot(")
           Try(plotCommand <- paste(plotCommand,"ebayesStatisticsVector[genelist2[,\"SpotTypeStatus\"]==\"",SpotType,"\"],",sep=""))
           Try(plotCommand <- paste(plotCommand,"xlab=\"",SpotType,"\",","names=\"",SpotType,"\",",sep=""))
-          Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\",main=plotTitle)",sep=""))    
+          Try(plotCommand <- paste(plotCommand,"ylab=\"",ylabel,"\",main=plotTitle)",sep=""))
         })
 
       #  tkmessageBox(message=plotCommand)
 
         plotEbayesBoxPlot <- function()
         {
-          Try(if (numMatches>50) 
+          Try(if (numMatches>50)
           {
             Try(numMatches <- 1)
             Try(opar<-par(bg="white",lab=c(numMatches,20,7)))
@@ -1126,19 +1128,19 @@ ExportHTMLreport <- function()
             Try(opar<-par(bg="white",cex.axis=0.7,las=2,plt=c(0.15,0.9,0.2,0.85),lab=c(numMatches,20,7))))
 
           Try(eval(parse(text=plotCommand)))
-          Try(tempGraphPar <- par(opar))    
+          Try(tempGraphPar <- par(opar))
           Try(grid(NULL,col="navy"))
         }
-        Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath , 
-          GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("tStatBPsP",coef,"_ST_",SpotTypeIndex,sep=""), 
+        Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath ,
+          GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = paste("tStatBPsP",coef,"_ST_",SpotTypeIndex,sep=""),
           GraphSaveAs = "png", GraphBorder = 1,  Align = "left", plotFunction=plotEbayesBoxPlot,
-          Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))      
+          Width=plotWidth,Height=plotHeight,PointSize=plotPointSize,BG=plotBG,res=plotRes))
 
-      })      
+      })
     }
   }
 
-  
+
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(HTMLhr())
   Try(HTMLli(txt="This report was generated by "))

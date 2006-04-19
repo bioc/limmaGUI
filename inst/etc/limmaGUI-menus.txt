@@ -83,5 +83,7 @@
     item    helpMenu        separator       ""                                                  ""
     item    helpMenu        command         "Normalization"                                     AboutNormalization
     item    helpMenu        separator       ""                                                  ""    
+    item    helpMenu        command         "Citations"                                         showCitations
+    item    helpMenu        command         "ChangeLog"                                         showChangeLog
     item    helpMenu        command         "About LimmaGUI"                                    AboutLimmaGUI
     item    topMenu         cascade         "Help"                                              helpMenu

@@ -1,23 +1,23 @@
 showGAL <- function()
 {
   Try(gal <- get("gal",envir=limmaGUIenvironment))
-  Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))  
+  Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(ArraysLoaded <- get("ArraysLoaded",envir=limmaGUIenvironment))
   Try(NormalizedMADataWasImported <- get("NormalizedMADataWasImported",envir=limmaGUIenvironment))
-  
+
   Try(if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
   {
       Try(tkmessageBox(title="View Gene List",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
       Try(tkfocus(.limmaGUIglobals$ttMain))
       return()
   })
-  
+
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
 
   Try(nrows <- nrow(gal))
-  Try(ncols <- ncol(gal))  
-  
+  Try(ncols <- ncol(gal))
+
 	Try(tempfile1 <- tempfile())
 	Try(write.table(gal,file=tempfile1,quote=FALSE,col.names=NA,sep="\t"))
 	Try(ttGALTable <- tktoplevel(.limmaGUIglobals$ttMain))
@@ -45,23 +45,23 @@ showGAL <- function()
 	Try(tkpack(xscr, side="bottom", fill="x"))
 	Try(tkpack(txt, side="left", fill="both", expand="yes"))
 
-	Try(chn <- tclvalue(tkcmd("open", tempfile1)))
-	Try(tkinsert(txt, "end", tclvalue(tkcmd("read", chn))))
-	Try(tkcmd("close", chn))
+	Try(chn <- tclvalue(tclopen(tempfile1)))
+	Try(tkinsert(txt, "end", tclvalue(tclread(chn))))
+	Try(tclclose(chn))
 	Try(tkconfigure(txt, state="disabled"))
 	Try(tkmark.set(txt,"insert","0.0"))
 	Try(tkfocus(txt))
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-  
+
   SaveGAL <- function()
   {
     Try(galFile <- tclvalue(tkgetSaveFile(initialfile=paste(limmaDataSetNameText,".gal",sep=""))))
     Try(if (!nchar(galFile))
       return())
     Try(write.table(gal,file=galFile,quote=FALSE,row.names=FALSE,sep="\t"))
-  } 
-  
+  }
+
 	Try(copyFcn <-      function() .Tcl(paste("event","generate",.Tcl.args(.Tk.ID(txt),"<<Copy>>"))))
 
 	Try(topMenu2 <- tkmenu(ttGALTable))
@@ -75,5 +75,5 @@ showGAL <- function()
 	Try(tkadd(topMenu2, "cascade", label="Edit",menu=editMenu2))
 
 	Try(tkfocus(ttGALTable))
-  
+
 }

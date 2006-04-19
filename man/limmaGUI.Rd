@@ -118,8 +118,11 @@
 \alias{GetGenePixFlagWeightings}
 \alias{imageplotlimmaGUI}
 \alias{InitNewParameterization}
+\alias{limmaUsersGuide}
 \alias{limmaGUIhelp}
 \alias{limmaHelp}
+\alias{showCitations}
+\alias{showChangeLog}
 \alias{read.marrayTools}
 \alias{readGALlimmaGUI}
 \alias{showGAL}
@@ -257,6 +260,10 @@ GetlmFitMethod()
 lmFitMethodHelp()
 BChelp()
 fixSeps(string)
+limmaHelp()
+limmaUsersGuide()
+showCitations()
+showChangeLog()
 onDestroy()
 limmaGUI(BigfontsForlimmaGUIpresentation=FALSE)
 GetPValueCutoff(p.value=0.01)
@@ -266,12 +273,12 @@ PlotOptions()
 }
 
 \arguments{
-	\item{BigfontsForlimmaGUIpresentation}{If set to TRUE, larger fonts are used.  However, some font 
+	\item{BigfontsForlimmaGUIpresentation}{If set to TRUE, larger fonts are used.  However, some font
 	sizes are not controlled by limmaGUI and so must be adjusted in the operating system, e.g.
 	in the Control Panel in Windows under Display, Appearance.}
 	\item{MFile}{Flat-file of log-ratios output by marrayTools}
 	\item{AFile}{Flat-file of log-intensities output by marrayTools}
-	\item{path}{Path to the directory containing the MFile and AFile}	
+	\item{path}{Path to the directory containing the MFile and AFile}
 	\item{verbose}{Optional diagnostic messages}
 	\item{sep}{Column separator. ("\t" for tab-delimited text)}
 	\item{quote}{See help for read.table}
@@ -285,7 +292,7 @@ PlotOptions()
 \details{
 This function launches a Graphical User Interface for the limma package by Gordon Smyth.
 The GUI uses Tk widgets (via the R TclTk interface by Peter Dalgaard) in order to provide
-a simple interface to the limma functions for linear modelling of microarrays and 
+a simple interface to the limma functions for linear modelling of microarrays and
 identification of differentially expressed genes.
 }
 
