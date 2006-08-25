@@ -1,6 +1,9 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+25 August 2006 limmaGUI 1.9.2
+	removed "\usepackage{Sweave}" from limmaGUI.Rnw, extract.Rnw and extract.Rnw.txt
 12 April 2006 limmaGUI 1.7.0
+
 	Replace deprecated tkcmd with tcl
 
 30 November 2005: limmaGUI 1.6.4

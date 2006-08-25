@@ -3,7 +3,6 @@
 %\VignetteKeywords{microarray linear model GUI}
 %\VignettePackage{limmaGUI}
 \documentclass[12pt]{article}
-\usepackage{Sweave}
 \usepackage{hyperref}
 
 \textwidth=6.2in
@@ -21,7 +20,7 @@
 
 \noindent This vignette gives a short example showing how to extract limma data objects
 from files saved by limmaGUI.  This could be used for advanced limma analysis
-by an expert user after some preliminary analysis with limmaGUI by someone 
+by an expert user after some preliminary analysis with limmaGUI by someone
 unfamiliar with the command-line interface.
 
 \noindent We will use a file \texttt{SwirlLinearModelComputed.lma} which has been saved from limmaGUI.
@@ -30,7 +29,7 @@ It is available from:
 \noindent\url{http://bioinf.wehi.edu.au/limmaGUI/Swirl/SwirlLinearModelComputed.lma}.
 
 \noindent The \texttt{.lma} extension used by limmaGUI is simply a three-letter abbreviation of limma (Linear
-Models for Microarrays).  This file is in fact a standard \texttt{.RData} file and can be loaded into 
+Models for Microarrays).  This file is in fact a standard \texttt{.RData} file and can be loaded into
 any R session as described below.
 
 <<download,eval=FALSE>>
@@ -59,7 +58,7 @@ ls()
 Targets
 @
 
-\noindent Now let's look at the first 30 lines of the genelist (Genepix Array List) 
+\noindent Now let's look at the first 30 lines of the genelist (Genepix Array List)
 for this dataset:
 
 <<gal,eval=FALSE>>=
@@ -84,11 +83,11 @@ BCMethod
 @
 
 \noindent Now let's see what MA objects are currently available to us.  \texttt{MA.Available} is a list
-object with components \texttt{"Raw"} \texttt{"WithinArrays"}, \texttt{"BetweenArrays"} and 
+object with components \texttt{"Raw"} \texttt{"WithinArrays"}, \texttt{"BetweenArrays"} and
 \texttt{"Both"}, so for
 example \texttt{MA\$Both} would be TRUE if there is an MA object which has been normalized
-both within arrays and between arrays.  The four corresponding MA objects are 
-called MAraw, MAwithinArrays, MAbetweenArrays and MAboth.  Each one is initialised 
+both within arrays and between arrays.  The four corresponding MA objects are
+called MAraw, MAwithinArrays, MAbetweenArrays and MAboth.  Each one is initialised
 to an empty list, and if needed, it it overwritten with an appropriate MAList object.
 
 <<MA.Available,eval=FALSE>>=
@@ -101,7 +100,7 @@ MA.Available
 NumParameterizations
 @
 
-\noindent In this case, there is only one parameterization.  Now let's have a look at the objects 
+\noindent In this case, there is only one parameterization.  Now let's have a look at the objects
 stored within this parameterization.  The '1' in double square-brackets represents the
 first parameterization.
 
@@ -110,7 +109,7 @@ names(ParameterizationList[[1]])
 @
 
 \noindent There is an object called designList, which is a list object containing the design matrix,
-and some information about how the user created that design matrix, in this case by requesting 
+and some information about how the user created that design matrix, in this case by requesting
 a comparison between \texttt{"Swirl"} and \texttt{"Wild Type"} using drop-down comboboxes, rather than manually
 entering the matrix numerically.
 
@@ -119,22 +118,22 @@ ParameterizationList[[1]]$designList
 @
 
 \noindent Now let's look at the linear model fit object.  Until version 0.7.7, limmaGUI used the old
-lm.series from limma rather than lmFit, so the fit object was a standard R list object, but 
-from 0.7.7, lmFit is used so that the fit object is an object of class MArrayLM.  This means 
-that with a fit object obtained from a new limmaGUI analysis, typing 
-\texttt{ParameterizationList[[1]]\$fit} and pressing enter should display a summary of the data 
+lm.series from limma rather than lmFit, so the fit object was a standard R list object, but
+from 0.7.7, lmFit is used so that the fit object is an object of class MArrayLM.  This means
+that with a fit object obtained from a new limmaGUI analysis, typing
+\texttt{ParameterizationList[[1]]\$fit} and pressing enter should display a summary of the data
 in the fit object, rather than all the data.
 
 <<fit,eval=FALSE>>=
 ParameterizationList[[1]]$fit
 @
 
-\noindent Empirical bayes statistics can be obtained from the \texttt{"eb"} component of 
+\noindent Empirical bayes statistics can be obtained from the \texttt{"eb"} component of
 \texttt{ParameterizationList[[1]]}.  Note that recent versions of limma encourage users to
-calculate empirical bayes statistics using \texttt{eBayes}, rather than \texttt{ebayes}, 
+calculate empirical bayes statistics using \texttt{eBayes}, rather than \texttt{ebayes},
 whereas at the time of writing limmaGUI still uses the old \texttt{ebayes} method, which
 produces a standard list object, meaning that typing \texttt{ParameterizationList[[1]]\$eb}
-and pressing enter will display all the data in the list, rather than a summary.  The 
+and pressing enter will display all the data in the list, rather than a summary.  The
 components of the empirical bayes list object can be viewed as follows:
 
 <<eb,eval=FALSE>>=
