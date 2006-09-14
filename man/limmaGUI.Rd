@@ -131,6 +131,7 @@
 \alias{WithinBetweenOrBoth}
 \alias{wtflags2}
 \alias{GetBackgroundCorrectionMethod}
+\alias{GetNormexpOffsetValue}
 \alias{GetlmFitMethod}
 \alias{lmFitMethodHelp}
 \alias{BChelp}
@@ -256,6 +257,7 @@ GetJpegOrPngX11Params()
 VennDiagramPlot()
 UpDownOrBoth()
 GetBackgroundCorrectionMethod()
+GetNormexpOffsetValue()
 GetlmFitMethod()
 lmFitMethodHelp()
 BChelp()
