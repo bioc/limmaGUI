@@ -1,5 +1,13 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+20 July 2006
+	version 1.8.1 made available on WEHI/limmaGUI website and
+	committed to devel version at bioconductor.
+	Normexp added as a Background correction option
+	Default value for offset for normexp set to 16
+	Default background correction method retained as subtract
+
+   April 2006 limmaGUI 1.8.0 released with R2.3.0
 12 April 2006 limmaGUI 1.7.0
 	Replace deprecated tkcmd with tcl
 
