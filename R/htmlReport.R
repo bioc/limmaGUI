@@ -410,7 +410,7 @@ ExportHTMLreport <- function()
   {
   	Try(if (!exists("BCMethod",envir=limmaGUIenvironment))
 		{
-			Try(BCMethod <- "subtract")
+			Try(BCMethod <- "normexp")
 			Try(assign("BCMethod",BCMethod,limmaGUIenvironment))
 		})
 		Try(BCMethod <- get("BCMethod",envir=limmaGUIenvironment))
