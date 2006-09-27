@@ -284,8 +284,8 @@ ExportHTMLreport <- function()
   Try(fileNameWithPath<- tkgetSaveFile(initialfile=limmaDataSetNameText,filetypes="{{HTML Files} {.html .htm}} {{All files} *}"))
   Try(if (nchar(tclvalue(fileNameWithPath))==0)
     return())
-  Try(path     <- tclvalue(tkfile.dir (tclvalue(fileNameWithPath))))
-  Try(fileName <- tclvalue(tkfile.tail(tclvalue(fileNameWithPath))))
+  Try(path     <- tclvalue(tcltk:::tclfile.dir (tclvalue(fileNameWithPath))))
+  Try(fileName <- tclvalue(tcltk:::tclfile.tail(tclvalue(fileNameWithPath))))
   ###Try(path     <- tclvalue(tcl( (tclvalue(fileNameWithPath)),"dir" )))###not working yet - no timee to fix now - do it later
   ###Try(fileName <- tclvalue(tcl( (tclvalue(fileNameWithPath)),"tail")))###not working yet - no timee to fix now - do it later
 

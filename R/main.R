@@ -4993,9 +4993,9 @@ evalRcode <- function()
 
 	SaveRSourceFile <- function()
 	{
-		###Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tkfile.tail(wfile)),initialdir=tclvalue(tkfile.dir(wfile)),
-		Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tcl(wfile,"tail")),initialdir=tclvalue(tcl(wfile,"dir")),
-					 filetypes="{{R Source Files} {.R}} {{All files} *}")))
+		###Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tcl(wfile,"tail")),initialdir=tclvalue(tcl(wfile,"dir")),
+		Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tcltk:::tclfile.tail(wfile)),initialdir=tclvalue(tcltk:::tclfile.dir(wfile)),
+				filetypes="{{R Source Files} {.R}} {{All files} *}")))
 		if (nchar(fileName)==0) return()
 		Try(len <- nchar(fileName))
 		if (len<=2)
