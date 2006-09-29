@@ -529,10 +529,11 @@ showCitations <- function()
 	Try(print(citation("limmaGUI")))
 }
 
-showChangeLog <- function(n=20)
+showChangeLog <- function()
 {
-	Try(tkmessageBox(title="ChangeLog",message="See the R console for the first 20 lines of the ChangeLog file.\nTo see more lines, use the LGchangeLog(n=nnn) function, where nnn is the number of lines to view."))
-	Try(LGchangeLog(20))
+	n <- 20
+	Try(tkmessageBox(title="ChangeLog",message=paste("See the R console for the first ",n," lines of the ChangeLog file.\nTo see more lines, use the LGchangeLog(n=nnn) function, where nnn is the number of lines to view.")))
+	Try(LGchangeLog(n))
 }
 
 getPackageVersion <- function(pkgName)
@@ -4994,7 +4995,8 @@ evalRcode <- function()
 	SaveRSourceFile <- function()
 	{
 		###Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tcl(wfile,"tail")),initialdir=tclvalue(tcl(wfile,"dir")),
-		Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tcltk:::tclfile.tail(wfile)),initialdir=tclvalue(tcltk:::tclfile.dir(wfile)),
+		#Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tcltk:::tclfile.tail(wfile)),initialdir=tclvalue(tcltk:::tclfile.dir(wfile)),
+		Try(fileName <- tclvalue(tkgetSaveFile(initialfile=tclvalue(tclfile.tail(wfile)),initialdir=tclvalue(tcltk:::tclfile.dir(wfile)),
 				filetypes="{{R Source Files} {.R}} {{All files} *}")))
 		if (nchar(fileName)==0) return()
 		Try(len <- nchar(fileName))
