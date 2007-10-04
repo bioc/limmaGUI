@@ -1,5 +1,8 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+13-Sep-2007 limmaGUI 1.13.1
+	Display Citation in TckTk GUI message box as well as writing citation to R console
+
 25 September 2006 limmaGUI 1.9.2
 	replaced tkfile by tcltk:::tclfile, as tkfile is defunct in R2.4.0
 	removed "\usepackage{Sweave}" from limmaGUI.Rnw, extract.Rnw and extract.Rnw.txt

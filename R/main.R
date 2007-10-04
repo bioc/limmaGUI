@@ -507,44 +507,106 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE){
 	Try(temp <- options(.limmaGUIglobals$oldOptions))
 	invisible()
 } #end of function(BigfontsForlimmaGUIpresentation=FALSE)
-
-limmaGUIhelp <- function()
-{
-		Try(limmaGUIhelpIndex <- file.path(system.file("doc",package="limmaGUI"),"index.html"))
-		Try(browseURL(limmaGUIhelpIndex))
-		Try(cat(paste("Opening limmaGUI help...\nIf nothing happens, please open :\n",limmaGUIhelpIndex,"\nyourself.",sep="")))
+#
+#
+#
+limmaGUIhelp <- function(){
+	Try(limmaGUIhelpIndex <- file.path(system.file("doc",package="limmaGUI"),"index.html"))
+	Try(browseURL(limmaGUIhelpIndex))
+	Try(cat(paste("Opening limmaGUI help...\nIf nothing happens, please open :\n",limmaGUIhelpIndex,"\nyourself.",sep="")))
 }
-
-limmaHelp <- function()
-{
-		#Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"usersguide.html"))
-		Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"index.html"))
-		Try(browseURL(limmaHelpIndex))
-		Try(cat(paste("Opening limma help...\nIf nothing happens, please open :\n",limmaHelpIndex,"\nyourself.",sep="")))
+#
+#
+#
+limmaHelp <- function(){
+	#Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"usersguide.html"))
+	Try(limmaHelpIndex <- file.path(system.file("doc",package="limma"),"index.html"))
+	Try(browseURL(limmaHelpIndex))
+	Try(cat(paste("Opening limma help...\nIf nothing happens, please open :\n",limmaHelpIndex,"\nyourself.",sep="")))
 }
+#
+#
+#
+showCitations <- function(){
+Try(print(citation("limmaGUI"))) #Put this on the R Console first.
+	#citationOutput is the ouput from the citation("limmaGUI") command given at the R prompt.
+	citationOutput <-
+	"
+	limmaGUI is an implementation of a body of methodological research by the authors and
+	coworkers. Please cite the appropriate methodological papers whenever you use results from
+	the limma software in a publication. Such citations are the main means by which the
+	authors receive professional credit for their work.
 
-showCitations <- function()
-{
-	Try(tkmessageBox(title="Citations",message="See the R console for the Citation listing."))
-	Try(print(citation("limmaGUI")))
-}
+	Citing limma/limmaGUI in publications will usually involve citing one or more of the
+	methodology papers that the limma software is based on as well as citing the limma(Ref.4)
+	and limmaGUI(Ref.5) software packages themselves.
 
-showChangeLog <- function()
-{
+	If you use limma/limmaGUI for differential expression analysis, please cite reference 1
+	which describes the linear modeling approach implemented by lmFit and the empirical Bayes
+	statistics implemented by eBayes, topTable etc.
+
+	If you use limma/limmaGUI for pre-processing or normalization of two-color microarray
+	data, please cite reference 2 which describes the functions read.maimages,
+	normalizeWithinArrays, normalizeBetween-Arrays etc, including the use of spot quality
+	weights.
+
+	If you use the duplicateCorrection function to handle duplicate spots or technical
+	replication, please cite reference 3.
+
+	To cite the limma software itself please refer to reference 4 which describes the software
+	package in the context of the Bioconductor project and surveys the range of experimental
+	designs for which the package can be used, including spotspecific dye-effects. The
+	pre-processing capabilities of the package are also described but more briefly, with
+	examples of background correction, spot quality weights and filtering with control spots.
+	This article is also the best current reference for the normexp background correction
+	method.
+
+	The limmaGUI software itself should be cited using reference 5.
+
+
+
+		1. Smyth, G. K. (2004). Linear models and empirical Bayes methods for assessing
+		differential expression in microarray experiments. Statistical Applications in Genetics
+		and Molecular Biology Vol. 3, No. 1, Article 3.
+
+		2. Smyth, G. K., and Speed, T. P. (2003). Normalization of cDNA microarray data. Methods
+		31, 265-273.
+
+		3. Smyth, G. K., Michaud, J., and Scott, H. (2005). The use of within-array replicate
+		spots for assessing differential expression in microarray experiments. Bioinformatics,
+		21(9), 2067-2075.
+
+		4. Smyth, G. K. (2005). Limma: linear models for microarray data. In: 'Bioinformatics
+		and Computational Biology Solutions using R and Bioconductor'. R. Gentleman, V. Carey,
+		S. Dudoit, R. Irizarry, W. Huber (eds), Springer, New York, pages 397-420.
+
+		5. J. M. Wettenhall and G. K. Smyth. limmaGUI: a graphical user interface for linear
+		modeling of microarray data. Bioinformatics, 20:3705-3706, 2004.
+	"
+	citationNote <- "\nThis information is also displayed on the R console, where you may select and copy it."
+	#
+	citationMessage <- paste(citationOutput,citationNote,sep="")
+	Try(tkmessageBox(title="Citations",message=citationMessage))
+} #end of showCitations <- function()
+
+showChangeLog <- function(){
 	n <- 20
 	Try(tkmessageBox(title="ChangeLog",message=paste("See the R console for the first ",n," lines of the ChangeLog file.\nTo see more lines, use the LGchangeLog(n=nnn) function, where nnn is the number of lines to view.")))
 	Try(LGchangeLog(n))
 }
-
-getPackageVersion <- function(pkgName)
-{
+#
+#
+#
+getPackageVersion <- function(pkgName){
 	DESCRIPTION <- readLines(paste(system.file(package=pkgName),"/DESCRIPTION",sep=""))
 	lineNum <- grep("Version",DESCRIPTION)
 	VersionLineWords <- strsplit(DESCRIPTION[lineNum]," ")[[1]]
 	numWords <- length(VersionLineWords)
 	VersionLineWords[numWords]
 }
-
+#
+#
+#
 initGlobals <- function(){
 	assign("limmaGUIVersion",getPackageVersion("limmaGUI"),limmaGUIenvironment)
 	assign("limmaVersion",getPackageVersion("limma"),limmaGUIenvironment)
@@ -577,7 +639,7 @@ initGlobals <- function(){
 	assign("WeightingType","none", limmaGUIenvironment)
 	assign("AreaLowerLimit",160, limmaGUIenvironment)
 	assign("AreaUpperLimit",170, limmaGUIenvironment)
-#		assign("FlagSpotWeighting", 0.1, limmaGUIenvironment)
+	#		assign("FlagSpotWeighting", 0.1, limmaGUIenvironment)
 	assign("MA.Available",list(Raw=FALSE,WithinArrays=FALSE,BetweenArrays=FALSE,Both=FALSE),limmaGUIenvironment)
 	assign("RG.Available",FALSE,limmaGUIenvironment)
 	assign("Layout.Available",FALSE,limmaGUIenvironment)
@@ -597,13 +659,17 @@ initGlobals <- function(){
 	assign("NEOffset",NEOffsetDefault,limmaGUIenvironment)
 	assign("ImageAnalysisExtension","spot",limmaGUIenvironment)
 }#end of initGlobals <- function()
-
+#
+#
+#
 fixSeps <- function(string){
 	Try(if (.Platform$OS.type=="windows")
 		string <- gsub("/","\\\\",string))
 	return (string)
 }#end of fixSeps <- function(string)
-
+#
+#
+#
 # I wrote the function deleteItemFromList before I discovered
 # that you could simply assign an item to NULL in a list to
 # delete it (or use negative-indexing). Because I am only
@@ -629,7 +695,9 @@ deleteItemFromList <- function(list1,itemName=NULL,index=NULL){
 	}#end of for (i in (1:len))
 	return (newlist)
 }#end of deleteItemFromList <- function(list1,itemName=NULL,index=NULL)
-
+#
+#
+#
 SetLayoutParameters <- function(){
 	Try(ArraysLoaded <- get("ArraysLoaded", envir=limmaGUIenvironment))
 	Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
@@ -638,9 +706,9 @@ SetLayoutParameters <- function(){
 		Try(tkfocus(.limmaGUIglobals$ttMain))
 		return()
 	}#end of if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE)
-
+	#
 	Try(gal <- get("gal",envir=limmaGUIenvironment))
-
+	#
 	ttLayout<-tktoplevel(.limmaGUIglobals$ttMain)
 	tkwm.deiconify(ttLayout)
 	tkgrab.set(ttLayout)
@@ -663,7 +731,7 @@ SetLayoutParameters <- function(){
 	entry.nspot.c <-tkentry(ttLayout,width="12",font=.limmaGUIglobals$limmaGUIfont2,textvariable=nspot.c,bg="white")
 	entry.ngrid.r <-tkentry(ttLayout,width="12",font=.limmaGUIglobals$limmaGUIfont2,textvariable=ngrid.r,bg="white")
 	entry.ngrid.c <-tkentry(ttLayout,width="12",font=.limmaGUIglobals$limmaGUIfont2,textvariable=ngrid.c,bg="white")
-
+	#
 	GetFromGAL <- function(){
 		Try(gal <- get("gal",envir=limmaGUIenvironment))
 		tmpLayout <- getLayout(gal)
@@ -672,9 +740,9 @@ SetLayoutParameters <- function(){
 		tclvalue(ngrid.r) <- tmpLayout$ngrid.r
 		tclvalue(ngrid.c) <- tmpLayout$ngrid.c
 	}#end of GetFromGAL <- function()
-
+	#
 	ReturnVal <- 0
-
+	#
 	onOK <- function(){
 		Try(assign("Layout.Available",TRUE,limmaGUIenvironment))
 		Try(tkdelete(.limmaGUIglobals$mainTree,"Layout.Status"))
@@ -686,7 +754,7 @@ SetLayoutParameters <- function(){
 	OK.but <-tkbutton(ttLayout,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
 	guess.but <-tkbutton(ttLayout,text="Determine from GAL file",command=GetFromGAL,font=.limmaGUIglobals$limmaGUIfont2)
 	Cancel.but <-tkbutton(ttLayout,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
-
+	#
 	tkgrid(tklabel(ttLayout,text="Number of rows of blocks",font=.limmaGUIglobals$limmaGUIfont2),entry.ngrid.r,sticky="w")
 	tkgrid(tklabel(ttLayout,text="Number of columns of blocks",font=.limmaGUIglobals$limmaGUIfont2),entry.ngrid.c,sticky="w")
 	tkgrid(tklabel(ttLayout,text="Number of rows per block",font=.limmaGUIglobals$limmaGUIfont2),entry.nspot.r,sticky="w")
@@ -696,15 +764,17 @@ SetLayoutParameters <- function(){
 	tkgrid(tklabel(ttLayout,text="    "))
 	if (length(maLayout)==0 && length(gal)>0)GetFromGAL()
 	Try(tkfocus(ttLayout))
-
+	#
 	Try(tkbind(ttLayout, "<Destroy>", function() {Try(tkgrab.release(ttLayout));Try(tkfocus(.limmaGUIglobals$ttMain))}))
 	Try(tkwait.window(ttLayout))
-
+	#
 	return(ReturnVal)
 }#end of SetLayoutParameters <- function()
+#
+#
+#
 
-OpenGALFile <- function()
-{
+OpenGALFile <- function(){
 	Try(tmpGALFile <- tclvalue(tkgetOpenFile(filetypes="{{GAL Files} {.gal .GAL}} {{All files} *}")))
 	Try(if (!nchar(tmpGALFile)) return())
 	Try(assign("GALFile",tmpGALFile,limmaGUIenvironment))
@@ -723,10 +793,12 @@ OpenGALFile <- function()
 	Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 	Try(ArraysLoaded <- FALSE)
 	Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
-
+	#
 	tkfocus(.limmaGUIglobals$ttMain)
 }
-
+#
+#
+#
 OpenTargetsFile <- function(){
 	Try(tmpTargetsFile <- tclvalue(tkgetOpenFile(filetypes="{{Targets Files} {.txt}} {{All files} *}")))
 	Try(if (!nchar(tmpTargetsFile)) return())
@@ -747,16 +819,18 @@ OpenTargetsFile <- function(){
 		Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 		return()
 	})
-
+	#
 	Try(assign("Targets",Targets,limmaGUIenvironment))
 	Try(assign("NumSlides",nrow(Targets),limmaGUIenvironment))
-
+	#
 	Try(ArraysLoaded <- FALSE)
 	Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
-
+	#
 	Try(tkfocus(.limmaGUIglobals$ttMain))
 }#end of OpenTargetsFile <- function()
-
+#
+#
+#
 OpenSpotTypesFile <- function(){
 	Try(tmpSpotTypesFile <- tclvalue(tkgetOpenFile(filetypes="{{Spot-Type Files} {.txt}} {{All files} *}")))
 	Try(if (!nchar(tmpSpotTypesFile)) return())
@@ -775,7 +849,7 @@ OpenSpotTypesFile <- function(){
 			"\"ID\",\"Name\" and (\"Color\" or \"col\")."),icon="error"))
 		return()
 	})
-
+	#
 	Try(for (i in (1:ncol(SpotTypes)))
 	{
 		if (colnames(SpotTypes)[i]=="col")
@@ -783,7 +857,7 @@ OpenSpotTypesFile <- function(){
 		if (colnames(SpotTypes)[i]=="cex")
 			colnames(SpotTypes)[i] <- "PointSize"
 	})
-
+	#
 	Try(if (length(SpotTypes$SpotType)!=length(unique(SpotTypes$SpotType)))
 	{
 		Try(tkmessageBox(title="Spot Types",message=paste("Error: Each spot type in the SpotType column should be unique",
@@ -795,16 +869,18 @@ OpenSpotTypesFile <- function(){
 	Try(assign("ArraysLoaded",ArraysLoaded,limmaGUIenvironment))
 	Try(tkfocus(.limmaGUIglobals$ttMain))
 }#end of OpenSpotTypesFile <- function()
-
+#
+#
+#
 GetImageProcessingFileType <- function(){
 	ttGetImageProcessingFileType<-tktoplevel(.limmaGUIglobals$ttMain)
 	tkwm.deiconify(ttGetImageProcessingFileType)
 	tkgrab.set(ttGetImageProcessingFileType)
 	Try(tkwm.title(ttGetImageProcessingFileType,"Type of Image Processing Files"))
-
+	#
 	# Don't remove this! We need at least one tclVar initialization, not just tclvalue()'s.
 	Try(fileTypeTcl <- tclVar("spot"))
-
+	#
 	Try(ImageAnalysisExtension <- get("ImageAnalysisExtension",envir=limmaGUIenvironment))
 	Try(Targets <- get("Targets",envir=limmaGUIenvironment))
 	Try(if ("FileNameCy3" %in% colnames(Targets))
@@ -819,13 +895,13 @@ GetImageProcessingFileType <- function(){
 		Try(tclvalue(fileTypeTcl) <- "smd")
 	else
 		Try(tclvalue(fileTypeTcl) <- "quantarray"))
-
+	#
 	Try(tkframe1 <- tkframe(ttGetImageProcessingFileType,borderwidth=2))
 	Try(tkframe2 <- tkframe(tkframe1,relief="groove",borderwidth=2))
 	Try(tkframe4<-tkframe(tkframe1,borderwidth=2))
-
+	#
 	Try(tkgrid(tklabel(tkframe1,text="    ")))
-
+	#
 	Try(tkgrid(                      tklabel(tkframe2,text="Which type of image-processing files are these?",               font=.limmaGUIglobals$limmaGUIfont2),rowspan=1,columnspan=2,sticky="w"))
 	Try(Spot.but            <- tkradiobutton(tkframe2,text="Spot",            variable=fileTypeTcl,value="spot",            font=.limmaGUIglobals$limmaGUIfont2))
 	Try(Spot.close.open.but <- tkradiobutton(tkframe2,text="Spot close/open", variable=fileTypeTcl,value="spot.close.open", font=.limmaGUIglobals$limmaGUIfont2))
@@ -835,23 +911,25 @@ GetImageProcessingFileType <- function(){
 	Try(ArrayVision.but     <- tkradiobutton(tkframe2,text="ArrayVision",     variable=fileTypeTcl,value="arrayvision",     font=.limmaGUIglobals$limmaGUIfont2))
 	Try(Agilent.but         <- tkradiobutton(tkframe2,text="Agilent",         variable=fileTypeTcl,value="agilent",         font=.limmaGUIglobals$limmaGUIfont2))
 	Try(SMD.but             <- tkradiobutton(tkframe2,text="SMD (Stanford Microarray DB)",variable=fileTypeTcl,value="smd", font=.limmaGUIglobals$limmaGUIfont2))
-
+	#
 	Try(ReturnVal <- "")
 	Try(columnHeadings <- list())
-	Try(onOther <- function()
-	{
-		Try(columnHeadings <- GetImageAnalysisColumnHeadings())
-		Try(if (length(columnHeadings)>0)
-		{
-			limmaGUIglobals <- .limmaGUIglobals
-			limmaGUIglobals$columnHeadings <- columnHeadings
-			assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
-		})
-		Try(tkgrab.release(ttGetImageProcessingFileType));Try(tkdestroy(ttGetImageProcessingFileType));Try(tkfocus(.limmaGUIglobals$ttMain))
-		Try(ReturnVal <<- "other")
-	})
+	Try(
+		onOther <- function(){
+			Try(columnHeadings <- GetImageAnalysisColumnHeadings())
+			Try(
+				if (length(columnHeadings)>0){
+					limmaGUIglobals <- .limmaGUIglobals
+					limmaGUIglobals$columnHeadings <- columnHeadings
+					assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
+				}
+			)
+			Try(tkgrab.release(ttGetImageProcessingFileType));Try(tkdestroy(ttGetImageProcessingFileType));Try(tkfocus(.limmaGUIglobals$ttMain))
+			Try(ReturnVal <<- "other")
+		} #end of onOther <- function()
+	)
 	Try(other.but           <- tkbutton(tkframe2,text="Other...",command=onOther,font=.limmaGUIglobals$limmaGUIfont2))
-
+	#
 	Try(tkgrid(Spot.but,            columnspan=2))
 	Try(tkgrid(Spot.close.open.but, columnspan=2))
 	Try(tkgrid(GenePix.but,         columnspan=2))
@@ -864,14 +942,13 @@ GetImageProcessingFileType <- function(){
 	Try(tkgrid(tklabel(tkframe2,text="    "),other.but))
 	Try(tkgrid.configure(other.but,sticky="w"))
 	Try(tkgrid(tklabel(tkframe2,text="    ")))
-
+	#
 	Try(tkgrid.configure(Spot.but,Spot.close.open.but,GenePix.but,QuantArray.but,ImaGene.but,ArrayVision.but,Agilent.but,SMD.but,sticky="w"))
 	Try(tkgrid(tkframe2))
-	onOK <- function()
-	{
-			Try(fileTypeVal <- as.character(tclvalue(fileTypeTcl)))
-			Try(tkgrab.release(ttGetImageProcessingFileType));Try(tkdestroy(ttGetImageProcessingFileType));Try(tkfocus(.limmaGUIglobals$ttMain))
-			Try(ReturnVal <<- fileTypeVal)
+	onOK <- function(){
+		Try(fileTypeVal <- as.character(tclvalue(fileTypeTcl)))
+		Try(tkgrab.release(ttGetImageProcessingFileType));Try(tkdestroy(ttGetImageProcessingFileType));Try(tkfocus(.limmaGUIglobals$ttMain))
+		Try(ReturnVal <<- fileTypeVal)
 	}
 	onCancel <- function(){tkgrab.release(ttGetImageProcessingFileType);tkdestroy(ttGetImageProcessingFileType);tkfocus(.limmaGUIglobals$ttMain);ReturnVal <<- ""}
 	Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
