@@ -7,6 +7,6 @@ Maintainer: Keith Satterley <keith@wehi.edu.au>
 Depends: limma, tcltk
 Suggests: statmod, sma, R2HTML, xtable, tkrplot
 Description: A Graphical User Interface for the limma Microarray package
-biocViews: Microarray, TwoChannel, DataImport, QualityControl, Preprocessing, Statistics, DifferentialExpression, MultipleComparisons
+biocViews: Microarray, TwoChannel, DataImport, QualityControl, Preprocessing, Statistics, DifferentialExpression, MultipleComparisons, GUI
 License: LGPL
 URL: http://bioinf.wehi.edu.au/limmaGUI/
