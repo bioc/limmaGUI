@@ -56,33 +56,28 @@ TclRequire <- function(tclPkg){
 		limmaGUIglobals$TclRequireFailed <- TRUE
 		assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
 		Try(winTitle<-"Tcl/Tk Extension(s) Not Found")
-		Try(message<-paste("Cannot find Tcl/Tk package \"", tclPkg,
-		"\". limmaGUI cannot continue.\n\n",
-		"limmaGUI requires the Tcl/Tk extensions, BWidget and Tktable.\n",
-		"You must have Tcl/Tk installed on your computer, not just the minimal\n",
-		"Tcl/Tk installation which comes with R (for Windows). If you do have\n",
-		"Tcl/Tk installed, including the extensions (e.g. using the ActiveTcl\n",
-		"distribution in Windows), make sure that R can find the path to the\n",
-		"Tcl library, e.g. C:\\Tcl\\lib (on Windows) or /usr/lib (on Linux/Unix)\n",
-		"or /sw/lib on Mac OSX.\n\n",
-		"If you don't know how to set environment variables in Windows, one way\n",
-		"to make sure that R can find the Tcl/Tk extensions Tktable2.8 and bwidget1.6\n",
-		"is to copy them from your ActiveTcl installation e.g. in C:\\Tcl\\lib into\n",
-		"the Tcl subdirectory of your R installation.\n",
-		"If you do understand how to set environment variables...\n",
-		"make sure that you have the TCL_LIBRARY environment variable set to the\n",
-		"appropriate path, e.g.C:\\Tcl\\lib\\tcl8.4 and the MY_TCLTK environment\n",
-		"variable set to a non-empty string, e.g. \"Yes\".\n\n",
-		"If using Windows, be sure to read the R for windows FAQ at\nhttp://www.stats.ox.ac.uk/pub/R/rw-FAQ.html\n\n",
-		"If your Tcl/Tk extensions still can't be found, try\n",
-		"addTclPath(\"<path to Tcl library>\").\nThis could be put in $HOME/.Rprofile\n\n",
-		"If you need further instructions, please contact your system administrator\n",
-		"and consider emailing r-help@stat.math.ethz.ch, or browse through the R-help\n",
-		"archives for a similar question.\n\n",
-		"The URLs for Tktable and BWidget are:\n",
-		"http://tktable.sourceforge.net\n",
-		"http://tcllib.sourceforge.net",
-		sep=""))
+		Try(
+			message<-paste("Cannot find Tcl/Tk package \"", tclPkg,
+				"\". limmaGUI cannot continue.\n\n",
+				"limmaGUI requires the Tcl/Tk extensions, BWidget and Tktable.\n",
+				"You must have Tcl/Tk installed on your computer, The\n",
+				"Tcl/Tk installation which comes with R includes BWidget and Tktable.	If you do have\n",
+				"Tcl/Tk installed elsewhere, including the extensions, make sure that R can find the path to the\n",
+				"Tcl library, e.g. C:\\Tcl\\lib (on Windows) or /usr/lib (on Linux/Unix)\n",
+				"or /sw/lib on Mac OSX.\n\n",
+				"Set the environment variable TCL_LIBRARY to the appropriate path. for eg.\n",
+				"C:\\Tcl\\lib\\tcl8.4\n",
+				"and set the MY_TCLTK environment variable to a non-empty string, e.g. \"Yes\".\n\n",
+				"If using Windows, read the R for windows FAQ at\n",
+				"http://cran.r-project.org/bin/windows/base/rw-FAQ.html\n",
+				"If your Tcl/Tk extensions still can't be found, try\n",
+				"addTclPath(\"<path to Tcl library>\").\nThis could be put in $HOME/.Rprofile\n\n",
+				"If you need further instructions, please contact your system administrator\n",
+				"and consider emailing r-help@stat.math.ethz.ch, or browse through the R-help\n",
+				"or Bioconductor archives for a similar question.\n\n",
+				sep=""
+			) #end of message<-paste
+		) #end of Try
 		# Don't make ttMain a parent of this, because we might want to use TclRequire before
 		# defining ttMain.
 		Try(ttTclTkExtension <- tktoplevel())
