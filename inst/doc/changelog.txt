@@ -3,6 +3,7 @@
 	Reformat the layout of some code to my liking.
 	Update the text in main.R about not working with Tcl/Tk.
 	Add NAMESPACE file
+	Changed license to LGPL
 	This version ready for release with Bioconductor 2.2
 
 13-Sep-2007 limmaGUI 1.13.1
