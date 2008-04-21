@@ -6,6 +6,7 @@ Author: James Wettenhall Division of Genetics and Bioinformatics, WEHI
 Maintainer: Keith Satterley <keith@wehi.edu.au>
 Depends: limma, tcltk
 Suggests: statmod, sma, R2HTML, xtable, tkrplot
+LazyLoad: yes
 Description: A Graphical User Interface for the limma Microarray package
 biocViews: Microarray, TwoChannel, DataImport, QualityControl, Preprocessing, Statistics, DifferentialExpression, MultipleComparisons, GUI
 License: LGPL
