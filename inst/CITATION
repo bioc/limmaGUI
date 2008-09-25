@@ -50,7 +50,7 @@ citEntry(
   paste(
     "2. Smyth, G. K., and Speed, T. P. (2003).",
     "Normalization of cDNA microarray data.",
-    "Methods 31, 265–273."
+    "Methods 31, 265-273."
   )
 )
 
@@ -71,7 +71,7 @@ citEntry(
     "3. Smyth, G. K., Michaud, J., and Scott, H. (2005).",
     "The use of within-array replicate spots for assessing differential",
     "expression in microarray experiments.",
-    "Bioinformatics, 21(9), 2067–2075."
+    "Bioinformatics, 21(9), 2067-2075."
   )
 )
 
@@ -112,7 +112,7 @@ citEntry(
     "5. J. M. Wettenhall and G. K. Smyth.",
     "limmaGUI: a graphical user interface for linear",
     "modeling of microarray data.",
-    "Bioinformatics, 20:3705–3706, 2004."
+    "Bioinformatics, 20:3705-3706, 2004."
   )
 )
 
