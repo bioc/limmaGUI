@@ -136,7 +136,7 @@
 \alias{WithinBetweenOrBoth}
 \alias{wtflags2}
 
-\description{Graphical User Interface for the limma microarray package}}
+\description{Graphical User Interface for the limma microarray package}
 
 \usage{
 AboutLimmaGUI()

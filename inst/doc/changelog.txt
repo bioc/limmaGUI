@@ -1,5 +1,8 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+15 October 2008 limmaGUI 1.17.1
+	replace tkopen, tkread and tkclose with tclopen/read/close in main.R
+
 25 September 2006 limmaGUI 1.9.2
 	replaced tkfile by tcltk:::tclfile, as tkfile is defunct in R2.4.0
 	removed "\usepackage{Sweave}" from limmaGUI.Rnw, extract.Rnw and extract.Rnw.txt
