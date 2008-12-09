@@ -276,66 +276,66 @@ ViewSpotTypes()
 	sizes are not controlled by limmaGUI and so must be adjusted in the operating system, e.g.
 	in the Control Panel in Windows under Display, Appearance.}
 
-	\item{\dots}                         {HTMLplotUsingFunction:arg15,showTopTable:arg1}
-	\item{AFile}                         {Flat-file of log-intensities output by marrayTools}
-	\item{Align}                         {HTMLplotUsingFunction:arg8}
-	\item{BG}                            {HTMLplotUsingFunction:arg13}
-	\item{Caption}                       {HTMLplotUsingFunction:arg1}
-	\item{cex}                           {ChoosePlotSymbolByClicking:arg2}
+	\item{\dots}{HTMLplotUsingFunction:arg15,showTopTable:arg1}
+	\item{AFile}{Flat-file of log-intensities output by marrayTools}
+	\item{Align}{HTMLplotUsingFunction:arg8}
+	\item{BG}{HTMLplotUsingFunction:arg13}
+	\item{Caption}{HTMLplotUsingFunction:arg1}
+	\item{cex}{ChoosePlotSymbolByClicking:arg2}
 	\item{contrastsParameterizationIndex}{ViewDesignOrContrastsMatrixInTable:arg4,ViewDesignOrContrastsMatrixAsPairs:arg4}
-	\item{Contrasts}                     {GetDesignOrContrasts:arg2}
-	\item{CurrentNormexpOffsetValue}     {GetNormexpOffsetValue:arg1}
-	\item{designOrContrastsList}         {ViewDesignOrContrastsMatrixInTable:arg2,ViewDesignOrContrastsMatrixAsPairs:arg2}
-	\item{DesignOrContrasts}             {ViewDesignOrContrastsMatrixInTable:arg1,ViewDesignOrContrastsMatrixAsPairs:arg1}
-	\item{Design}                        {GetDesignOrContrasts:arg1}
-	\item{export}                        {showTopTable:arg2}
-	\item{expr}                          {TryReadImgProcFile:arg1}
-	\item{FileName}                      {A file name.}
-	\item{File}                          {HTMLplotUsingFunction:arg2}
-	\item{GraphAbsoluteDirectory}        {HTMLplotUsingFunction:arg4}
-	\item{GraphBorder}                   {HTMLplotUsingFunction:arg7}
-	\item{GraphFileName}                 {HTMLplotUsingFunction:arg5}
-	\item{graphFileType}                 {GetJpegOrPngParams:arg1,GetJpegOrPngX11Params:arg1}
-	\item{GraphRelativeDirectory}        {HTMLplotUsingFunction:arg3}
-	\item{GraphSaveAs}                   {HTMLplotUsingFunction:arg6}
-	\item{haystack}                      {nstrstr:arg1,strstr:arg1}
-	\item{header}                        {See help for read.table}
-	\item{Height}                        {HTMLplotUsingFunction:arg11}
-	\item{img}                           {SetupPlotMenus:arg1,Resize:arg1,CopyGraph:arg1,SetupPlotKeyBindings:arg2}
-	\item{index}                         {deleteItemFromList:arg1}
-	\item{initialfile}                   {SaveGraphAsJpeg:arg1,SaveGraphAsPDF:arg1,SaveGraphAsPNG:arg1,SaveGraphAsPostscript:arg1,SetupPlotMenus:arg2}
-	\item{itemName}                      {deleteItemFromList:arg1}
-	\item{list1}                         {deleteItemFromList:arg1}
-	\item{MFile}                         {Flat-file of log-ratios output by marrayTools}
-	\item{needle}                        {nstrstr:arg2,strstr:arg2}
-	\item{NumContrasts}                  {GetDesignOrContrasts:arg3}
-	\item{p.value}                       {A p-value cutoff.}
-	\item{parameterizationIndex}         {GetDesignOrContrasts:arg4,GetComponentsToExportInHTMLreport:arg1,GetDesignOrContrasts:arg4,ViewDesignOrContrastsMatrixInTable:arg3,ViewDesignOrContrastsMatrixAsPairs:arg3}
-	\item{parameterizationTreeIndex}     {GetParametersAndOrContrasts:arg1,ChooseContrastsParameterization:arg1,ChooseSpotType:arg1,GetCoef:arg1,GetParameterNames:arg1,GetReducedDuplicateSpacing:arg1,GetContrastsParameterizationNames:arg1,GetSpotTypesIncludedNames:arg1}
-	\item{parameterName}                 {HeatDiagramDialog:arg1}
-	\item{path}                          {Path to the directory containing the MFile and AFile}
-	\item{pkgName}                       {getPackageVersion:arg1}
-	\item{pkg}                           {Require:arg1}
-	\item{plotFunction}                  {SetupPlotMenus:arg1,HTMLplotUsingFunction:arg9,Resize:arg1,SaveGraphAsJpeg:arg2,SaveGraphAsPDF:arg2,SaveGraphAsPNG:arg2,SaveGraphAsPostscript:arg2}
-	\item{plottitle}                     {GetPlotLabels:arg1,GetPlotTitle:arg1}
-	\item{PointSize}                     {HTMLplotUsingFunction:arg12}
-	\item{quote}                         {See help for read.table}
-	\item{res}                           {HTMLplotUsingFunction:arg14}
-	\item{sep}                           {Column separator. ("\t" for tab-delimited text)}
-	\item{slidenum}                      {ImageArrayPlotDialog:arg1}
-	\item{spotType}                      {ChoosePlotSymbolByClicking:arg1}
-	\item{SpotTypes}                     {SelectPlotSymbols:arg1}
-	\item{string}                        {fixSeps:arg1,SimplifyContrastsExpression:arg1,GetRNATypesFrom.ContrastsFromDropDowns.String:arg1}
-	\item{tclPkg}                        {TclRequire:arg1}
-	\item{tt}                            {SetupPlotKeyBindings:arg1,SetupPlotMenus:arg1}
-	\item{verbose}                       {Optional diagnostic messages}
-	\item{view}                          {limmaUsersGuide:arg1}
-	\item{whatFor}                       {GetParametersAndOrContrasts:arg2}
-	\item{whichCoef}                     {GetCoef:arg2}
-	\item{Width}                         {HTMLplotUsingFunction:arg10}
-	\item{xlabel}                        {GetPlotLabels:arg2}
-	\item{xlim}                          {GetNEWxlim:arg1}
-	\item{ylabel}                        {GetPlotLabels:arg3}
+	\item{Contrasts}{GetDesignOrContrasts:arg2}
+	\item{CurrentNormexpOffsetValue}{GetNormexpOffsetValue:arg1}
+	\item{designOrContrastsList}{ViewDesignOrContrastsMatrixInTable:arg2,ViewDesignOrContrastsMatrixAsPairs:arg2}
+	\item{DesignOrContrasts}{ViewDesignOrContrastsMatrixInTable:arg1,ViewDesignOrContrastsMatrixAsPairs:arg1}
+	\item{Design}{GetDesignOrContrasts:arg1}
+	\item{export}{showTopTable:arg2}
+	\item{expr}{TryReadImgProcFile:arg1}
+	\item{FileName}{A file name.}
+	\item{File}{HTMLplotUsingFunction:arg2}
+	\item{GraphAbsoluteDirectory}{HTMLplotUsingFunction:arg4}
+	\item{GraphBorder}{HTMLplotUsingFunction:arg7}
+	\item{GraphFileName}{HTMLplotUsingFunction:arg5}
+	\item{graphFileType}{GetJpegOrPngParams:arg1,GetJpegOrPngX11Params:arg1}
+	\item{GraphRelativeDirectory}{HTMLplotUsingFunction:arg3}
+	\item{GraphSaveAs}{HTMLplotUsingFunction:arg6}
+	\item{haystack}{nstrstr:arg1,strstr:arg1}
+	\item{header}{See help for read.table}
+	\item{Height}{HTMLplotUsingFunction:arg11}
+	\item{img}{SetupPlotMenus:arg1,Resize:arg1,CopyGraph:arg1,SetupPlotKeyBindings:arg2}
+	\item{index}{deleteItemFromList:arg1}
+	\item{initialfile}{SaveGraphAsJpeg:arg1,SaveGraphAsPDF:arg1,SaveGraphAsPNG:arg1,SaveGraphAsPostscript:arg1,SetupPlotMenus:arg2}
+	\item{itemName}{deleteItemFromList:arg1}
+	\item{list1}{deleteItemFromList:arg1}
+	\item{MFile}{Flat-file of log-ratios output by marrayTools}
+	\item{needle}{nstrstr:arg2,strstr:arg2}
+	\item{NumContrasts}{GetDesignOrContrasts:arg3}
+	\item{p.value}{A p-value cutoff.}
+	\item{parameterizationIndex}{GetDesignOrContrasts:arg4,GetComponentsToExportInHTMLreport:arg1,GetDesignOrContrasts:arg4,ViewDesignOrContrastsMatrixInTable:arg3,ViewDesignOrContrastsMatrixAsPairs:arg3}
+	\item{parameterizationTreeIndex}{GetParametersAndOrContrasts:arg1,ChooseContrastsParameterization:arg1,ChooseSpotType:arg1,GetCoef:arg1,GetParameterNames:arg1,GetReducedDuplicateSpacing:arg1,GetContrastsParameterizationNames:arg1,GetSpotTypesIncludedNames:arg1}
+	\item{parameterName}{HeatDiagramDialog:arg1}
+	\item{path}{Path to the directory containing the MFile and AFile}
+	\item{pkgName}{getPackageVersion:arg1}
+	\item{pkg}{Require:arg1}
+	\item{plotFunction}{SetupPlotMenus:arg1,HTMLplotUsingFunction:arg9,Resize:arg1,SaveGraphAsJpeg:arg2,SaveGraphAsPDF:arg2,SaveGraphAsPNG:arg2,SaveGraphAsPostscript:arg2}
+	\item{plottitle}{GetPlotLabels:arg1,GetPlotTitle:arg1}
+	\item{PointSize}{HTMLplotUsingFunction:arg12}
+	\item{quote}{See help for read.table}
+	\item{res}{HTMLplotUsingFunction:arg14}
+	\item{sep}{Column separator. ("\t" for tab-delimited text)}
+	\item{slidenum}{ImageArrayPlotDialog:arg1}
+	\item{spotType}{ChoosePlotSymbolByClicking:arg1}
+	\item{SpotTypes}{SelectPlotSymbols:arg1}
+	\item{string}{fixSeps:arg1,SimplifyContrastsExpression:arg1,GetRNATypesFrom.ContrastsFromDropDowns.String:arg1}
+	\item{tclPkg}{TclRequire:arg1}
+	\item{tt}{SetupPlotKeyBindings:arg1,SetupPlotMenus:arg1}
+	\item{verbose}{Optional diagnostic messages}
+	\item{view}{limmaUsersGuide:arg1}
+	\item{whatFor}{GetParametersAndOrContrasts:arg2}
+	\item{whichCoef}{GetCoef:arg2}
+	\item{Width}{HTMLplotUsingFunction:arg10}
+	\item{xlabel}{GetPlotLabels:arg2}
+	\item{xlim}{GetNEWxlim:arg1}
+	\item{ylabel}{GetPlotLabels:arg3}
 }
 
 \details{
