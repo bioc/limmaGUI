@@ -1,15 +1,36 @@
 citHeader(
-  "limmaGUI is an implementation of a body of methodological research by the authors and coworkers. Please cite the appropriate methodological papers whenever you use results from the limma software in a publication. Such citations are the main means by which the authors receive professional credit for their work.
+  "limmaGUI is an implementation of a body of methodological research by the
+  authors and coworkers. Please cite the appropriate methodological papers
+  whenever you use results from the limma software in a publication. Such
+  citations are the main means by which the authors receive professional
+  credit for their work. 
 
-  Citing limma/limmaGUI in publications will usually involve citing one or more of the methodology papers that the limma software is based on as well as citing the limma(Ref.4) and limmaGUI(Ref.5) software packages themselves.
+  Citing limma/limmaGUI in publications will usually involve citing one or
+  more of the methodology papers that the limma software is based on as well
+  as citing the limma(Ref.4) and limmaGUI(Ref.5) software packages
+  themselves. 
 
-  If you use limma/limmaGUI for differential expression analysis, please cite reference 1 which describes the linear modeling approach implemented by lmFit and the empirical Bayes statistics implemented by eBayes, topTable etc.
+  If you use limma/limmaGUI for differential expression analysis, please cite
+  reference 1 which describes the linear modeling approach implemented by
+  lmFit and the empirical Bayes statistics implemented by eBayes, topTable
+  etc. 
 
-  If you use limma/limmaGUI for pre-processing or normalization of two-color microarray data, please cite reference 2 which describes the functions read.maimages, normalizeWithinArrays, normalizeBetween-Arrays etc, including the use of spot quality weights.
+  If you use limma/limmaGUI for pre-processing or normalization of two-color
+  microarray data, please cite reference 2 which describes the functions
+  read.maimages, normalizeWithinArrays, normalizeBetween-Arrays etc, including
+  the use of spot quality weights. 
 
-  If you use the duplicateCorrection function to handle duplicate spots or technical replication, please cite reference 3.
+  If you use the duplicateCorrection function to handle duplicate spots or
+  technical replication, please cite reference 3. 
 
-  To cite the limma software itself please refer to reference 4 which describes the software package in the context of the Bioconductor project and surveys the range of experimental designs for which the package can be used, including spotspecific dye-effects. The pre-processing capabilities of the package are also described but more briefly, with examples of background correction, spot quality weights and filtering with control spots. This article is also the best current reference for the normexp background correction method.
+  To cite the limma software itself please refer to reference 4 which
+  describes the software package in the context of the Bioconductor project
+  and surveys the range of experimental designs for which the package can be
+  used, including spotspecific dye-effects. The pre-processing capabilities of
+  the package are also described but more briefly, with examples of background
+  correction, spot quality weights and filtering with control spots. This
+  article is also the best current reference for the normexp background
+  correction method. 
 
   The limmaGUI software itself should be cited using reference 5.
 
@@ -17,10 +38,14 @@ citHeader(
 )
 
 citEntry(
-  note        = "If you use limma/limmaGUI for differential expression analysis, please cite this article which describes the linear modeling approach implemented by lmFit and the empirical Bayes statistics implemented by eBayes, topTable etc.",
+  note        = "If you use limma/limmaGUI for differential expression
+  analysis, please cite this article which describes the linear modeling
+  approach implemented by lmFit and the empirical Bayes statistics implemented
+  by eBayes, topTable etc.", 
 
   entry       = "article",
-  title       = "Linear models and empirical Bayes methods for assessing differential expression in microarray experiments.",
+  title       = "Linear models and empirical Bayes methods for assessing
+  differential expression in microarray experiments.", 
   author      = person(first="Gordon",middle="K",last="Smyth"),
   journal     = "Statistical Applications in Genetics and Molecular Biology",
   volume      = 3,
@@ -35,7 +60,10 @@ citEntry(
 )
 
 citEntry(
-  note        = "If you use limma/limmaGUI for pre-processing or normalization of two-color microarray data, please cite this article which describes the functions read.maimages, normalizeWithinArrays, normalizeBetween-Arrays etc, including the use of spot quality weights.",
+  note        = "If you use limma/limmaGUI for pre-processing or normalization
+  of two-color microarray data, please cite this article which describes the
+  functions read.maimages, normalizeWithinArrays, normalizeBetween-Arrays etc,
+  including the use of spot quality weights.", 
   entry       = "article",
   title       = "Normalization of cDNA microarray data.",
   author      = personList(
@@ -55,7 +83,8 @@ citEntry(
 )
 
 citEntry(
-  note        = "If you use the duplicateCorrection function to handle duplicate spots or technical replication, please cite this article.",
+  note        = "If you use the duplicateCorrection function to handle
+  duplicate spots or technical replication, please cite this article.", 
   entry       = "article",
   title       = "The use of within-array replicate spots for assessing differential expression in microarray experiments.",
   author      = personList(
@@ -76,7 +105,14 @@ citEntry(
 )
 
 citEntry(
-  note        = "To cite the limma software itself please refer to this article which describes the software package in the context of the Bioconductor project and surveys the range of experimental designs for which the package can be used, including spotspecific dye-effects. The pre-processing capabilities of the package are also described but more briefly, with examples of background correction, spot quality weights and filtering with control spots. This article is also the best current reference for the normexp background correction method.",
+  note        = "To cite the limma software itself please refer to this
+  article which describes the software package in the context of the
+  Bioconductor project and surveys the range of experimental designs for which
+  the package can be used, including spotspecific dye-effects. The
+  pre-processing capabilities of the package are also described but more
+  briefly, with examples of background correction, spot quality weights and
+  filtering with control spots. This article is also the best current
+  reference for the normexp background correction method.", 
   entry       = "inbook",
   title       = "Limma: linear models for microarray data.",
   author      =  person(first = "Gordon", middle = "K", last="Smyth"),
