@@ -1,5 +1,8 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+31 Mar 2009 limmaGUI 1.19.2
+	Add NAMESPACE file
+
 15 October 2008 limmaGUI 1.17.1
 	replace tkopen, tkread and tkclose with tclopen/read/close in main.R
 
