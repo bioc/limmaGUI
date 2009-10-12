@@ -5,7 +5,7 @@ Title: GUI for limma package
 Author: James Wettenhall Division of Genetics and Bioinformatics, WEHI
 Maintainer: Keith Satterley <keith@wehi.edu.au>
 Depends: limma, tcltk
-Suggests: statmod, sma, R2HTML, xtable, tkrplot
+Suggests: statmod, R2HTML, xtable, tkrplot
 Description: A Graphical User Interface for the limma Microarray package
 biocViews: Microarray, TwoChannel, DataImport, QualityControl, Preprocessing, Bioinformatics, DifferentialExpression, MultipleComparisons, GUI
 License: LGPL

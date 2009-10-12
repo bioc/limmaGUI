@@ -50,6 +50,7 @@ citEntry(
   journal     = "Statistical Applications in Genetics and Molecular Biology",
   volume      = 3,
   pages       = "No.1 Article 3",
+  year	      = 2004,
   textVersion =
   paste(
     "1. Smyth, G. K. (2004). Linear models and empirical Bayes methods for assessing",
@@ -95,6 +96,7 @@ citEntry(
   journal     = "Bioinformatics",
   volume      = 21,
   pages       = "2067-2075",
+  year        = 2005,
   textVersion =
   paste(
     "3. Smyth, G. K., Michaud, J., and Scott, H. (2005).",
@@ -121,6 +123,7 @@ citEntry(
   publisher   = "Springer",
   address     = "New York",
   year        = 2005,
+  chapter     = 23,
   pages       = "397-420",
   textVersion =
   paste(
@@ -143,6 +146,7 @@ citEntry(
   year        = 2004,
   volume      = 20,
   pages       = "3705-3706",
+  year        = "2004",
   textVersion =
   paste(
     "5. J. M. Wettenhall and G. K. Smyth.",
