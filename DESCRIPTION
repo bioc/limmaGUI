@@ -1,6 +1,6 @@
 Package: limmaGUI
-Version: 1.21.0
-Date: 15 October 2008
+Version: 1.21.1
+Date: 16 October 2009
 Title: GUI for limma package
 Author: James Wettenhall Division of Genetics and Bioinformatics, WEHI
 Maintainer: Keith Satterley <keith@wehi.edu.au>
