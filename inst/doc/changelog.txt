@@ -1,5 +1,8 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+16 October 2009 limmaGUI 1.21.2
+	Reinstated M Box plot  using limma function
+
 16 October 2009 limmaGUI 1.21.1
   Removed MA Plot with lowess curves (for one slide) as it required sma package
   Removed references to M A  plot (with lowess curves) from "About Normalization" under the Normalization Menu.

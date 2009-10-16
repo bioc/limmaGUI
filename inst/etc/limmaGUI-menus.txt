@@ -62,7 +62,7 @@
 #    item    plotMenu        command         "M A Plot with lowess curves (for one slide)"       MAPlot
     item    plotMenu        command         "Color-Coded M A Plot (for one slide)"              plotMAColorCoded
     item    plotMenu        command         "Print-Tip Group M A Plot (for one slide)"          PrintTipGroupMAPlot
-#    item    plotMenu        command         "M Box Plot"                                        MBoxPlot
+    item    plotMenu        command         "M Box Plot"                                        MBoxPlot
     item    plotMenu        command         "Image Array Plot"                                  ImageArrayPlot
     item    plotMenu        separator       ""                                                  ""
     item    plotMenu        command         "Quantile-Quantile t Statistic Plot"                QQTplot
