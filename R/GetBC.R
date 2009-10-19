@@ -1,6 +1,6 @@
 BChelp <- function()
 {
-	Try(help("backgroundCorrect",htmlhelp=TRUE))
+	Try(help("backgroundCorrect",help_type="html"))
 }
 
 GetBackgroundCorrectionMethod <- function(){

@@ -3520,12 +3520,12 @@ GetLowessType <- function()
       ###Require("sma") ###removed on 16-Oct-2009
       Try(LowessType<-tclvalue(LowessTypeTcl))
       Try(if (LowessType=="printtip")
-        Try(help("plotPrintTipLoess",htmlhelp=TRUE))) ##changed from plot.print.tip.lowess from the sma package
+        Try(help("plotPrintTipLoess",help_type="html"))) ##changed from plot.print.tip.lowess from the sma package
       Try(if (LowessType=="none")
-        Try(help("plot.default",htmlhelp=TRUE)))
+        Try(help("plot.default",help_type="html")))
       Try(if (LowessType=="global")
       {
-        Try(help("plot.mva",htmlhelp=TRUE))
+        Try(help("plot.mva",help_type="html"))
       })
   }
   Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))

@@ -1,6 +1,6 @@
 lmFitMethodHelp <- function()
 {
-  Try(help("lmFit",htmlhelp=TRUE))
+  Try(help("lmFit",help_type="html"))
 }
 
 GetlmFitMethod <- function()

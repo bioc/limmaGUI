@@ -4266,7 +4266,7 @@ showTopTable <- function(...,export=FALSE)
 			Try(Abort          <<- 0)
 	})
 
-	Try(onHelp <- function() Try(help("topTable",htmlhelp=TRUE)))
+	Try(onHelp <- function() Try(help("topTable",help_type="html")))
 
 	Try(frame4 <- tkframe(ttToptableDialog,borderwidth=2))
 	Try(onCancel <- function() {Try(tkgrab.release(ttToptableDialog));Try(tkdestroy(ttToptableDialog));Try(tkfocus(.limmaGUIglobals$ttMain));Abort <<- 1})
@@ -4893,7 +4893,7 @@ GetWtAreaParams <- function()
 		onCancel <- function() {Try(tkgrab.release(ttWeightingwtArea));Try(tkdestroy(ttWeightingwtArea));Try(tkfocus(.limmaGUIglobals$ttMain));ReturnVal<<-0}
 		Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
 		Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2))
-		Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=function()help(wtarea,htmlhelp=TRUE),font=.limmaGUIglobals$limmaGUIfont2))
+		Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=function()help(wtarea,help_type="html"),font=.limmaGUIglobals$limmaGUIfont2))
 		Try(tkgrid(OK.but,Cancel.but,Help.but))
 		Try(tkgrid.configure(Help.but,sticky="e"))
 		tkgrid(tklabel(tkframe4,text="    "))
