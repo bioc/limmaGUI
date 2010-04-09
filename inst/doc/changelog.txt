@@ -1,5 +1,9 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+9 Apr 2010 limmaGUI 1.23.0
+  Reformatted some code in main.R to my preference
+  Ready to be released with Bioconductor 2.6 for R-2.11.0
+
 16 October 2009 limmaGUI 1.21.2
 	Reinstated M Box plot  using limma function
 
