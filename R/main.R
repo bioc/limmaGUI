@@ -30,7 +30,7 @@ TryReadImgProcFile <- function(expr){
 #
 #
 Require <- function(pkg){
-	if(data.class(result<-try(.find.package(pkg),TRUE))=="try-error"){
+	if(data.class(result<-try(find.package(pkg),TRUE))=="try-error"){
 		tkmessageBox(title="An error has occured!",message=paste("Cannot find package",pkg),icon="error",type="ok")
 	}else{
 		result <- Try(require(pkg,character.only=TRUE))
