@@ -1,5 +1,10 @@
 
 ------------------------- limmaGUI ChangeLog -------------------------
+10 1pr 2105 limmaGUI 1.43.1
+	Modified TclArrayVar function to access value of TclVarCount directly
+	Modified DESCRIPTION and NAMESPACE files to Import names as now required by R-3.1.2
+	Replace ".find.package" function with "find.package" function.
+
 9 Apr 2010 limmaGUI 1.23.0
   Reformatted some code in main.R to my preference
   Ready to be released with Bioconductor 2.6 for R-2.11.0

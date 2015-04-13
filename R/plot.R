@@ -338,7 +338,7 @@ MAPlotAvg <- function()
   {
     Try(ttAvgMAPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttAvgMAPlot,plotTitle))
-    Try(Require("tkrplot"))
+    ####Try(Require("tkrplot"))
     Try(img <-tkrplot(ttAvgMAPlot,plotAvgMA,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttAvgMAPlot,img=img))
     Try(SetupPlotMenus(tt=ttAvgMAPlot,initialfile=paste(limmaDataSetNameText,"MAPlotAvg",ParameterNamesVec[coef],sep=""),
@@ -477,7 +477,7 @@ MMPlot <- function()
   {
     Try(ttMMPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttMMPlot,plotTitle))
-    Try(Require("tkrplot"))
+    ####Try(Require("tkrplot"))
     Try(img <-tkrplot(ttMMPlot,plotMM,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttMMPlot,img=img))
     Try(SetupPlotMenus(tt=ttMMPlot,initialfile=paste(limmaDataSetNameText,"MMPlot",ParameterNamesVec1[coef1],"vs",ParameterNamesVec2[coef2],sep=""),
@@ -795,7 +795,7 @@ HeatDiagramPlot <- function()
   {
     Try(ttHeatDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttHeatDiagramPlot,plotTitle))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(img <-tkrplot(ttHeatDiagramPlot,plotHD,hscale=LocalHScale,vscale=LocalVScale))
     Try(SetupPlotKeyBindings(tt=ttHeatDiagramPlot,img=img))
     Try(SetupPlotMenus(tt=ttHeatDiagramPlot,initialfile=paste(limmaDataSetNameText,"HeatDiagram",sep=""),
@@ -1034,7 +1034,7 @@ ImageArrayPlot <- function()
   {
     Try(ttImageArrayPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttImageArrayPlotGraph,plotTitle))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(img <-tkrplot(ttImageArrayPlotGraph,plotImageArray,hscale=LocalHScale,vscale=LocalVScale))
     Try(SetupPlotKeyBindings(tt=ttImageArrayPlotGraph,img=img))
     Try(plotMenus<-SetupPlotMenus(tt=ttImageArrayPlotGraph,initialfile=paste(limmaDataSetNameText,"ImagePlotSlide",SlideNamesVec[slidenum],sep=""),
@@ -1257,7 +1257,7 @@ LogOddsPlot <- function()
   {
     Try(ttLogOddsPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttLogOddsPlot,plotTitle))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(img <-tkrplot(ttLogOddsPlot,plotLogOdds,hscale=LocalHScale,vscale=LocalVScale))
     Try(SetupPlotKeyBindings(tt=ttLogOddsPlot,img=img))
     Try(SetupPlotMenus(tt=ttLogOddsPlot,initialfile=paste(limmaDataSetNameText,"LogOddsPlot",ParameterNamesVec[coef],sep=""),
@@ -1361,7 +1361,7 @@ DupCorBoxPlot <- function()
   {
     Try(ttDupCorBoxplot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttDupCorBoxplot,plotTitle))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(img <-tkrplot(ttDupCorBoxplot,plotDupCor,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttDupCorBoxplot,img=img))
     Try(SetupPlotMenus(tt=ttDupCorBoxplot,initialfile=paste(limmaDataSetNameText,"DupCorBoxPlot",sep=""),
@@ -1465,7 +1465,7 @@ QQTplot <- function()
   {
     Try(ttQQTplot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttQQTplot,plotTitle))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(img <-tkrplot(ttQQTplot,plotQQT,hscale=LocalHScale,vscale=LocalVScale))
     Try(SetupPlotKeyBindings(tt=ttQQTplot,img=img))
     Try(SetupPlotMenus(tt=ttQQTplot,initialfile=paste(limmaDataSetNameText,"QQTPlot",ParameterNamesVec[coef],sep=""),
@@ -1732,7 +1732,7 @@ MBoxPlot <- function(){
 			Try(ttMBoxPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
 			Try(tkconfigure(ttMBoxPlotGraph,cursor="watch"))
 			Try(tkwm.title(ttMBoxPlotGraph,plotTitle))
-			Try(Require("tkrplot"))
+			##Try(Require("tkrplot"))
 			Try(img <-tkrplot(ttMBoxPlotGraph,plot.scale.box0,hscale=LocalHScale,vscale=LocalVScale))
 			Try(SetupPlotKeyBindings(tt=ttMBoxPlotGraph,img=img))
 			Try(SetupPlotMenus(tt=ttMBoxPlotGraph,initialfile=paste(limmaDataSetNameText,"MBoxPlotSlide",SlideNamesVec[slidenum],sep=""),plotFunction=plot.scale.box0,img=img))
@@ -1806,7 +1806,7 @@ PrintTipGroupMAPlot <- function(){
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
   {
     Try(ttPrintTipGroupMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(tkwm.title(ttPrintTipGroupMAPlotGraph,plotTitle))
     Try(img <- tkrplot(ttPrintTipGroupMAPlotGraph,PrintTipGroupPlot,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttPrintTipGroupMAPlotGraph,img=img))
@@ -1907,7 +1907,7 @@ MAPlot <- function(){
 		}
 	)
 	plotFun <- function(){
-		Try(Require("sma"))
+		##Try(Require("sma"))
 		Try(opar<-par(bg="white"))
 		#
 		Try(
@@ -1997,7 +1997,7 @@ MAPlot <- function(){
 			Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
 			Try(tkconfigure(ttMAPlotGraph,cursor="watch"))
 			Try(tkfocus(.limmaGUIglobals$ttMain))
-			Try(Require("tkrplot"))
+			##Try(Require("tkrplot"))
 			Try(tkwm.title(ttMAPlotGraph,plotTitle))
 			Try(img <-tkrplot(ttMAPlotGraph,plotFun,hscale=LocalHScale,vscale=LocalVScale) )
 			Try(SetupPlotKeyBindings(tt=ttMAPlotGraph,img=img))
@@ -2064,7 +2064,7 @@ ChoosePlotSymbolByClicking <- function(spotType,cex)
   Try(PlotPointSize <- tclVar(paste(Pex)))
   Try(entry.PlotPointSize <-tkentry(ttChoosePlotSymbolByClicking,width="20",textvariable=PlotPointSize,font=.limmaGUIglobals$limmaGUIfont2,bg="white"))
   Try(Update.but <- tkbutton(ttChoosePlotSymbolByClicking,text="Update",command=onUpdate,font=.limmaGUIglobals$limmaGUIfont2))
-  Require("tkrplot")
+  ##Require("tkrplot")
 
   Try(LocalHScale <- .limmaGUIglobals$Myhscale)
   Try(LocalVScale <- .limmaGUIglobals$Myvscale)
@@ -2575,7 +2575,7 @@ plotMAColorCoded <- function()
   Try(if (.limmaGUIglobals$graphicsDevice=="tkrplot")
   {
     Try(ttplotMAColorCodedGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(tkwm.title(ttplotMAColorCodedGraph,plotTitle))
     Try(img <-tkrplot(ttplotMAColorCodedGraph,plotMA0,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttplotMAColorCodedGraph,img=img))
@@ -2827,7 +2827,7 @@ ebayesBoxPlots <- function()
   {
     Try(ttEbayesBoxPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttEbayesBoxPlot,plotTitle))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(img <-tkrplot(ttEbayesBoxPlot,plotEbayesBoxPlot,hscale=LocalHScale,vscale=LocalVScale) )
     Try(SetupPlotKeyBindings(tt=ttEbayesBoxPlot,img=img))
     Try(SetupPlotMenus(tt=ttEbayesBoxPlot,initialfile=paste(limmaDataSetNameText,"EBayesBoxPlot",ParameterNamesVec[coef],sep=""),
@@ -3335,7 +3335,7 @@ VennDiagramPlot <- function()
   {
     Try(ttVennDiagramPlot <- tktoplevel(.limmaGUIglobals$ttMain))
     Try(tkwm.title(ttVennDiagramPlot,plotTitle))
-    Try(Require("tkrplot"))
+    ##Try(Require("tkrplot"))
     Try(img <- tkrplot(ttVennDiagramPlot,plotVennDiagram,hscale=LocalHScale,vscale=LocalVScale))
     Try(SetupPlotKeyBindings(tt=ttVennDiagramPlot,img=img))
     Try(SetupPlotMenus(tt=ttVennDiagramPlot,initialfile=paste(limmaDataSetNameText,"VennDiagram",sep=""),

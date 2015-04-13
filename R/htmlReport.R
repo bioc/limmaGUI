@@ -251,8 +251,8 @@ ExportHTMLreport <- function()
 {
 # We will use the R2HTML package, but with my own HTMLplot function.
 # Will we need xtable or does R2HTML have its own HTMLtable function?
-  Require("xtable")
-  Require("R2HTML")
+  #Require("xtable")
+  #Require("R2HTML")
 
   Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
   Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))

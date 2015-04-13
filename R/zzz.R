@@ -1,99 +1,47 @@
-
-.First.lib <- function(libname, pkgname, where)
-{
-     if (length(grep("^affylmGUI$", .packages()))>0)
-       stop("Please run limmaGUI and affylmGUI in separate R sessions.")
-     ## Make sure the system can use tcltk
-     capable <- capabilities()
-     if(!capable["tcltk"]){
-         stop(paste("The tcl/tk library is not available in your system.",
-                    "Download/install the tcltk library from",
-                    "www.tcl.tk/software/tcltk/"))
-     }else{
-         if(interactive()){
-             out <- paste("Package tcltk not able to be loaded!")
-             if (.Platform$OS.type == "windows")
-                 out <- paste(out,"\nThe most likely cause of this",
-                              "is that your Tcl/Tk installation is",
-                              "misconfigured\nPlease see the R",
-                              "Windows FAQ, question 3.6:\n",
-                              "http://cran.r-project.org/bin/windows/contrib/rw-FAQ.html#Package%20TclTk%20does%20not%20work.")
-
-             require("tcltk", character.only = TRUE) || stop(out)
-         }
-     }
-
-  if (data.class(try(require(limma),TRUE))=="try-error")
-  {
-    tkmessageBox(title="An error has occured!",message=paste("Cannot find package limma"),icon="error",type="ok")
-    stop("Cannot find package limma")
-  }
-  if (require(limma)==FALSE)
-  {
-    tkmessageBox(title="An error has occured!",message=paste("Cannot find package limma"),icon="error",type="ok")
-    stop("Cannot find package limma")
-  }
-
-  if (interactive())
-  {
-		if (.Platform$OS.type=="windows")
-		{
-			regPath  <- "HKEY_CURRENT_USER\\SOFTWARE\\ActiveState\\ActiveTcl"
-			regPath2 <- "HKEY_LOCAL_MACHINE\\SOFTWARE\\ActiveState\\ActiveTcl"
-			if(inherits(try(TclVersion <- tclvalue(tcl("registry","get",regPath,"CurrentVersion")),TRUE),"try-error")&&
-				 inherits(try(TclVersion2 <- tclvalue(tcl("registry","get",regPath2,"CurrentVersion")),TRUE),"try-error"))
-			{
-				cat(paste("\nWarning: ActiveTcl could not be found in the Windows Registry.\n"))
-				cat(paste("\nEither it has not been installed or it has not been installed with sufficient privileges.\n\n"))
-				cat(paste("\nlimmaGUI requires the Tcl/Tk extensions Tktable and BWidget which are not distributed with R,\n"))
-				cat(paste("\nbut they are distributed with ActiveTcl.\n"))
-			}
-			else
-			{
-				if (!inherits(try(TclVersion <- tclvalue(tcl("registry","get",regPath,"CurrentVersion")),TRUE),"try-error"))
-				{
-					regPath <- paste(regPath,TclVersion,sep="\\")
-					TclPath <-  tclvalue(tcl("registry","get",regPath,""))
-					cat(paste("\nActiveTcl was found in the Windows Registry (for CURRENT_USER), installed in",TclPath,sep="\n"))
-					cat(paste("\nThis directory will be added to the Tcl search path to enable limmaGUI\n"))
-					cat(paste("to find the Tktable and BWidget extensions.\n"))
-					addTclPath(paste(gsub("\\\\","/",TclPath),"lib",sep="/"))
-				}
-				if (!inherits(try(TclVersion2 <- tclvalue(tcl("registry","get",regPath2,"CurrentVersion")),TRUE),"try-error"))
-				{
-					regPath2 <- paste(regPath2,TclVersion2,sep="\\")
-					TclPath2 <-  tclvalue(tcl("registry","get",regPath2,""))
-					cat(paste("\nActiveTcl was found in the Windows Registry (for LOCAL_MACHINE), installed in",TclPath2,sep="\n"))
-					cat(paste("\nThis directory will be added to the Tcl search path to enable limmaGUI\n"))
-					cat(paste("to find the Tktable and BWidget extensions.\n"))
-					addTclPath(paste(gsub("\\\\","/",TclPath2),"lib",sep="/"))
-				}
-			}
-		}
-
-
-		if ((.Platform$OS.type=="windows")&&(.Platform$GUI == "Rgui"))
-		{
-			winMenuAdd("limmaGUI");winMenuAddItem("limmaGUI","limmaGUI","limmaGUI()")
-			cat(paste("\nlimmaGUI can be launched by typing limmaGUI() or by using the pull-down menu.\n"))
-#  		if(!length(grep("^Biobase$", .packages()))&&!length(grep("^limma$", .packages()))) winMenuAdd("Vignettes")
-#  		winMenuAddItem("Vignettes", "limmaGUI", "limmaGUIhelp()")
-
-		}
-		else
-			cat(paste("\nlimmaGUI can be launched by typing limmaGUI()\n"))
-
-# Note that running the whole limmaGUI() program while still within .First.lib seems to work in Windows,
-# but I had problems in Linux, hence the .Platform$OS.type below...
-    if (.Platform$OS.type=="windows")
-    {
-		  BeginLimmaGUI <- tclvalue(tkmessageBox(title="limmaGUI",message="Begin limmaGUI?",type="yesno",icon="question"))
-		  if (BeginLimmaGUI=="yes")
-		  	limmaGUI()
-		  else
-				bringToTop(-1)
-		}
-
+.onAttach <- function(libname, pkgname){
+	if (length(grep("^affylmGUI$", .packages()))>0){
+	 stop("Please run limmaGUI and affylmGUI in separate R sessions.")
 	}
-}
+	#Check whether R has been built with tcltk capabilities.
+	capable <- capabilities()
+	#the output of this command is like this:
+	#    jpeg      png     tiff    tcltk      X11     aqua http/ftp  sockets   libxml     fifo   cledit    iconv      NLS  profmem    cairo 
+	#    TRUE     TRUE     TRUE     TRUE    FALSE    FALSE     TRUE     TRUE     TRUE    FALSE     TRUE     TRUE     TRUE     TRUE     TRUE 
+	#
+	if(!capable["tcltk"]){
+		stop(paste("R needs to be built with tcltk capabilities.",
+			   "Install a version of R which has this capability.",
+			   "MS Windows binary versions of R include tcltk capabilities.",
+			   "MAC OS X binary versions of R include tcltk capabilities.",
+			   "When source code versions of R are compiled the default value ",
+			   "for the --with-tcltk switch is yes. Do not set it to no.", 
+			   "Check your version of R with the \"capabilities()\" command."
+			  )
+		    )
+	}else{ 
+		#R has tcltk capabilities
+	} #end of else/if(!capable["tcltk"])
+	#
+	#
+	#
+	if (interactive()){
+		if ((.Platform$OS.type=="windows")&&(.Platform$GUI == "Rgui")){
+			winMenuAdd("limmaGUI");winMenuAddItem("limmaGUI","limmaGUI","limmaGUI()")
+			packageStartupMessage("\nTo begin, type limmaGUI() or use the pull-down menu.\n", appendLF = FALSE)
+			#cat(paste("\nTo begin, type limmaGUI() or use the pull-down menu.\n"))
+		}else{
+			packageStartupMessage("\nTo begin, type limmaGUI()\n", appendLF = FALSE)
+			#cat(paste("\nTo begin, type limmaGUI()\n"))
+		} #end of if ((.Platform$OS.type=="windows")&&(.Platform$GUI == "Rgui"))
+		#
+		if (interactive() && .Platform$OS.type=="windows"){
+			BeginlimmaGUI <- tclvalue(tkmessageBox(title="limmaGUI",message="Begin limmaGUI?",type="yesno",icon="question"))
+			if (BeginlimmaGUI=="yes"){
+				limmaGUI()
+			}else{
+				bringToTop(-1)
+			}
+		} #end of if (interactive() && .Platform$OS.type=="windows")
+	} #end of if (interactive())
+} #end of.onAttach <- function(libname, pkgname)
 
