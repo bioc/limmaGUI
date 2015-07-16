@@ -1,12 +1,12 @@
 Package: limmaGUI
-Version: 1.45.1
-Date: 2015-07-16
-Title: GUI for limma package
+Version: 1.45.2
+Date: 2015-07-17
+Title: GUI for limma package with two color microarrays
 Author: James Wettenhall [aut], Gordon Smyth [aut], Keith Satterley [ctb], Yifang Hu [ctb]
 Maintainer: Yifang Hu <hu@wehi.edu.au>, Keith Satterley <keith@wehi.edu.au>
 Imports: limma, tcltk, BiocInstaller, tkrplot, R2HTML, xtable, gcrma, AnnotationDbi
 LazyLoad: yes
-Description: A Graphical User Interface for the limma Microarray package.
+Description: A Graphical User Interface for differential expression analysis of two-color microarray data using the limma package.
 License: GPL (>=2)
 URL: http://bioinf.wehi.edu.au/limmaGUI/
-biocViews: Microarray, TwoChannel, DataImport, QualityControl, Preprocessing, DifferentialExpression, MultipleComparison, GUI
+biocViews: GUI, GeneExpression, DifferentialExpression, DataImport, Bayesian, Regression, TimeCourse, Microarray, mRNAMicroarray, TwoChannel, BatchEffect, MultipleComparison, Normalization, Preprocessing, QualityControl
