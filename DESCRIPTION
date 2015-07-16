@@ -1,12 +1,12 @@
 Package: limmaGUI
-Version: 1.45.0
-Date: 2015/04/10
+Version: 1.45.1
+Date: 2015-07-16
 Title: GUI for limma package
-Author: James Wettenhall Division of Genetics and Bioinformatics, WEHI.
-Maintainer: Keith Satterley <keith@wehi.edu.au>
+Author: James Wettenhall [aut], Gordon Smyth [aut], Keith Satterley [ctb], Yifang Hu [ctb]
+Maintainer: Yifang Hu <hu@wehi.edu.au>, Keith Satterley <keith@wehi.edu.au>
 Imports: limma, tcltk, BiocInstaller, tkrplot, R2HTML, xtable, gcrma, AnnotationDbi
 LazyLoad: yes
 Description: A Graphical User Interface for the limma Microarray package.
-License: LGPL
+License: GPL (>=2)
 URL: http://bioinf.wehi.edu.au/limmaGUI/
 biocViews: Microarray, TwoChannel, DataImport, QualityControl, Preprocessing, DifferentialExpression, MultipleComparison, GUI
