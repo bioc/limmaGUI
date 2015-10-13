@@ -1,5 +1,5 @@
 Package: limmaGUI
-Version: 1.45.2
+Version: 1.46.0
 Date: 2015-07-17
 Title: GUI for limma package with two color microarrays
 Author: James Wettenhall [aut], Gordon Smyth [aut], Keith Satterley [ctb], Yifang Hu [ctb]
