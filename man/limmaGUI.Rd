@@ -75,7 +75,6 @@
 \alias{limmaGUIhelp}
 \alias{limmaGUI}
 \alias{limmaHelp}
-\alias{limmaUsersGuide}
 \alias{lmFitMethodHelp}
 \alias{LogOddsPlot}
 \alias{MAPlotAvg}
@@ -211,7 +210,6 @@ initGlobals()
 InitNewParameterization()
 limmaGUI(BigfontsForlimmaGUIpresentation = FALSE)
 limmaHelp()
-limmaUsersGuide(view = TRUE)
 lmFitMethodHelp()
 LogOddsPlot()
 MAPlot()
@@ -349,7 +347,6 @@ ViewSpotTypes()
 	\item{tclPkg}{TclRequire:arg1}
 	\item{tt}{SetupPlotKeyBindings:arg1, SetupPlotMenus:arg1}
 	\item{verbose}{Optional diagnostic messages}
-	\item{view}{limmaUsersGuide:arg1}
 	\item{whatFor}{GetParametersAndOrContrasts:arg2}
 	\item{whichCoef}{GetCoef:arg2}
 	\item{Width}{HTMLplotUsingFunction:arg10}
@@ -367,5 +364,3 @@ genes.
 }
 
 \author{James Wettenhall}
-
-\keyword{IO}
