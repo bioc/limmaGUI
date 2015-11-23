@@ -1,5 +1,9 @@
 ------------------------- limmaGUI ChangeLog -------------------------
-23 Nov 2015 1.47.4
+
+23 Nov 2015 1.47.5
+	Move html help documents from vignettes to inst/doc
+
+23 Nov 2015 1.47.4
 	Simplify CITATION entry to one article
 
 23 Nov 2015 1.47.3
