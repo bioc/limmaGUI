@@ -187,7 +187,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE){
 	assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv)
 	#
 	Try(
-		if(exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows"){
+		if(exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows"){
 			Try(
 				if(Sys.info()["sysname"]=="Darwin"){
 					Try(addTclPath("/sw/lib/tcl8.4"))
@@ -207,7 +207,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE){
 			Try(limmaGUIglobals$Myhscale <- 1)
 			Try(limmaGUIglobals$Myvscale <- 1)
 			Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
-		} #end of if(exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+		} #end of if(exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
 	)
 	Try(
 		if(Sys.info()["sysname"] == "Windows"){
@@ -218,7 +218,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE){
 		} #end of if(Sys.info()["sysname"] == "Windows")
 	)
 	Try(
-		if(Sys.info()["sysname"] == "Darwin" && !exists("X11", env=.GlobalEnv)){
+		if(Sys.info()["sysname"] == "Darwin" && !exists("X11", envir=.GlobalEnv)){
 			Try(addTclPath("/Library/Tcl"))
 			Try(addTclPath("/Network/Library/Tcl"))
 			Try(addTclPath("/System/Library/Tcl"))
@@ -236,7 +236,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE){
 			Try(limmaGUIglobals$Myhscale <- 1)
 			Try(limmaGUIglobals$Myvscale <- 1)
 			Try(assign(".limmaGUIglobals",limmaGUIglobals,.GlobalEnv))
-		} #end of if(Sys.info()["sysname"] == "Darwin" && !exists("X11", env=.GlobalEnv))
+		} #end of if(Sys.info()["sysname"] == "Darwin" && !exists("X11", envir=.GlobalEnv))
 	)
 	Try(limmaGUIglobals <- get(".limmaGUIglobals",envir=.GlobalEnv))
 	Try(
@@ -291,7 +291,7 @@ limmaGUI <- function(BigfontsForlimmaGUIpresentation=FALSE){
 	Try(
 		if(.limmaGUIglobals$limmaGUIpresentation==TRUE){
 			Try(limmaGUIglobals$ParameterizationTREEHeight <- 20)
-			Try(limmaGUIglobals$mainTreeHeight,20)
+			Try(limmaGUIglobals$mainTreeHeight <- 20)
 		}else{
 			Try(limmaGUIglobals$ParameterizationTREEHeight <- 15)
 			Try(limmaGUIglobals$mainTreeHeight <- 15)

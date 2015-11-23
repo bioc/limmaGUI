@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
 {
 
@@ -204,7 +197,7 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
         dev.print(png, file = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)
       else
       {
-        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
+        Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
           Try(bitmap(file = AbsGraphFileName,bg=BG,res=res))
         else
           Try(png(filename = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)))
@@ -218,7 +211,7 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
         dev.print(jpeg, file = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)
       else
       {
-        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
+        Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
           Try(bitmap(filename = AbsGraphFileName,bg=BG,res=res,type="jpeg"))
         else
           Try(jpeg(filename = AbsGraphFileName, width=Width,height=Height,pointsize=PointSize,bg=BG)))
@@ -241,7 +234,7 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
         cat(paste("<br><i>", Caption, "</i>"), file = File, append = TRUE, sep = "")
     }
     cat("</P>", file = File, append = TRUE, sep = "\n")
-    try(assign(".HTML.graph", TRUE, env = get("HTMLenv", envir = .GlobalEnv)))
+    try(assign(".HTML.graph", value=TRUE, envir = get("HTMLenv", envir = .GlobalEnv)))
     invisible(return())
 }
 
@@ -340,7 +333,7 @@ ExportHTMLreport <- function()
     Try(if (capabilities("png")==FALSE)
         Try(tkmessageBox(title="PNG unavailable",message="Your R installation is unable to save PNG images of plots.",icon="warning"))
     else
-      Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
+      Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
       {
         Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))
         Try(if (length(pngParams)==0) return())
@@ -454,7 +447,7 @@ ExportHTMLreport <- function()
     Try(for (i in (1:numPointTypes))
       if (tolower(PointTypes[i])=="gene"||PointTypes[i]=="cDNA")
       {
-        Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+        Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
           cex[i] <- 0.3
         else
           cex[i] <- 0.1)
@@ -944,7 +937,7 @@ ExportHTMLreport <- function()
         Try(ord <- order(eb$lods,decreasing=TRUE)))
       Try(topGenes <- ord[1:numDEgenesLabeled])
 
-      Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+      Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
         Try(cex <- 0.3)
       else
         Try(cex <- 0.1))
@@ -991,7 +984,7 @@ ExportHTMLreport <- function()
               Try(ord <- order(eb$lods,decreasing=TRUE)))
             Try(topGenes <- ord[1:numDEgenesLabeled])
 
-            Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+            Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
               Try(cex <- 0.3)
             else
               Try(cex <- 0.1))

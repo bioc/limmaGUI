@@ -1,23 +1,32 @@
-
 ------------------------- limmaGUI ChangeLog -------------------------
+
+23 Nov 2015 1.47.3
+	Update link in LinModIntro.pdf
+	Bug fix for limmaGUI() when limmaGUIglobals$limmaGUIpresentation==TRUE
+	Add Gordon Smyth to maintainer list
+	Use full argument name 'envir' in calls to exists()
+
+23 Nov 2015 1.47.2
+	Remove function limmaUsersGuide because already available in limma package
+
 13 Apr 2015 limmaGUI 1.43.1
 	Modified TclArrayVar function to access value of TclVarCount directly
 	Modified DESCRIPTION and NAMESPACE files to Import names as now required by R-3.1.2
 	Replace ".find.package" function with "find.package" function.
 
 9 Apr 2010 limmaGUI 1.23.0
-  Reformatted some code in main.R to my preference
-  Ready to be released with Bioconductor 2.6 for R-2.11.0
+	Reformatted some code in main.R to my preference
+	Ready to be released with Bioconductor 2.6 for R-2.11.0
 
 16 October 2009 limmaGUI 1.21.2
-	Reinstated M Box plot  using limma function
+	Reinstated M Box plot using limma function
 
 16 October 2009 limmaGUI 1.21.1
-  Removed MA Plot with lowess curves (for one slide) as it required sma package
-  Removed references to M A  plot (with lowess curves) from "About Normalization" under the Normalization Menu.
-  Removed M Box Plot as it required sma package
-  Reformatted some code in plot.R
-  Removed reference in about.html to the sma package.
+	Removed MA Plot with lowess curves (for one slide) as it required sma package
+	Removed references to MA plot (with lowess curves) from "About Normalization" under the Normalization Menu.
+	Removed M Box Plot as it required sma package
+	Reformatted some code in plot.R
+	Removed reference in about.html to the sma package.
 
 31 Mar 2009 limmaGUI 1.19.2
 	Add NAMESPACE file
@@ -30,7 +39,6 @@
 	removed "\usepackage{Sweave}" from limmaGUI.Rnw, extract.Rnw and extract.Rnw.txt
 
 12 April 2006 limmaGUI 1.7.0
-
 	Replace deprecated tkcmd with tcl
 
 30 November 2005: limmaGUI 1.6.4

@@ -271,7 +271,7 @@ MAPlotAvg <- function()
       Try(ord <- order(eb$lods,decreasing=TRUE)))
     Try(topGenes <- ord[1:numDEgenesLabeled])
   })
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+  Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
    Try(cexScalar <- 0.3)
   else
     Try(cexScalar <- 0.1))
@@ -298,7 +298,7 @@ MAPlotAvg <- function()
 #     Try(for (i in (1:numPointTypes))
 #       if (tolower(PointTypes[i])=="gene"||PointTypes[i]=="cDNA")
 #       {
-#         Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+#         Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
 #           cex[i] <- 0.3
 #         else
 #           cex[i] <- 0.1)
@@ -450,7 +450,7 @@ MMPlot <- function()
   Try(M1 <- fit1$coefficients[,coef1])
   Try(M2 <- fit2$coefficients[,coef2])
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+  Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
    Try(cex <- 0.3)
   else
     Try(cex <- 0.1))
@@ -1210,7 +1210,7 @@ LogOddsPlot <- function()
         Try(ord <- order(eb$lods,decreasing=TRUE)))
     Try(topGenes <- ord[1:numDEgenesLabeled])
   })
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+  Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
     Try(cex <- 0.3)
   else
     Try(cex <- 0.1))
@@ -1434,7 +1434,7 @@ QQTplot <- function()
     Try(NumParameters <- length(ParameterNamesVec))
   }
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+  Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
     Try(cex <- 0.3)
   else
     Try(cex <- 0.1))
@@ -1900,7 +1900,7 @@ MAPlot <- function(){
 	MAraw <- MA.RG(RG)
 	#
 	Try(
-		if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows"){
+		if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows"){
 			Try(cex <- 0.3) #Do this for Unix and MacOSX
 		}else{
 			Try(cex <- 0.1) #Do thhis for Windows
@@ -2184,7 +2184,7 @@ SelectPlotSymbols <- function(SpotTypes)
     else
       Try(if (tolower(PointTypes[i]) =="gene"||PointTypes[i]=="cDNA")
       {
-          Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
+          Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows")
            Try(textVariable.cex[[i]] <- tclVar("0.3"))
           else
             Try(textVariable.cex[[i]] <- tclVar("0.1")))
@@ -2984,7 +2984,7 @@ SaveGraphAsJpeg <- function(initialfile,plotFunction)
   (len<5 || (tolower(substring(jpegFileName,len-4,len))!=".jpeg")))
         Try(jpegFileName <- paste(jpegFileName,".jpg",sep=""))
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
+  Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
   {
     Try(jpegParams <- GetJpegOrPngX11Params(graphFileType="JPEG"))
     Try(bitmap(file=jpegFileName,bg=jpegParams$bg,res=jpegParams$res,type="jpeg"))
@@ -3010,7 +3010,7 @@ SaveGraphAsPNG <- function(initialfile,plotFunction)
   else if   ((tolower(substring(pngFileName,len-3,len))!=".png"))
         Try(pngFileName <- paste(pngFileName,".png",sep=""))
 
-  Try(if (exists("X11", env=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
+  Try(if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows" && Sys.info()["sysname"] != "Darwin")
   {
     Try(pngParams <- GetJpegOrPngX11Params(graphFileType="PNG"))
     Try(bitmap(file=pngFileName,bg=pngParams$bg,res=pngParams$res))
