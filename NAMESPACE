@@ -1,5 +1,15 @@
-
-import(limma, tcltk, BiocInstaller, tkrplot, R2HTML, xtable, gcrma, AnnotationDbi)
-
 #  All functions exported other than those starting with "."
 exportPattern("^[^\\.]")
+
+import(limma, tcltk, R2HTML, xtable)
+
+importFrom("grDevices", "bitmap", "bringToTop", "col2rgb", "dev.off",
+           "dev.print", "jpeg", "pdf", "png", "postscript", "rainbow",
+           "rgb")
+importFrom("graphics", "abline", "boxplot", "grid", "image", "legend",
+           "lines", "par", "plot", "plot.new", "points", "rect",
+           "text", "title")
+importFrom("methods", "new")
+importFrom("utils", "browseURL", "citation", "help", "help.start",
+           "read.table", "winMenuAdd", "winMenuAddItem", "write.table")
+importFrom("tkrplot", "tkrplot", "tkrreplot")

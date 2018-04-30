@@ -1,5 +1,13 @@
 ------------------------- limmaGUI ChangeLog -------------------------
-
+30 Apr 2018 1.55.1
+	Remove remaining references to sma package functions
+	Add explicit function imports to NAMESPACE
+	Remove some unnecessary package imports
+	Remove use of break() to exit an if{} construct
+	Remove Yifang Hu and Keith Satterley as maintainers
+	Update use of tkputs() to tclputs()
+	Update use of addMenuItem() to winMenuAddItem()
+
 23 Nov 2015 1.47.5
 	Move html help documents from vignettes to inst/doc
 
@@ -21,11 +29,11 @@
 	Replace ".find.package" function with "find.package" function.
 
 9 Apr 2010 limmaGUI 1.23.0
-	Reformatted some code in main.R to my preference
+	Reformatted some code in main.R
 	Ready to be released with Bioconductor 2.6 for R-2.11.0
 
 16 October 2009 limmaGUI 1.21.2
-	Reinstated M Box plot using limma function
+	Reinstated M Box plot using boxplot
 
 16 October 2009 limmaGUI 1.21.1
 	Removed MA Plot with lowess curves (for one slide) as it required sma package

@@ -49,23 +49,23 @@ GetGeneLabelsOptions <- function()
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="    "),row=5,column=4))
 
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),row=6))
-	Try(IDorNameTcl <- tclVar("Name"))
+  Try(IDorNameTcl <- tclVar("Name"))
   Try(rb1 <- tkradiobutton(ttGeneLabelsOptions,text="Use Gene ID",variable=IDorNameTcl,value="ID",font=.limmaGUIglobals$limmaGUIfont2))
-	Try(rb2 <- tkradiobutton(ttGeneLabelsOptions,text="Use Gene Name",variable=IDorNameTcl,value="Name",font=.limmaGUIglobals$limmaGUIfont2))
-	Try(rb3 <- tkradiobutton(ttGeneLabelsOptions,text="Use Other:",variable=IDorNameTcl,value="Other",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(rb2 <- tkradiobutton(ttGeneLabelsOptions,text="Use Gene Name",variable=IDorNameTcl,value="Name",font=.limmaGUIglobals$limmaGUIfont2))
+  Try(rb3 <- tkradiobutton(ttGeneLabelsOptions,text="Use Other:",variable=IDorNameTcl,value="Other",font=.limmaGUIglobals$limmaGUIfont2))
 
 
   Try(OtherTcl <- tclVar("Other"))
   Try(entry.Other <-tkentry(ttGeneLabelsOptions,width="20",textvariable=OtherTcl,font=.limmaGUIglobals$limmaGUIfont2))
 
-	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb1,row=7))
-	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb2,row=8))
-	Try(tkgrid.configure(rb1,sticky="w",columnspan=2))
-	Try(tkgrid.configure(rb2,sticky="w",columnspan=2))
+  Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb1,row=7))
+  Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb2,row=8))
+  Try(tkgrid.configure(rb1,sticky="w",columnspan=2))
+  Try(tkgrid.configure(rb2,sticky="w",columnspan=2))
 
-	Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb3,entry.Other,row=9))
-	Try(tkgrid.configure(rb3,sticky="w",columnspan=1))
-	Try(tkgrid.configure(entry.Other,sticky="w"))
+  Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),rb3,entry.Other,row=9))
+  Try(tkgrid.configure(rb3,sticky="w",columnspan=1))
+  Try(tkgrid.configure(entry.Other,sticky="w"))
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),row=10))
 
   Try(tkgrid(tklabel(ttGeneLabelsOptions,text="       "),OK.but,Cancel.but,row=11))
@@ -135,51 +135,51 @@ MAPlotAvg <- function()
   Try(GeneLabelsMaxLength <- GeneLabelsOptions$GeneLabelsMaxLength)
   Try(IDorName <- GeneLabelsOptions$IDorName)
 
-	Try(ShowColorCodedSpotTypes <- tclvalue(tkmessageBox(title="Color Coded Spot Types",message="Show color-coded spot types?",icon="question",type="yesnocancel")))
-	Try(if (ShowColorCodedSpotTypes=="cancel") return())
-	Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
-	Try(SpotTypesForLinearModel <- (ParameterizationList[[ParameterizationNameNode]])$SpotTypesForLinearModel)
-	Try(SelectedSpotTypes <- SpotTypes[SpotTypesForLinearModel,])
-	Try(showLegend <- TRUE)
-	Try(if (ShowColorCodedSpotTypes=="yes")
-	{
-		Try(PlotSymbols <- SelectPlotSymbols(SelectedSpotTypes))
-		if (length(PlotSymbols)==0)
-				return()
-		Try(showLegend  <- PlotSymbols$showLegend)
-		Try(PlotSymbols <- PlotSymbols$PlotSymbols)
+  Try(ShowColorCodedSpotTypes <- tclvalue(tkmessageBox(title="Color Coded Spot Types",message="Show color-coded spot types?",icon="question",type="yesnocancel")))
+  Try(if (ShowColorCodedSpotTypes=="cancel") return())
+  Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
+  Try(SpotTypesForLinearModel <- (ParameterizationList[[ParameterizationNameNode]])$SpotTypesForLinearModel)
+  Try(SelectedSpotTypes <- SpotTypes[SpotTypesForLinearModel,])
+  Try(showLegend <- TRUE)
+  Try(if (ShowColorCodedSpotTypes=="yes")
+  {
+    Try(PlotSymbols <- SelectPlotSymbols(SelectedSpotTypes))
+    if (length(PlotSymbols)==0)
+        return()
+    Try(showLegend  <- PlotSymbols$showLegend)
+    Try(PlotSymbols <- PlotSymbols$PlotSymbols)
 
-		Try(SpotTypeStatus <- get("SpotTypeStatus", envir=limmaGUIenvironment))
-		Try(numSelectedSpotTypes <- nrow(SelectedSpotTypes))
+    Try(SpotTypeStatus <- get("SpotTypeStatus", envir=limmaGUIenvironment))
+    Try(numSelectedSpotTypes <- nrow(SelectedSpotTypes))
 
-		Try(pchAllNumeric <- TRUE)
-		Try(pchAllCharacter <- TRUE)
-		for (i in (1:numSelectedSpotTypes))
-		{
-				Try(if (PlotSymbols[[i]]$pchIsNumeric==TRUE)
-						Try(PlotSymbols[[i]]$pch <- as.numeric(PlotSymbols[[i]]$pch)))
-				Try(pchAllNumeric <- (pchAllNumeric && PlotSymbols[[i]]$pchIsNumeric))
-				Try(pchAllCharacter <- (pchAllCharacter && (!PlotSymbols[[i]]$pchIsNumeric)))
-		}
+    Try(pchAllNumeric <- TRUE)
+    Try(pchAllCharacter <- TRUE)
+    for (i in (1:numSelectedSpotTypes))
+    {
+        Try(if (PlotSymbols[[i]]$pchIsNumeric==TRUE)
+            Try(PlotSymbols[[i]]$pch <- as.numeric(PlotSymbols[[i]]$pch)))
+        Try(pchAllNumeric <- (pchAllNumeric && PlotSymbols[[i]]$pchIsNumeric))
+        Try(pchAllCharacter <- (pchAllCharacter && (!PlotSymbols[[i]]$pchIsNumeric)))
+    }
 
-		Try(cex <- c())
-		Try(colVec <- c())
-		Try(if (pchAllNumeric || pchAllCharacter)
-				Try(pch <- c())
-		else
-				Try(pch <- list()))
+    Try(cex <- c())
+    Try(colVec <- c())
+    Try(if (pchAllNumeric || pchAllCharacter)
+        Try(pch <- c())
+    else
+        Try(pch <- list()))
 
-		for (i in (1:numSelectedSpotTypes))
-		{
-				Try(cex[i] <- PlotSymbols[[i]]$cex)
-				Try(colVec[i] <- PlotSymbols[[i]]$col)
-				Try(if (pchAllNumeric || pchAllCharacter)
-						Try(pch[i] <- PlotSymbols[[i]]$pch)
-				else
-						Try(pch[[i]] <- PlotSymbols[[i]]$pch))
-		}
-		Try(values <- SelectedSpotTypes$SpotType)
-	})
+    for (i in (1:numSelectedSpotTypes))
+    {
+        Try(cex[i] <- PlotSymbols[[i]]$cex)
+        Try(colVec[i] <- PlotSymbols[[i]]$col)
+        Try(if (pchAllNumeric || pchAllCharacter)
+            Try(pch[i] <- PlotSymbols[[i]]$pch)
+        else
+            Try(pch[[i]] <- PlotSymbols[[i]]$pch))
+    }
+    Try(values <- SelectedSpotTypes$SpotType)
+  })
 
   Try(plotTitle <- paste("Average MA Plot showing DE genes for",ParameterNamesVec[coef]))
 
@@ -950,23 +950,23 @@ ImageArrayPlot <- function()
   if (slidenum==0)
       return()
   Try(SlideName <- SlideNamesVec[slidenum])
-  Try(MA    <- get("MA",envir=limmaGUIenvironment))
+  Try(MA <- get("MA",envir=limmaGUIenvironment))
 
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
   Try(if (NormalizedMADataWasImported==FALSE)
   {
-    Try(RG    <- get("RG",envir=limmaGUIenvironment))
-		if (MA.Available$Raw)
-			Try(MAraw <- get("MAraw",envir=limmaGUIenvironment))
-		else
-		{
-			Try (MAraw <- MA.RG(RG))
-			Try(assign("MAraw",MAraw,limmaGUIenvironment))
-			Try(MA.Available$Raw <- TRUE)
-			Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-			Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-			Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-		}
+    Try(RG <- get("RG",envir=limmaGUIenvironment))
+    if (MA.Available$Raw)
+      Try(MAraw <- get("MAraw",envir=limmaGUIenvironment))
+    else
+    {
+      Try (MAraw <- MA.RG(RG))
+      Try(assign("MAraw",MAraw,limmaGUIenvironment))
+      Try(MA.Available$Raw <- TRUE)
+      Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+      Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
+      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+    }
   })
 
   Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
@@ -979,12 +979,12 @@ ImageArrayPlot <- function()
 
   Try(if (NormalizedMADataWasImported==FALSE)
   {
-		Try(Mraw <- MAraw$M[,slidenum])
-		Try(Araw <- MAraw$A[,slidenum])
-		Try(R <- RG$R[,slidenum])
-		Try(Rb <- RG$Rb[,slidenum])
-		Try(G <- RG$G[,slidenum])
-		Try(Gb <- RG$Gb[,slidenum])
+    Try(Mraw <- MAraw$M[,slidenum])
+    Try(Araw <- MAraw$A[,slidenum])
+    Try(R <- RG$R[,slidenum])
+    Try(Rb <- RG$Rb[,slidenum])
+    Try(G <- RG$G[,slidenum])
+    Try(Gb <- RG$Gb[,slidenum])
   })
 
   Try(RexpressionVal <- ImageArrayPlotDialog(slidenum))
@@ -1481,273 +1481,233 @@ QQTplot <- function()
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
 
 }
-#
-#
-#
-#
+
 MBoxPlot <- function(){
-	#need to use limma funcion
-	# boxplot(MA$M~col(MA$M),names=colnames(MA$M))
-	#instead of sma function
-	#Exclude the M .v. Print Tip group
-	#
-	Try(SlideNamesVec   <- get("SlideNamesVec",envir=limmaGUIenvironment))
-	Try(ArraysLoaded    <- get("ArraysLoaded", envir=limmaGUIenvironment))
-	Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
-	Try(WeightingType   <- get("WeightingType",envir=limmaGUIenvironment))
-	Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-	#
-	if(ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE){
-		tkmessageBox(title="M Box Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
-		Try(tkfocus(.limmaGUIglobals$ttMain))
-		return()
-	}
-	#
-	SetLayoutParamReturnVal<-1
-	Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
-	if (length(maLayout)==0) SetLayoutParamReturnVal <-SetLayoutParameters()
-	if (SetLayoutParamReturnVal==0) return()
-	Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
-	#
-	#ttMBoxPlot<-tktoplevel(.limmaGUIglobals$ttMain)
-	#tkwm.deiconify(ttMBoxPlot)
-	#tkgrab.set(ttMBoxPlot)
-	#tkfocus(ttMBoxPlot)
-	#tkwm.title(ttMBoxPlot,"M Box Plot Options")
-	plotby <- tclVar("Slide")
-	#tkframe1 <- tkframe(ttMBoxPlot,borderwidth=2)
-	#tkframe3 <- tkframe(tkframe1,relief="groove",borderwidth=2)
-	#tkframe4<-tkframe(tkframe1,borderwidth=2)
-	#
-	#Abort <- 0
-	#plotbyval <- ""
-	#onOK <- function(){
-	#	plotbyval <<- tclvalue(plotby)
-	#	Try(tkgrab.release(ttMBoxPlot))
-	#	Try(tkdestroy(ttMBoxPlot))
-	#	Try(tkfocus(.limmaGUIglobals$ttMain))
-	#	Abort <<-0
-	#} #end of onOK <- function()
-	#
-	#onCancel <- function() {Try(tkgrab.release(ttMBoxPlot));Try(tkdestroy(ttMBoxPlot));Try(tkfocus(.limmaGUIglobals$ttMain));Abort <<-1}
-	#
-	#OK.but       <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
-	#Cancel.but   <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
-	#tkgrid(tklabel(tkframe1,text="                    "))
-	#tkgrid(tklabel(tkframe3,text="Plot by print-tip group or by slide?",font=.limmaGUIglobals$limmaGUIfont2),sticky="ew")
-	#PrintTip.but <- tkradiobutton(tkframe3,text="Print Tip Group",variable=plotby,value="PrintTip",font=.limmaGUIglobals$limmaGUIfont2)
-	#Slide.but    <- tkradiobutton(tkframe3,text="Slide",variable=plotby,value="Slide",font=.limmaGUIglobals$limmaGUIfont2)
-	#tkgrid.configure(PrintTip.but,sticky="w")
-	#tkgrid.configure(Slide.but,sticky="w")
-	#
-	#tkgrid(PrintTip.but)
-	#tkgrid(Slide.but)
-	#tkgrid(tkframe3,sticky="w")
-	#tkgrid(tkframe1)
-	#tkgrid(tklabel(tkframe4,text="    "),sticky="ew")
-	#tkgrid(OK.but,Cancel.but)
-	#tkgrid(tkframe4,sticky="ew")
-	#tkfocus(ttMBoxPlot)
-	#tkbind(ttMBoxPlot, "<Destroy>", function() {Try(tkgrab.release(ttMBoxPlot));Try(tkfocus(.limmaGUIglobals$ttMain));})
-	#Only allow plot by slide
-	plotbyval = "Slide"
-	#tkwait.window(ttMBoxPlot)
-	#if (Abort==1) return()
-	#
-	slidenum <- 0
-	#if (plotbyval=="PrintTip"){
-	#	slidenum <- GetSlideNum()
-	#	if (slidenum==0){
-	#		return()
-	#	}
-	#}
-	#
-	Try(
-		if (NormalizedMADataWasImported==FALSE){
-			Try(NormalizeWithinArraysMB <-tkmessageBox(title="Normalization Within Arrays",message="Normalize Within Arrays?",type="yesnocancel",icon="question",default="no"))
-			Try(WhetherToNormalizeWithinArrays <- tclvalue(NormalizeWithinArraysMB))
-			if (WhetherToNormalizeWithinArrays=="cancel")return()
-			#
-			Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
-			Try(WhetherToNormalizeBetweenArrays <- tclvalue(NormalizeBetweenArraysMB))
-			if (WhetherToNormalizeBetweenArrays=="cancel")return()
-			#
-			Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-			Try(tkfocus(.limmaGUIglobals$ttMain))
-			#
-			Try(RG <- get("RG",envir=limmaGUIenvironment))
-			Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
-			Try(
-				if(!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment)){
-					Try(WithinArrayNormalizationMethod <- "printtiploess")
-					Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
-				}
-			)
-			Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-			#
-			Try(
-				if (WhetherToNormalizeWithinArrays=="yes"){
-					if (MA.Available$WithinArrays){
-						Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
-					}else{
-						if (WeightingType == "none"){
-							Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
-						}else{
-							Try(MA <- normalizeWithinArrays(RG,weights=RG$weights,maLayout,method=WithinArrayNormalizationMethod))
-						}
-						Try(assign("MAwithinArrays",MA,limmaGUIenvironment))
-						Try(MA.Available$WithinArrays <- TRUE)
-						Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-						Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
-						Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-						Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
-					} #end of else/if (MA.Available$WithinArrays)
-				}else{
-					if (MA.Available$Raw){
-						Try(MA <- get("MAraw",envir=limmaGUIenvironment))
-					}else{
-						Try (MA <- MA.RG(RG))
-						Try(assign("MAraw",MA,limmaGUIenvironment))
-						Try(MA.Available$Raw <- TRUE)
-						Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-						Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-						Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-					} #end of else/if (MA.Available$Raw)
-				} #end of else/if (WhetherToNormalizeWithinArrays=="yes")
-			)
-			#
-			Try(
-				if (WhetherToNormalizeBetweenArrays=="yes"){
-					if (WhetherToNormalizeWithinArrays=="yes"){
-						if (MA.Available$Both){
-							Try(MA <- get("MAboth",envir=limmaGUIenvironment))
-						}else{
-							Try (MA <- normalizeBetweenArrays(MA))
-							Try(assign("MAboth",MA,limmaGUIenvironment))
-							Try(MA.Available$Both <- TRUE)
-							Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-							Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
-							Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-						} #end of else/if (MA.Available$Both)
-					}else{
-						if (MA.Available$BetweenArrays){
-							Try(MA <- get("MAbetweenArrays",envir=limmaGUIenvironment))
-						}else{
-							Try (MA <- normalizeBetweenArrays(MA))
-							Try(assign("MAbetweenArrays",MA,limmaGUIenvironment))
-							Try(MA.Available$BetweenArrays <- TRUE)
-							Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-							Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
-							Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-						} #end of else/if (MA.Available$BetweenArrays)
-					} #end of else/if (WhetherToNormalizeWithinArrays=="yes")
-				} #end of if (WhetherToNormalizeBetweenArrays=="yes")
-			)
-		}else{
-			Try(MA <- get("MAimported",envir=limmaGUIenvironment))
-		} #end of else/if (NormalizedMADataWasImported==FALSE)
-	)
-	#
-	plot.scale.box0 <- function(){
-		###Try(Require("sma")) #replaced by limma function 16 October 2009
-		Try(
-			if (plotbyval=="PrintTip"){ #This wont happen now
-				Try(opar<-par(bg="white"))
-				Try(plot.scale.box(MA$M[,slidenum],maLayout,col=rainbow(maLayout$ngrid.r*maLayout$ngrid.c),xlab="Print Tip Group",ylab="M"))
-				Try(title(plotTitle))
-				Try(tempGraphPar <- par(opar))
-			}else{ #then plotbyval = Slide
-				Try(opar<-par(bg="white"))
-				# Maybe allow las=2 as an option, i.e. vertical text labels for x axis.
-				Try(
-					if (min(nchar(gsub("[^0-9]","",SlideNamesVec))==nchar(SlideNamesVec))==TRUE){
-						SlideNamesVec <- paste("Slide",SlideNamesVec)
-					}
-				)
-				### this is the sma command
-				#Try(plot.scale.box(MA$M,        x.names=SlideNamesVec, xlab="Slide", ylab="M"))
-				###Use the limma command
-				#           boxplot(MA$M~col(MA$M),names=colnames(MA$M))
-				Try(boxplot(MA$M~col(MA$M),x.names=SlideNamesVec,xlab="Slide",ylab="M"))
-				Try(title(plotTitle))
-				Try(tempGraphPar <- par(opar))
-			} #end of else/if (plotbyval=="PrintTip")
-		)
-		Try(abline(0,0))
-	} #end of plot.scale.box0 <- function()
-	#
-	Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-	Try(LocalVScale <- .limmaGUIglobals$Myvscale)
-	#
-	if (plotbyval=="PrintTip"){ #wont happen now
-		if (NormalizedMADataWasImported==FALSE){
-			if (WhetherToNormalizeWithinArrays=="yes"){
-				if (WhetherToNormalizeBetweenArrays=="yes"){
-					Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with normalization within and between arrays",sep=""))
-				}else{
-					Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with normalization within arrays only",sep=""))
-				}
-			}else{
-				if(WhetherToNormalizeBetweenArrays=="yes"){
-					Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with normalization between arrays only",sep=""))
-				}else{
-					Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum]," with no normalization",sep=""))
-				}
-			} #end of else/if (WhetherToNormalizeWithinArrays=="yes")
-		}else{
-			Try(plotTitle <- paste("M Box Plot for slide ",SlideNamesVec[slidenum],sep=""))
-		} #end of else/if (NormalizedMADataWasImported==FALSE)
-	}else{ #plotbyval = "Slide"
-		if(NormalizedMADataWasImported==FALSE){
-			if(WhetherToNormalizeWithinArrays=="yes"){
-				if (WhetherToNormalizeBetweenArrays=="yes"){
-					Try(plotTitle <- paste("M Box Plot for all slides with normalization within and between arrays",sep=""))
-				}else{
-					Try(plotTitle <- paste("M Box Plot for all slides with normalization within arrays only",sep=""))
-				}
-			}else{
-				if(WhetherToNormalizeBetweenArrays=="yes"){
-					Try(plotTitle <- paste("M Box Plot for all slides with normalization between arrays only",sep=""))
-				}else{
-					Try(plotTitle <- paste("M Box Plot for all slides with no normalization",sep=""))
-				}
-			} #end of else/if (WhetherToNormalizeWithinArrays=="yes")
-		}else{
-			Try(plotTitle <- paste("M Box Plot for all slides"))
-		} #end of else/if(NormalizedMADataWasImported==FALSE)
-	} #end of else/if (plotbyval=="PrintTip")
-	#
-	Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-	Try(plotTitleList <- GetPlotTitle(plotTitle))
-	Try(if (length(plotTitleList)==0) return())
-	#
-	Try(tkfocus(.limmaGUIglobals$ttMain))
-	Try(plotTitle <- plotTitleList$plotTitle)
-	#
-	Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-	Try(tkfocus(.limmaGUIglobals$ttMain))
-	#
-	Try(
-		if(.limmaGUIglobals$graphicsDevice=="tkrplot"){
-			Try(ttMBoxPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-			Try(tkconfigure(ttMBoxPlotGraph,cursor="watch"))
-			Try(tkwm.title(ttMBoxPlotGraph,plotTitle))
-			##Try(Require("tkrplot"))
-			Try(img <-tkrplot(ttMBoxPlotGraph,plot.scale.box0,hscale=LocalHScale,vscale=LocalVScale))
-			Try(SetupPlotKeyBindings(tt=ttMBoxPlotGraph,img=img))
-			Try(SetupPlotMenus(tt=ttMBoxPlotGraph,initialfile=paste(limmaDataSetNameText,"MBoxPlotSlide",SlideNamesVec[slidenum],sep=""),plotFunction=plot.scale.box0,img=img))
-			Try(tkgrid(img))
-			Try(tkconfigure(ttMBoxPlotGraph,cursor="arrow"))
-			Try(tkfocus(ttMBoxPlotGraph))
-		}else{
-			Try(plot.new())
-			Try(plot.scale.box0())
-		} #end of else/if(.limmaGUIglobals$graphicsDevice=="tkrplot")
-	)
-	Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-} #end of MBoxPlot <- function()
-#
-#
+  #Exclude the M .v. Print Tip group
+  #
+  Try(SlideNamesVec   <- get("SlideNamesVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded    <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(WeightingType   <- get("WeightingType",envir=limmaGUIenvironment))
+  Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
+
+  if(ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE){
+    tkmessageBox(title="M Box Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error")
+    Try(tkfocus(.limmaGUIglobals$ttMain))
+    return()
+  }
+
+  SetLayoutParamReturnVal <- 1
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+  if (length(maLayout)==0) SetLayoutParamReturnVal <-SetLayoutParameters()
+  if (SetLayoutParamReturnVal==0) return()
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+
+  #ttMBoxPlot<-tktoplevel(.limmaGUIglobals$ttMain)
+  #tkwm.deiconify(ttMBoxPlot)
+  #tkgrab.set(ttMBoxPlot)
+  #tkfocus(ttMBoxPlot)
+  #tkwm.title(ttMBoxPlot,"M Box Plot Options")
+  plotby <- tclVar("Slide")
+  #tkframe1 <- tkframe(ttMBoxPlot,borderwidth=2)
+  #tkframe3 <- tkframe(tkframe1,relief="groove",borderwidth=2)
+  #tkframe4<-tkframe(tkframe1,borderwidth=2)
+  #
+  #Abort <- 0
+  #plotbyval <- ""
+  #onOK <- function(){
+  #  plotbyval <<- tclvalue(plotby)
+  #  Try(tkgrab.release(ttMBoxPlot))
+  #  Try(tkdestroy(ttMBoxPlot))
+  #  Try(tkfocus(.limmaGUIglobals$ttMain))
+  #  Abort <<-0
+  #} #end of onOK <- function()
+  #
+  #onCancel <- function() {Try(tkgrab.release(ttMBoxPlot));Try(tkdestroy(ttMBoxPlot));Try(tkfocus(.limmaGUIglobals$ttMain));Abort <<-1}
+  #
+  #OK.but       <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2)
+  #Cancel.but   <-tkbutton(tkframe4,text=" Cancel ",command=onCancel,font=.limmaGUIglobals$limmaGUIfont2)
+  #tkgrid(tklabel(tkframe1,text="                    "))
+  #tkgrid(tklabel(tkframe3,text="Plot by print-tip group or by slide?",font=.limmaGUIglobals$limmaGUIfont2),sticky="ew")
+  #PrintTip.but <- tkradiobutton(tkframe3,text="Print Tip Group",variable=plotby,value="PrintTip",font=.limmaGUIglobals$limmaGUIfont2)
+  #Slide.but    <- tkradiobutton(tkframe3,text="Slide",variable=plotby,value="Slide",font=.limmaGUIglobals$limmaGUIfont2)
+  #tkgrid.configure(PrintTip.but,sticky="w")
+  #tkgrid.configure(Slide.but,sticky="w")
+  #
+  #tkgrid(PrintTip.but)
+  #tkgrid(Slide.but)
+  #tkgrid(tkframe3,sticky="w")
+  #tkgrid(tkframe1)
+  #tkgrid(tklabel(tkframe4,text="    "),sticky="ew")
+  #tkgrid(OK.but,Cancel.but)
+  #tkgrid(tkframe4,sticky="ew")
+  #tkfocus(ttMBoxPlot)
+  #tkbind(ttMBoxPlot, "<Destroy>", function() {Try(tkgrab.release(ttMBoxPlot));Try(tkfocus(.limmaGUIglobals$ttMain));})
+  #Only allow plot by slide
+  plotbyval = "Slide"
+  #tkwait.window(ttMBoxPlot)
+  #if (Abort==1) return()
+  #
+  slidenum <- 0
+  #if (plotbyval=="PrintTip"){
+  #  slidenum <- GetSlideNum()
+  #  if (slidenum==0){
+  #    return()
+  #  }
+  #}
+  #
+  Try(
+    if (NormalizedMADataWasImported==FALSE){
+      Try(NormalizeWithinArraysMB <-tkmessageBox(title="Normalization Within Arrays",message="Normalize Within Arrays?",type="yesnocancel",icon="question",default="no"))
+      Try(WhetherToNormalizeWithinArrays <- tclvalue(NormalizeWithinArraysMB))
+      if (WhetherToNormalizeWithinArrays=="cancel")return()
+      #
+      Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
+      Try(WhetherToNormalizeBetweenArrays <- tclvalue(NormalizeBetweenArraysMB))
+      if (WhetherToNormalizeBetweenArrays=="cancel")return()
+      #
+      Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+      Try(tkfocus(.limmaGUIglobals$ttMain))
+      #
+      Try(RG <- get("RG",envir=limmaGUIenvironment))
+      Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
+      Try(
+        if(!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment)){
+          Try(WithinArrayNormalizationMethod <- "printtiploess")
+          Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
+        }
+      )
+      Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+      #
+      Try(
+        if (WhetherToNormalizeWithinArrays=="yes"){
+          if (MA.Available$WithinArrays){
+            Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
+          }else{
+            if (WeightingType == "none"){
+              Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
+            }else{
+              Try(MA <- normalizeWithinArrays(RG,weights=RG$weights,maLayout,method=WithinArrayNormalizationMethod))
+            }
+            Try(assign("MAwithinArrays",MA,limmaGUIenvironment))
+            Try(MA.Available$WithinArrays <- TRUE)
+            Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+            Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
+            Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+            Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
+          } #end of else/if (MA.Available$WithinArrays)
+        }else{
+          if (MA.Available$Raw){
+            Try(MA <- get("MAraw",envir=limmaGUIenvironment))
+          }else{
+            Try (MA <- MA.RG(RG))
+            Try(assign("MAraw",MA,limmaGUIenvironment))
+            Try(MA.Available$Raw <- TRUE)
+            Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+            Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
+            Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+          } #end of else/if (MA.Available$Raw)
+        } #end of else/if (WhetherToNormalizeWithinArrays=="yes")
+      )
+      #
+      Try(
+        if (WhetherToNormalizeBetweenArrays=="yes"){
+          if (WhetherToNormalizeWithinArrays=="yes"){
+            if (MA.Available$Both){
+              Try(MA <- get("MAboth",envir=limmaGUIenvironment))
+            }else{
+              Try (MA <- normalizeBetweenArrays(MA))
+              Try(assign("MAboth",MA,limmaGUIenvironment))
+              Try(MA.Available$Both <- TRUE)
+              Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+              Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
+              Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+            } #end of else/if (MA.Available$Both)
+          }else{
+            if (MA.Available$BetweenArrays){
+              Try(MA <- get("MAbetweenArrays",envir=limmaGUIenvironment))
+            }else{
+              Try (MA <- normalizeBetweenArrays(MA))
+              Try(assign("MAbetweenArrays",MA,limmaGUIenvironment))
+              Try(MA.Available$BetweenArrays <- TRUE)
+              Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+              Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
+              Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+            } #end of else/if (MA.Available$BetweenArrays)
+          } #end of else/if (WhetherToNormalizeWithinArrays=="yes")
+        } #end of if (WhetherToNormalizeBetweenArrays=="yes")
+      )
+    }else{
+      Try(MA <- get("MAimported",envir=limmaGUIenvironment))
+    } #end of else/if (NormalizedMADataWasImported==FALSE)
+  )
+
+  plot.scale.box0 <- function()
+  {
+    Try(opar <- par(bg="white"))
+    # Maybe allow las=2 as an option, i.e. vertical text labels for x axis.
+    Try(if (min(nchar(gsub("[^0-9]","",SlideNamesVec))==nchar(SlideNamesVec)))
+    {
+       SlideNamesVec <- paste("Slide",SlideNamesVec)
+    })
+    Try(boxplot(as.data.frame(MA$M),x.names=SlideNamesVec,xlab="Slide",ylab="M"))
+    Try(title(plotTitle))
+    Try(tempGraphPar <- par(opar))
+    Try(abline(0,0))
+  }
+
+  Try(LocalHScale <- .limmaGUIglobals$Myhscale)
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+
+  if(NormalizedMADataWasImported==FALSE) {
+    if(WhetherToNormalizeWithinArrays=="yes")
+    {
+      if (WhetherToNormalizeBetweenArrays=="yes")
+      {
+        Try(plotTitle <- paste("M Box Plot for all slides with normalization within and between arrays",sep=""))
+      } else {
+        Try(plotTitle <- paste("M Box Plot for all slides with normalization within arrays only",sep=""))
+      }
+    } else {
+      if (WhetherToNormalizeBetweenArrays=="yes")
+      {
+        Try(plotTitle <- paste("M Box Plot for all slides with normalization between arrays only",sep=""))
+      } else {
+        Try(plotTitle <- paste("M Box Plot for all slides with no normalization",sep=""))
+      }
+    }
+  } else {
+    Try(plotTitle <- paste("M Box Plot for all slides"))
+  }
+
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
+  Try(if (length(plotTitleList)==0) return())
+
+  Try(tkfocus(.limmaGUIglobals$ttMain))
+  Try(plotTitle <- plotTitleList$plotTitle)
+
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+  Try(tkfocus(.limmaGUIglobals$ttMain))
+
+  Try(if(.limmaGUIglobals$graphicsDevice=="tkrplot")
+    {
+      Try(ttMBoxPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
+      Try(tkconfigure(ttMBoxPlotGraph,cursor="watch"))
+      Try(tkwm.title(ttMBoxPlotGraph,plotTitle))
+      Try(img <- tkrplot(ttMBoxPlotGraph,plot.scale.box0,hscale=LocalHScale,vscale=LocalVScale))
+      Try(SetupPlotKeyBindings(tt=ttMBoxPlotGraph,img=img))
+      Try(SetupPlotMenus(tt=ttMBoxPlotGraph,initialfile=paste(limmaDataSetNameText,"MBoxPlotSlide",SlideNamesVec[slidenum],sep=""),plotFunction=plot.scale.box0,img=img))
+      Try(tkgrid(img))
+      Try(tkconfigure(ttMBoxPlotGraph,cursor="arrow"))
+      Try(tkfocus(ttMBoxPlotGraph))
+    } else {
+      Try(plot.new())
+      Try(plot.scale.box0())
+    })
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+}
+
 PrintTipGroupMAPlot <- function(){
   Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
   Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
@@ -1779,18 +1739,18 @@ PrintTipGroupMAPlot <- function(){
     Try(MA <- get("MA",envir=limmaGUIenvironment))
   else
   {
-		Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
-		if (MA.Available$Raw)
-			Try(MA <- get("MAraw",envir=limmaGUIenvironment))
-		else
-		{
-			Try (MA <- MA.RG(RG))
-			Try(assign("MAraw",MA,limmaGUIenvironment))
-			Try(MA.Available$Raw <- TRUE)
-			Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-			Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-			Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-		}
+    Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
+    if (MA.Available$Raw)
+      Try(MA <- get("MAraw",envir=limmaGUIenvironment))
+    else
+    {
+      Try (MA <- MA.RG(RG))
+      Try(assign("MAraw",MA,limmaGUIenvironment))
+      Try(MA.Available$Raw <- TRUE)
+      Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+      Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
+      Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+    }
   })
   PrintTipGroupPlot <- function()
   {
@@ -1824,195 +1784,196 @@ PrintTipGroupMAPlot <- function(){
 } #end of PrintTipGroupMAPlot <- function()
 
 MAPlot <- function(){
-	Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
-	Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
-	Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
-	Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
-	#
-	if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE){
-		Try(tkmessageBox(title="M A Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
-		Try(tkfocus(.limmaGUIglobals$ttMain))
-		return()
-	}
-	#
-	Try(
-		if (NormalizedMADataWasImported==FALSE){
-			Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
-			Try(RG <- get("RG",envir=limmaGUIenvironment))
-		}else{
-			Try(MA <- get("MAimported",envir=limmaGUIenvironment))
-			Try(RGtmp <- list())
-			Try(RGtmp$R <- 2^(MA$M*.5+MA$A))
-			Try(RGtmp$G <- 2^(MA$A-.5*MA$M))
-			Try(RG <- new("RGList",RGtmp))
-		}
-	)
-	#
-	SetLayoutParamReturnVal<-1
-	Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
-	if (length(maLayout)==0){
-		SetLayoutParamReturnVal <-SetLayoutParameters()
-	}
-	if (SetLayoutParamReturnVal==0){
-		return()
-	}
-	#
-	Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
-	#
-	slidenum <- GetSlideNum()
-	if (slidenum==0){
-		return()
-	}
-	#
-	Try(
-		if (NormalizedMADataWasImported==FALSE){
-			Try(NormalizeWithinArrayMB <-tkmessageBox(title="Normalization Within A Single Array",message="Normalize Within Single Array (fast approximate method) ?",type="yesnocancel",icon="question",default="no"))
-			Try(WhetherToNormalizeWithinArray <- tclvalue(NormalizeWithinArrayMB))
-			if (WhetherToNormalizeWithinArray=="cancel"){
-				return()
-			}
-		} #end of if (NormalizedMADataWasImported==FALSE)
-	)
-	#
-	Try(
-		if (NormalizedMADataWasImported==FALSE){
-			if (WhetherToNormalizeWithinArray=="no"){
-				# We don't actually need MAraw in this plot.  But users may expect that plotting M and A in this will
-				# will create an MAraw object.
-				Try (MAraw <- MA.RG(RG))
-				Try(assign("MAraw",MAraw,limmaGUIenvironment))
-				Try(MA.Available$Raw <- TRUE)
-				Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-				Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-				Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-			}
-		}
-	)
-	#
-	Try(lowessChoice <- GetLowessType())
-	Try(
-		if (lowessChoice==""){ # User pressed Cancel
-			Try(tkfocus(.limmaGUIglobals$ttMain))
-			return()
-		}
-	)
-	#
-	MAraw <- MA.RG(RG)
-	#
-	Try(
-		if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows"){
-			Try(cex <- 0.3) #Do this for Unix and MacOSX
-		}else{
-			Try(cex <- 0.1) #Do thhis for Windows
-		}
-	)
-	plotFun <- function(){
-		##Try(Require("sma"))
-		Try(opar<-par(bg="white"))
-		#
-		Try(
-			if (NormalizedMADataWasImported==FALSE){
-				Try(
-					if (WhetherToNormalizeWithinArray=="yes"){
-						normval <- "p"
-					}else{
-						normval <- "n"
-					}
-				)
-			}else{
-				normval <- "n"
-			} #end of else/if (NormalizedMADataWasImported==FALSE)
-		)
-		#
-		Try(
-			if (WhetherToNormalizeWithinArray=="yes"){
-				plot.type <- "n"
-			}else{
-				plot.type <- "r"
-			}
-		)
-		#
-		Try(
-			if (lowessChoice=="printtip"){
-				###Try(plot.print.tip.lowess(RG,maLayout,pch=16,cex=cex,image=slidenum,norm=normval))
-				Try(plotPrintTipLoess(RG,maLayout,array=slidenum,span=0.4,...))
-			}
-		)
-		#
-		Try(
-			if ((lowessChoice!="printtip")  && normval=="p"){
-				normval <- "l"
-			}
-		)
-		#
-		Try(
-			if (lowessChoice=="none"){
-				Try(
-					if (length(SlideNamesVec)>1){
-						Try(plot(MAraw$A[,slidenum],MAraw$M[,slidenum],pch=16,cex=0.3,xlab="A",ylab="M"))
-					}else{
-						Try(plot(MAraw$A,MAraw$M,pch=16,cex=0.3,xlab="A",ylab="M"))
-					}
-				)
-			} #end of if (lowessChoice=="none")
-		)
-		#
-		Try(
-			if (lowessChoice=="global"){
-				Try(plot.mva(RG,pch=16,cex=cex,image=slidenum,norm=normval,plot.type=plot.type))
-			}
-		)
-		#
-		Try(title(plotTitle))
-		#
-		Try(tempGraphPar <- par(opar))
-		#
-	} #end of plotFun <- function()
-	#
-	#
-	Try(LocalHScale <- .limmaGUIglobals$Myhscale)
-	Try(LocalVScale <- .limmaGUIglobals$Myvscale)
-	#
-	Try(
-		if(NormalizedMADataWasImported==FALSE){
-			if (WhetherToNormalizeWithinArray=="yes"){
-				Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum]," with normalization",sep=""))
-			}else{
-				Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum]," with no normalization",sep=""))
-			} #end of else/if (WhetherToNormalizeWithinArray=="yes")
-		}else{
-			Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum]))
-		} #end of else/if(NormalizedMADataWasImported==FALSE)
-	)
-	#
-	Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-	Try(tkfocus(.limmaGUIglobals$ttMain))
-	Try(plotTitleList <- GetPlotTitle(plotTitle))
-	Try(if (length(plotTitleList)==0) return())
-	Try(plotTitle <- plotTitleList$plotTitle)
-	#
-	Try(
-		if (.limmaGUIglobals$graphicsDevice=="tkrplot"){
-			Try(ttMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
-			Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
-			Try(tkconfigure(ttMAPlotGraph,cursor="watch"))
-			Try(tkfocus(.limmaGUIglobals$ttMain))
-			##Try(Require("tkrplot"))
-			Try(tkwm.title(ttMAPlotGraph,plotTitle))
-			Try(img <-tkrplot(ttMAPlotGraph,plotFun,hscale=LocalHScale,vscale=LocalVScale) )
-			Try(SetupPlotKeyBindings(tt=ttMAPlotGraph,img=img))
-			Try(SetupPlotMenus(tt=ttMAPlotGraph,initialfile=paste(limmaDataSetNameText,"MAPlotSlide",SlideNamesVec[slidenum],sep=""),plotFunction=plotFun,img=img))
-			Try(tkgrid(img))
-			Try(tkconfigure(ttMAPlotGraph,cursor="arrow"))
-			Try(tkfocus(ttMAPlotGraph))
-		}else{
-			Try(plot.new())
-			Try(plotFun())
-		} #end of else/if (.limmaGUIglobals$graphicsDevice=="tkrplot")
-	)
-	#
-	Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
-	#
+  Try(SlideNamesVec <- get("SlideNamesVec",envir=limmaGUIenvironment))
+  Try(ArraysLoaded  <- get("ArraysLoaded", envir=limmaGUIenvironment))
+  Try(NormalizedMADataWasImported<- get("NormalizedMADataWasImported", envir=limmaGUIenvironment))
+  Try(limmaDataSetNameText <- get("limmaDataSetNameText",envir=limmaGUIenvironment))
+  #
+  if (ArraysLoaded==FALSE && NormalizedMADataWasImported==FALSE){
+    Try(tkmessageBox(title="M A Plot",message="No arrays have been loaded.  Please try New or Open from the File menu.",type="ok",icon="error"))
+    Try(tkfocus(.limmaGUIglobals$ttMain))
+    return()
+  }
+  #
+  Try(
+    if (NormalizedMADataWasImported==FALSE){
+      Try(MA.Available <- get("MA.Available",envir=limmaGUIenvironment))
+      Try(RG <- get("RG",envir=limmaGUIenvironment))
+    }else{
+      Try(MA <- get("MAimported",envir=limmaGUIenvironment))
+      Try(RGtmp <- list())
+      Try(RGtmp$R <- 2^(MA$M*.5+MA$A))
+      Try(RGtmp$G <- 2^(MA$A-.5*MA$M))
+      Try(RG <- new("RGList",RGtmp))
+    }
+  )
+  #
+  SetLayoutParamReturnVal<-1
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+  if (length(maLayout)==0){
+    SetLayoutParamReturnVal <-SetLayoutParameters()
+  }
+  if (SetLayoutParamReturnVal==0){
+    return()
+  }
+  #
+  Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+  #
+  slidenum <- GetSlideNum()
+  if (slidenum==0){
+    return()
+  }
+  #
+  Try(
+    if (NormalizedMADataWasImported==FALSE){
+      Try(NormalizeWithinArrayMB <-tkmessageBox(title="Normalization Within A Single Array",message="Normalize Within Single Array (fast approximate method) ?",type="yesnocancel",icon="question",default="no"))
+      Try(WhetherToNormalizeWithinArray <- tclvalue(NormalizeWithinArrayMB))
+      if (WhetherToNormalizeWithinArray=="cancel"){
+        return()
+      }
+    } #end of if (NormalizedMADataWasImported==FALSE)
+  )
+  #
+  Try(
+    if (NormalizedMADataWasImported==FALSE){
+      if (WhetherToNormalizeWithinArray=="no"){
+        # We don't actually need MAraw in this plot.  But users may expect that plotting M and A in this will
+        # will create an MAraw object.
+        Try (MAraw <- MA.RG(RG))
+        Try(assign("MAraw",MAraw,limmaGUIenvironment))
+        Try(MA.Available$Raw <- TRUE)
+        Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+        Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
+        Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+      }
+    }
+  )
+  #
+  Try(lowessChoice <- GetLowessType())
+  Try(
+    if (lowessChoice==""){ # User pressed Cancel
+      Try(tkfocus(.limmaGUIglobals$ttMain))
+      return()
+    }
+  )
+  #
+  MAraw <- MA.RG(RG)
+  #
+  Try(
+    if (exists("X11", envir=.GlobalEnv) && Sys.info()["sysname"] != "Windows"){
+      Try(cex <- 0.3) #Do this for Unix and MacOSX
+    }else{
+      Try(cex <- 0.1) #Do thhis for Windows
+    }
+  )
+  plotFun <- function(){
+    ##Try(Require("sma"))
+    Try(opar<-par(bg="white"))
+    #
+    Try(
+      if (NormalizedMADataWasImported==FALSE){
+        Try(
+          if (WhetherToNormalizeWithinArray=="yes"){
+            normval <- "p"
+          }else{
+            normval <- "n"
+          }
+        )
+      }else{
+        normval <- "n"
+      } #end of else/if (NormalizedMADataWasImported==FALSE)
+    )
+    #
+    Try(
+      if (WhetherToNormalizeWithinArray=="yes"){
+        plot.type <- "n"
+      }else{
+        plot.type <- "r"
+      }
+    )
+    #
+    Try(
+      if (lowessChoice=="printtip"){
+#       Try(plot.print.tip.lowess(RG,maLayout,pch=16,cex=cex,image=slidenum,norm=normval)) # sma package defunct
+        Try(plotPrintTipLoess(RG,maLayout,array=slidenum,span=0.4))
+      }
+    )
+    #
+    Try(
+      if ((lowessChoice!="printtip") && normval=="p"){
+        normval <- "l"
+      }
+    )
+    #
+    Try(
+      if (lowessChoice=="none"){
+        Try(
+          if (length(SlideNamesVec)>1){
+            Try(plot(MAraw$A[,slidenum],MAraw$M[,slidenum],pch=16,cex=0.3,xlab="A",ylab="M"))
+          }else{
+            Try(plot(MAraw$A,MAraw$M,pch=16,cex=0.3,xlab="A",ylab="M"))
+          }
+        )
+      } #end of if (lowessChoice=="none")
+    )
+    #
+    Try(
+      if (lowessChoice=="global"){
+#       Try(plot.mva(RG,pch=16,cex=cex,image=slidenum,norm=normval,plot.type=plot.type)) # sma package defunct
+        Try(limma::plotMA(RG,pch=16,cex=cex,array=slidenum))
+      }
+    )
+    #
+    Try(title(plotTitle))
+    #
+    Try(tempGraphPar <- par(opar))
+    #
+  } #end of plotFun <- function()
+  #
+  #
+  Try(LocalHScale <- .limmaGUIglobals$Myhscale)
+  Try(LocalVScale <- .limmaGUIglobals$Myvscale)
+  #
+  Try(
+    if(NormalizedMADataWasImported==FALSE){
+      if (WhetherToNormalizeWithinArray=="yes"){
+        Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum]," with normalization",sep=""))
+      }else{
+        Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum]," with no normalization",sep=""))
+      } #end of else/if (WhetherToNormalizeWithinArray=="yes")
+    }else{
+      Try(plotTitle <- paste("M A Plot for slide ",SlideNamesVec[slidenum]))
+    } #end of else/if(NormalizedMADataWasImported==FALSE)
+  )
+  #
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+  Try(tkfocus(.limmaGUIglobals$ttMain))
+  Try(plotTitleList <- GetPlotTitle(plotTitle))
+  Try(if (length(plotTitleList)==0) return())
+  Try(plotTitle <- plotTitleList$plotTitle)
+  #
+  Try(
+    if (.limmaGUIglobals$graphicsDevice=="tkrplot"){
+      Try(ttMAPlotGraph <- tktoplevel(.limmaGUIglobals$ttMain))
+      Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
+      Try(tkconfigure(ttMAPlotGraph,cursor="watch"))
+      Try(tkfocus(.limmaGUIglobals$ttMain))
+      ##Try(Require("tkrplot"))
+      Try(tkwm.title(ttMAPlotGraph,plotTitle))
+      Try(img <-tkrplot(ttMAPlotGraph,plotFun,hscale=LocalHScale,vscale=LocalVScale) )
+      Try(SetupPlotKeyBindings(tt=ttMAPlotGraph,img=img))
+      Try(SetupPlotMenus(tt=ttMAPlotGraph,initialfile=paste(limmaDataSetNameText,"MAPlotSlide",SlideNamesVec[slidenum],sep=""),plotFunction=plotFun,img=img))
+      Try(tkgrid(img))
+      Try(tkconfigure(ttMAPlotGraph,cursor="arrow"))
+      Try(tkfocus(ttMAPlotGraph))
+    }else{
+      Try(plot.new())
+      Try(plotFun())
+    } #end of else/if (.limmaGUIglobals$graphicsDevice=="tkrplot")
+  )
+  #
+  Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
+  #
 } #end of MAPlot <- function()
 
 
@@ -2438,99 +2399,99 @@ plotMAColorCoded <- function()
 
   Try(if (NormalizedMADataWasImported==FALSE)
   {
-		Try(NormalizeWithinArraysMB <-tkmessageBox(title="Normalization Within Arrays",message="Normalize Within Arrays?",type="yesnocancel",icon="question",default="no"))
-		Try(WhetherToNormalizeWithinArrays <- tclvalue(NormalizeWithinArraysMB))
-		if (WhetherToNormalizeWithinArrays=="cancel")
-				return()
+    Try(NormalizeWithinArraysMB <-tkmessageBox(title="Normalization Within Arrays",message="Normalize Within Arrays?",type="yesnocancel",icon="question",default="no"))
+    Try(WhetherToNormalizeWithinArrays <- tclvalue(NormalizeWithinArraysMB))
+    if (WhetherToNormalizeWithinArrays=="cancel")
+        return()
 
-		Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
-		Try(WhetherToNormalizeBetweenArrays <- tclvalue(NormalizeBetweenArraysMB))
-		if (WhetherToNormalizeBetweenArrays=="cancel")
-				return()
-	})
+    Try(NormalizeBetweenArraysMB <-tkmessageBox(title="Normalization Between Arrays",message="Normalize Between Arrays?",type="yesnocancel",icon="question",default="no"))
+    Try(WhetherToNormalizeBetweenArrays <- tclvalue(NormalizeBetweenArraysMB))
+    if (WhetherToNormalizeBetweenArrays=="cancel")
+        return()
+  })
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="watch"))
   Try(tkfocus(.limmaGUIglobals$ttMain))
 
   Try(if (NormalizedMADataWasImported==FALSE)
   {
-		Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-		{
-			Try(WithinArrayNormalizationMethod <- "printtiploess")
-			Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
-		})
-		Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+    Try(if (!exists("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+    {
+      Try(WithinArrayNormalizationMethod <- "printtiploess")
+      Try(assign("WithinArrayNormalizationMethod",WithinArrayNormalizationMethod,limmaGUIenvironment))
+    })
+    Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
 
-		SetLayoutParamReturnVal<-1
-		Try(if (WhetherToNormalizeWithinArrays=="yes")
-		{
-				if (length(maLayout)==0) SetLayoutParamReturnVal <-Try(SetLayoutParameters())
-				if (SetLayoutParamReturnVal==0) return()
-				Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
-				if (MA.Available$WithinArrays)
-					Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
-				else
-				{
-					if (WeightingType == "none")
-						Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
-					else
-						Try(MA <- normalizeWithinArrays(RG,weights=RG$weights,maLayout,method=WithinArrayNormalizationMethod))
-					Try(assign("MAwithinArrays",MA,limmaGUIenvironment))
-					Try(MA.Available$WithinArrays <- TRUE)
-					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-					Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
-					Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
+    SetLayoutParamReturnVal<-1
+    Try(if (WhetherToNormalizeWithinArrays=="yes")
+    {
+        if (length(maLayout)==0) SetLayoutParamReturnVal <-Try(SetLayoutParameters())
+        if (SetLayoutParamReturnVal==0) return()
+        Try(maLayout <- get("maLayout",envir=limmaGUIenvironment))
+        if (MA.Available$WithinArrays)
+          Try(MA <- get("MAwithinArrays",envir=limmaGUIenvironment))
+        else
+        {
+          if (WeightingType == "none")
+            Try (MA <- normalizeWithinArrays(RG,maLayout,method=WithinArrayNormalizationMethod))
+          else
+            Try(MA <- normalizeWithinArrays(RG,weights=RG$weights,maLayout,method=WithinArrayNormalizationMethod))
+          Try(assign("MAwithinArrays",MA,limmaGUIenvironment))
+          Try(MA.Available$WithinArrays <- TRUE)
+          Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+          Try(tkdelete(.limmaGUIglobals$mainTree,"WithinOnly.Status"))
+          Try(WithinArrayNormalizationMethod <- get("WithinArrayNormalizationMethod",envir=limmaGUIenvironment))
+          Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
 
-				}
-		}
-		else
-		{
-				if (MA.Available$Raw)
-					Try(MA <- get("MAraw",envir=limmaGUIenvironment))
-				else
-				{
-					Try (MA <- MA.RG(RG))
-					Try(assign("MAraw",MA,limmaGUIenvironment))
-					Try(MA.Available$Raw <- TRUE)
-					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-					Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-				}
-		})
+        }
+    }
+    else
+    {
+        if (MA.Available$Raw)
+          Try(MA <- get("MAraw",envir=limmaGUIenvironment))
+        else
+        {
+          Try (MA <- MA.RG(RG))
+          Try(assign("MAraw",MA,limmaGUIenvironment))
+          Try(MA.Available$Raw <- TRUE)
+          Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+          Try(tkdelete(.limmaGUIglobals$mainTree,"Raw.Status"))
+          Try(tkinsert(.limmaGUIglobals$mainTree,"end","Raw","Raw.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+        }
+    })
 
-		Try(if (WhetherToNormalizeBetweenArrays=="yes")
-		{
-			if (WhetherToNormalizeWithinArrays=="yes")
-			{
-				if (MA.Available$Both)
-					Try(MA <- get("MAboth",envir=limmaGUIenvironment))
-				else
-				{
-					Try (MA <- normalizeBetweenArrays(MA))
-					Try(assign("MAboth",MA,limmaGUIenvironment))
-					Try(MA.Available$Both <- TRUE)
-					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-					Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-				}
+    Try(if (WhetherToNormalizeBetweenArrays=="yes")
+    {
+      if (WhetherToNormalizeWithinArrays=="yes")
+      {
+        if (MA.Available$Both)
+          Try(MA <- get("MAboth",envir=limmaGUIenvironment))
+        else
+        {
+          Try (MA <- normalizeBetweenArrays(MA))
+          Try(assign("MAboth",MA,limmaGUIenvironment))
+          Try(MA.Available$Both <- TRUE)
+          Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+          Try(tkdelete(.limmaGUIglobals$mainTree,"WithinAndBetween.Status"))
+          Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinAndBetween","WithinAndBetween.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+        }
 
-			}
-			else
-			{
-				if (MA.Available$BetweenArrays)
-					Try(MA <- get("MAbetweenArrays",envir=limmaGUIenvironment))
-				else
-				{
-					Try (MA <- normalizeBetweenArrays(MA))
-					Try(assign("MAbetweenArrays",MA,limmaGUIenvironment))
-					Try(MA.Available$BetweenArrays <- TRUE)
-					Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
-					Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
-					Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
-				}
-			}
-		})
+      }
+      else
+      {
+        if (MA.Available$BetweenArrays)
+          Try(MA <- get("MAbetweenArrays",envir=limmaGUIenvironment))
+        else
+        {
+          Try (MA <- normalizeBetweenArrays(MA))
+          Try(assign("MAbetweenArrays",MA,limmaGUIenvironment))
+          Try(MA.Available$BetweenArrays <- TRUE)
+          Try(assign("MA.Available",MA.Available,limmaGUIenvironment))
+          Try(tkdelete(.limmaGUIglobals$mainTree,"BetweenOnly.Status"))
+          Try(tkinsert(.limmaGUIglobals$mainTree,"end","BetweenOnly","BetweenOnly.Status" ,text="Available",font=.limmaGUIglobals$limmaGUIfontTree))
+        }
+      }
+    })
   })
 
   Try(if (min(nchar(gsub("[^0-9]","",SlideNamesVec))==nchar(SlideNamesVec))==TRUE)
@@ -2538,14 +2499,14 @@ plotMAColorCoded <- function()
   Try(plotTitle <- paste("M A Plot for ",SlideNamesVec[slidenum],sep=""))
   Try(if (NormalizedMADataWasImported==FALSE)
   {
-		Try(if (WhetherToNormalizeWithinArrays=="no"&&WhetherToNormalizeBetweenArrays=="no")
-			Try(plotTitle <- paste(plotTitle,"with no normalization")))
-		Try(if (WhetherToNormalizeWithinArrays=="yes"&&WhetherToNormalizeBetweenArrays=="no")
-			Try(plotTitle <- paste(plotTitle,"with normalization within arrays only")))
-		Try(if (WhetherToNormalizeWithinArrays=="no"&&WhetherToNormalizeBetweenArrays=="yes")
-			Try(plotTitle <- paste(plotTitle,"with normalization between arrays only")))
-		Try(if (WhetherToNormalizeWithinArrays=="yes"&&WhetherToNormalizeBetweenArrays=="yes")
-			Try(plotTitle <- paste(plotTitle,"with normalization within and between arrays only")))
+    Try(if (WhetherToNormalizeWithinArrays=="no"&&WhetherToNormalizeBetweenArrays=="no")
+      Try(plotTitle <- paste(plotTitle,"with no normalization")))
+    Try(if (WhetherToNormalizeWithinArrays=="yes"&&WhetherToNormalizeBetweenArrays=="no")
+      Try(plotTitle <- paste(plotTitle,"with normalization within arrays only")))
+    Try(if (WhetherToNormalizeWithinArrays=="no"&&WhetherToNormalizeBetweenArrays=="yes")
+      Try(plotTitle <- paste(plotTitle,"with normalization between arrays only")))
+    Try(if (WhetherToNormalizeWithinArrays=="yes"&&WhetherToNormalizeBetweenArrays=="yes")
+      Try(plotTitle <- paste(plotTitle,"with normalization within and between arrays only")))
   })
   Try(plotLabels <- GetPlotLabels(plotTitle,"A","M"))
   Try(if (length(plotLabels)==0) return())
@@ -3490,7 +3451,6 @@ GetLowessType <- function()
   Try(tkframe4<-tkframe(tkframe1,borderwidth=2))
 
   Try(tkgrid(tklabel(tkframe1,text="    ")))
-
   Try(tkgrid(tklabel(tkframe2,text="Lowess Curve(s) Options",font=.limmaGUIglobals$limmaGUIfont2),column=2,rowspan=1,columnspan=2,sticky="w"))
 
   Try(LowessType <- "printtip")
@@ -3500,36 +3460,38 @@ GetLowessType <- function()
   Try(global.but <- tkradiobutton(tkframe2,text="Global Lowess Curve",variable=LowessTypeTcl,value="global",font=.limmaGUIglobals$limmaGUIfont2))
   Try(printtip.but <- tkradiobutton(tkframe2,text="Print-Tip Group Lowess Curves",variable=LowessTypeTcl,value="printtip",font=.limmaGUIglobals$limmaGUIfont2))
 
-
   Try(tkgrid(none.but,column=2))
   Try(tkgrid(global.but,column=2))
   Try(tkgrid(printtip.but,column=2))
   Try(tkgrid.configure(none.but,global.but,printtip.but,sticky="w"))
   Try(tkgrid(tkframe2))
   Try(NewLowessType <- "")
+
   onOK <- function()
   {
-    Try(NewLowessType<<-tclvalue(LowessTypeTcl))
+    Try(NewLowessType <<- tclvalue(LowessTypeTcl))
     Try(tkgrab.release(ttGetLowessType))
     Try(tkdestroy(ttGetLowessType))
     Try(LowessType <- NewLowessType)
     Try(tkfocus(.limmaGUIglobals$ttMain))
   }
+
   onHelp <- function()
   {
-      ###Require("sma") ###removed on 16-Oct-2009
-      Try(LowessType<-tclvalue(LowessTypeTcl))
-      Try(if (LowessType=="printtip")
-        Try(help("plotPrintTipLoess",help_type="html"))) ##changed from plot.print.tip.lowess from the sma package
-      Try(if (LowessType=="none")
-        Try(help("plot.default",help_type="html")))
-      Try(if (LowessType=="global")
-      {
-        Try(help("plot.mva",help_type="html"))
-      })
+#   Require("sma") # sma package is defunct 16-Oct-2009
+    Try(LowessType <- tclvalue(LowessTypeTcl))
+    Try(if (LowessType=="printtip")
+#     Try(help("plot.print.tip.lowess",help_type="html"))) # sma package is defunct
+      Try(help("plotPrintTipLoess",help_type="html")))
+    Try(if (LowessType=="none")
+      Try(help("plot.default",help_type="html")))
+    Try(if (LowessType=="global")
+#     Try(help("plot.mva",help_type="html"))) # sma package is defunct
+      Try(help("plotMA.RGList",help_type="html")))
   }
-  Try(OK.but <-tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
-  Try(Cancel.but <-tkbutton(tkframe4,text=" Cancel ",command=function(){Try(tkgrab.release(ttGetLowessType));Try(tkdestroy(ttGetLowessType));NewLowessType<-"";Try(tkfocus(.limmaGUIglobals$ttMain))},font=.limmaGUIglobals$limmaGUIfont2))
+
+  Try(OK.but <- tkbutton(tkframe4,text="   OK   ",command=onOK,font=.limmaGUIglobals$limmaGUIfont2))
+  Try(Cancel.but <- tkbutton(tkframe4,text=" Cancel ",command=function(){Try(tkgrab.release(ttGetLowessType));Try(tkdestroy(ttGetLowessType));NewLowessType<-"";Try(tkfocus(.limmaGUIglobals$ttMain))},font=.limmaGUIglobals$limmaGUIfont2))
   Try(Help.but <- tkbutton(tkframe4,text=" Help ",command=onHelp,font=.limmaGUIglobals$limmaGUIfont2))
   Try(tkgrid(tklabel(tkframe4,text="                    ")))
   Try(tkgrid(OK.but,Cancel.but,Help.but))

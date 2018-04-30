@@ -3,7 +3,7 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
 
   Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
   Try(LinearModelComputed  <- get("LinearModelComputed", envir=limmaGUIenvironment))
-  Try(ndups   <- get("ndups",envir=limmaGUIenvironment))
+  Try(ndups <- get("ndups",envir=limmaGUIenvironment))
 
   Try(ttHTMLreportDialog<-tktoplevel(.limmaGUIglobals$ttMain))
   Try(tkwm.deiconify(ttHTMLreportDialog))
@@ -11,7 +11,6 @@ GetComponentsToExportInHTMLreport <- function(parameterizationIndex=NULL)
   Try(tkfocus(ttHTMLreportDialog))
   Try(tkwm.title(ttHTMLreportDialog,"HTML Report"))
   Try(tkgrid(tklabel(ttHTMLreportDialog,text="    "),tklabel(ttHTMLreportDialog,text="    ")))
-
 
   Try(TargetsTcl           <- tclVar("1"))
   Try(SpotTypesTcl         <- tclVar("1"))
@@ -531,7 +530,7 @@ ExportHTMLreport <- function()
       Try(tkinsert(.limmaGUIglobals$mainTree,"end","WithinOnly","WithinOnly.Status" ,text=paste("Available (using ",WithinArrayNormalizationMethod,")",sep=""),font=.limmaGUIglobals$limmaGUIfontTree))
     }
     Try(plotTitle <- "M Box Plot for all slides with normalization within arrays only")
-    Try(plotFunction <- function() plot.scale.box(MA$M,x.names=SlideNamesVec,xlab="Slide",ylab="M",main=plotTitle))
+    Try(plotFunction <- function() boxplot(as.data.frame(MA$M),x.names=SlideNamesVec,xlab="Slide",ylab="M",main=plotTitle))
     Try(HTMLplotUsingFunction(Caption = plotTitle, File=fileNameWithPath, GraphRelativeDirectory = HTMLfileRelativePath ,
       GraphAbsoluteDirectory = HTMLfilePath, GraphFileName = "MScaleBoxPlot",
       GraphSaveAs = "png", GraphBorder = 1,  Align = "left", plotFunction=plotFunction,
@@ -546,9 +545,8 @@ ExportHTMLreport <- function()
     Try(HTML.title("<a name=\"SpotTypesInLinearModel\">Spot Types Included In Linear Model</a>",HR=2))
     Try(print(SpotTypesInLinearModelXtable,type="html",file=fileNameWithPath,append=TRUE))
   }
-  if (ExportNormalizationInLinearModel)
+  if (ExportNormalizationInLinearModel && NumParameterizations > 0)
   {
-    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(WhetherToNormalizeWithinArrays  <- (ParameterizationList[[ParameterizationNameNode]])$WhetherToNormalizeWithinArrays)
@@ -571,9 +569,8 @@ ExportHTMLreport <- function()
     Try(HTMLli(txt=paste("Within Arrays : ", WhetherToNormalizeWithinArrays," (",WithinArrayNormalizationMethod,")",sep="")))
     Try(HTMLli(txt=paste("Between Arrays : ",WhetherToNormalizeBetweenArrays,sep="")))
   }
-  if (ExportDesignMatrix)
+  if (ExportDesignMatrix && NumParameterizations > 0)
   {
-    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
@@ -587,12 +584,13 @@ ExportHTMLreport <- function()
   if (ExportDupCor)
   {
     Try(ndups <- get("ndups",envir=limmaGUIenvironment))
-    Try(if (ndups<=1) break())
-    Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-    Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-    Try(dupcor <- (ParameterizationList[[ParameterizationNameNode]])$dupcor)
-    Try(HTML.title("<a name=\"DupCor\">Duplicate Correlation</a>",HR=2))
-    Try(HTMLli(txt=paste("Duplicate Correlation :",dupcor$cor)))
+    if (ndups > 1) {
+  	  Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
+  	  Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
+  	  Try(dupcor <- (ParameterizationList[[ParameterizationNameNode]])$dupcor)
+  	  Try(HTML.title("<a name=\"DupCor\">Duplicate Correlation</a>",HR=2))
+  	  Try(HTMLli(txt=paste("Duplicate Correlation :",dupcor$cor)))
+    }
   }
 
   if (ExportTop50Toptables)
@@ -600,228 +598,229 @@ ExportHTMLreport <- function()
     Try(ndups <- get("ndups",envir=limmaGUIenvironment))
     Try(spacing <- GetReducedDuplicateSpacing(parameterizationTreeIndex))
     Try(NumParameterizations <- get("NumParameterizations",envir=limmaGUIenvironment))
-    Try(if (NumParameterizations==0) break())
-    Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-    Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-    Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(design <- designList$design)
-    Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
-    Try(HTML.title(paste("<a name=\"Top50Toptables\">Top 50 Differentially Expressed Genes for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
-    Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
-    Try(if (nrow(design)==0)
-    {
-        Try(ParameterNamesVec <- c())
-        if (NumParameters>0)
-          for (i in (1:NumParameters))
-            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
-    }
-    else
-        Try(ParameterNamesVec <- colnames(design)))
-    Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-    Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-
-    Try(Amatrix <- NULL)
-
-    Try(fit <- (ParameterizationList[[ParameterizationNameNode]])$fit)
-    Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
-    Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
-      Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
-
-    Try(if (is.null(Amatrix))
-    {
-      Try(MA <- get("MA",envir=limmaGUIenvironment))
-      Try(A <- MA$A)
-      Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
-      Try(numSpotTypes <- nrow(SpotTypes))
-      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
-      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
-      Omit <- ""
-      count <- 0
-      Try(for (i in (1:numSpotTypes))
+    if (NumParameterizations > 0) {
+      Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
+      Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
+      Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
+      Try(design <- designList$design)
+      Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
+      Try(HTML.title(paste("<a name=\"Top50Toptables\">Top 50 Differentially Expressed Genes for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
+      Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
+      Try(if (nrow(design)==0)
       {
-        if (SpotTypesForLinearModel[i]==TRUE)
-          next()
-        count <- count + 1
-        if (count>1)
-          Omit <-paste(Omit,"|")
-        else
-          Omit <- "("
-        Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-      })
-      Try(if (nchar(Omit)>0)
+          Try(ParameterNamesVec <- c())
+          if (NumParameters>0)
+            for (i in (1:NumParameters))
+              Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
+      }
+      else
+          Try(ParameterNamesVec <- colnames(design)))
+      Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
+      Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
+
+      Try(Amatrix <- NULL)
+
+      Try(fit <- (ParameterizationList[[ParameterizationNameNode]])$fit)
+      Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
+      Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
+        Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
+
+      Try(if (is.null(Amatrix))
       {
-        Try(Omit <- paste(Omit,")"))
-        Try(Omit <- eval(parse(text=Omit)))
-        Try(A <- A[!Omit,])
-      })
+        Try(MA <- get("MA",envir=limmaGUIenvironment))
+        Try(A <- MA$A)
+        Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
+        Try(numSpotTypes <- nrow(SpotTypes))
+        Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+        Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
+        Omit <- ""
+        count <- 0
+        Try(for (i in (1:numSpotTypes))
+        {
+          if (SpotTypesForLinearModel[i]==TRUE)
+            next()
+          count <- count + 1
+          if (count>1)
+            Omit <-paste(Omit,"|")
+          else
+            Omit <- "("
+          Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
+        })
+        Try(if (nchar(Omit)>0)
+        {
+          Try(Omit <- paste(Omit,")"))
+          Try(Omit <- eval(parse(text=Omit)))
+          Try(A <- A[!Omit,])
+        })
 
-      Try(A <- unwrapdups(A,ndups=ndups,spacing=spacing))
-    }
-    else
-      Try(A <- unwrapdups(Amatrix,ndups=ndups,spacing=spacing)))
+        Try(A <- unwrapdups(A,ndups=ndups,spacing=spacing))
+      }
+      else
+        Try(A <- unwrapdups(Amatrix,ndups=ndups,spacing=spacing)))
 
-    Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
-      Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
-    else
-      Try(genelist <- get("genelist",limmaGUIenvironment)))
+      Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
+        Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
+      else
+        Try(genelist <- get("genelist",limmaGUIenvironment)))
 
-    for (coef in (1:NumParameters))
-    {
-      Try(options(digits=3))
-      Try(table1 <- toptable(coef=coef,number=50,genelist=genelist,A=A,fit=fit,eb=eb))
-      Try(toptableDisplay <- rep("s",ncol(table1)+1))
-      Try(toptableDisplay[1] <- "d")
-      Try(for (i in (2:(ncol(table1)+1)))
+      for (coef in (1:NumParameters))
       {
-        Try(if (tolower(colnames(table1)[i-1])=="block") toptableDisplay[i] <- "d")
-        Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")
-        Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )
-        Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )
-        Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")
-        Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")
-        Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")
-        Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")
-        Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")
-        Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")
-        Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")
-        Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")
-      })
-#      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
-      Try(toptableXtable <- xtable(table1,display=toptableDisplay))
-      Try(HTML.title(paste("Top 50 Differentially Expressed Genes for",ParameterNamesVec[coef]),HR=3))
-      Try(print(toptableXtable,type="html",file=fileNameWithPath,append=TRUE))
-    }
+        Try(options(digits=3))
+        Try(table1 <- toptable(coef=coef,number=50,genelist=genelist,A=A,fit=fit,eb=eb))
+        Try(toptableDisplay <- rep("s",ncol(table1)+1))
+        Try(toptableDisplay[1] <- "d")
+        Try(for (i in (2:(ncol(table1)+1)))
+        {
+          Try(if (tolower(colnames(table1)[i-1])=="block") toptableDisplay[i] <- "d")
+          Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")
+          Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )
+          Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )
+          Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")
+          Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")
+          Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")
+          Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")
+          Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")
+          Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")
+          Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")
+          Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")
+        })
+#        Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
+        Try(toptableXtable <- xtable(table1,display=toptableDisplay))
+        Try(HTML.title(paste("Top 50 Differentially Expressed Genes for",ParameterNamesVec[coef]),HR=3))
+        Try(print(toptableXtable,type="html",file=fileNameWithPath,append=TRUE))
+      }
 
-    # Now the Contrasts
-    Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
-    Try(ContrastsParameterizationNamesVec <- c() )
-    Try(contrastNames <- list())
-    Try (if (NumContrastParameterizations>0)
-      Try(for (cp in (1:NumContrastParameterizations))
-      {
-          Try(ContrastsParameterizationNamesVec[cp] <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsParameterizationNameText)
-          Try(contrastsMatrixInList <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsMatrixInList)
-          Try(contrastsMatrix <- contrastsMatrixInList$contrasts)
-          Try(contrastNames[[cp]] <- colnames(contrastsMatrix))
-          Try(fit <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$fit)
-          Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)
+      # Now the Contrasts
+      Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
+      Try(ContrastsParameterizationNamesVec <- c() )
+      Try(contrastNames <- list())
+      Try (if (NumContrastParameterizations>0)
+        Try(for (cp in (1:NumContrastParameterizations))
+        {
+            Try(ContrastsParameterizationNamesVec[cp] <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsParameterizationNameText)
+            Try(contrastsMatrixInList <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsMatrixInList)
+            Try(contrastsMatrix <- contrastsMatrixInList$contrasts)
+            Try(contrastNames[[cp]] <- colnames(contrastsMatrix))
+            Try(fit <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$fit)
+            Try(eb  <- (ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]])$eb)
 
-          for (coef in (1:ncol(contrastsMatrix)))
-          {
-            Try(options(digits=3))
-            Try(table1 <- toptable(coef=coef,number=50,genelist=genelist,A=A,fit=fit,eb=eb))
-            Try(toptableDisplay <- rep("s",ncol(table1)+1))
-            Try(toptableDisplay[1] <- "d")
-            Try(for (i in (2:(ncol(table1)+1)))
+            for (coef in (1:ncol(contrastsMatrix)))
             {
-              Try(if (tolower(colnames(table1)[i-1])=="block") toptableDisplay[i] <- "d")
-              Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")
-              Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )
-              Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )
-              Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")
-              Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")
-              Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")
-              Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")
-              Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")
-              Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")
-              Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")
-              Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")
-            })
-      #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
-            Try(toptableXtable <- xtable(table1,display=toptableDisplay))
-            Try(HTML.title(paste("Top 50 Differentially Expressed Genes for ",colnames(contrastsMatrix)[coef]," [",ContrastsParameterizationNamesVec[cp],"]",sep=""),HR=3))
-            Try(print(toptableXtable,type="html",file=fileNameWithPath,append=TRUE))
-        }
-      }))
-
-
+              Try(options(digits=3))
+              Try(table1 <- toptable(coef=coef,number=50,genelist=genelist,A=A,fit=fit,eb=eb))
+              Try(toptableDisplay <- rep("s",ncol(table1)+1))
+              Try(toptableDisplay[1] <- "d")
+              Try(for (i in (2:(ncol(table1)+1)))
+              {
+                Try(if (tolower(colnames(table1)[i-1])=="block") toptableDisplay[i] <- "d")
+                Try(if (tolower(colnames(table1)[i-1])=="column") toptableDisplay[i] <- "d")
+                Try(if (tolower(colnames(table1)[i-1])=="col") toptableDisplay[i] <- "d"   )
+                Try(if (tolower(colnames(table1)[i-1])=="row") toptableDisplay[i] <- "d"   )
+                Try(if (tolower(colnames(table1)[i-1])=="gridrow") toptableDisplay[i] <- "d")
+                Try(if (tolower(colnames(table1)[i-1])=="gridcol") toptableDisplay[i] <- "d")
+                Try(if (tolower(colnames(table1)[i-1])=="gridcolumn") toptableDisplay[i] <- "d")
+                Try(if (colnames(table1)[i-1]=="M")       toptableDisplay[i] <- "f")
+                Try(if (colnames(table1)[i-1]=="A")       toptableDisplay[i] <- "f")
+                Try(if (colnames(table1)[i-1]=="t")       toptableDisplay[i] <- "f")
+                Try(if (colnames(table1)[i-1]=="P.Value") toptableDisplay[i] <- "e")
+                Try(if (colnames(table1)[i-1]=="B") toptableDisplay[i] <- "f")
+              })
+#             Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
+              Try(toptableXtable <- xtable(table1,display=toptableDisplay))
+              Try(HTML.title(paste("Top 50 Differentially Expressed Genes for ",colnames(contrastsMatrix)[coef]," [",ContrastsParameterizationNamesVec[cp],"]",sep=""),HR=3))
+              Try(print(toptableXtable,type="html",file=fileNameWithPath,append=TRUE))
+           }
+        }))
+    }
   }
+
   if (ExportCompleteToptables)
   {
     Try(ndups <- get("ndups",envir=limmaGUIenvironment))
     Try(spacing <- GetReducedDuplicateSpacing(parameterizationTreeIndex))
-    if (NumParameterizations==0) break()
-    Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-    Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-    Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(design <- designList$design)
-    Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
-    Try(HTML.title(paste("<a name=\"CompleteToptables\">Complete Tables of Genes Ranked in order of Evidence for Differential Expression for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
-    Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
-    Try(if (nrow(design)==0)
+    if (NumParameterizations > 0)
     {
-        Try(ParameterNamesVec <- c())
-        if (NumParameters>0)
-          for (i in (1:NumParameters))
-            Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
-    }
-    else
-        Try(ParameterNamesVec <- colnames(design)))
-    Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
-    Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
-
-    Try(Amatrix <- NULL)
-    Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
-      Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
-
-    Try(if (is.null(Amatrix))
-    {
-      Try(MA <- get("MA",envir=limmaGUIenvironment))
-      Try(A <- MA$A)
-      Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
-      Try(numSpotTypes <- nrow(SpotTypes))
-      Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
-      Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
-      Omit <- ""
-      count <- 0
-      Try(for (i in (1:numSpotTypes))
+      Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
+      Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
+      Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
+      Try(design <- designList$design)
+      Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
+      Try(HTML.title(paste("<a name=\"CompleteToptables\">Complete Tables of Genes Ranked in order of Evidence for Differential Expression for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
+      Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
+      Try(if (nrow(design)==0)
       {
-        if (SpotTypesForLinearModel[i]==TRUE)
-          next()
-        count <- count + 1
-        if (count>1)
-          Omit <-paste(Omit,"|")
-        else
-          Omit <- "("
-        Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
-      })
-      Try(if (nchar(Omit)>0)
+          Try(ParameterNamesVec <- c())
+          if (NumParameters>0)
+            for (i in (1:NumParameters))
+              Try(ParameterNamesVec <- c(ParameterNamesVec,paste("Param",i)))
+      }
+      else
+          Try(ParameterNamesVec <- colnames(design)))
+      Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
+      Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
+  
+      Try(Amatrix <- NULL)
+      Try(if ("Amatrix" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
+        Amatrix <- (ParameterizationList[[ParameterizationNameNode]])$Amatrix)
+  
+      Try(if (is.null(Amatrix))
       {
-        Try(Omit <- paste(Omit,")"))
-        Try(Omit <- eval(parse(text=Omit)))
-        Try(A <- A[!Omit,])
-      })
-
-      Try(A <- unwrapdups(A,ndups=ndups,spacing=spacing))
-    }
-    else
-      Try(A <- unwrapdups(Amatrix,ndups=ndups,spacing=spacing)))
-
-    Try(fit <- (ParameterizationList[[ParameterizationNameNode]])$fit)
-    Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
-    Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
-      Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
-    else
-      Try(genelist <- get("genelist",limmaGUIenvironment)))
-
-    for (coef in (1:NumParameters))
-    {
-      Try(options(digits=3))
-      Try(table1 <- toptable(coef=coef,number=nrow(genelist),genelist=genelist,A=A,fit=fit,eb=eb))
-#      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
-      Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
-      Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
-      Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))
-      Try(HTML.title(paste("Complete Table of Genes Ranked in order of Evidence for Differential Expression for ",ParameterNamesVec[coef]),HR=3))
-      Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_Param",coef,".xls",sep=""),"</b></a>",sep="")))
-    }
-    # Now the Contrasts
-    Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
-    Try(ContrastsParameterizationNamesVec <- c() )
-    Try(contrastNames <- list())
-    Try (if (NumContrastParameterizations>0)
-      Try(for (cp in (1:NumContrastParameterizations))
+        Try(MA <- get("MA",envir=limmaGUIenvironment))
+        Try(A <- MA$A)
+        Try(SpotTypes <- get("SpotTypes",envir=limmaGUIenvironment))
+        Try(numSpotTypes <- nrow(SpotTypes))
+        Try(SpotTypeStatus <- get("SpotTypeStatus",envir=limmaGUIenvironment))
+        Try(SpotTypesForLinearModel <- ParameterizationList[[ParameterizationNameNode]]$SpotTypesForLinearModel)
+        Omit <- ""
+        count <- 0
+        Try(for (i in (1:numSpotTypes))
+        {
+          if (SpotTypesForLinearModel[i]==TRUE)
+            next()
+          count <- count + 1
+          if (count>1)
+            Omit <-paste(Omit,"|")
+          else
+            Omit <- "("
+          Try(Omit <- paste(Omit," (SpotTypeStatus==\"",SpotTypes[i,"SpotType"],"\")",sep=""))
+        })
+        Try(if (nchar(Omit)>0)
+        {
+          Try(Omit <- paste(Omit,")"))
+          Try(Omit <- eval(parse(text=Omit)))
+          Try(A <- A[!Omit,])
+        })
+  
+        Try(A <- unwrapdups(A,ndups=ndups,spacing=spacing))
+      }
+      else
+        Try(A <- unwrapdups(Amatrix,ndups=ndups,spacing=spacing)))
+  
+      Try(fit <- (ParameterizationList[[ParameterizationNameNode]])$fit)
+      Try(eb  <- (ParameterizationList[[ParameterizationNameNode]])$eb)
+      Try(if ("genelist" %in% attributes(ParameterizationList[[ParameterizationNameNode]])$names)
+        Try(genelist <- (ParameterizationList[[ParameterizationNameNode]])$genelist)
+      else
+        Try(genelist <- get("genelist",limmaGUIenvironment)))
+  
+      for (coef in (1:NumParameters))
       {
+        Try(options(digits=3))
+        Try(table1 <- toptable(coef=coef,number=nrow(genelist),genelist=genelist,A=A,fit=fit,eb=eb))
+#       Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
+        Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
+        Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_Param",coef,".xls",sep=""))
+        Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))
+        Try(HTML.title(paste("Complete Table of Genes Ranked in order of Evidence for Differential Expression for ",ParameterNamesVec[coef]),HR=3))
+        Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_Param",coef,".xls",sep=""),"</b></a>",sep="")))
+      }
+      # Now the Contrasts
+      Try(NumContrastParameterizations <- ParameterizationList[[ParameterizationNameNode]]$NumContrastParameterizations)
+      Try(ContrastsParameterizationNamesVec <- c() )
+      Try(contrastNames <- list())
+      Try(if (NumContrastParameterizations>0)
+        Try(for (cp in (1:NumContrastParameterizations))
+        {
           Try(ContrastsParameterizationNamesVec[cp] <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsParameterizationNameText)
           Try(contrastsMatrixInList <- ParameterizationList[[ParameterizationNameNode]]$Contrasts[[cp]]$contrastsMatrixInList)
           Try(contrastsMatrix <- contrastsMatrixInList$contrasts)
@@ -832,24 +831,20 @@ ExportHTMLreport <- function()
           {
             Try(options(digits=3))
             Try(table1 <- toptable(coef=coef,number=nrow(genelist),genelist=genelist,A=A,fit=fit,eb=eb))
-      #      Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
+#           Try(colnames(table1)[ncol(table1)-1] <- sprintf("%-10s",colnames(table1)[ncol(table1)-1]))
             Try(ToptableAbsoluteFilename <- paste(HTMLfilePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""))
             Try(ToptableRelativeFilename <- paste(HTMLfileRelativePath ,.Platform$file.sep,"CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""))
             Try(write.table(table1,file=ToptableAbsoluteFilename,quote=FALSE,col.names=NA,sep="\t"))
             Try(HTML.title(paste("Complete Table of Genes Ranked in order of Evidence for Differential Expression for ",colnames(contrastsMatrix)[coef]," [",ContrastsParameterizationNamesVec[cp],"]",sep=""),HR=3))
             Try(HTMLli(txt=paste("<a href=\"",ToptableRelativeFilename,"\"><b>",paste("CompleteToptable_CP_",cp,"Param",coef,".xls",sep=""),"</b></a>",sep="")))
-
-        }
-      }))
-
-
-
+          }
+        }))
+    }
   }
 
-  if (ExportAvgMAPlot && capabilities("png"))
+  if (ExportAvgMAPlot && capabilities("png") && NumParameterizations > 0)
   {
     Try(HTML.title(paste("<a name=\"AvgMAPlot\">M A Plots (with fitted M values) in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
-    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
@@ -1003,13 +998,12 @@ ExportHTMLreport <- function()
 
   }
 
-  if (ExporttStatisticBoxPlots && capabilities("png"))
+  if (ExporttStatisticBoxPlots && capabilities("png") && NumParameterizations > 0)
   {
-    if (NumParameterizations==0) break()
     Try(ParameterizationList <- get("ParameterizationList",envir=limmaGUIenvironment))
     Try(ParameterizationNameNode <- paste("ParameterizationName.",parameterizationTreeIndex,sep=""))
     Try(designList <- (ParameterizationList[[ParameterizationNameNode]])$designList)
-    Try(NumParameters         <- get("NumParameters",envir=limmaGUIenvironment))
+    Try(NumParameters <- get("NumParameters",envir=limmaGUIenvironment))
     Try(design <- designList$design)
     Try(ParameterizationNamesVec <- get("ParameterizationNamesVec",envir=limmaGUIenvironment))
     Try(HTML.title(paste("<a name=\"tStatisticBoxPlots\">Box Plots showing the Range of t Statistics for each Spot Type, for each Parameter in Parameterization ",ParameterizationNamesVec[parameterizationIndex],"</a>",sep=""),HR=2))
@@ -1134,7 +1128,6 @@ ExportHTMLreport <- function()
       })
     }
   }
-
 
   Try(tkconfigure(.limmaGUIglobals$ttMain,cursor="arrow"))
   Try(HTMLhr())

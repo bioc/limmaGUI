@@ -5106,7 +5106,7 @@ evalRcode <- function(){
 		else if(substring(fileName,len-1,len)!=".R")
 			Try(fileName <- paste(fileName,".R",sep=""))
 		Try(chn <- tclopen(fileName))
-		Try(tkputs(chn, tclvalue(tkget(txt,"0.0","end"))))
+		Try(tclputs(chn, tclvalue(tkget(txt,"0.0","end"))))
 		Try(tclclose(chn))
 		Try(wfile <<- fileName)
 		Try(tkfocus(txt))
@@ -5281,7 +5281,7 @@ evalRcode <- function(){
 			else if(substring(fileName,len-3,len)!=".txt")
 			Try(fileName <- paste(fileName,".txt",sep=""))
 			Try(chn <- tclopen(fileName))
-			Try(tkputs(chn, tclvalue(tkget(txt2,"0.0","end"))))
+			Try(tclputs(chn, tclvalue(tkget(txt2,"0.0","end"))))
 			Try(tclclose(chn))
 		}
 
@@ -5310,17 +5310,6 @@ evalRcode <- function(){
 	Try(runTextOnly <- function() runOverall("runTextOnly"))
 	Try(runGraphicsOnly <- function() runOverall("runGraphicsOnly"))
 	Try(runTextAndGraphics <- function() runOverall("runTextAndGraphics"))
-
-	MakeLimmaGUIMenu <- function()
-	{
-		Try(code <- tclvalue(tkget(txt,"0.0","end")))
-		Try(codeGraph <- paste("assign(\"plotFunction\",function () {\nopar<-par(bg=\"white\")\nTry({\n",code,"\n})\n\ntempGraphPar <- par(opar)\n},limmaGUIenvironment)\n",sep=""))
-		Try(menuNameObject <- GetMenuName())
-		Try(if(length(menuNameObject)==0) return())
-		Try(addMenuItem(codeGraph,menuNameObject$MenuName,newMenu=TRUE,menuPosition="end",
-			menuNameObject$MenuItemName,newMenuItem=TRUE,menuItemPosition="end",
-						outputHasGraphics=TRUE))
-	}
 
 	Try(HTMLhelp <- function() help.start())
 
@@ -5355,16 +5344,12 @@ evalRcode <- function(){
 	Try(tkadd(topMenu, "cascade", label="Run",
 	menu=runMenu))
 
-#  Try(menuMenu <- tkmenu(topMenu,tearoff=FALSE))
-#  Try(tkadd(menuMenu,"command",label="Make limmaGUI Custom Menu Item",command=MakeLimmaGUIMenu))
-#  Try(tkadd(topMenu,"cascade",label="Make limmaGUI Menu Item",menu=menuMenu))
-
 	Try(tkadd(helpMenu,"command",label="HTML Help",
 	command=HTMLhelp))
 	Try(tkadd(topMenu,"cascade",label="Help",
 	menu=helpMenu))
-} #end of evalRcode <- function()
-#
+}
+
 OpenGALandTargetsandSpotTypesfiles <- function(){
 	Try(ttGALandTargetsandSpotTypes<-tktoplevel(.limmaGUIglobals$ttMain))
 	Try(tkwm.deiconify(ttGALandTargetsandSpotTypes))
