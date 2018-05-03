@@ -3,13 +3,18 @@ exportPattern("^[^\\.]")
 
 import(limma, tcltk, R2HTML, xtable)
 
-importFrom("grDevices", "bitmap", "bringToTop", "col2rgb", "dev.off",
-           "dev.print", "jpeg", "pdf", "png", "postscript", "rainbow",
-           "rgb")
+importFrom("grDevices", "bitmap", "col2rgb", "dev.off", "dev.print",
+           "jpeg", "pdf", "png", "postscript", "rainbow", "rgb")
+if( tools:::.OStype() == "windows" ) importFrom("grDevices", "bringToTop")
+
 importFrom("graphics", "abline", "boxplot", "grid", "image", "legend",
            "lines", "par", "plot", "plot.new", "points", "rect",
            "text", "title")
+
 importFrom("methods", "new")
-importFrom("utils", "browseURL", "citation", "help", "help.start",
-           "read.table", "winMenuAdd", "winMenuAddItem", "write.table")
+
 importFrom("tkrplot", "tkrplot", "tkrreplot")
+
+importFrom("utils", "browseURL", "citation", "help", "help.start",
+           "read.table", "write.table")
+if( tools:::.OStype() == "windows" ) importFrom("utils", "winMenuAdd", "winMenuAddItem")
